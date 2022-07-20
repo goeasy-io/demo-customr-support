@@ -1,0 +1,820 @@
+<template>
+	<view class="chatInterface">
+		<view class="scroll-view">
+			<view class="all-history-loaded">
+				下拉获取历史消息
+			</view>
+			<view class="message-list">
+				<view v-for="(message,index) in history.messages" :key="message.messageId">
+					<view class="time-lag">
+						{{renderMessageDate(message, index)}}
+					</view>
+					<view class="message-item">
+						<view v-if="message.type === 'ACCEPTED'" class="accept-message">
+							{{message.senderData.name}}将为您服务
+						</view>
+						<view v-if="message.type === 'CLOSED'" class="accept-message">
+							{{message.payload.text}}
+						</view>
+						<view v-else class="message-item-content" :class="{'self' : message.senderId ===  currentUser.uuid}">
+							<view class="avatar">
+								<image :src="message.senderId === currentUser.uuid? currentUser.avatar : shop.avatar"></image>
+							</view>
+							<view class="content">
+								<view class="staff-name" v-if="message.senderId !== currentUser.uuid">{{message.senderData.name}}</view>
+								<view class="message-payload">
+									<view v-if="message.type === 'text'" v-html="renderTextMessage(message)"></view>
+									<view v-if="message.type === 'goods'" class="goods-content">
+										<view class="goods-description">为你推荐：</view>
+										<view style="display: flex;background-color: #fffcfc;">
+											<image :src="message.payload.url"></image>
+											<view class="goods-info">
+												<view class="goods-name">{{message.payload.name}}</view>
+												<view style="color: #434343;">月销17</view>
+												<view class="foods-price">{{message.payload.price}}</view>
+											</view>
+										</view>
+									</view>
+								</view>
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+		<view class="action-box">
+			<view class="action-top">
+				<view class="record-icon" @click="switchAudioKeyboard"></view>
+				<view class="record-input" @touchstart="onRecordStart" @touchend="onRecordEnd" v-if="false" >{{audio.recording ? '松开发送' : '按住录音'}}</view>
+				<view class="message-input" v-else>
+					<!-- GoEasyIM最大支持3k的文本消息，如需发送长文本，需调整输入框maxlength值 -->
+					<input type="text" maxlength="700" placeholder="发送消息" v-model="text" @focus="messageInputFocusin">
+					<view class="file-icon emoji-icon" @click=""></view>
+				</view>
+				<view class="file-icon more-icon" @click=""></view>
+				<span class="send-message-btn" @click="sendTextMessage"></span>
+			</view>
+			<!--展示表情列表-->
+			<view class="action-bottom action-bottom-emoji" v-if="emoji.visible">
+				<image class="emoji-item" v-for="(emojiItem, emojiKey, index) in emoji.map" :key="index" :src="emoji.url + emojiItem" @click="chooseEmoji(emojiKey)"></image>
+			</view>
+			<!--其他类型消息面板-->
+			<view class="action-bottom" v-if="otherTypesMessagePanelVisible">
+				<view class="more-item" @click="sendImageMessage">
+					<image src="../../static/images/tupian.png"></image>
+					<text>图片</text>
+				</view>
+				<view class="more-item" @click="sendVideoMessage">
+					<image src="../../static/images/shipin.png"></image>
+					<text>视频</text>
+				</view>
+				<view class="more-item" @click="showCustomMessageForm">
+					<image src="../../static/images/zidingyi.png"></image>
+					<text>自定义消息</text>
+				</view>
+			</view>
+		</view>
+	</view>
+</template>
+
+<script>
+	import restApi from '../../lib/restapi';
+	import EmojiDecoder from '../../lib/EmojiDecoder';
+	export default {
+		data() {
+			const emojiUrl = 'https://imgcache.qq.com/open/qcloud/tim/assets/emoji/';
+			const emojiMap = {
+				'[么么哒]': 'emoji_3@2x.png',
+				'[乒乓]': 'emoji_4@2x.png',
+				'[便便]': 'emoji_5@2x.png',
+				'[信封]': 'emoji_6@2x.png',
+				'[偷笑]': 'emoji_7@2x.png',
+				'[傲慢]': 'emoji_8@2x.png'
+			};
+			return {
+				currentUser: {},
+				shop: {},
+				text: '',
+				//定义表情列表
+				emoji : {
+					url : emojiUrl,
+					map : emojiMap,
+					visible: false,
+					decoder:  new EmojiDecoder(emojiUrl, emojiMap),
+				},
+				//是否展示‘其他消息类型面板’
+				otherTypesMessagePanelVisible: false,
+				history: {
+					messages: [],
+					allLoaded: false,
+					loading: true
+				},
+			}
+		},
+		onReady () {
+			uni.setNavigationBarTitle({
+				title : this.shop.name
+			});
+		},
+		onLoad(options) {
+			let shopId = options.to;
+			shopId = shopId.split('#')[1] || shopId;
+			this.shop = restApi.findShopById(shopId);
+			console.log('this.shop:',this.shop);
+			this.currentUser = uni.getStorageSync('currentCustomer');
+			
+			this.loadHistoryMessage(true,0);
+			this.goEasy.im.on(this.GoEasy.IM_EVENT.CS_MESSAGE_RECEIVED, this.onCSMessageReceived);
+		},
+		beforeDestroy() {
+			this.goEasy.im.off(this.GoEasy.IM_EVENT.CS_MESSAGE_RECEIVED, this.onCSMessageReceived);
+		},
+		methods: {
+			renderMessageDate(message, index) {
+				if (index === 0) {
+					return this.formatDate(message.timestamp)
+				} else {
+					if (message.timestamp - this.history.messages[index - 1].timestamp > 5 * 60 * 1000) {
+						return this.formatDate(message.timestamp)
+					}
+				}
+				return '';
+			},
+			renderTextMessage(message) {
+				return '<view class="text-content">' + this.emoji.decoder.decode(message.payload.text) + '</view>'
+			},
+			messageInputFocusin () {
+				this.otherTypesMessagePanelVisible = false;
+				this.emoji.visible = false;
+			},
+			onCSMessageReceived (message) {
+				console.log('message:',message)
+				if (message.senderId !== this.currentUser.uuid) {
+					this.history.messages.push(message);
+					this.markMessageAsRead();
+				}
+				this.scrollToBottom();
+			},
+			sendTextMessage ()  {
+				if (this.text.trim() !== '') {
+					let textMessage = this.goEasy.im.createTextMessage({
+						text: this.text,
+						to : {
+							id : this.shop.id,
+							type : this.GoEasy.IM_SCENE.CS,
+							data : {
+								name:this.shop.name,
+								avatar:this.shop.avatar
+							}
+						}
+					});
+					this.sendMessage(textMessage);
+				}
+				this.text = '';
+			},
+			sendMessage(message){
+				this.history.messages.push(message);
+				this.scrollToBottom();
+				this.goEasy.im.sendMessage({
+					message: message,
+					onSuccess: function (message) {
+						console.log('发送成功.', message);
+					},
+					onFailed: function (error) {
+						if(error.code === 507){
+							console.log('发送语音/图片/视频/文件失败，没有配置OSS存储，详情参考：https://www.goeasy.io/cn/docs/goeasy-2.x/im/message/media/send-media-message.html');
+						}else{
+							console.log('发送失败:',error);
+						}
+					}
+				});
+			},
+			scrollToBottom () {
+				this.$nextTick(function() {
+					uni.pageScrollTo({
+						scrollTop: 2000000,
+						duration: 0
+					})
+				});
+			},
+			loadHistoryMessage(scrollToBottom) {//历史消息
+				let lastMessageTimeStamp = null;
+				let lastMessage = this.history.messages[0];
+				if (lastMessage) {
+					lastMessageTimeStamp = lastMessage.timestamp;
+				}
+				this.goEasy.im.history({
+					type: this.GoEasy.IM_SCENE.CS,
+					id: this.shop.id,
+					lastTimestamp: lastMessageTimeStamp,
+					limit: 10,
+					onSuccess: (result) => {
+						uni.stopPullDownRefresh();
+						let messages = result.content;
+						if (messages.length === 0) {
+							this.history.allLoaded = true;
+						} else {
+							this.history.messages = messages.concat(this.history.messages);
+							console.log('this.history.messages:',this.history.messages);
+							if (scrollToBottom) {
+								this.scrollToBottom();
+								//收到的消息设置为已读
+								this.markMessageAsRead();
+							}
+						}
+					},
+					onFailed: (error) => {
+						//获取失败
+						console.log('获取历史消息失败:',error);
+						uni.stopPullDownRefresh();
+					}
+				});
+			},
+			markMessageAsRead () {
+				this.goEasy.im.markMessageAsRead({
+					scene: this.GoEasy.IM_SCENE.CS,
+					id: this.shop.id,
+					onSuccess: function () {
+						console.log('标记已读成功');
+					},
+					onFailed: function (error) {
+						console.log("标记已读失败",error);
+					}
+				});
+			}
+		}
+	}
+</script>
+
+<style>
+	page {
+		height: 100%;
+	}
+	.chatInterface{
+		height: 100%;
+		background-color: #EFEFEF;
+	}
+	.scroll-view{
+		padding-left: 20rpx;
+		padding-right: 20rpx;
+		box-sizing: border-box;
+		-webkit-overflow-scrolling: touch;
+		padding-bottom: 140rpx;
+		background-color: #EFEFEF;
+	}
+	.scroll-view .all-history-loaded{
+		font-size: 24rpx;
+		height: 90rpx;
+		line-height: 90rpx;
+		width: 100%;
+		text-align: center;
+		color: grey;
+	}
+
+	.scroll-view .message-item{
+		display: flex;
+		margin: 20rpx 0;
+	}
+	.scroll-view .message-item .message-item-checkbox {
+		height: 80rpx;
+		display: flex;
+		align-items: center;
+	}
+	.scroll-view .message-item .message-item-content {
+		flex: 1;
+		overflow: hidden;
+		display: flex;
+	}
+	.scroll-view .message-item .message-item-content.self{
+		overflow: hidden;
+		display: flex;
+		justify-content: flex-start;
+		flex-direction: row-reverse;
+	}
+	.scroll-view .message-item .avatar{
+		width: 80rpx;
+		height: 80rpx;
+		flex-shrink: 0;
+		flex-grow: 0;
+	}
+
+	.scroll-view .message-item .avatar image{
+		width: 100%;
+		height: 100%;
+		border-radius: 50%;
+	}
+
+	.scroll-view .message-item .accept-message {
+		width: 100%;
+		text-align: center;
+		color: #333333;
+	}
+
+	.scroll-view .content{
+		font-size: 34rpx;
+		line-height: 44rpx;
+		margin: 0 20rpx;
+		max-width: 520rpx;
+		display: flex;
+		flex-direction: column;
+	}
+	.scroll-view .content .staff-name {
+		font-size: 28rpx;
+		color: #888888;
+	}
+	.scroll-view .content .message-payload{
+		display: flex;
+		align-items: center;
+	}
+	.scroll-view .content .image-content{
+		border-radius: 12rpx;
+		width: 300rpx;
+		height: 300rpx;
+	}
+	.scroll-view .content .text-content img{
+		width: 50rpx;
+		height: 50rpx;
+	}
+	.scroll-view .content .goods-content {
+		border-radius: 20rpx;
+		background: #ffffff;
+		padding: 16rpx;
+		display: flex;
+		flex-direction: column;
+	}
+	.scroll-view .content .goods-content .goods-description {
+		font-weight: bold;
+		margin-bottom: 10rpx;
+	}
+	.scroll-view .content .goods-content .goods-info {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-around;
+		font-size: 28rpx;
+		padding: 25rpx 10rpx;
+	}
+	.scroll-view .content .goods-content .goods-info .goods-name{
+		font-size: 30rpx;
+	}
+	.scroll-view .content .goods-content .goods-info .foods-price{
+		color: #d02129;
+	}
+	.scroll-view .content .goods-content image{
+		width: 200rpx;
+		height: 200rpx;
+	}
+
+	.rtc-message {
+		display: flex;
+		flex-direction: row;
+	}
+
+	.rtc-icon {
+		width: 44rpx;
+		height: 44rpx;
+		margin-right: 10rpx;
+	}
+
+	.rtc-duration {
+		margin-left: 10rpx;
+	}
+
+    .scroll-view .content .message-payload .file-content {
+        width: 560rpx;
+        height: 152rpx;
+        font-size: 28rpx;
+        background: white;
+        display: flex;
+		align-items: center;
+        border-radius: 10rpx;
+		padding: 0 20rpx;
+    }
+
+    .scroll-view .content .file-content .file-info {
+		width: 424rpx;
+		height: 132rpx;
+		padding: 12rpx 0;
+    }
+
+    .scroll-view .content .file-content .file-info .file-name {
+        width: 420rpxrpx;
+		font-size: 13px;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		display: -webkit-box;
+		word-break: break-all;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+    }
+    .scroll-view .content .file-content .file-info .file-size {
+        width: 200rpx;
+        font-size: 24rpx;
+        color: #ccc;
+    }
+    .scroll-view .content .file-content .file-img {
+        width: 50rpx;
+        height: 50rpx;
+    }
+
+    .scroll-view .content .pending{
+		background: url("/static/images/pending.gif") no-repeat center;
+		background-size: 30rpx;
+		width: 30rpx;
+		height: 30rpx;
+		margin-right: 10rpx;
+	}
+
+	.scroll-view .content .send-fail{
+		background: url("/static/images/failed.png") no-repeat center;
+		background-size: 30rpx;
+		width: 30rpx;
+		height: 30rpx;
+		margin-right: 10rpx;
+	}
+
+	.action-box{
+		display: flex;
+		backdrop-filter: blur(0.27rpx);
+		width: 100%;
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		flex-direction: column;
+		background-color: #FFFFFF;
+	}
+	.action-box .action-top{
+		display: flex;
+		padding-top: 20rpx;
+		padding-bottom: 20rpx;
+		backdrop-filter: blur(0.27rem);
+		height: 100rpx;
+		background:#F6F6F6;
+		width: 100%;
+	}
+	.action-box .action-top .record-icon{
+		border-radius: 50%;
+		font-size: 32rpx;
+		margin: 0 10rpx;
+		width: 80rpx;
+		height: 80rpx;
+		line-height: 80rpx;
+		text-align: center;
+		background: url("/static/images/record-appearance-icon.png") no-repeat center #FFFFFF;
+		background-size: 50%;
+		-webkit-tap-highlight-color:rgba(0,0,0,0);
+	}
+	.action-box .action-top .file-icon{
+		background: url("/static/images/video.png") no-repeat center;
+		background-size: 70%;
+		color: #9D9D9D;
+		position: relative;
+		width:80rpx;
+		height: 80rpx;
+		line-height: 80rpx;
+		-webkit-tap-highlight-color:rgba(0,0,0,0);
+	}
+	.action-box .record-icon.record-open{
+		background: url("/static/images/jianpan.png") no-repeat center;
+		background-size: 70%;
+		-webkit-tap-highlight-color:rgba(0,0,0,0);
+	}
+	.action-box .action-top .img-video{
+		background: url("/static/images/file.png") no-repeat center;
+		background-size: 73%;
+	}
+	.action-box .action-top .emoji-icon{
+		background: url("/static/images/emoji.png") no-repeat center;
+		background-size: 50%;
+	}
+	.action-box .action-top .more-icon{
+		background: url("/static/images/more.png") no-repeat center;
+		background-size: 70%;
+	}
+	.action-box .action-bottom .more-item{
+		display: flex;
+		flex-direction: column;
+		width: 150rpx;
+		height: 150rpx;
+		margin-right: 20rpx;
+		align-items: center;
+	}
+	.action-box .action-bottom .more-item image{
+		height: 100rpx;
+		width: 100rpx;
+	}
+	.action-box .action-bottom .more-item text{
+		font-size: 20rpx;
+		text-align: center;
+		line-height: 50rpx;
+	}
+	.action-box .action-top .record-input{
+		width: 460rpx;
+		height: 80rpx;
+		line-height: 80rpx;
+		border-radius: 12rpx;
+		font-size: 28rpx;
+		background: #cccccc;
+		color: #ffffff;
+		text-align: center;
+	}
+	.action-box .action-top .message-input{
+		border-radius: 40rpx;
+		background: #FFFFFF;
+		height: 80rpx;
+		display: flex;
+	}
+	.action-box .action-top .message-input input{
+		width: 380rpx;
+		height: 80rpx;
+		line-height: 80rpx;
+		padding-left: 20rpx;
+		font-size: 28rpx;
+	}
+	.action-box .action-top .send-message-btn{
+		width: 80rpx;
+		height: 80rpx;
+		background: url("/static/images/send.png") no-repeat center;
+		background-size: 56%;
+	}
+	.action-bottom{
+		height: 300rpx;
+		width:100%;
+		padding: 20rpx;
+		box-sizing: border-box;
+		display: flex;
+	}
+
+	.action-bottom-emoji{
+		justify-content: space-around;
+	}
+
+	.action-bottom image{
+		width:100rpx;
+		height: 100rpx;
+	}
+
+	.messageSelector-box{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		backdrop-filter: blur(0.27rpx);
+		width: 100%;
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		border-radius: 12rpx;
+		background: #EFEFEF;
+		height: 80rpx;
+		padding: 20rpx 0;
+		font-size: 32rpx;
+	}
+
+	.messageSelector-box .messageSelector-btn {
+		width: 80rpx;
+		height: 80rpx;
+	}
+
+	uni-checkbox:not([disabled]) .uni-checkbox-input:hover {
+	    border-color: #d1d1d1 !important;
+	}
+
+	uni-checkbox .uni-checkbox-input {
+		border-radius: 50% !important;
+	}
+
+	/* #ifdef MP-WEIXIN */
+	checkbox .wx-checkbox-input {
+		border-radius: 50% !important;
+	}
+	checkbox .wx-checkbox-input.wx-checkbox-input-checked {
+		color: #007aff !important;
+	}
+	/* #endif */
+
+	.action-popup {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.action-popup .layer {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: rgba(51, 51, 51, 0.5);
+		z-index: 999;
+	}
+	.action-popup .action-box {
+		width: 350rpx;
+		background: #434343;
+		position: relative;
+		z-index: 1000;
+		border-radius: 20rpx;
+		overflow: hidden;
+	}
+	.action-popup .action-item {
+		text-align: center;
+		height: 100rpx;
+		line-height: 100rpx;
+		font-size: 34rpx;
+		color: #ffffff;
+		border-bottom: 1px solid #EFEFEF;
+	}
+	.action-popup .action-item:last-child {
+		border: none;
+	}
+	.record-loading{
+		position: fixed;
+		top:50%;
+		left: 50%;
+		width: 300rpx;
+		height: 300rpx;
+		margin: -150rpx -150rpx;
+		background: #262628;
+		background: url("/static/images/recording-loading.gif") no-repeat center;
+		background-size: 100%;
+		border-radius: 40rpx;
+	}
+	.img-layer{
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: #000000;
+		z-index: 9999;
+		padding: 6rpx;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	.img-layer uni-image {
+		height: 100%!important;
+	}
+	.img-layer {
+		height: 100%!important;
+		width: 100%!important;
+	}
+
+	.video-snapshot{
+		position: relative;
+	}
+
+	.video-snapshot video{
+		max-height: 300rpx;
+		max-width: 400rpx;
+	}
+
+	.video-snapshot .video-play-icon{
+		position: absolute;
+		width: 40rpx;
+		height: 40rpx;
+		border-radius: 20rpx;
+		background:url("/static/images/play.png") no-repeat center;
+		background-size: 100%;
+		top:50%;
+		left: 50%;
+		margin:-20rpx;
+	}
+
+	.group-icon{
+		right: 20rpx;
+		width: 60rpx;
+		height: 60rpx;
+		top:14rpx;
+		position: fixed;
+		right: 20rpx;
+		top:120rpx;
+		background-color: #C4C4C4;
+		z-index: 2;
+		border-radius: 60rpx;
+	}
+	.uni-toast{
+		background-color: #ffffff!important;
+	}
+	.time-lag{
+		font-size: 20rpx;
+		text-align: center;
+	}
+	.custom-message{
+		width: 400rpx;
+		height: 260rpx;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-around;
+		align-items: flex-start;
+		box-sizing: border-box;
+		padding: 10rpx 30rpx;
+		border: 1px solid rgba(0, 0, 0, 0.05);
+		box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.1);
+		/* background-color: #FFFFFF; */
+		background-color: #EEF4F9;
+		border-radius: 20rpx;
+	}
+	.custom-message .title{
+		width: 100%;
+		display: flex;
+		align-items: center;
+		font-size: 30rpx;
+	}
+	.custom-message .title image{
+		width: 40rpx;
+		height: 40rpx;
+	}
+	.custom-message .custom-message-item{
+		text-align: left;
+		font-size: 28rpx;
+		overflow: hidden;
+		width: 100%;
+		text-overflow:ellipsis;
+		white-space: nowrap;
+	}
+
+	.message-read {
+		color: grey;
+		font-size: 24rpx;
+		text-align: end;
+		height: 36rpx;
+	}
+
+	.message-unread {
+		/* color: #618DFF; */
+		color: #6896c1;
+		font-size: 24rpx;
+		text-align: end;
+		height: 36rpx;
+	}
+
+	.message-recalled {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		line-height: 56rpx;
+		font-size: 26rpx;
+		text-align: center;
+		color: grey;
+	}
+
+	.message-recalled .message-recalled-self {
+		display: flex;
+	}
+
+	.message-recalled .message-recalled-self span {
+		margin-left: 10rpx;
+		/* color: #618DFF; */
+		color: #6896c1;
+	}
+
+	.memberSelector-box {
+		position: fixed;
+		bottom: 0;
+		width: 100%;
+		height: 600rpx;
+		background-color: #fffadd;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.memberSelector-box .box-title {
+		height: 120rpx;
+		padding: 20rpx 30rpx;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.memberSelector-box .box-body {
+		display: flex;
+		flex-direction: column;
+		overflow-y: auto;
+		padding: 0 30rpx;
+		z-index: 999;
+	}
+
+	.memberSelector-box .user-item {
+		width: 100%;
+		display: flex;
+		align-items: center;
+	}
+
+	.memberSelector-box .user-item-avatar {
+		margin-left: 20rpx;
+	}
+
+	.memberSelector-box .user-item-avatar image{
+		width: 100rpx;
+		height: 100rpx;
+	}
+
+	.memberSelector-box .user-item-info {
+		margin-left: 20rpx;
+	}
+
+</style>
