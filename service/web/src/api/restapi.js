@@ -109,36 +109,26 @@ class RestApi {
 			phone: '138xxxxxxxx',
 		}
 	];
-	//群数据示例
-	groups = [
+	goods = [
 		{
-			uuid: 'group-a42b-47b2-bb1e-15e0f5f9a19a',
-			name: '小程序交流群',
-			avatar: '/static/images/wx.png',
-			userList: [
-				'08c0a6ec-a42b-47b2-bb1e-15e0f5f9a19a',
-				'3bb179af-bcc5-4fe0-9dac-c05688484649',
-				'fdee46b0-4b01-4590-bdba-6586d7617f95',
-				'33c3693b-dbb0-4bc9-99c6-fa77b9eb763f',
-			],
+			url: '/static/images/goods1-1.jpg',
+			name: '青桔柠檬气泡美式',
+			price: '￥23',
+			sales: 165
 		},
 		{
-			uuid: 'group-4b01-4590-bdba-6586d7617f95',
-			name: 'UniApp交流群',
-			avatar: '/static/images/uniapp.png',
-			userList: [
-				'08c0a6ec-a42b-47b2-bb1e-15e0f5f9a19a',
-				'fdee46b0-4b01-4590-bdba-6586d7617f95',
-				'33c3693b-dbb0-4bc9-99c6-fa77b9eb763f',
-			],
+			url: '/static/images/goods1-2.jpg',
+			name: '咸柠七',
+			price: '￥8',
+			sales: 386
 		},
 		{
-			uuid: 'group-dbb0-4bc9-99c6-fa77b9eb763f',
-			name: 'GoEasy交流群',
-			avatar: '/static/images/goeasy.jpeg',
-			userList: ['08c0a6ec-a42b-47b2-bb1e-15e0f5f9a19a', '3bb179af-bcc5-4fe0-9dac-c05688484649'],
-		},
-	];
+			url: '/static/images/goods1-3.jpg',
+			name: '黑糖波波鲜奶茶',
+			price: '￥12',
+			sales: 258
+		}
+	]
 
 	findFriends (user) {
 		return this.users.filter((v) => v.uuid !== user.uuid);

@@ -7,7 +7,7 @@
 						<image :src="shop.avatar"></image>
 						<view>{{shop.name}}</view>
 					</view>
-					<view class="consult-buton" @click="enterChat(shop.id)">咨询</view>
+					<view class="consult-buton" @click="consult(shop.id)">咨询</view>
 				</view>
 				<view class="item-body">
 					<image v-for="good in shop.goods" :src="good"></image>
@@ -18,52 +18,21 @@
 </template>
 
 <script>
+	import restApi from '../../lib/restapi.js'
 	export default {
 		data() {
 			return {
-				shopList: [
-					{
-						id: 'shop01',
-						name: 'GoEasy食品自营',
-						avatar: '/static/images/shop1.png',
-						goods: [
-							'/static/images/goods1-1.jpg',
-							'/static/images/goods1-2.jpg',
-							'/static/images/goods1-3.jpg',
-						]
-					},
-					{
-						id: 'shop02',
-						name: 'GoEasy家具生活自营',
-						avatar: '/static/images/shop2.png',
-						goods: [
-							'/static/images/goods2-1.jpg',
-							'/static/images/goods2-2.jpg',
-							'/static/images/goods2-3.jpg',
-						]
-					},
-					{
-						id: 'shop03',
-						name: 'GoEasy电器自营',
-						avatar: '/static/images/shop3.png',
-						goods: [
-							'/static/images/goods3-1.jpg',
-							'/static/images/goods3-2.jpg',
-							'/static/images/goods3-3.jpg',
-						]
-					},
-				]
+				shopList: restApi.shop
 			}
 		},
 		onShow () {
-			let currentCustomer = uni.getStorageSync('currentCustomer');
-			if(!currentCustomer){
-				uni.navigateTo({
-					url: '../login/login'
-				})
+			this.currentCustomer = uni.getStorageSync('currentCustomer');
+			console.log('this.currentCustomer:',this.currentCustomer);
+			if(!this.currentCustomer){
+				console.log('123')
+				uni.navigateTo({url: '../login/login'});
 				return;
 			}
-			this.currentCustomer = currentCustomer;
 			if(this.goEasy.getConnectionStatus() === 'disconnected') {
 				this.connectGoEasy();  //连接goeasy
 			}
@@ -102,7 +71,7 @@
 					uni.removeTabBarBadge({index: 1});
 				}
 			},
-			enterChat (id) {
+			consult (id) {
 				uni.navigateTo({url: '../chat/chat?to='+id})
 			}
 		}

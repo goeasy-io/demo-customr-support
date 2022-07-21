@@ -3,13 +3,13 @@
     <div class="chat-title">
       <img class="chat-avatar" :src="client.avatar" />
       <div class="chat-name">{{ client.name }}</div>
-<!--      <div class="chat-action" @click="endSession">-->
-<!--        <i class="iconfont icon-jieshu" title="结束会话"></i>-->
-<!--      </div>-->
     </div>
-    <div class="chat-main" ref="scrollView">
+    <div class="chat-main" ref="scrollView" @scroll="listenScroll">
       <div class="message-list" ref="messageList">
-        <div class="history-loaded" @click="loadHistoryMessage(false,0)">
+        <div v-if="history.loading" class="history-loading">
+          <img src="/static/images/pending.gif" />
+        </div>
+        <div v-else class="history-loaded" @click="loadHistoryMessage(false,0)">
           {{ history.allLoaded ? '已经没有更多的历史消息' : '获取历史消息' }}
         </div>
         <div v-for="(message, index) in history.messages" :key="index">
@@ -17,14 +17,18 @@
             {{ renderMessageDate(message, index) }}
           </div>
           <div class="message-item">
-            <div class="message-item-content" :class="{ self: message.senderId === currentStaff.uuid }">
+            <div v-if="message.type === 'ACCEPTED'" class="accept-message">
+              {{message.senderData.name}}已接入
+            </div>
+            <div v-if="message.type === 'CLOSED'" class="accept-message">
+              {{message.payload.text}}
+            </div>
+            <div v-else class="message-item-content" :class="{ self: message.senderId !== client.uuid }">
               <div class="message-content">
                 <div class="message-payload">
                   <div class="pending" v-if="message.status === 'sending'"></div>
                   <div class="send-fail" v-if="message.status === 'fail'"></div>
-                  <div class="content-text" v-if="message.type === 'text'">
-                    {{ emoji.decoder.decode(message.payload.text) }}
-                  </div>
+                  <div class="content-text" v-if="message.type === 'text'" v-html="renderTextMessage(message.payload.text)"></div>
                   <div class="content-image"
                     v-if="message.type === 'image'"
                     :style="getImgHeight(message.payload.width,message.payload.height)"
@@ -32,20 +36,6 @@
                   >
                     <img :src="message.payload.url" alt="图片" />
                   </div>
-                  <a
-                    v-if="message.type === 'file'"
-                    :href="message.payload.url"
-                    target="_blank"
-                    download="download"
-                  >
-                    <div class="content-file">
-                      <div class="file-info">
-                        <span class="file-name">{{ message.payload.name }}</span>
-                        <span class="file-size">{{ (message.payload.size / 1024).toFixed(2) }}KB</span>
-                      </div>
-                      <img class="file-img" src="/static/images/file.png" />
-                    </div>
-                  </a>
                   <goeasy-audio-player
                     v-if="message.type ==='audio'"
                     :src="message.payload.url"
@@ -56,16 +46,8 @@
                     :thumbnail="message.payload.thumbnail"
                     :src="message.payload.video.url"
                   />
-                  <div class="content-custom" v-if="message.type === 'order'">
-                    <div class="title">
-                      <img src="/static/images/order.png" />
-                      <div>自定义消息</div>
-                    </div>
-                    <div>编号: {{message.payload.number}}</div>
-                    <div>商品: {{message.payload.goods}}</div>
-                    <div>金额: {{message.payload.price}}</div>
-                  </div>
-                  <div v-if="message.type === 'goods'" class="content-goods">
+
+                  <div v-if="message.type === 'goods'" class="content-link">
                     <div class="goods-description">为你推荐：</div>
                     <div style="display: flex;background-color: #fffcfc;">
                       <img :src="message.payload.url"/>
@@ -77,8 +59,8 @@
                     </div>
                   </div>
                 </div>
-                <div :class="message.read ?'message-read':'message-unread'">
-                  <div v-if="message.senderId === currentStaff.uuid">{{message.read?'已读':'未读'}}</div>
+                <div v-if="message.senderId !== client.uuid" :class="message.read ?'message-read':'message-unread'">
+                  <div>{{message.read?'已读':'未读'}}</div>
                 </div>
               </div>
             </div>
@@ -92,7 +74,7 @@
         <button class="accept-btn" @click="acceptSession">接入</button>
       </div>
       <div v-else-if="clientStatus.status==='ACCEPTED' && currentStaff.uuid !== clientStatus.staff.id" class="accept-session">
-        <button class="accept-btn">{{ clientStatus.staff.data.name }}已接入</button>
+        <div class="">{{ JSON.parse(clientStatus.staff.data).name }}已接入</div>
       </div>
       <div v-else-if="clientStatus.status==='FREE'" class="accept-session">
         <button class="accept-btn" @click="acceptSession">发起会话</button>
@@ -102,29 +84,53 @@
           <div class="chat-action">
             <!-- 表情 -->
             <div class="action-item">
-              <i class="iconfont icon-smile" title="表情" @click=""></i>
+              <div class="emoji-box" v-if="emoji.visible">
+                <img
+                  class="emoji-item"
+                  v-for="(emojiItem, emojiKey, index) in emoji.map"
+                  :key="index"
+                  :src="emoji.url + emojiItem"
+                  @click="chooseEmoji(emojiKey)"
+                />
+              </div>
+              <i class="iconfont icon-smile" title="表情" @click="showEmojiBox"></i>
             </div>
             <!-- 图片 -->
             <div class="action-item">
               <label for="img-input">
                 <i class="iconfont icon-picture" title="图片"></i>
               </label>
+              <input
+                accept="image/*"
+                type="file"
+                multiple
+                @change="sendImageMessage"
+                id="img-input"
+                v-show="false"
+              />
             </div>
             <!-- 视频 -->
             <div class="action-item">
               <label for="video-input">
                 <i class="iconfont icon-film" title="视频"></i>
               </label>
+              <input
+                accept="video/*"
+                type="file"
+                @change="sendVideoMessage"
+                id="video-input"
+                v-show="false"
+              />
             </div>
-            <!-- 文件 -->
+            <!-- 商品链接 -->
             <div class="action-item">
-              <label for="file-input">
-                <i class="iconfont icon-wj-wjj" title="文件"></i>
-              </label>
-            </div>
-            <!-- 自定义 -->
-            <div class="action-item">
-              <i class="iconfont icon-dingdan" title="订单" @click=""></i>
+              <div v-if="customMessage.visible" class="link-box">
+                <div class="goods-item" v-for="goods in customMessage.goods" @click="sendCustomMessage(goods)">
+                  <img class="goods-img" :src="goods.url">
+                  <div>{{goods.name}}</div>
+                </div>
+              </div>
+              <i class="iconfont icon-lianjie" title="商品链接" @click="showLinkBox"></i>
             </div>
           </div>
           <div class="session-action">
@@ -154,7 +160,6 @@ import restApi from '../../api/restapi';
 import EmojiDecoder from '../../utils/EmojiDecoder';
 import GoeasyAudioPlayer from "../../components/GoEasyAudioPlayer/GoEasyAudioPlayer";
 import GoeasyVideoPlayer from "../../components/GoEasyVideoPlayer/GoEasyVideoPlayer";
-import RestApi from "../../api/restapi";
 export default {
   name: "Chat",
   components: {
@@ -194,6 +199,10 @@ export default {
         visible: false,
         url: ''
       },
+      customMessage: {
+        goods:[],
+        visible: false,
+      }
     }
   },
   created() {
@@ -203,8 +212,7 @@ export default {
     this.client = restApi.findUserById(clientId);
     this.currentStaff = JSON.parse(localStorage.getItem("currentStaff"));
     this.currentTeam = restApi.findShopByStaff(this.currentStaff.uuid);
-    console.log('this.client',this.client);
-    console.log('this.currentTeam',this.currentTeam);
+    this.customMessage.goods = restApi.goods;
 
     this.loadHistoryMessage(true,0);
     this.getClientStatus();
@@ -215,11 +223,13 @@ export default {
     this.goEasy.im.off(this.GoEasy.IM_EVENT.CS_MESSAGE_RECEIVED, this.onReceivedMessage);
   },
   methods: {
+    renderTextMessage(text) {
+      return this.emoji.decoder.decode(text);
+    },
     getClientStatus () {
       this.goEasy.im.csTeam(this.currentTeam.id).customerStatus({
         id: this.client.uuid,
         onSuccess: (result) => {
-          console.log('clientStatus:',result);
           this.clientStatus = result.content;
         },
         onFailed: (error) => {
@@ -232,13 +242,11 @@ export default {
         this.history.messages.push(message);
         this.markMessageAsRead();
       }
-      this.scrollToBottom();
+      this.scrollToBottom(0);
     },
     markMessageAsRead() {
-      console.log('currentTeam:',this.currentTeam.id)
-      console.log('id:',this.client.uuid)
       this.goEasy.im.csTeam(this.currentTeam.id).markMessageAsRead({
-        type:'cs',
+        scene:'cs',
         id: this.client.uuid,
         onSuccess: function () {
           console.log('标记已读成功');
@@ -256,8 +264,9 @@ export default {
       if (lastMessage) {
         lastMessageTimeStamp = lastMessage.timestamp;
       }
-      this.goEasy.im.history({
-        userId: this.client.uuid,
+      this.goEasy.im.csTeam(this.currentTeam.id).history({
+        id: this.client.uuid,
+        type: 'cs',
         lastTimestamp: lastMessageTimeStamp,
         limit: 10,
         onSuccess: (result) => {
@@ -267,7 +276,7 @@ export default {
             this.history.allLoaded = true;
           } else {
             this.history.messages = messages.concat(this.history.messages);
-            if (messages.length < 10) {
+            if (messages.length < 9) {
               this.history.allLoaded = true;
             }
             if (scrollToBottom) {
@@ -311,7 +320,6 @@ export default {
       this.goEasy.im.csTeam(this.currentTeam.id).accept({
         id: this.client.uuid,
         onSuccess: (result) => {
-          console.log('accept',result);
           this.getClientStatus();
         },
         onFailed: (error) => {
@@ -323,13 +331,19 @@ export default {
       this.goEasy.im.csTeam(this.currentTeam.id).end({
         id: this.client.uuid,
         onSuccess: (result) => {
-          console.log('endSession',result);
           this.getClientStatus();
         },
         onFailed: (error) => {
           console.log('endSession failed',error);
         }
       })
+    },
+    showEmojiBox () {
+      this.emoji.visible = !this.emoji.visible;
+    },
+    chooseEmoji(emojiKey) {
+      this.text += emojiKey;
+      this.emoji.visible = false;
     },
     sendTextMessage() {
       if (!this.text.trim()) {
@@ -347,15 +361,71 @@ export default {
       this.sendMessage(textMessage);
       this.text = '';
     },
+    sendImageMessage(e) {
+      let fileList = [...e.target.files];
+      fileList.forEach((file) => {
+        const imageMessage = this.goEasy.im.csTeam(this.currentTeam.id).createImageMessage({
+          file: file,
+          to: {
+            type: this.GoEasy.IM_SCENE.CS,
+            id: this.client.uuid,
+            data: this.client,
+          },
+        });
+        imageMessage.buildOptions.complete.then(() => {
+          this.sendMessage(imageMessage);
+        }).catch((error) => {
+          console.log(error);
+        });
+      })
+    },
+    sendVideoMessage(e) {
+      const file = e.target.files[0];
+      const videoMessage = this.goEasy.im.csTeam(this.currentTeam.id).createVideoMessage({
+        file: file,
+        to: {
+          type: this.GoEasy.IM_SCENE.CS,
+          id: this.client.uuid,
+          data: this.client,
+        },
+      });
+      videoMessage.buildOptions.complete.then(() => {
+        this.sendMessage(videoMessage);
+      }).catch((error) => {
+        console.log(error);
+      });
+    },
+    showLinkBox () {
+      this.customMessage.visible = true;
+    },
+    sendCustomMessage(goods) {
+      this.customMessage.visible = false;
+      const customMessage = this.goEasy.im.csTeam(this.currentTeam.id).createCustomMessage({
+        type : 'goods',
+        payload : goods,
+        to: {
+          type: this.GoEasy.IM_SCENE.CS,
+          id: this.client.uuid,
+          data: this.client,
+        },
+      });
+      this.sendMessage(customMessage);
+    },
     sendMessage(message) {
       this.history.messages.push(message);
-      this.scrollToBottom();
+      this.scrollToBottom(0);
       this.goEasy.im.sendMessage({
         message: message,
         onSuccess: (message) => {
           console.log('发送成功',message);
         },
       });
+    },
+    listenScroll(e){
+      if (e.target.scrollTop === 0 && !this.history.allLoaded) {
+        const offsetHeight = this.$refs.messageList.offsetHeight;
+        this.loadHistoryMessage(true,offsetHeight);
+      }
     },
     scrollToBottom(offsetHeight) {
       this.$nextTick(() => {
@@ -410,6 +480,10 @@ export default {
       cursor: pointer;
       line-height: 20px;
     }
+    .history-loading {
+      width: 100%;
+      text-align: center;
+    }
     .time-tips {
       color: #999;
       text-align: center;
@@ -417,6 +491,12 @@ export default {
     }
     .message-item {
       display: flex;
+      .accept-message {
+        width: 100%;
+        text-align: center;
+        color: #606164;
+        line-height: 25px;
+      }
       .message-item-checkbox {
         height: 55px;
         margin-right: 15px;
@@ -467,6 +547,8 @@ export default {
             height: 16px;
           }
           .content-text {
+            display: flex;
+            align-items: center;
             text-align: left;
             background: #FFFFFF;
             font-size: 14px;
@@ -486,67 +568,7 @@ export default {
               height: 100%;
             }
           }
-          .content-file {
-            width: 240px;
-            height: 65px;
-            font-size: 15px;
-            background: white;
-            display: flex;
-            margin: 5px 10px;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            &:hover {
-              background: #f6f2f2;
-            }
-            .file-info {
-              width: 194px;
-              text-align: left;
-              .file-name {
-                text-overflow: ellipsis;
-                overflow: hidden;
-                display: -webkit-box;
-                word-break: break-all;
-                -webkit-line-clamp: 2;
-                -webkit-box-orient: vertical;
-              }
-              .file-size {
-                font-size: 12px;
-                color: #ccc;
-              }
-            }
-            .file-img {
-              width: 30px;
-              height: 30px;
-              margin: auto 8px;
-            }
-          }
-          .content-custom {
-            width: 150px;
-            height: 110px;
-            display: flex;
-            flex-direction: column;
-            font-size: 14px;
-            background: #ffffff;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            padding: 0 10px;
-            margin: 5px 10px;
-            text-align: left;
-            line-height: 25px;
-            .title {
-              display: flex;
-              align-items: center;
-              font-size: 15px;
-              flex: 1;
-              img {
-                width: 20px;
-                height: 20px;
-                margin-right: 5px;
-              }
-            }
-          }
-          .content-goods {
+          .content-link {
             border-radius: 10px;
             background: #ffffff;
             padding: 8px;
@@ -611,12 +633,12 @@ export default {
     height: 250px;
     position: absolute;
     bottom: 0;
+    background: #F0F0F0;
     .action-box {
       width: 100%;
       height: 100%;
       display: flex;
       flex-direction: column;
-      background: #F0F0F0;
       .action-bar {
         display: flex;
         flex-direction: row;
@@ -645,12 +667,10 @@ export default {
             .emoji-box {
               width: 250px;
               position: absolute;
-              top: -126px;
-              left: -53px;
+              top: -125px;
+              left: -11px;
               z-index: 2007;
-              margin-bottom: 12px;
               background: #fff;
-              min-width: 150px;
               border: 1px solid #ebeef5;
               padding: 12px;
               text-align: justify;
@@ -661,10 +681,11 @@ export default {
               .emoji-list {
                 display: flex;
                 flex-wrap: wrap;
-                .emoji-item {
-                  width: 50px;
-                  height: 50px;
-                }
+              }
+              .emoji-item {
+                width: 45px;
+                height: 45px;
+                margin: 0 2px
               }
             }
             .order-form {
@@ -692,6 +713,29 @@ export default {
                   input:focus-visible {
                     outline: none;
                   }
+                }
+              }
+            }
+            .link-box {
+              width: 156px;
+              position: absolute;
+              top: -146px;
+              left: -11px;
+              z-index: 2007;
+              background: #fff;
+              border: 1px solid #ebeef5;
+              padding: 12px;
+              text-align: justify;
+              font-size: 14px;
+              box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+              word-break: break-all;
+              border-radius: 4px;
+              .goods-item {
+                display: flex;
+                align-items: center;
+                .goods-img {
+                  width: 40px;
+                  height: 40px;
                 }
               }
             }

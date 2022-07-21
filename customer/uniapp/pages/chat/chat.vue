@@ -2,7 +2,7 @@
 	<view class="chatInterface">
 		<view class="scroll-view">
 			<view class="all-history-loaded">
-				下拉获取历史消息
+				{{history.allLoaded ? '已经没有更多的历史消息' : '下拉获取历史消息'}}
 			</view>
 			<view class="message-list">
 				<view v-for="(message,index) in history.messages" :key="message.messageId">
@@ -23,18 +23,36 @@
 							<view class="content">
 								<view class="staff-name" v-if="message.senderId !== currentUser.uuid">{{message.senderData.name}}</view>
 								<view class="message-payload">
+									<b class="pending" v-if="message.status === 'sending'"></b>
+									<b class="send-fail" v-if="message.status === 'fail'"></b>
 									<view v-if="message.type === 'text'" v-html="renderTextMessage(message)"></view>
+									<image class="image-content"
+										v-if="message.type === 'image'"
+										:src="message.payload.url"
+										:data-url="message.payload.url"
+										:style="getImgHeight(message.payload.width,message.payload.height)"
+										@click="showImageFullScreen"
+										mode="heightFix"
+									></image>
+									<view class="video-snapshot"  v-if="message.type === 'video'" :data-url="message.payload.video.url" @click="playVideo">
+										<image :src="message.payload.thumbnail.url" mode="heightFix" :style="getImgHeight(message.payload.thumbnail.width,message.payload.thumbnail.height)"></image>
+										<view class="video-play-icon"></view>
+									</view>
+									<GoEasyAudioPlayer v-if="message.type ==='audio'" :src="message.payload.url" :duration="message.payload.duration" />
 									<view v-if="message.type === 'goods'" class="goods-content">
 										<view class="goods-description">为你推荐：</view>
 										<view style="display: flex;background-color: #fffcfc;">
 											<image :src="message.payload.url"></image>
 											<view class="goods-info">
 												<view class="goods-name">{{message.payload.name}}</view>
-												<view style="color: #434343;">月销17</view>
+												<view style="color: #434343;">月销{{message.payload.sales}}</view>
 												<view class="foods-price">{{message.payload.price}}</view>
 											</view>
 										</view>
 									</view>
+								</view>
+								<view v-if="message.senderId === currentUser.uuid" :class="message.read ?'message-read':'message-unread'">
+									<view>{{message.read?'已读':'未读'}}</view>
 								</view>
 							</view>
 						</view>
@@ -44,14 +62,14 @@
 		</view>
 		<view class="action-box">
 			<view class="action-top">
-				<view class="record-icon" @click="switchAudioKeyboard"></view>
-				<view class="record-input" @touchstart="onRecordStart" @touchend="onRecordEnd" v-if="false" >{{audio.recording ? '松开发送' : '按住录音'}}</view>
+				<view :class="[audio.visible ? 'record-icon record-open':'record-icon']" @click="switchAudioKeyboard"></view>
+				<view class="record-input" @touchstart="onRecordStart" @touchend="onRecordEnd" v-if="audio.visible" >{{audio.recording ? '松开发送' : '按住录音'}}</view>
 				<view class="message-input" v-else>
 					<!-- GoEasyIM最大支持3k的文本消息，如需发送长文本，需调整输入框maxlength值 -->
 					<input type="text" maxlength="700" placeholder="发送消息" v-model="text" @focus="messageInputFocusin">
-					<view class="file-icon emoji-icon" @click=""></view>
+					<view class="file-icon emoji-icon" @click="showEmoji"></view>
 				</view>
-				<view class="file-icon more-icon" @click=""></view>
+				<view class="file-icon more-icon" @click="showOtherTypesMessagePanel"></view>
 				<span class="send-message-btn" @click="sendTextMessage"></span>
 			</view>
 			<!--展示表情列表-->
@@ -68,18 +86,16 @@
 					<image src="../../static/images/shipin.png"></image>
 					<text>视频</text>
 				</view>
-				<view class="more-item" @click="showCustomMessageForm">
-					<image src="../../static/images/zidingyi.png"></image>
-					<text>自定义消息</text>
-				</view>
 			</view>
 		</view>
 	</view>
 </template>
 
 <script>
+	import GoEasyAudioPlayer from '../../components/GoEasyAudioPlayer/GoEasyAudioPlayer';
 	import restApi from '../../lib/restapi';
 	import EmojiDecoder from '../../lib/EmojiDecoder';
+	const recorderManager = uni.getRecorderManager();
 	export default {
 		data() {
 			const emojiUrl = 'https://imgcache.qq.com/open/qcloud/tim/assets/emoji/';
@@ -109,6 +125,18 @@
 					allLoaded: false,
 					loading: true
 				},
+				audio : {
+					startTime: null,
+					//语音录音中
+					recording : false,
+					//录音按钮展示
+					visible : false
+				},
+				videoPlayer : {
+					visible : false,
+					url : '',
+					context : null
+				},
 			}
 		},
 		onReady () {
@@ -116,13 +144,16 @@
 				title : this.shop.name
 			});
 		},
+		onShow () {
+			this.otherTypesMessagePanelVisible = false;
+			this.emoji.visible = false;
+		},
 		onLoad(options) {
 			let shopId = options.to;
 			shopId = shopId.split('#')[1] || shopId;
 			this.shop = restApi.findShopById(shopId);
-			console.log('this.shop:',this.shop);
 			this.currentUser = uni.getStorageSync('currentCustomer');
-			
+
 			this.loadHistoryMessage(true,0);
 			this.goEasy.im.on(this.GoEasy.IM_EVENT.CS_MESSAGE_RECEIVED, this.onCSMessageReceived);
 		},
@@ -140,20 +171,82 @@
 				}
 				return '';
 			},
+			initRecorderListeners(){
+				// 监听录音开始
+				recorderManager.onStart(() => {
+					this.audio.recording = true;
+					this.audio.startTime = Date.now();
+				});
+				//录音结束后，发送
+				recorderManager.onStop((res) => {
+					let endTime = Date.now();
+					this.audio.recording = false;
+					let duration = endTime - this.audio.startTime;
+					if (duration < 1000) {
+						uni.showToast({
+							icon: 'error',
+							title: '录音时间太短',
+							duration: 500
+						});
+						return;
+					}
+					res.duration = duration;
+					let audioMessage = this.goEasy.im.createAudioMessage({
+						to : {
+							id : this.shop.id,
+							type : this.GoEasy.IM_SCENE.CS,
+							data : {
+								name:this.shop.name,
+								avatar:this.shop.avatar
+							}
+						},
+						file: res,
+						onProgress :function (progress) {
+							console.log(progress)
+						},
+						notification : {
+							title : this.currentUser.name + '发来一段语音',
+							body : '[语音消息]'		// 字段最长 50 字符
+						}
+					});
+					this.sendMessage(audioMessage);
+				});
+				// 监听录音报错
+				recorderManager.onError((res) =>{
+					this.audio.recording = false;
+					recorderManager.stop();
+					uni.showToast({
+						icon: 'none',
+						title: '录音失败,请检查麦克风权限',
+						duration: 1000
+					});
+				})
+			},
 			renderTextMessage(message) {
 				return '<view class="text-content">' + this.emoji.decoder.decode(message.payload.text) + '</view>'
 			},
-			messageInputFocusin () {
-				this.otherTypesMessagePanelVisible = false;
-				this.emoji.visible = false;
-			},
+
 			onCSMessageReceived (message) {
-				console.log('message:',message)
 				if (message.senderId !== this.currentUser.uuid) {
 					this.history.messages.push(message);
 					this.markMessageAsRead();
 				}
 				this.scrollToBottom();
+			},
+			messageInputFocusin () {
+				this.otherTypesMessagePanelVisible = false;
+				this.emoji.visible = false;
+			},
+			showEmoji () {
+				this.emoji.visible = !this.emoji.visible;
+				this.otherTypesMessagePanelVisible = false;
+			},
+			showOtherTypesMessagePanel () {
+				this.otherTypesMessagePanelVisible = !this.otherTypesMessagePanelVisible;
+				this.emoji.visible = false;
+			},
+			chooseEmoji (emojiKey) {
+				this.text +=emojiKey;
 			},
 			sendTextMessage ()  {
 				if (this.text.trim() !== '') {
@@ -168,6 +261,7 @@
 							}
 						}
 					});
+					console.log('text:',textMessage);
 					this.sendMessage(textMessage);
 				}
 				this.text = '';
@@ -229,6 +323,119 @@
 						uni.stopPullDownRefresh();
 					}
 				});
+			},
+			switchAudioKeyboard() {
+				this.audio.visible = !this.audio.visible;
+			},
+			onRecordStart () {
+				try{
+					recorderManager.start();
+				}catch(e){
+					uni.showModal({
+						title: '录音错误',
+						content : '请在app和小程序端体验录音，Uni官方明确H5不支持getRecorderManager, 详情查看Uni官方文档'
+					});
+				}
+			},
+			onRecordEnd () {
+				try{
+					recorderManager.stop();
+				}catch(e){
+					console.log(e);
+				}
+			},
+			sendVideoMessage () {
+				uni.chooseVideo({
+					success : (res) => {
+						let videoMessage = this.goEasy.im.createVideoMessage({
+							to : {
+								id : this.shop.id,
+								type : this.GoEasy.IM_SCENE.CS,
+								data : {
+									name:this.shop.name,
+									avatar:this.shop.avatar
+								}
+							},
+							file: res,
+							onProgress :function (progress) {
+								console.log(progress)
+							},
+							notification : {
+								title : this.currentUser.name + '发来一个视频',
+								body : '[视频消息]'		// 字段最长 50 字符
+							}
+						});
+						videoMessage.buildOptions.complete.then(() => {
+							this.sendMessage(videoMessage);
+						}).catch((error) => {
+							console.log(error);
+						});
+					}
+				})
+			},
+			sendImageMessage() {
+				uni.chooseImage({
+					count : 9,
+					success: (res) => {
+						res.tempFiles.forEach(file => {
+							let imageMessage = this.goEasy.im.createImageMessage({
+								to : {
+									id : this.shop.id,
+									type : this.GoEasy.IM_SCENE.CS,
+									data : {
+										name:this.shop.name,
+										avatar:this.shop.avatar
+									}
+								},
+								file: file,
+								onProgress :function (progress) {
+									console.log(progress)
+								},
+								notification : {
+									title : this.currentUser.name + '发来一张图片',
+									body : '[图片消息]'		// 字段最长 50 字符
+								}
+							});
+							imageMessage.buildOptions.complete.then(() => {
+								this.sendMessage(imageMessage);
+							}).catch((error) => {
+								console.log(error);
+							});
+						})
+					}
+				});
+			},
+			getImgHeight (width,height) {
+				if (width < height) {
+					return { height:'400rpx' }
+				} else if (width > height) {
+					return { height:'300rpx' }
+				} else {
+					return { height: '100%' }
+				}
+			},
+			showImageFullScreen (e) {
+				let imagesUrl = [e.currentTarget.dataset.url];
+				uni.previewImage({
+					urls: imagesUrl
+				});
+			},
+			playVideo (e) {
+				this.videoPlayer.visible = true;
+				this.videoPlayer.url = e.currentTarget.dataset.url;
+				this.$nextTick(() => {
+					this.videoPlayer.context.requestFullScreen({
+						direction : 0
+					});
+					this.videoPlayer.context.play();
+				});
+			},
+			onVideoFullScreenChange (e) {
+				//当退出全屏播放时，隐藏播放器
+				if(this.videoPlayer.visible && !e.detail.fullScreen){
+					this.videoPlayer.visible = false;
+					this.videoPlayer.context.stop();
+				}
 			},
 			markMessageAsRead () {
 				this.goEasy.im.markMessageAsRead({
@@ -440,15 +647,13 @@
 		bottom: 0;
 		left: 0;
 		flex-direction: column;
-		background-color: #FFFFFF;
+		background-color: #F6F6F6;
 	}
 	.action-box .action-top{
 		display: flex;
 		padding-top: 20rpx;
-		padding-bottom: 20rpx;
 		backdrop-filter: blur(0.27rem);
 		height: 100rpx;
-		background:#F6F6F6;
 		width: 100%;
 	}
 	.action-box .action-top .record-icon{
@@ -508,10 +713,10 @@
 		line-height: 50rpx;
 	}
 	.action-box .action-top .record-input{
-		width: 460rpx;
+		width: 480rpx;
 		height: 80rpx;
 		line-height: 80rpx;
-		border-radius: 12rpx;
+		border-radius: 40rpx;
 		font-size: 28rpx;
 		background: #cccccc;
 		color: #ffffff;

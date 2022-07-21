@@ -24,24 +24,15 @@
 								<text v-else-if="conversation.lastMessage.type === 'file'">[文件消息]</text>
 								<text v-else-if="conversation.lastMessage.type === 'order'">[自定义消息:订单]</text>
 								<text v-else-if="conversation.lastMessage.type === 'CLOSED'">会话已结束</text>
+								<text v-else-if="conversation.lastMessage.type === 'ACCEPTED'">{{conversation.lastMessage.senderData.name}}已接入</text>
 								<text v-else>[[未识别内容]]</text>
 							</view>
-							<view class="item-info-bottom_action" @click.stop="showAction(conversation)"></view>
 						</view>
 					</view>
 				</view>
 			</view>
 		</view>
-		<view class="no-conversation" v-else>
-			当前没有会话
-		</view>
-		<view class="action-container" v-if="actionPopup.visible">
-			<view class="layer" @click="actionPopup.visible = false"></view>
-			<view class="action-box">
-				<view class="action-item" @click="topConversation">{{actionPopup.conversation.top ? '取消置顶' : '置顶聊天'}}</view>
-				<view class="action-item" @click="deleteConversation">删除聊天</view>
-			</view>
-		</view>
+		<view class="no-conversation" v-else>当前没有会话</view>
 	</scroll-view>
 </template>
 
@@ -63,7 +54,8 @@
 		},
 		onShow () {
 			this.currentCustomer = uni.getStorageSync('currentCustomer');
-			if(!currentCustomer){
+			console.log('this.currentCustomer:',this.currentCustomer);
+			if(!this.currentCustomer){
 				uni.navigateTo({url: '../login/login'});
 				return;
 			}
@@ -205,13 +197,6 @@
 
 	}
 
-	.item-info-bottom .item-info-bottom_action{
-		width:50rpx;
-		height: 50rpx;
-		font-size: 20rpx;
-		background: url("../../static/images/action.png") no-repeat center;
-		background-size: 28rpx 30rpx;
-	}
 	.no-conversation{
 		width: 100%;
 		text-align: center;
@@ -236,41 +221,6 @@
 		position: absolute;
 		top:0;
 		right: 15rpx;
-	}
-	.action-container{
-		width: 100%;
-		height: 100%;
-		position: fixed;
-		top: 0;
-		left: 0;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-	.action-container .layer{
-		position: absolute;
-		top: 0;
-		left: 0;
-		background: rgba(51, 51, 51, 0.5);
-		width: 100%;
-		height: 100%;
-		z-index: 99;
-	}
-	.action-box{
-		width: 400rpx;
-		height: 240rpx;
-		background: #ffffff;
-		position: relative;
-		z-index: 100;
-		border-radius: 20rpx;
-		overflow: hidden;
-	}
-	.action-item{
-		text-align: center;
-		line-height: 120rpx;
-		font-size: 34rpx;
-		color: #262628;
-		border-bottom: 1px solid #EFEFEF;
 	}
 
 	.unread-text {

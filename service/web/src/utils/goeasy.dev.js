@@ -10550,7 +10550,8 @@
 	  function Conversation(scene, targetId, userId, dataCache) {
 	    this.top = false;
 	    this.data = {};
-	    this.score = 0;
+	    this.start = 0;
+	    this.end = 0;
 	    this.scene = scene;
 	    this.targetId = targetId;
 	    this.userId = userId;
@@ -10569,8 +10570,8 @@
 	      conversationDto.id = this.targetId;
 	    }
 
-	    conversationDto.lastMessage = history.messageCache.findMessageByTime(this.score);
-	    conversationDto.unread = history.messageCache.unreadAmount(this.score);
+	    conversationDto.lastMessage = history.messageCache.findMessageByTime(this.end);
+	    conversationDto.unread = history.messageCache.unreadAmount(this.start, this.end);
 	    conversationDto.top = this.top;
 	    conversationDto.data = this.data;
 	    return conversationDto;
@@ -10610,12 +10611,20 @@
 	    return this.scene;
 	  };
 
-	  Conversation.prototype.setScore = function (score) {
-	    this.score = score;
+	  Conversation.prototype.getStart = function () {
+	    return this.start;
 	  };
 
-	  Conversation.prototype.getScore = function () {
-	    return this.score;
+	  Conversation.prototype.setStart = function (value) {
+	    this.start = value;
+	  };
+
+	  Conversation.prototype.getEnd = function () {
+	    return this.end;
+	  };
+
+	  Conversation.prototype.setEnd = function (value) {
+	    this.end = value;
 	  };
 
 	  return Conversation;
@@ -11203,6 +11212,8 @@
 	                  localConversation = this.findOrCreateConversation(scene, targetId);
 	                  localConversation.top = top_1;
 	                  localConversation.data = data;
+	                  localConversation.start = conversation.start;
+	                  localConversation.end = conversation.end;
 	                  this.correctPosition(localConversation);
 	                }
 
@@ -11273,6 +11284,8 @@
 	                  localConversation = this.findOrCreateConversation(scene, targetId);
 	                  localConversation.top = top_2;
 	                  localConversation.data = data;
+	                  localConversation.start = conversation.start;
+	                  localConversation.end = conversation.end;
 	                  this.correctPosition(localConversation);
 	                }
 
@@ -11377,7 +11390,7 @@
 
 	      var history = _this.histories.findHistory(scene, targetId);
 
-	      total += history.messageCache.unreadAmount(conversation.getScore());
+	      total += history.messageCache.unreadAmount(conversation.start, conversation.end);
 	    });
 	    return total;
 	  };
@@ -11409,8 +11422,8 @@
 	      var c;
 
 	      if (a.top == b.top) {
-	        var aScore = a.getScore();
-	        var bScore = b.getScore();
+	        var aScore = a.getEnd();
+	        var bScore = b.getEnd();
 	        c = bScore - aScore;
 	      } else {
 	        c = a.top ? -1 : 1;
@@ -12110,6 +12123,7 @@
 	  var ConversationRemover_1 = ConversationRemover;
 	  var ConversationTopper_1 = ConversationTopper;
 	  var MessageType_1 = MessageType;
+	  var ConversationIdUtils_1 = ConversationIdUtils;
 
 	  var ConversationList =
 	  /** @class */
@@ -12143,12 +12157,20 @@
 	      var target = Target_1.Target.byIMMessage(message);
 	      var targetId = target.id;
 	      var scene = target.scene;
-	      var conversation = this.conversations.findOrCreateConversation(scene, targetId);
-	      conversation.setScore(message.timestamp);
+	      var conversation = this.conversations.findConversation(scene, targetId);
+
+	      if (!conversation) {
+	        conversation = this.conversations.findOrCreateConversation(scene, targetId);
+	        conversation.start = message.timestamp;
+	      }
+
+	      conversation.end = message.timestamp;
 	      this.conversations.correctPosition(conversation);
 	      conversation.initialData().then(function () {
 	        _this.conversations.onUpdated();
 	      });
+
+	      if (message.type === MessageType_1.MessageType.ACCEPTED) ;
 	    };
 
 	    ConversationList.prototype.onPendingConversationUpdated = function (message) {
@@ -12159,15 +12181,35 @@
 	      var scene = target.scene;
 
 	      if (message.type === MessageType_1.MessageType.ACCEPTED) {
-	        var pendingConversation = this.pendingConversations.findConversation(scene, targetId);
+	        if (scene === GoEasy_1.Scene.CS) {
+	          var customerId = ConversationIdUtils_1["default"].customerId(targetId);
+	          ConversationIdUtils_1["default"].teamId(targetId);
+	          var isCustomer = customerId === this.userId;
 
-	        if (pendingConversation) {
-	          this.pendingConversations.removeLocalConversation(pendingConversation);
-	          this.pendingConversations.onPendingUpdated();
+	          if (isCustomer) {
+	            this.onConversationUpdate(message);
+	          } else {
+	            if (message.senderId === this.userId) {
+	              this.onConversationUpdate(message);
+	            }
+
+	            var pendingConversation = this.pendingConversations.findConversation(scene, targetId);
+
+	            if (pendingConversation) {
+	              this.pendingConversations.removeLocalConversation(pendingConversation);
+	              this.pendingConversations.onPendingUpdated();
+	            }
+	          }
 	        }
 	      } else {
-	        var conversation = this.pendingConversations.findOrCreateConversation(scene, targetId);
-	        conversation.setScore(message.timestamp);
+	        var conversation = this.pendingConversations.findConversation(scene, targetId);
+
+	        if (!conversation) {
+	          conversation = this.pendingConversations.findOrCreateConversation(scene, targetId);
+	          conversation.start = message.timestamp;
+	        }
+
+	        conversation.end = message.timestamp;
 	        this.pendingConversations.correctPosition(conversation);
 	        conversation.initialData().then(function () {
 	          _this.pendingConversations.onPendingUpdated();
@@ -14916,7 +14958,7 @@
 	      }
 	    };
 
-	    MessageCache.prototype.unreadAmount = function (score) {
+	    MessageCache.prototype.unreadAmount = function (start, end) {
 	      var e_1, _a;
 
 	      var unreadAmount = 0;
@@ -14936,11 +14978,11 @@
 	            var isCustomer = customerId === this.userId;
 
 	            if (isCustomer) {
-	              if (message.senderId !== customerId && message.timestamp > myOffset && !message.recalled && message.timestamp <= score) {
+	              if (message.senderId !== customerId && message.timestamp > myOffset && !message.recalled && message.timestamp <= end) {
 	                unreadAmount += 1;
 	              }
 	            } else {
-	              if (message.senderId !== this.userId && message.timestamp > myOffset && !message.recalled && message.timestamp <= score) {
+	              if (message.senderId === customerId && message.timestamp > myOffset && !message.recalled && start < message.timestamp && message.timestamp <= end) {
 	                unreadAmount += 1;
 	              }
 	            }
@@ -15622,7 +15664,6 @@
 	  var RocketTypes_1 = RocketTypes;
 	  var UserOffsets_1 = UserOffsets$1;
 	  var ConversationIdUtils_1 = ConversationIdUtils;
-	  var im_1 = im;
 
 	  var UserOffsetService =
 	  /** @class */
@@ -15649,20 +15690,25 @@
 	          return this.userOffsets.myOffset() >= time;
 	        }
 	      } else if (scene === GoEasy_1.Scene.CS) {
-	        var to = message.targetId();
-
-	        if (senderId === this.userId) {
-	          return this.userOffsets.getOffset(to) >= time;
-	        }
-
-	        var teamId = ConversationIdUtils_1["default"].teamId(receiverId);
-	        var customerId = ConversationIdUtils_1["default"].customerId(receiverId);
-	        var isCustomer = im_1.IM.userId === customerId;
+	        var customerId = ConversationIdUtils_1["default"].customerId(this.target.id);
+	        var isCustomer = customerId === this.userId;
 
 	        if (isCustomer) {
-	          return this.userOffsets.getOffset(teamId) >= time;
+	          if (senderId === this.userId) {
+	            return this.teamMaxOffset() >= time;
+	          } else {
+	            return this.userOffsets.myOffset() >= time;
+	          }
 	        } else {
-	          return this.userOffsets.getOffset(customerId) >= time;
+	          if (senderId === this.userId) {
+	            return this.userOffsets.getOffset(customerId) >= time;
+	          } else {
+	            if (senderId === customerId) {
+	              return this.userOffsets.myOffset() >= time;
+	            } else {
+	              return this.userOffsets.getOffset(customerId) >= time;
+	            }
+	          }
 	        }
 	      }
 	    };
@@ -17102,7 +17148,7 @@
 
 	    Histories.prototype.onMessageSendSuccess = function (message) {
 	      var target = Target_1.Target.byIMMessage(message);
-	      var history = this.findOrCreateHistory(target.scene, target.id);
+	      var history = this.findHistory(target.scene, target.id);
 	      history.onMessageSendSuccess(message);
 	      goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.CONVERSATION_UPDATE, message);
 	    };
@@ -17115,16 +17161,15 @@
 	      if (success) {
 	        if (message.type === MessageType_1.MessageType.ACCEPTED) {
 	          goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.PENDING_CONVERSATION_UPDATE, message);
+	        } else {
+	          goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.CONVERSATION_UPDATE, message);
 	        }
-
-	        goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.CONVERSATION_UPDATE, message);
 	      }
 	    };
 
 	    Histories.prototype.onPendingMessageReceived = function (message) {
 	      var target = Target_1.Target.byIMMessage(message);
-	      var history = this.findOrCreateHistory(target.scene, target.id); // todo 不应该保存,可能造成消息列表出现气泡
-
+	      var history = this.findOrCreateHistory(target.scene, target.id);
 	      var success = history.onMessageReceived(message);
 
 	      if (success) {

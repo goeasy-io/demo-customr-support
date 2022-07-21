@@ -12,24 +12,40 @@
 </template>
 
 <script>
-    export default {
-        data () {
-            return {
-                currentUser : null
-            }
-        },
-        onShow () {
-            this.currentUser = uni.getStorageSync('currentCustomer');
-        },
-        methods : {
-            logout () {
-                uni.removeStorageSync('currentCustomer');
-                uni.navigateTo({
-                    url : '../login/login'
-                })
-            }
-        }
-    }
+	export default {
+		data () {
+			return {
+				currentUser : null
+			}
+		},
+		onShow () {
+			this.currentUser = uni.getStorageSync('currentCustomer');
+		},
+		methods : {
+			logout () {
+				uni.showLoading({
+					title: '注销中',
+					mask: true,
+				});
+				this.goEasy.disconnect({
+					onSuccess: function(){
+						uni.hideLoading();
+						uni.removeStorageSync('currentCustomer');
+						uni.navigateTo({url : '../login/login'});
+					},
+					onFailed: function(error){
+						uni.hideLoading();
+						uni.showToast({
+							icon: 'none',
+							title:'注销超时，请检查网络！（务必确保注销成功才允许客户退出应用，否则有可能会收到上个用户的消息。）',
+							duration: 6000
+						});
+						console.log('注销失败', error);
+					}
+				});
+			}
+		}
+	}
 </script>
 
 <style>

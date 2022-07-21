@@ -57,36 +57,32 @@ export default {
     }
   },
   created() {
-    this.currentStaff = JSON.parse(localStorage.getItem('currentStaff'));
+    this.currentStaff = localStorage.getItem('currentStaff');
     this.listenConversationUpdate(); //监听会话列表变化
     this.loadConversations(); //加载会话列表
   },
   beforeDestroy(){
     this.goEasy.im.off(this.GoEasy.IM_EVENT.CONVERSATIONS_UPDATED, this.renderLatestConversations);
     this.goEasy.im.off(this.GoEasy.IM_EVENT.PENDING_CONVERSATIONS_UPDATED, this.renderPendingConversations);
-    // this.goEasy.im.on(this.GoEasy.IM_EVENT.CONVERSATIONS_UPDATED, ()=>{});
-    // this.goEasy.im.on(this.GoEasy.IM_EVENT.PENDING_CONVERSATIONS_UPDATED, ()=>{});
   },
   methods: {
     loadConversations() {
       this.goEasy.im.pendingConversations({
         onSuccess: (result) => {
           let content = result.content;
-          console.log('pendingConversations:',content);
           this.renderPendingConversations(content);
         },
         onFailed: (error) => {
-          console.log('获取最新会话列表失败, code:' + error.code + 'content:' + error.content);
+          console.log('获取待接入列表失败, code:' + error.code + 'content:' + error.content);
         },
       });
       this.goEasy.im.latestConversations({
         onSuccess: (result) => {
           let content = result.content;
-          console.log('latestConversations:',content);
           this.renderLatestConversations(content);
         },
         onFailed: (error) => {
-          console.log('获取最新会话列表失败, code:' + error.code + 'content:' + error.content);
+          console.log('获取已接入列表失败, code:' + error.code + 'content:' + error.content);
         },
       });
     },
@@ -99,7 +95,6 @@ export default {
       this.pendingConversations = content.conversations.filter((conversation) => {
         return conversation.type === 'cs'
       });
-      console.log('pendingConversations:',this.pendingConversations);
     },
     renderLatestConversations(content) {
       this.conversations = content.conversations.filter((conversation) => {
@@ -107,7 +102,6 @@ export default {
       });
     },
     goChatPage (id) {
-      console.log('id:',id);
       this.$router.push({
         name: 'Chat',
         params: { id: id },
