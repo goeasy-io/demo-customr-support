@@ -69,12 +69,12 @@
       </div>
     </div>
     <div class="chat-footer">
-      <!--todo: clientStatus的时间处理-->
       <div v-if="clientStatus.status==='PENDING'" class="accept-session">
-        <button class="accept-btn" @click="acceptSession">接入</button>
+        <div class="accept-info">会话已等待{{Math.ceil((Date.now()-clientStatus.time)/60000)}}分钟</div>
+        <button class="accept-btn" @click="acceptSession">立即接入</button>
       </div>
       <div v-else-if="clientStatus.status==='ACCEPTED' && currentStaff.uuid !== clientStatus.staff.id" class="accept-session">
-        <div class="">{{ JSON.parse(clientStatus.staff.data).name }}已接入</div>
+        <div class="accept-info">{{ JSON.parse(clientStatus.staff.data).name }}已接入</div>
       </div>
       <div v-else-if="clientStatus.status==='FREE'" class="accept-session">
         <button class="accept-btn" @click="acceptSession">发起会话</button>
@@ -151,6 +151,10 @@
           <button class="send-button" @click="sendTextMessage">发送</button>
         </div>
       </div>
+    </div>
+    <div class="image-preview" v-if="imagePreview.visible">
+      <img :src="imagePreview.url" alt="图片" />
+      <span class="close" @click="imagePreview.visible = false">x</span>
     </div>
   </div>
 </template>
@@ -246,7 +250,7 @@ export default {
     },
     markMessageAsRead() {
       this.goEasy.im.csTeam(this.currentTeam.id).markMessageAsRead({
-        scene:'cs',
+        scene: this.GoEasy.IM_SCENE.CS,
         id: this.client.uuid,
         onSuccess: function () {
           console.log('标记已读成功');
@@ -266,7 +270,7 @@ export default {
       }
       this.goEasy.im.csTeam(this.currentTeam.id).history({
         id: this.client.uuid,
-        type: 'cs',
+        type: this.GoEasy.IM_SCENE.CS,
         lastTimestamp: lastMessageTimeStamp,
         limit: 10,
         onSuccess: (result) => {
@@ -782,8 +786,14 @@ export default {
       width: 100%;
       height: 100%;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
+      .accept-info {
+        font-size: 18px;
+        color: #476997;
+        margin-bottom: 10px;
+      }
       .accept-btn {
         width: 75px;
         height: 30px;
@@ -794,6 +804,36 @@ export default {
         border-radius: 5px;
         cursor: pointer;
       }
+    }
+  }
+  .image-preview {
+    max-width: 750px;
+    max-height: 500px;
+    background: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9998;
+    img {
+      max-width: 750px;
+      max-height: 500px;
+    }
+    .close {
+      padding: 0 8px;
+      background: #f6f2f2;
+      border: 1px solid #eeeeee;
+      font-size: 15px;
+      cursor: pointer;
+      color: #333333;
+      position: absolute;
+      top: 4px;
+      right: 10px;
     }
   }
 }

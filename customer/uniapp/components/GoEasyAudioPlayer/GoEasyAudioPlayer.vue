@@ -44,11 +44,13 @@
         border-radius: 14rpx;
         color: #000000;
         display: flex;
+        flex-direction: row-reverse;
     }
     .audio-facade-bg{
         background: url("/static/images/voice.png") no-repeat center;
         background-size: 30rpx;
         width: 40rpx;
+        transform: rotate(180deg);
     }
     .audio-facade-bg.play-icon{
         background: url("/static/images/play.gif") no-repeat center;

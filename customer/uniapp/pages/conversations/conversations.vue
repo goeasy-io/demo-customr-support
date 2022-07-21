@@ -63,8 +63,8 @@
 			if(this.goEasy.getConnectionStatus() === 'disconnected') {
 				this.connectGoEasy();  //连接goeasy
 			}
+			this.loadConversations(); //加载会话列表 
 			this.goEasy.im.on(this.GoEasy.IM_EVENT.CONVERSATIONS_UPDATED, this.renderConversations);
-			this.loadConversations(); //加载会话列表
 		},
 		beforeDestroy() {
 			this.goEasy.im.off(this.GoEasy.IM_EVENT.CONVERSATIONS_UPDATED, this.setUnreadNumber);
@@ -92,8 +92,10 @@
 
 			// 加载最新的会话列表
 			loadConversations() {
+				console.log('loadConversations')
 				this.goEasy.im.latestConversations({
 					onSuccess: (result) => {
+						console.log('loadConversations',result.content)
 						uni.hideLoading();
 						let content = result.content;
 						this.renderConversations(content);

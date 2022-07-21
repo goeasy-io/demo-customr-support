@@ -30,12 +30,11 @@
 										v-if="message.type === 'image'"
 										:src="message.payload.url"
 										:data-url="message.payload.url"
-										:style="getImgHeight(message.payload.width,message.payload.height)"
 										@click="showImageFullScreen"
 										mode="heightFix"
 									></image>
-									<view class="video-snapshot"  v-if="message.type === 'video'" :data-url="message.payload.video.url" @click="playVideo">
-										<image :src="message.payload.thumbnail.url" mode="heightFix" :style="getImgHeight(message.payload.thumbnail.width,message.payload.thumbnail.height)"></image>
+									<view class="video-snapshot" v-if="message.type === 'video'" :data-url="message.payload.video.url" @click="playVideo">
+										<image :src="message.payload.thumbnail.url" mode="heightFix"></image>
 										<view class="video-play-icon"></view>
 									</view>
 									<GoEasyAudioPlayer v-if="message.type ==='audio'" :src="message.payload.url" :duration="message.payload.duration" />
@@ -88,6 +87,8 @@
 				</view>
 			</view>
 		</view>
+		<view class="record-loading" v-if="audio.recording"></view>
+		<video v-if="videoPlayer.visible" :src="videoPlayer.url" id="videoPlayer" @fullscreenchange="onVideoFullScreenChange"></video>
 	</view>
 </template>
 
@@ -140,6 +141,7 @@
 			}
 		},
 		onReady () {
+			this.videoPlayer.context = uni.createVideoContext('videoPlayer',this);
 			uni.setNavigationBarTitle({
 				title : this.shop.name
 			});
@@ -155,6 +157,7 @@
 			this.currentUser = uni.getStorageSync('currentCustomer');
 
 			this.loadHistoryMessage(true,0);
+			this.initRecorderListeners();
 			this.goEasy.im.on(this.GoEasy.IM_EVENT.CS_MESSAGE_RECEIVED, this.onCSMessageReceived);
 		},
 		beforeDestroy() {
@@ -404,15 +407,6 @@
 						})
 					}
 				});
-			},
-			getImgHeight (width,height) {
-				if (width < height) {
-					return { height:'400rpx' }
-				} else if (width > height) {
-					return { height:'300rpx' }
-				} else {
-					return { height: '100%' }
-				}
 			},
 			showImageFullScreen (e) {
 				let imagesUrl = [e.currentTarget.dataset.url];

@@ -8,9 +8,8 @@
             <img :src="thumbnail.url" />
             <div class="icon"></div>
         </div>
-        <div class="goeasy-video-player" v-if="playing">
+        <div class="video-player" v-if="playing">
             <video
-                class="video-player"
                 :src="src"
                 controls
                 autoplay
@@ -76,7 +75,7 @@ export default {
         margin: auto;
     }
 }
-.goeays-video-player {
+.video-player {
     max-width: 750px;
     max-height: 500px;
     overflow: hidden;
