@@ -51,7 +51,7 @@ export default {
   },
   data() {
     return {
-      currentStaff: {},
+      currentStaff: {}, //todo: 拿来干啥？
       pendingConversations: [],
       conversations : [],
     }
@@ -91,8 +91,11 @@ export default {
       this.goEasy.im.on(this.GoEasy.IM_EVENT.CONVERSATIONS_UPDATED, this.renderLatestConversations);
       this.goEasy.im.on(this.GoEasy.IM_EVENT.PENDING_CONVERSATIONS_UPDATED, this.renderPendingConversations);
     },
+
+
     renderPendingConversations(content) {
       this.pendingConversations = content.conversations.filter((conversation) => {
+        //todo:为啥要过滤，pending就只有cs
         return conversation.type === 'cs'
       });
     },

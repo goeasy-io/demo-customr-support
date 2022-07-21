@@ -60,6 +60,7 @@
 				return;
 			}
 
+			//todo：明显不应该在这里啊，怎么能反复连接呢？home页才是默认页
 			if(this.goEasy.getConnectionStatus() === 'disconnected') {
 				this.connectGoEasy();  //连接goeasy
 			}
@@ -111,6 +112,7 @@
 				console.log('this.conversations:',this.conversations);
 				this.setUnreadAmount(content.unreadTotal);
 			},
+			//todo：这个应该就不需要了
 			setUnreadAmount (unreadTotal) {
 				this.unreadTotal = unreadTotal;
 				if(this.unreadTotal > 0) {

@@ -49,11 +49,11 @@ export default {
   data() {
     return {
       isOnline: false,
-      currentStaff: null,
-      currentTeam: null,
+      currentStaff: null,  //todo:mydata
+      currentTeam: null,   //team data
       currentPage: this.$route.name,
       unreadTotal: null,
-      showCountActionBox: false
+      showCountActionBox: false  //todo: 啥意思?
     };
   },
   created() {
@@ -63,6 +63,7 @@ export default {
     if(this.goEasy.getConnectionStatus() === 'disconnected') {
       this.connectGoEasy();  //连接goeasy
     }
+    //initial online status
     this.getOnlineStatus();
   },
   watch: {
@@ -102,6 +103,7 @@ export default {
       if (this.isOnline) {
         this.goEasy.im.csTeam(this.currentTeam.id).offline({
           onSuccess: () => {
+            //todo: 直接设为false，没有信心吗？
             this.getOnlineStatus();
           },
           onFailed:(error) => {
@@ -122,6 +124,7 @@ export default {
       }
     },
     logout() {
+      //todo: disconnect?
       localStorage.removeItem('currentStaff');
       this.$router.push('../login');
     },

@@ -29,7 +29,8 @@
                   <div class="pending" v-if="message.status === 'sending'"></div>
                   <div class="send-fail" v-if="message.status === 'fail'"></div>
                   <div class="content-text" v-if="message.type === 'text'" v-html="renderTextMessage(message.payload.text)"></div>
-                  <div class="content-image"
+
+                  <div class="content-image  imageCss()"
                     v-if="message.type === 'image'"
                     :style="getImgHeight(message.payload.width,message.payload.height)"
                     @click="showImagePreview(message.payload.url)"
@@ -182,7 +183,10 @@ export default {
     };
     return {
       currentStaff: null,
+
       currentTeam: null,
+
+      //customer
       client: null,
       clientStatus: {},
 
@@ -211,7 +215,7 @@ export default {
   },
   created() {
     let clientId = this.$route.params.id;
-    clientId = clientId.split('#')[0];
+    clientId = clientId.split('#')[0]; //todo:不要这么奇奇怪怪的写法
 
     this.client = restApi.findUserById(clientId);
     this.currentStaff = JSON.parse(localStorage.getItem("currentStaff"));
@@ -230,6 +234,8 @@ export default {
     renderTextMessage(text) {
       return this.emoji.decoder.decode(text);
     },
+
+    //todo: customer
     getClientStatus () {
       this.goEasy.im.csTeam(this.currentTeam.id).customerStatus({
         id: this.client.uuid,
@@ -260,6 +266,8 @@ export default {
         },
       });
     },
+
+    //todo:没有不滚动的办法嘛？
     loadHistoryMessage(scrollToBottom,offsetHeight) {
       this.history.loading = true;
       //历史消息
@@ -297,13 +305,14 @@ export default {
         },
       });
     },
+    //todo: 应该是下边定几个css，上次说了的。 customer端不需要这个方法？
     getImgHeight (width,height) {
       if (width < height) {
-        return { height:'200px' }
+        return 'kuaide'  { height:'200px' }
       } else if (width > height) {
-        return { height:'150px' }
+        return  'zhaide'  { height:'150px' }
       } else {
-        return { height: '100%' }
+        return  'orinal' { height: '100%' }
       }
     },
     renderMessageDate(message, index) {
@@ -356,6 +365,7 @@ export default {
       }
       const textMessage = this.goEasy.im.csTeam(this.currentTeam.id).createTextMessage({
         text: this.text,
+        //todo: to可不可以共享？
         to: {
           type: this.GoEasy.IM_SCENE.CS,
           id: this.client.uuid,

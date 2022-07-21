@@ -22,7 +22,7 @@
 	export default {
 		data() {
 			return {
-				shopList: restApi.shop
+				shopList: restApi.shop //todo:不能调变量，只可以调方法。而且看起来也不像一个数组
 			}
 		},
 		onShow () {
@@ -72,6 +72,7 @@
 				}
 			},
 			consult (id) {
+				//todo:这种路径看起来很迂腐，不是吗？
 				uni.navigateTo({url: '../chat/chat?to='+id})
 			}
 		}

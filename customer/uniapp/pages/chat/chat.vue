@@ -152,11 +152,11 @@
 		},
 		onLoad(options) {
 			let shopId = options.to;
-			shopId = shopId.split('#')[1] || shopId;
+			shopId = shopId.split('#')[1] || shopId; //todo：为啥这么复杂？
 			this.shop = restApi.findShopById(shopId);
-			this.currentUser = uni.getStorageSync('currentCustomer');
+			this.currentUser = uni.getStorageSync('currentCustomer'); //todo:不能自己把自己叫customer
 
-			this.loadHistoryMessage(true,0);
+			this.loadHistoryMessage(true,0);  //todo：这个0是啥意思？
 			this.initRecorderListeners();
 			this.goEasy.im.on(this.GoEasy.IM_EVENT.CS_MESSAGE_RECEIVED, this.onCSMessageReceived);
 		},
@@ -194,6 +194,7 @@
 						return;
 					}
 					res.duration = duration;
+					//todo:踢出去一个单独的方法
 					let audioMessage = this.goEasy.im.createAudioMessage({
 						to : {
 							id : this.shop.id,
@@ -229,6 +230,7 @@
 				return '<view class="text-content">' + this.emoji.decoder.decode(message.payload.text) + '</view>'
 			},
 
+			//todo：实际不需要cs开头对吧？
 			onCSMessageReceived (message) {
 				if (message.senderId !== this.currentUser.uuid) {
 					this.history.messages.push(message);
@@ -255,6 +257,7 @@
 				if (this.text.trim() !== '') {
 					let textMessage = this.goEasy.im.createTextMessage({
 						text: this.text,
+						//todo： 这个to是不是可以共享？
 						to : {
 							id : this.shop.id,
 							type : this.GoEasy.IM_SCENE.CS,
