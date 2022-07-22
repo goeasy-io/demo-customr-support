@@ -32,9 +32,9 @@
 										:data-url="message.payload.url"
 										@click="showImageFullScreen"
 										:class="[
-											{'vertical-img': getImgHeight(message.payload.width,message.payload.height) === 'vertical-img'},
-											{'horizontal-img': getImgHeight(message.payload.width,message.payload.height) === 'horizontal-img'},
-											{'normal-img': getImgHeight(message.payload.width,message.payload.height) === 'normal-img'},
+											{'vertical-img': getImgClass(message.payload.width,message.payload.height) === 'vertical-img'},
+											{'horizontal-img': getImgClass(message.payload.width,message.payload.height) === 'horizontal-img'},
+											{'normal-img': getImgClass(message.payload.width,message.payload.height) === 'normal-img'},
 										]"
 										mode="heightFix"
 									></image>
@@ -183,7 +183,7 @@
 			this.goEasy.im.off(this.GoEasy.IM_EVENT.CS_MESSAGE_RECEIVED, this.onMessageReceived);
 		},
 		methods: {
-			getImgHeight (width,height) {
+			getImgClass (width,height) {
 				if (height < 200) {
 					return 'normal-img'
 				} else if (width <= height) {

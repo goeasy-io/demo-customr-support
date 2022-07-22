@@ -32,7 +32,7 @@
 
                   <div class="content-image"
                     v-if="message.type === 'image'"
-                    :class="getImgHeight(message.payload.width,message.payload.height)"
+                    :class="getImgClass(message.payload.width,message.payload.height)"
                     @click="showImagePreview(message.payload.url)"
                   >
                     <img :src="message.payload.url" alt="图片" />
@@ -303,7 +303,7 @@ export default {
         },
       });
     },
-    getImgHeight (width,height) {
+    getImgClass (width,height) {
       if (height < 200) {
         return 'normal-img'
       } else if (width <= height) {

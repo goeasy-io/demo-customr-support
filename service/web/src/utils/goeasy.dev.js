@@ -12142,6 +12142,8 @@
 	  var ConversationTopper_1 = ConversationTopper;
 	  var MessageType_1 = MessageType;
 	  var ConversationIdUtils_1 = ConversationIdUtils;
+	  var Calibrator_1 = Calibrator;
+	  var im_1 = im;
 
 	  var ConversationList =
 	  /** @class */
@@ -12187,8 +12189,6 @@
 	      conversation.initialData().then(function () {
 	        _this.conversations.onUpdated();
 	      });
-
-	      if (message.type === MessageType_1.MessageType.ACCEPTED) ;
 	    };
 
 	    ConversationList.prototype.onPendingConversationUpdated = function (message) {
@@ -12277,6 +12277,72 @@
 	      var conversation = this.conversations.findConversation(target.scene, target.id);
 	      this.conversations.correctPosition(conversation);
 	      this.conversations.onUpdated();
+	    };
+
+	    ConversationList.prototype.topConversation = function (options) {
+	      var conversation = this.validateConversation(options);
+	      var target = Target_1.Target.byScene(conversation.scene, conversation.targetId);
+	      var top = !conversation.top;
+	      this.topper.top(target, top, options);
+	    };
+
+	    ConversationList.prototype.removeConversation = function (options) {
+	      var conversation = this.validateConversation(options);
+	      var target = Target_1.Target.byScene(conversation.scene, conversation.targetId);
+	      this.remover.remove(target, options);
+	    }; // todo 后续优化
+
+
+	    ConversationList.prototype.validateConversation = function (options) {
+	      var conversation;
+	      var conversationDto = options["conversation"];
+
+	      if (Calibrator_1["default"].isEmpty(conversationDto)) {
+	        throw {
+	          code: 400,
+	          content: 'conversation is required'
+	        };
+	      }
+
+	      if (conversationDto instanceof GoEasy_1.ConversationDTO) {
+	        var scene = conversationDto.type;
+
+	        if (scene === GoEasy_1.Scene.PRIVATE) {
+	          conversation = this.conversations.findConversation(scene, conversationDto.userId);
+	        } else if (scene === GoEasy_1.Scene.GROUP) {
+	          conversation = this.conversations.findConversation(scene, conversationDto.groupId);
+	        } else if (scene === GoEasy_1.Scene.CS) {
+	          var teamId = conversationDto.teamId;
+	          var targetId = void 0;
+
+	          if (Calibrator_1["default"].isUndef(teamId)) {
+	            targetId = im_1.IM.userId + "#" + conversationDto.id;
+	          } else {
+	            targetId = conversationDto.id + "#" + conversationDto.teamId;
+	          }
+
+	          conversation = this.conversations.findConversation(scene, targetId);
+	        } else {
+	          throw {
+	            code: 400,
+	            content: "type ".concat(scene, " is incorrect")
+	          };
+	        }
+
+	        if (!conversation) {
+	          throw {
+	            code: 400,
+	            content: 'conversation is incorrect'
+	          };
+	        }
+
+	        return conversation;
+	      }
+
+	      throw {
+	        code: 400,
+	        content: 'conversation is incorrect'
+	      };
 	    };
 
 	    return ConversationList;
@@ -15461,7 +15527,11 @@
 	var ReadMessageMarkRequest =
 	/** @class */
 	function () {
-	  function ReadMessageMarkRequest() {}
+	  function ReadMessageMarkRequest(id, scene, lastTimestamp) {
+	    this.id = id;
+	    this.scene = scene;
+	    this.lastTimestamp = lastTimestamp;
+	  }
 
 	  return ReadMessageMarkRequest;
 	}();
@@ -15785,32 +15855,17 @@
 
 	    UserOffsetService.prototype.updateServerOffsets = function (markTime) {
 	      return __awaiter(this, void 0, void 0, function () {
-	        var request, name;
+	        var request;
 
 	        var _this = this;
 
 	        return __generator(this, function (_a) {
-	          request = new ReadMessageMarkRequest_1.ReadMessageMarkRequest();
-	          request.lastTimestamp = markTime;
-	          request.lastConsumedTimestamp = this.userOffsets.myOffset();
-	          name = RocketTypes_1.RocketTypes.markGroupMessageAsRead;
-
-	          if (this.target.scene === GoEasy_1.Scene.PRIVATE) {
-	            request.friendId = this.target.id;
-	            name = RocketTypes_1.RocketTypes.markPrivateMessageAsRead;
-	          } else if (this.target.scene === GoEasy_1.Scene.GROUP) {
-	            request.groupId = this.target.id;
-	          } else if (this.target.scene === GoEasy_1.Scene.CS) {
-	            request.id = this.target.id;
-	            request.scene = this.target.scene;
-	            name = RocketTypes_1.RocketTypes.MARK_AS_READ;
-	          }
-
+	          request = new ReadMessageMarkRequest_1.ReadMessageMarkRequest(this.target.id, this.target.scene, markTime);
 	          return [2
 	          /*return*/
 	          , new Promise(function (resolve, reject) {
 	            var rocket = new Rocket_1["default"]({
-	              name: name,
+	              name: RocketTypes_1.RocketTypes.MARK_AS_READ,
 	              params: request,
 	              permission: Permission_1.Permission.WRITE,
 	              singleTimeout: SocketTimeout_1.SocketTimeout.commonRequestSingle,
@@ -18491,6 +18546,16 @@
 	  IM.prototype.latestPendingConversations = function (options) {
 	    this.validateModules();
 	    this.conversations.latestPendingConversations(options);
+	  };
+
+	  IM.prototype.topConversation = function (options) {
+	    this.validateModules();
+	    this.conversations.topConversation(options);
+	  };
+
+	  IM.prototype.removeConversation = function (options) {
+	    this.validateModules();
+	    this.conversations.removeConversation(options);
 	  };
 
 	  return IM;
@@ -21445,6 +21510,14 @@
 
 	    GoEasyIM.prototype.pendingConversations = function (options) {
 	      im_1.IM.instance.latestPendingConversations(options);
+	    };
+
+	    GoEasyIM.prototype.topConversation = function (options) {
+	      im_1.IM.instance.topConversation(options);
+	    };
+
+	    GoEasyIM.prototype.removeConversation = function (options) {
+	      im_1.IM.instance.removeConversation(options);
 	    };
 
 	    return GoEasyIM;

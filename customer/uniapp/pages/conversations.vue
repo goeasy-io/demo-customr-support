@@ -15,24 +15,30 @@
 						<view class="item-info-bottom-item">
 							<view class="item-info-top_content">
 								<text class="unread-text">{{conversation.lastMessage.read === false && conversation.lastMessage.senderId === currentUser.uuid?'[未读]':''}}</text>
-								<text v-if="conversation.type === 'private'">{{conversation.lastMessage.senderId === currentUser.uuid? '我': conversation.data.name}}:</text>
-								<text v-else>{{conversation.lastMessage.senderId === currentUser.uuid? '我': conversation.lastMessage.senderData.name}}:</text>
+								<text>{{conversation.lastMessage.senderId === currentUser.uuid? '我': conversation.lastMessage.senderData.name}}:</text>
 								<text v-if="conversation.lastMessage.type === 'text'">{{conversation.lastMessage.payload.text}}</text>
 								<text v-else-if="conversation.lastMessage.type === 'video'">[视频消息]</text>
 								<text v-else-if="conversation.lastMessage.type === 'audio'">[语音消息]</text>
 								<text v-else-if="conversation.lastMessage.type === 'image'">[图片消息]</text>
-								<text v-else-if="conversation.lastMessage.type === 'file'">[文件消息]</text>
-								<text v-else-if="conversation.lastMessage.type === 'order'">[自定义消息:订单]</text>
+								<text v-else-if="conversation.lastMessage.type === 'goods'">[自定义消息:商品]</text>
 								<text v-else-if="conversation.lastMessage.type === 'CLOSED'">会话已结束</text>
 								<text v-else-if="conversation.lastMessage.type === 'ACCEPTED'">{{conversation.lastMessage.senderData.name}}已接入</text>
 								<text v-else>[[未识别内容]]</text>
 							</view>
+							<view class="item-info-bottom_action" @click.stop="showAction(conversation)"></view>
 						</view>
 					</view>
 				</view>
 			</view>
 		</view>
 		<view class="no-conversation" v-else>当前没有会话</view>
+		<view class="action-container" v-if="actionPopup.visible">
+			<view class="layer" @click="actionPopup.visible = false"></view>
+			<view class="action-box">
+				<view class="action-item" @click="topConversation">{{actionPopup.conversation.top ? '取消置顶' : '置顶聊天'}}</view>
+				<view class="action-item" @click="deleteConversation">删除聊天</view>
+			</view>
+		</view>
 	</scroll-view>
 </template>
 
@@ -43,6 +49,10 @@
 			return {
 				unreadTotal : 0,
 				conversations : [],
+				actionPopup : {
+					conversation : null,
+					visible : false
+				},
 				currentUser: null
 			}
 		},
@@ -77,6 +87,42 @@
 			},
 			renderConversations(content){
 				this.conversations = content.conversations;
+			},
+			showAction (conversation) {
+				this.actionPopup.conversation = conversation;
+				this.actionPopup.visible = true;
+			},
+			topConversation () {
+				this.actionPopup.visible = false;
+				let conversation = this.actionPopup.conversation;
+				let description = conversation.top ? '取消置顶' : '置顶';
+				this.goEasy.im.topConversation({
+					conversation: this.actionPopup.conversation,
+					onSuccess: function () {
+						uni.showToast({
+							title: description+'成功',
+							icon: 'none'
+						});
+					},
+					onFailed: function (error) {
+						console.log(description,'失败：',error);
+					},
+				});
+			},
+			deleteConversation () {
+				this.actionPopup.visible = false;
+				this.goEasy.im.removeConversation({
+					conversation: this.actionPopup.conversation,
+					onSuccess: function () {
+						uni.showToast({
+							title: description+'成功',
+							icon: 'none'
+						});
+					},
+					onFailed: function (error) {
+						console.log('删除失败，error:',error);
+					},
+				});
 			},
 			navigateToChat (conversation) {
 				uni.navigateTo({
@@ -150,6 +196,13 @@
 		white-space: nowrap;
 
 	}
+	.item-info-bottom .item-info-bottom_action{
+		width:50rpx;
+		height: 50rpx;
+		font-size: 20rpx;
+		background: url("/static/images/action.png") no-repeat center;
+		background-size: 28rpx 30rpx;
+	}
 
 	.no-conversation{
 		width: 100%;
@@ -159,6 +212,45 @@
 		font-size: 28rpx;
 		color: #9D9D9D;
 	}
+	
+	.action-container{
+		width: 100%;
+		height: 100%;
+		position: fixed;
+		top: 0;
+		left: 0;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	.action-container .layer{
+		position: absolute;
+		top: 0;
+		left: 0;
+		background: rgba(51, 51, 51, 0.5);
+		width: 100%;
+		height: 100%;
+		z-index: 99;
+	}
+	
+	.action-container .action-box{
+		width: 400rpx;
+		height: 240rpx;
+		background: #ffffff;
+		position: relative;
+		z-index: 100;
+		border-radius: 20rpx;
+		overflow: hidden;
+	}
+	
+	.action-container .action-item{
+		text-align: center;
+		line-height: 120rpx;
+		font-size: 34rpx;
+		color: #262628;
+		border-bottom: 1px solid #EFEFEF;
+	}
+	
 	.item-head{
 		position: relative;
 	}
