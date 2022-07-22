@@ -52,7 +52,6 @@ export default {
     login() {
       if (this.username.trim() !== '' && this.password.trim() !== '') {
         let user = restApi.findStaff(this.username, this.password);
-        console.log('user:',user);
         if (user) {
           localStorage.setItem('staffData', JSON.stringify(user));
           this.$router.push({ path: './conversation'});

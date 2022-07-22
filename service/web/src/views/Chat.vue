@@ -362,7 +362,6 @@ export default {
       }
       const textMessage = this.goEasy.im.csTeam(this.teamData.id).createTextMessage({
         text: this.text,
-        //todo: to可不可以共享？
         to: this.to,
       });
       this.sendMessage(textMessage);

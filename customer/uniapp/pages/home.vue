@@ -25,9 +25,40 @@
 				shopList: restApi.getShopList()
 			}
 		},
+		onShow() {
+			let currentUser = uni.getStorageSync('currentUser');
+			if(!currentUser){
+				uni.navigateTo({url: './login/login'});
+				return;
+			}
+			if(this.goEasy.getConnectionStatus() === 'disconnected') {
+				this.connectGoEasy();  //连接goeasy
+			}
+		},
+		beforeDestroy() {
+			this.goEasy.im.off(this.GoEasy.IM_EVENT.CONVERSATIONS_UPDATED, this.setUnreadNumber);
+		},
 		methods: {
+			connectGoEasy () {
+				let currentUser = uni.getStorageSync('currentUser');
+				this.goEasy.connect({
+					id: currentUser.uuid,
+					data: {
+						name: currentUser.name,
+						avatar: currentUser.avatar
+					},
+					onSuccess: () => {
+						console.log('GoEasy connect successfully.')
+					},
+					onFailed: (error) => {
+						console.log('Failed to connect GoEasy, code:'+error.code+ ',error:'+error.content);
+					},
+					onProgress: (attempts) => {
+						console.log('GoEasy is connecting', attempts);
+					}
+				});
+			},
 			consult (id) {
-				//todo:这种路径看起来很迂腐，不是吗？
 				uni.navigateTo({url: './chat?to='+id});
 			}
 		}

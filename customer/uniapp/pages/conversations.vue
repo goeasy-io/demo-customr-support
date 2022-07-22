@@ -64,7 +64,7 @@
 						if(content.unreadTotal > 0) {
 							uni.setTabBarBadge({
 								index: 1,
-								text: unreadTotal.toString()
+								text: content.unreadTotal.toString()
 							});
 						}else{
 							uni.removeTabBarBadge({index: 1});
