@@ -12,6 +12,19 @@ const goEasy = GoEasy.getInstance({
 	allowNotification: true, //仅有效于app,小程序和H5将会被自动忽略
 });
 
+goEasy.im.on(GoEasy.IM_EVENT.CONVERSATIONS_UPDATED, setUnreadNumber);
+function setUnreadNumber (content) {
+	let unreadTotal = content.unreadTotal;
+	if(unreadTotal > 0) {
+		uni.setTabBarBadge({
+			index: 1,
+			text: unreadTotal.toString()
+		});
+	}else{
+		uni.removeTabBarBadge({index: 1});
+	}
+}
+
 Vue.prototype.GoEasy = GoEasy;
 Vue.prototype.goEasy = goEasy;
 

@@ -304,12 +304,12 @@ export default {
       });
     },
     getImgHeight (width,height) {
-      if (width < height) {
+      if (height < 200) {
+        return 'normal-img'
+      } else if (width <= height) {
         return 'vertical-img'
       } else if (width > height) {
         return 'horizontal-img'
-      } else {
-        return 'normal-img'
       }
     },
     renderMessageDate(message, index) {
@@ -373,11 +373,15 @@ export default {
         const imageMessage = this.goEasy.im.csTeam(this.teamData.id).createImageMessage({
           file: file,
           to: this.to,
-        });
-        imageMessage.buildOptions.complete.then(() => {
-          this.sendMessage(imageMessage);
-        }).catch((error) => {
-          console.log(error);
+          onProgress :function (progress) {
+            console.log(progress)
+          },
+          onSuccess: (message) => {
+            this.sendMessage(message);
+          },
+          onFailed: (e) => {
+            console.log('error :',e);
+          }
         });
       })
     },
@@ -386,11 +390,15 @@ export default {
       const videoMessage = this.goEasy.im.csTeam(this.teamData.id).createVideoMessage({
         file: file,
         to: this.to,
-      });
-      videoMessage.buildOptions.complete.then(() => {
-        this.sendMessage(videoMessage);
-      }).catch((error) => {
-        console.log(error);
+        onProgress :function (progress) {
+          console.log(progress)
+        },
+        onSuccess: (message) => {
+          this.sendMessage(message);
+        },
+        onFailed: (e) => {
+          console.log('error :',e);
+        }
       });
     },
     showLinkBox () {

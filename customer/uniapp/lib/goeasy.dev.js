@@ -8773,7 +8773,7 @@
 	var History_1 = History$2;
 	var PresenceSubscriber_1 = PresenceSubscriber$1;
 	var HereNow_1 = HereNow$1;
-	var callback_utils_1$7 = callbackUtils;
+	var callback_utils_1$8 = callbackUtils;
 	var NetworkStatus_1 = NetworkStatus;
 	var ModuleTypes_1$1 = ModuleTypes;
 
@@ -8809,7 +8809,7 @@
 	      this.validateOptions();
 	      functionObj();
 	    } catch (err) {
-	      callback_utils_1$7.CallbackUtils.onFailed(callbackOptions, err);
+	      callback_utils_1$8.CallbackUtils.onFailed(callbackOptions, err);
 	    }
 	  }; // todo: 方法名
 
@@ -11110,7 +11110,7 @@
 	var Permission_1$7 = Permission;
 	var SocketTimeout_1$7 = SocketTimeout;
 	var Calibrator_1$9 = Calibrator;
-	var callback_utils_1$6 = callbackUtils;
+	var callback_utils_1$7 = callbackUtils;
 	var GoEasy_1$6 = GoEasy$1;
 	var remote_abbr_message_builder_1 = remoteAbbrMessageBuilder;
 	var RocketTypes_1$7 = RocketTypes;
@@ -11164,18 +11164,18 @@
 	    var promise = this["synchronized"] ? this.loadLocalConversationsAsDtos() : this.loadServerConversations(); //todo: 找时间模仿rtc，外层也可以catch异步方法
 
 	    promise.then(function (res) {
-	      callback_utils_1$6.CallbackUtils.onSuccess(options, res);
+	      callback_utils_1$7.CallbackUtils.onSuccess(options, res);
 	    })["catch"](function (e) {
-	      callback_utils_1$6.CallbackUtils.onFailed(options, e);
+	      callback_utils_1$7.CallbackUtils.onFailed(options, e);
 	    });
 	  };
 
 	  Conversations.prototype.latestPendingConversations = function (options) {
 	    var promise = this["synchronized"] ? this.loadLocalConversationsAsDtos() : this.loadServerPendingConversations();
 	    promise.then(function (res) {
-	      callback_utils_1$6.CallbackUtils.onSuccess(options, res);
+	      callback_utils_1$7.CallbackUtils.onSuccess(options, res);
 	    })["catch"](function (e) {
-	      callback_utils_1$6.CallbackUtils.onFailed(options, e);
+	      callback_utils_1$7.CallbackUtils.onFailed(options, e);
 	    });
 	  };
 	  /**
@@ -14596,6 +14596,7 @@
 	var PrivateMessage_1 = PrivateMessage$1;
 	var validator_utils_1$4 = validatorUtils;
 	var cs_message_1 = csMessage;
+	var callback_utils_1$6 = callbackUtils;
 
 	var IMMessageBuilder =
 	/** @class */
@@ -14640,7 +14641,13 @@
 	      buildOptions.payload = payload.payload;
 	    }
 
-	    return this.build(buildOptions);
+	    var message = this.build(buildOptions);
+	    buildOptions.complete.then(function () {
+	      callback_utils_1$6.CallbackUtils.onSuccess(createOptions, message);
+	    })["catch"](function (e) {
+	      callback_utils_1$6.CallbackUtils.onFailed(createOptions, e);
+	    });
+	    return message;
 	  };
 
 	  IMMessageBuilder.prototype.build = function (buildOptions) {

@@ -184,12 +184,12 @@
 		},
 		methods: {
 			getImgHeight (width,height) {
-				if (width < height) {
+				if (height < 200) {
+					return 'normal-img'
+				} else if (width <= height) {
 					return 'vertical-img'
 				} else if (width > height) {
 					return 'horizontal-img'
-				} else {
-					return 'normal-img'
 				}
 			},
 			renderMessageDate(message, index) {
@@ -266,9 +266,14 @@
 					file: file,
 					onProgress :function (progress) {
 						console.log(progress)
+					},
+					onSuccess: (message) => {
+						this.sendMessage(message);
+					},
+					onFailed: (e) => {
+						console.log('error :',e);
 					}
 				});
-				this.sendMessage(audioMessage);
 			},
 			sendTextMessage ()  {
 				if (this.text.trim() !== '') {
@@ -365,12 +370,13 @@
 							file: res,
 							onProgress :function (progress) {
 								console.log(progress)
+							},
+							onSuccess: (message) => {
+								this.sendMessage(message);
+							},
+							onFailed: (e) => {
+								console.log('error :',e);
 							}
-						});
-						videoMessage.buildOptions.complete.then(() => {
-							this.sendMessage(videoMessage);
-						}).catch((error) => {
-							console.log(error);
 						});
 					}
 				})
@@ -385,12 +391,13 @@
 								file: file,
 								onProgress :function (progress) {
 									console.log(progress)
+								},
+								onSuccess: (message) => {
+									this.sendMessage(message);
+								},
+								onFailed: (e) => {
+									console.log('error :',e);
 								}
-							});
-							imageMessage.buildOptions.complete.then(() => {
-								this.sendMessage(imageMessage);
-							}).catch((error) => {
-								console.log(error);
 							});
 						})
 					}

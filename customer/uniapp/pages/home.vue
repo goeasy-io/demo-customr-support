@@ -28,7 +28,7 @@
 		onShow() {
 			let currentUser = uni.getStorageSync('currentUser');
 			if(!currentUser){
-				uni.navigateTo({url: './login/login'});
+				uni.navigateTo({url: './login'});
 				return;
 			}
 			if(this.goEasy.getConnectionStatus() === 'disconnected') {
