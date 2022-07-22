@@ -31,6 +31,11 @@
 										:src="message.payload.url"
 										:data-url="message.payload.url"
 										@click="showImageFullScreen"
+										:class="[
+											{'vertical-img': getImgHeight(message.payload.width,message.payload.height) === 'vertical-img'},
+											{'horizontal-img': getImgHeight(message.payload.width,message.payload.height) === 'horizontal-img'},
+											{'normal-img': getImgHeight(message.payload.width,message.payload.height) === 'normal-img'},
+										]"
 										mode="heightFix"
 									></image>
 									<view class="video-snapshot" v-if="message.type === 'video'" :data-url="message.payload.video.url" @click="playVideo">
@@ -78,11 +83,11 @@
 			<!--其他类型消息面板-->
 			<view class="action-bottom" v-if="otherTypesMessagePanelVisible">
 				<view class="more-item" @click="sendImageMessage">
-					<image src="../../static/images/tupian.png"></image>
+					<image src="/static/images/tupian.png"></image>
 					<text>图片</text>
 				</view>
 				<view class="more-item" @click="sendVideoMessage">
-					<image src="../../static/images/shipin.png"></image>
+					<image src="/static/images/shipin.png"></image>
 					<text>视频</text>
 				</view>
 			</view>
@@ -93,11 +98,14 @@
 </template>
 
 <script>
-	import GoEasyAudioPlayer from '../../components/GoEasyAudioPlayer/GoEasyAudioPlayer';
-	import restApi from '../../lib/restapi';
-	import EmojiDecoder from '../../lib/EmojiDecoder';
+	import GoEasyAudioPlayer from '../components/GoEasyAudioPlayer';
+	import restApi from '../lib/restapi';
+	import EmojiDecoder from '../lib/EmojiDecoder';
 	const recorderManager = uni.getRecorderManager();
 	export default {
+		components : {
+			GoEasyAudioPlayer
+		},
 		data() {
 			const emojiUrl = 'https://imgcache.qq.com/open/qcloud/tim/assets/emoji/';
 			const emojiMap = {
@@ -111,6 +119,7 @@
 			return {
 				currentUser: {},
 				shop: {},
+				to: {},
 				text: '',
 				//定义表情列表
 				emoji : {
@@ -150,20 +159,39 @@
 			this.otherTypesMessagePanelVisible = false;
 			this.emoji.visible = false;
 		},
+		onPullDownRefresh(e) {
+			this.loadHistoryMessage(false);
+		},
 		onLoad(options) {
 			let shopId = options.to;
-			shopId = shopId.split('#')[1] || shopId; //todo：为啥这么复杂？
 			this.shop = restApi.findShopById(shopId);
-			this.currentUser = uni.getStorageSync('currentCustomer'); //todo:不能自己把自己叫customer
+			this.to = {
+				id : this.shop.id,
+				type : this.GoEasy.IM_SCENE.CS,
+				data : {
+					name:this.shop.name,
+					avatar:this.shop.avatar
+				}
+			}
+			this.currentUser = uni.getStorageSync('currentUser');
 
-			this.loadHistoryMessage(true,0);  //todo：这个0是啥意思？
+			this.loadHistoryMessage(true);
 			this.initRecorderListeners();
-			this.goEasy.im.on(this.GoEasy.IM_EVENT.CS_MESSAGE_RECEIVED, this.onCSMessageReceived);
+			this.goEasy.im.on(this.GoEasy.IM_EVENT.CS_MESSAGE_RECEIVED, this.onMessageReceived);
 		},
 		beforeDestroy() {
-			this.goEasy.im.off(this.GoEasy.IM_EVENT.CS_MESSAGE_RECEIVED, this.onCSMessageReceived);
+			this.goEasy.im.off(this.GoEasy.IM_EVENT.CS_MESSAGE_RECEIVED, this.onMessageReceived);
 		},
 		methods: {
+			getImgHeight (width,height) {
+				if (width < height) {
+					return 'vertical-img'
+				} else if (width > height) {
+					return 'horizontal-img'
+				} else {
+					return 'normal-img'
+				}
+			},
 			renderMessageDate(message, index) {
 				if (index === 0) {
 					return this.formatDate(message.timestamp)
@@ -194,26 +222,7 @@
 						return;
 					}
 					res.duration = duration;
-					//todo:踢出去一个单独的方法
-					let audioMessage = this.goEasy.im.createAudioMessage({
-						to : {
-							id : this.shop.id,
-							type : this.GoEasy.IM_SCENE.CS,
-							data : {
-								name:this.shop.name,
-								avatar:this.shop.avatar
-							}
-						},
-						file: res,
-						onProgress :function (progress) {
-							console.log(progress)
-						},
-						notification : {
-							title : this.currentUser.name + '发来一段语音',
-							body : '[语音消息]'		// 字段最长 50 字符
-						}
-					});
-					this.sendMessage(audioMessage);
+					this.sendAudioMessage (res);
 				});
 				// 监听录音报错
 				recorderManager.onError((res) =>{
@@ -227,11 +236,9 @@
 				})
 			},
 			renderTextMessage(message) {
-				return '<view class="text-content">' + this.emoji.decoder.decode(message.payload.text) + '</view>'
+				return '<span class="text-content">' + this.emoji.decoder.decode(message.payload.text) + '</span>'
 			},
-
-			//todo：实际不需要cs开头对吧？
-			onCSMessageReceived (message) {
+			onMessageReceived (message) {
 				if (message.senderId !== this.currentUser.uuid) {
 					this.history.messages.push(message);
 					this.markMessageAsRead();
@@ -253,21 +260,22 @@
 			chooseEmoji (emojiKey) {
 				this.text +=emojiKey;
 			},
+			sendAudioMessage (file) {
+				let audioMessage = this.goEasy.im.createAudioMessage({
+					to : this.to,
+					file: file,
+					onProgress :function (progress) {
+						console.log(progress)
+					}
+				});
+				this.sendMessage(audioMessage);
+			},
 			sendTextMessage ()  {
 				if (this.text.trim() !== '') {
 					let textMessage = this.goEasy.im.createTextMessage({
 						text: this.text,
-						//todo： 这个to是不是可以共享？
-						to : {
-							id : this.shop.id,
-							type : this.GoEasy.IM_SCENE.CS,
-							data : {
-								name:this.shop.name,
-								avatar:this.shop.avatar
-							}
-						}
+						to : this.to
 					});
-					console.log('text:',textMessage);
 					this.sendMessage(textMessage);
 				}
 				this.text = '';
@@ -315,7 +323,6 @@
 							this.history.allLoaded = true;
 						} else {
 							this.history.messages = messages.concat(this.history.messages);
-							console.log('this.history.messages:',this.history.messages);
 							if (scrollToBottom) {
 								this.scrollToBottom();
 								//收到的消息设置为已读
@@ -354,21 +361,10 @@
 				uni.chooseVideo({
 					success : (res) => {
 						let videoMessage = this.goEasy.im.createVideoMessage({
-							to : {
-								id : this.shop.id,
-								type : this.GoEasy.IM_SCENE.CS,
-								data : {
-									name:this.shop.name,
-									avatar:this.shop.avatar
-								}
-							},
+							to : this.to,
 							file: res,
 							onProgress :function (progress) {
 								console.log(progress)
-							},
-							notification : {
-								title : this.currentUser.name + '发来一个视频',
-								body : '[视频消息]'		// 字段最长 50 字符
 							}
 						});
 						videoMessage.buildOptions.complete.then(() => {
@@ -385,21 +381,10 @@
 					success: (res) => {
 						res.tempFiles.forEach(file => {
 							let imageMessage = this.goEasy.im.createImageMessage({
-								to : {
-									id : this.shop.id,
-									type : this.GoEasy.IM_SCENE.CS,
-									data : {
-										name:this.shop.name,
-										avatar:this.shop.avatar
-									}
-								},
+								to : this.to,
 								file: file,
 								onProgress :function (progress) {
 									console.log(progress)
-								},
-								notification : {
-									title : this.currentUser.name + '发来一张图片',
-									body : '[图片消息]'		// 字段最长 50 字符
 								}
 							});
 							imageMessage.buildOptions.complete.then(() => {
@@ -436,7 +421,7 @@
 			},
 			markMessageAsRead () {
 				this.goEasy.im.markMessageAsRead({
-					scene: this.GoEasy.IM_SCENE.CS,
+					type: this.GoEasy.IM_SCENE.CS,
 					id: this.shop.id,
 					onSuccess: function () {
 						console.log('标记已读成功');
@@ -532,8 +517,15 @@
 	}
 	.scroll-view .content .image-content{
 		border-radius: 12rpx;
-		width: 300rpx;
+	}
+	.vertical-img {
+		height: 400rpx;
+	}
+	.horizontal-img {
 		height: 300rpx;
+	}
+	.normal-img {
+		height: 200rpx;
 	}
 	.scroll-view .content .text-content img{
 		width: 50rpx;
@@ -567,58 +559,6 @@
 		width: 200rpx;
 		height: 200rpx;
 	}
-
-	.rtc-message {
-		display: flex;
-		flex-direction: row;
-	}
-
-	.rtc-icon {
-		width: 44rpx;
-		height: 44rpx;
-		margin-right: 10rpx;
-	}
-
-	.rtc-duration {
-		margin-left: 10rpx;
-	}
-
-    .scroll-view .content .message-payload .file-content {
-        width: 560rpx;
-        height: 152rpx;
-        font-size: 28rpx;
-        background: white;
-        display: flex;
-		align-items: center;
-        border-radius: 10rpx;
-		padding: 0 20rpx;
-    }
-
-    .scroll-view .content .file-content .file-info {
-		width: 424rpx;
-		height: 132rpx;
-		padding: 12rpx 0;
-    }
-
-    .scroll-view .content .file-content .file-info .file-name {
-        width: 420rpxrpx;
-		font-size: 13px;
-		text-overflow: ellipsis;
-		overflow: hidden;
-		display: -webkit-box;
-		word-break: break-all;
-		-webkit-line-clamp: 2;
-		-webkit-box-orient: vertical;
-    }
-    .scroll-view .content .file-content .file-info .file-size {
-        width: 200rpx;
-        font-size: 24rpx;
-        color: #ccc;
-    }
-    .scroll-view .content .file-content .file-img {
-        width: 50rpx;
-        height: 50rpx;
-    }
 
     .scroll-view .content .pending{
 		background: url("/static/images/pending.gif") no-repeat center;
@@ -771,67 +711,6 @@
 		font-size: 32rpx;
 	}
 
-	.messageSelector-box .messageSelector-btn {
-		width: 80rpx;
-		height: 80rpx;
-	}
-
-	uni-checkbox:not([disabled]) .uni-checkbox-input:hover {
-	    border-color: #d1d1d1 !important;
-	}
-
-	uni-checkbox .uni-checkbox-input {
-		border-radius: 50% !important;
-	}
-
-	/* #ifdef MP-WEIXIN */
-	checkbox .wx-checkbox-input {
-		border-radius: 50% !important;
-	}
-	checkbox .wx-checkbox-input.wx-checkbox-input-checked {
-		color: #007aff !important;
-	}
-	/* #endif */
-
-	.action-popup {
-		position: fixed;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-
-	.action-popup .layer {
-		position: fixed;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		background: rgba(51, 51, 51, 0.5);
-		z-index: 999;
-	}
-	.action-popup .action-box {
-		width: 350rpx;
-		background: #434343;
-		position: relative;
-		z-index: 1000;
-		border-radius: 20rpx;
-		overflow: hidden;
-	}
-	.action-popup .action-item {
-		text-align: center;
-		height: 100rpx;
-		line-height: 100rpx;
-		font-size: 34rpx;
-		color: #ffffff;
-		border-bottom: 1px solid #EFEFEF;
-	}
-	.action-popup .action-item:last-child {
-		border: none;
-	}
 	.record-loading{
 		position: fixed;
 		top:50%;
@@ -886,57 +765,9 @@
 		margin:-20rpx;
 	}
 
-	.group-icon{
-		right: 20rpx;
-		width: 60rpx;
-		height: 60rpx;
-		top:14rpx;
-		position: fixed;
-		right: 20rpx;
-		top:120rpx;
-		background-color: #C4C4C4;
-		z-index: 2;
-		border-radius: 60rpx;
-	}
-	.uni-toast{
-		background-color: #ffffff!important;
-	}
 	.time-lag{
 		font-size: 20rpx;
 		text-align: center;
-	}
-	.custom-message{
-		width: 400rpx;
-		height: 260rpx;
-		display: flex;
-		flex-direction: column;
-		justify-content: space-around;
-		align-items: flex-start;
-		box-sizing: border-box;
-		padding: 10rpx 30rpx;
-		border: 1px solid rgba(0, 0, 0, 0.05);
-		box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.1);
-		/* background-color: #FFFFFF; */
-		background-color: #EEF4F9;
-		border-radius: 20rpx;
-	}
-	.custom-message .title{
-		width: 100%;
-		display: flex;
-		align-items: center;
-		font-size: 30rpx;
-	}
-	.custom-message .title image{
-		width: 40rpx;
-		height: 40rpx;
-	}
-	.custom-message .custom-message-item{
-		text-align: left;
-		font-size: 28rpx;
-		overflow: hidden;
-		width: 100%;
-		text-overflow:ellipsis;
-		white-space: nowrap;
 	}
 
 	.message-read {
@@ -952,71 +783,6 @@
 		font-size: 24rpx;
 		text-align: end;
 		height: 36rpx;
-	}
-
-	.message-recalled {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		line-height: 56rpx;
-		font-size: 26rpx;
-		text-align: center;
-		color: grey;
-	}
-
-	.message-recalled .message-recalled-self {
-		display: flex;
-	}
-
-	.message-recalled .message-recalled-self span {
-		margin-left: 10rpx;
-		/* color: #618DFF; */
-		color: #6896c1;
-	}
-
-	.memberSelector-box {
-		position: fixed;
-		bottom: 0;
-		width: 100%;
-		height: 600rpx;
-		background-color: #fffadd;
-		display: flex;
-		flex-direction: column;
-	}
-
-	.memberSelector-box .box-title {
-		height: 120rpx;
-		padding: 20rpx 30rpx;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-	}
-
-	.memberSelector-box .box-body {
-		display: flex;
-		flex-direction: column;
-		overflow-y: auto;
-		padding: 0 30rpx;
-		z-index: 999;
-	}
-
-	.memberSelector-box .user-item {
-		width: 100%;
-		display: flex;
-		align-items: center;
-	}
-
-	.memberSelector-box .user-item-avatar {
-		margin-left: 20rpx;
-	}
-
-	.memberSelector-box .user-item-avatar image{
-		width: 100rpx;
-		height: 100rpx;
-	}
-
-	.memberSelector-box .user-item-info {
-		margin-left: 20rpx;
 	}
 
 </style>

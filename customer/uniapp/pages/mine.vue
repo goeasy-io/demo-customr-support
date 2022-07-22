@@ -19,7 +19,7 @@
 			}
 		},
 		onShow () {
-			this.currentUser = uni.getStorageSync('currentCustomer');
+			this.currentUser = uni.getStorageSync('currentUser');
 		},
 		methods : {
 			logout () {
@@ -30,8 +30,8 @@
 				this.goEasy.disconnect({
 					onSuccess: function(){
 						uni.hideLoading();
-						uni.removeStorageSync('currentCustomer');
-						uni.navigateTo({url : '../login/login'});
+						uni.removeStorageSync('currentUser');
+						uni.navigateTo({url : './login'});
 					},
 					onFailed: function(error){
 						uni.hideLoading();

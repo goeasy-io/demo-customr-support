@@ -130,8 +130,8 @@ class RestApi {
 		}
 	]
 
-	findFriends (user) {
-		return this.users.filter((v) => v.uuid !== user.uuid);
+	findFriends (id) {
+		return this.users.filter((v) => v.uuid !== id);
 	}
 
 	findUser (username, password) {
@@ -144,6 +144,10 @@ class RestApi {
 
 	findShopByStaff (staffId) {
 		return this.shop.find((shop) => shop.staffs.indexOf(staffId) !== -1);
+	}
+
+	getGoodsList () {
+		return this.goods;
 	}
 
 	findStaff (username, password) {

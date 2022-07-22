@@ -1,8 +1,8 @@
 <template>
   <div class="chat-container">
     <div class="chat-title">
-      <img class="chat-avatar" :src="client.avatar" />
-      <div class="chat-name">{{ client.name }}</div>
+      <img class="chat-avatar" :src="customer.avatar" />
+      <div class="chat-name">{{ customer.name }}</div>
     </div>
     <div class="chat-main" ref="scrollView" @scroll="listenScroll">
       <div class="message-list" ref="messageList">
@@ -23,16 +23,16 @@
             <div v-if="message.type === 'CLOSED'" class="accept-message">
               {{message.payload.text}}
             </div>
-            <div v-else class="message-item-content" :class="{ self: message.senderId !== client.uuid }">
+            <div v-else class="message-item-content" :class="{ self: message.senderId !== customer.uuid }">
               <div class="message-content">
                 <div class="message-payload">
                   <div class="pending" v-if="message.status === 'sending'"></div>
                   <div class="send-fail" v-if="message.status === 'fail'"></div>
                   <div class="content-text" v-if="message.type === 'text'" v-html="renderTextMessage(message.payload.text)"></div>
 
-                  <div class="content-image  imageCss()"
+                  <div class="content-image"
                     v-if="message.type === 'image'"
-                    :style="getImgHeight(message.payload.width,message.payload.height)"
+                    :class="getImgHeight(message.payload.width,message.payload.height)"
                     @click="showImagePreview(message.payload.url)"
                   >
                     <img :src="message.payload.url" alt="图片" />
@@ -47,20 +47,19 @@
                     :thumbnail="message.payload.thumbnail"
                     :src="message.payload.video.url"
                   />
-
                   <div v-if="message.type === 'goods'" class="content-link">
                     <div class="goods-description">为你推荐：</div>
                     <div style="display: flex;background-color: #fffcfc;">
                       <img :src="message.payload.url"/>
                       <div class="goods-info">
                         <div class="goods-name">{{message.payload.name}}</div>
-                        <div style="color: #434343;">月销17</div>
+                        <div>月销17</div>
                         <div class="foods-price">{{message.payload.price}}</div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div v-if="message.senderId !== client.uuid" :class="message.read ?'message-read':'message-unread'">
+                <div v-if="message.senderId !== customer.uuid" :class="message.read ?'message-read':'message-unread'">
                   <div>{{message.read?'已读':'未读'}}</div>
                 </div>
               </div>
@@ -70,14 +69,14 @@
       </div>
     </div>
     <div class="chat-footer">
-      <div v-if="clientStatus.status==='PENDING'" class="accept-session">
-        <div class="accept-info">会话已等待{{Math.ceil((Date.now()-clientStatus.time)/60000)}}分钟</div>
+      <div v-if="customerStatus.status==='PENDING'" class="accept-session">
+        <div class="accept-info">会话已等待{{Math.ceil((Date.now()-customerStatus.time)/60000)}}分钟</div>
         <button class="accept-btn" @click="acceptSession">立即接入</button>
       </div>
-      <div v-else-if="clientStatus.status==='ACCEPTED' && currentStaff.uuid !== clientStatus.staff.id" class="accept-session">
-        <div class="accept-info">{{ JSON.parse(clientStatus.staff.data).name }}已接入</div>
+      <div v-else-if="customerStatus.status==='ACCEPTED' && staffData.uuid !== customerStatus.staff.id" class="accept-session">
+        <div class="accept-info">{{ customerStatus.staff.data.name }}已接入</div>
       </div>
-      <div v-else-if="clientStatus.status==='FREE'" class="accept-session">
+      <div v-else-if="customerStatus.status==='FREE'" class="accept-session">
         <button class="accept-btn" @click="acceptSession">发起会话</button>
       </div>
       <div v-else class="action-box">
@@ -126,7 +125,7 @@
             <!-- 商品链接 -->
             <div class="action-item">
               <div v-if="customMessage.visible" class="link-box">
-                <div class="goods-item" v-for="goods in customMessage.goods" @click="sendCustomMessage(goods)">
+                <div class="goods-item" v-for="goods in customMessage.goodsList" @click="sendCustomMessage(goods)">
                   <img class="goods-img" :src="goods.url">
                   <div>{{goods.name}}</div>
                 </div>
@@ -161,10 +160,10 @@
 </template>
 
 <script>
-import restApi from '../../api/restapi';
-import EmojiDecoder from '../../utils/EmojiDecoder';
-import GoeasyAudioPlayer from "../../components/GoEasyAudioPlayer/GoEasyAudioPlayer";
-import GoeasyVideoPlayer from "../../components/GoEasyVideoPlayer/GoEasyVideoPlayer";
+import restApi from '../api/restapi';
+import EmojiDecoder from '../utils/EmojiDecoder';
+import GoeasyAudioPlayer from "../components/GoEasyAudioPlayer";
+import GoeasyVideoPlayer from "../components/GoEasyVideoPlayer";
 export default {
   name: "Chat",
   components: {
@@ -182,13 +181,13 @@ export default {
       '[傲慢]': 'emoji_8@2x.png',
     };
     return {
-      currentStaff: null,
+      staffData: null,
+      teamData: null,
 
-      currentTeam: null,
+      customer: null,
+      customerStatus: {},
 
-      //customer
-      client: null,
-      clientStatus: {},
+      to: {},
 
       history: {
         messages: [],
@@ -208,22 +207,25 @@ export default {
         url: ''
       },
       customMessage: {
-        goods:[],
+        goodsList:[],
         visible: false,
       }
     }
   },
   created() {
-    let clientId = this.$route.params.id;
-    clientId = clientId.split('#')[0]; //todo:不要这么奇奇怪怪的写法
-
-    this.client = restApi.findUserById(clientId);
-    this.currentStaff = JSON.parse(localStorage.getItem("currentStaff"));
-    this.currentTeam = restApi.findShopByStaff(this.currentStaff.uuid);
-    this.customMessage.goods = restApi.goods;
+    const customerId = this.$route.params.id;
+    this.customer = restApi.findUserById(customerId);
+    this.to = {
+      type: this.GoEasy.IM_SCENE.CS,
+      id: this.customer.uuid,
+      data: this.customer,
+    }
+    this.staffData = JSON.parse(localStorage.getItem("staffData"));
+    this.teamData = restApi.findShopByStaff(this.staffData.uuid);
+    this.customMessage.goodsList = restApi.getGoodsList();
 
     this.loadHistoryMessage(true,0);
-    this.getClientStatus();
+    this.getCustomerStatus();
 
     this.goEasy.im.on(this.GoEasy.IM_EVENT.CS_MESSAGE_RECEIVED, this.onReceivedMessage);
   },
@@ -235,12 +237,11 @@ export default {
       return this.emoji.decoder.decode(text);
     },
 
-    //todo: customer
-    getClientStatus () {
-      this.goEasy.im.csTeam(this.currentTeam.id).customerStatus({
-        id: this.client.uuid,
+    getCustomerStatus () {
+      this.goEasy.im.csTeam(this.teamData.id).customerStatus({
+        id: this.customer.uuid,
         onSuccess: (result) => {
-          this.clientStatus = result.content;
+          this.customerStatus = result.content;
         },
         onFailed: (error) => {
           console.log('获取用户当前状态失败',error)
@@ -248,16 +249,16 @@ export default {
       })
     },
     onReceivedMessage (message) {
-      if (message.senderId === this.client.uuid) {
+      if (message.senderId === this.customer.uuid || message.type === 'ACCEPTED' || message.type === 'CLOSED') {
         this.history.messages.push(message);
         this.markMessageAsRead();
       }
       this.scrollToBottom(0);
     },
     markMessageAsRead() {
-      this.goEasy.im.csTeam(this.currentTeam.id).markMessageAsRead({
-        scene: this.GoEasy.IM_SCENE.CS,
-        id: this.client.uuid,
+      this.goEasy.im.csTeam(this.teamData.id).markMessageAsRead({
+        type: this.GoEasy.IM_SCENE.CS,
+        id: this.customer.uuid,
         onSuccess: function () {
           console.log('标记已读成功');
         },
@@ -266,18 +267,15 @@ export default {
         },
       });
     },
-
-    //todo:没有不滚动的办法嘛？
     loadHistoryMessage(scrollToBottom,offsetHeight) {
       this.history.loading = true;
-      //历史消息
       let lastMessageTimeStamp = null;
       let lastMessage = this.history.messages[0];
       if (lastMessage) {
         lastMessageTimeStamp = lastMessage.timestamp;
       }
-      this.goEasy.im.csTeam(this.currentTeam.id).history({
-        id: this.client.uuid,
+      this.goEasy.im.csTeam(this.teamData.id).history({
+        id: this.customer.uuid,
         type: this.GoEasy.IM_SCENE.CS,
         lastTimestamp: lastMessageTimeStamp,
         limit: 10,
@@ -305,14 +303,13 @@ export default {
         },
       });
     },
-    //todo: 应该是下边定几个css，上次说了的。 customer端不需要这个方法？
     getImgHeight (width,height) {
       if (width < height) {
-        return 'kuaide'  { height:'200px' }
+        return 'vertical-img'
       } else if (width > height) {
-        return  'zhaide'  { height:'150px' }
+        return 'horizontal-img'
       } else {
-        return  'orinal' { height: '100%' }
+        return 'normal-img'
       }
     },
     renderMessageDate(message, index) {
@@ -330,10 +327,10 @@ export default {
       this.imagePreview.url = url;
     },
     acceptSession () {
-      this.goEasy.im.csTeam(this.currentTeam.id).accept({
-        id: this.client.uuid,
+      this.goEasy.im.csTeam(this.teamData.id).accept({
+        id: this.customer.uuid,
         onSuccess: (result) => {
-          this.getClientStatus();
+          this.getCustomerStatus();
         },
         onFailed: (error) => {
           console.log('accept failed',error);
@@ -341,10 +338,10 @@ export default {
       })
     },
     endSession () {
-      this.goEasy.im.csTeam(this.currentTeam.id).end({
-        id: this.client.uuid,
+      this.goEasy.im.csTeam(this.teamData.id).end({
+        id: this.customer.uuid,
         onSuccess: (result) => {
-          this.getClientStatus();
+          this.getCustomerStatus();
         },
         onFailed: (error) => {
           console.log('endSession failed',error);
@@ -363,14 +360,10 @@ export default {
         console.log('输入为空');
         return
       }
-      const textMessage = this.goEasy.im.csTeam(this.currentTeam.id).createTextMessage({
+      const textMessage = this.goEasy.im.csTeam(this.teamData.id).createTextMessage({
         text: this.text,
         //todo: to可不可以共享？
-        to: {
-          type: this.GoEasy.IM_SCENE.CS,
-          id: this.client.uuid,
-          data: this.client,
-        },
+        to: this.to,
       });
       this.sendMessage(textMessage);
       this.text = '';
@@ -378,13 +371,9 @@ export default {
     sendImageMessage(e) {
       let fileList = [...e.target.files];
       fileList.forEach((file) => {
-        const imageMessage = this.goEasy.im.csTeam(this.currentTeam.id).createImageMessage({
+        const imageMessage = this.goEasy.im.csTeam(this.teamData.id).createImageMessage({
           file: file,
-          to: {
-            type: this.GoEasy.IM_SCENE.CS,
-            id: this.client.uuid,
-            data: this.client,
-          },
+          to: this.to,
         });
         imageMessage.buildOptions.complete.then(() => {
           this.sendMessage(imageMessage);
@@ -395,13 +384,9 @@ export default {
     },
     sendVideoMessage(e) {
       const file = e.target.files[0];
-      const videoMessage = this.goEasy.im.csTeam(this.currentTeam.id).createVideoMessage({
+      const videoMessage = this.goEasy.im.csTeam(this.teamData.id).createVideoMessage({
         file: file,
-        to: {
-          type: this.GoEasy.IM_SCENE.CS,
-          id: this.client.uuid,
-          data: this.client,
-        },
+        to: this.to,
       });
       videoMessage.buildOptions.complete.then(() => {
         this.sendMessage(videoMessage);
@@ -414,14 +399,10 @@ export default {
     },
     sendCustomMessage(goods) {
       this.customMessage.visible = false;
-      const customMessage = this.goEasy.im.csTeam(this.currentTeam.id).createCustomMessage({
+      const customMessage = this.goEasy.im.csTeam(this.teamData.id).createCustomMessage({
         type : 'goods',
         payload : goods,
-        to: {
-          type: this.GoEasy.IM_SCENE.CS,
-          id: this.client.uuid,
-          data: this.client,
-        },
+        to: this.to,
       });
       this.sendMessage(customMessage);
     },
@@ -461,7 +442,6 @@ export default {
   .chat-title {
     height: 61px;
     padding: 15px;
-    //border-bottom: 1px solid #dae3ef;
     display: flex;
     align-items: center;
     font-size: 18px;
@@ -490,7 +470,7 @@ export default {
     .history-loaded {
       text-align: center;
       font-size: 12px;
-      color: #9fc8ff;
+      color: #af4e4e;
       cursor: pointer;
       line-height: 20px;
     }
@@ -511,23 +491,12 @@ export default {
         color: #606164;
         line-height: 25px;
       }
-      .message-item-checkbox {
-        height: 55px;
-        margin-right: 15px;
-        display: flex;
-        align-items: center;
-      }
       .message-item-content {
         flex: 1;
         max-height: 230px;
         margin: 5px 0;
         overflow: hidden;
         display: flex;
-        .user-avatar > img {
-          width: 45px;
-          height: 45px;
-          margin-top: 5px;
-        }
         .message-content {
           max-width: calc(100% - 100px);
           .message-payload{
@@ -554,7 +523,7 @@ export default {
             height: 16px;
           }
           .message-unread {
-            color: #9fc8ff;
+            color: #af4e4e;
             font-size: 12px;
             text-align: end;
             margin: 0 10px;
@@ -564,7 +533,7 @@ export default {
             display: flex;
             align-items: center;
             text-align: left;
-            background: #FFFFFF;
+            background: #eeeeee;
             font-size: 14px;
             font-weight: 500;
             padding: 6px 8px;
@@ -582,9 +551,18 @@ export default {
               height: 100%;
             }
           }
+          .vertical-img {
+            height: 200px;
+          }
+          .horizontal-img {
+            height: 150px;
+          }
+          .normal-img {
+            height: 100%;
+          }
           .content-link {
             border-radius: 10px;
-            background: #ffffff;
+            background: #eeeeee;
             padding: 8px;
             display: flex;
             flex-direction: column;
@@ -614,22 +592,6 @@ export default {
         display: flex;
         justify-content: flex-start;
         flex-direction: row-reverse;
-        .content-text {
-          background: #dae3ef !important;
-        }
-      }
-      .self/deep/.audio-facade {
-        flex-direction: row-reverse;
-        background: #d1bfb6 !important;
-      }
-      .self/deep/.audio-facade-bg {
-        background: url("/static/images/voice.png") no-repeat center;
-        background-size: 15px;
-        width: 20px;
-        -moz-transform:rotate(180deg);
-        -webkit-transform:rotate(180deg);
-        -o-transform:rotate(180deg);
-        transform:rotate(180deg);
       }
       .self/deep/.play-icon {
         background: url("/static/images/play.gif") no-repeat center;
@@ -647,7 +609,7 @@ export default {
     height: 250px;
     position: absolute;
     bottom: 0;
-    background: #F0F0F0;
+    background: #FFFFFF;
     .action-box {
       width: 100%;
       height: 100%;
@@ -667,7 +629,7 @@ export default {
             outline: none;
           }
           &:hover {
-            color: #9fc8ff;
+            color: #af4e4e;
           }
         }
         .chat-action {
@@ -700,34 +662,6 @@ export default {
                 width: 45px;
                 height: 45px;
                 margin: 0 2px
-              }
-            }
-            .order-form {
-              width: 220px;
-              position: absolute;
-              top: -160px;
-              left: -105px;
-              z-index: 2015;
-              margin-bottom: 12px;
-              background: #fff;
-              border: 1px solid #ebeef5;
-              padding: 12px;
-              color: #606266;
-              text-align: justify;
-              font-size: 14px;
-              box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-              border-radius: 4px;
-              .order-form-item {
-                display: flex;
-                margin: 10px 0;
-                .order-form-label {
-                  width: 50px;
-                }
-                .order-form-input {
-                  input:focus-visible {
-                    outline: none;
-                  }
-                }
               }
             }
             .link-box {
@@ -775,7 +709,7 @@ export default {
           width: 100%;
           color: #606266;
           outline: none;
-          background: #F0F0F0;
+          background: #FFFFFF;
         }
       }
       .send-box {
@@ -785,9 +719,9 @@ export default {
           width: 60px;
           height: 30px;
           font-size: 15px;
-          border: 1px solid #9fc8ff;
-          background-color: #dae3ef;
-          color: #327fe5;
+          border: 1px solid #af4e4e;
+          background-color: #ffffff;
+          color: #af4e4e;
           border-radius: 5px;
         }
       }
@@ -801,16 +735,16 @@ export default {
       justify-content: center;
       .accept-info {
         font-size: 18px;
-        color: #476997;
+        color: #af4e4e;
         margin-bottom: 10px;
       }
       .accept-btn {
         width: 75px;
         height: 30px;
         font-size: 15px;
-        border: 1px solid #9fc8ff;
-        background-color: #dae3ef;
-        color: #327fe5;
+        border: 1px solid #af4e4e;
+        background-color: #ffffff;
+        color: #af4e4e;
         border-radius: 5px;
         cursor: pointer;
       }
@@ -819,7 +753,7 @@ export default {
   .image-preview {
     max-width: 750px;
     max-height: 500px;
-    background: #FFFFFF;
+    background: rgba(0,0,0,0.8);
     display: flex;
     align-items: center;
     justify-content: center;

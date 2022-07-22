@@ -4,8 +4,8 @@
       <div class="contact-tab">客户列表</div>
       <div class="contact-list">
         <div
-          class="user-items"
-          v-for="(user, key) in clients || []"
+          :class="currentContact && currentContact.uuid === user.uuid ?'user-items checked' : 'user-items'"
+          v-for="(user, key) in customers || []"
           :key="key"
           @click="handleListItem(user)"
         >
@@ -47,26 +47,20 @@
 </template>
 
 <script>
-import restApi from "../../api/restapi";
+import restApi from "../api/restapi";
 export default {
   name: "Contacts",
   data() {
     return {
-      clients: [],
-      currentTab: "friend",
+      customers: [],
       currentContact: null,
-      groupMembers: [],
-      currentUser: {}
     };
   },
   mounted() {
-    this.currentStaff = JSON.parse(localStorage.getItem("currentStaff"));
-    this.clients = restApi.findFriends(this.currentStaff);
+    let staffData = JSON.parse(localStorage.getItem("staffData"));
+    this.customers = restApi.findFriends(staffData.uuid);
   },
   methods: {
-    toggleTab(tab) {
-      this.currentTab = tab;
-    },
     handleListItem(contact) {
       this.currentContact = contact;
     },
@@ -87,7 +81,7 @@ export default {
   .contact-left {
     height: 100%;
     border-right: #dbd6d6 1px solid;
-    width: 270px;
+    width: 260px;
     border-right: 1px solid #eee;
     display: flex;
     flex-direction: column;
@@ -112,9 +106,6 @@ export default {
       display: flex;
       flex-direction: column;
       overflow-y: auto;
-      //scrollbar-color: transparent transparent;
-      //scrollbar-track-color: transparent;
-      //-ms-scrollbar-track-color: transparent;
     }
     .user-items {
       display: flex;
@@ -145,6 +136,11 @@ export default {
           color: #888888;
         }
       }
+    }
+    .checked {
+      background: #FFFFFF;
+      border-radius: 10px;
+      box-shadow: 0 1px 6px 0 rgba(0,0,0,0.1);
     }
     .group-items {
       display: flex;
@@ -188,7 +184,7 @@ export default {
   }
   .contact-main {
     flex: 1;
-    background: #F0F0F0;
+    background: #FFFFFF;
   }
 }
 
@@ -196,7 +192,7 @@ export default {
   padding: 20px 0;
   .card-title {
     padding: 60px;
-    border-bottom: 1px solid #cccccc;
+    border-bottom: 1px solid #eeeeee;
     display: flex;
     justify-content: space-around;
     .user-name {
@@ -206,7 +202,7 @@ export default {
       align-items: center;
       .icon-zhanghu {
         font-size: 26px;
-        color: #606164;
+        color: #eeeeee;
         margin-right: 10px;
       }
     }
@@ -238,8 +234,9 @@ export default {
 .button-box {
   padding: 40px 0;
   .card-button {
-    background: #606164;
-    color: white;
+    background: #eeeeee;
+    color: #000000;
+    font-size: 14px;
     border: none;
     display: flex;
     width: 120px;

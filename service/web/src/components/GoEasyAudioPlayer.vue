@@ -38,7 +38,7 @@ export default {
 }
 .audio-facade{
     min-width: 12px;
-    background: #FFFFFF;
+    background: #eeeeee;
     border-radius: 7px;
     display: flex;
     font-size: 14px;

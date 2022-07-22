@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-const Home = () => import('@/views/Home/Home')
-const Login = () => import('@/views/Login/Login')
-const Contact = () => import('@/views/Contact/Contact')
-const Chat = () => import('@/views/Chat/Chat')
-const Conversation = () => import('@/views/Conversation/Conversation')
+const Home = () => import('@/views/Home')
+const Login = () => import('@/views/Login')
+const Contact = () => import('@/views/Contact')
+const Chat = () => import('@/views/Chat')
+const Conversation = () => import('@/views/Conversation')
 Vue.use(VueRouter)
 
 //解决vue-router3.0以上版本，避免对当前位置冗余导航的警告信息：NavigationDuplicated: Avoided redundant navigation to current location
@@ -59,7 +59,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const currentUser = JSON.parse(localStorage.getItem('currentStaff'));
+  const currentUser = JSON.parse(localStorage.getItem('staffData'));
   if (to.name !== 'Login' && !currentUser) {
     next({name: 'Login'})
   }

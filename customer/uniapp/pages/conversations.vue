@@ -14,9 +14,9 @@
 					<view class="item-info-bottom">
 						<view class="item-info-bottom-item">
 							<view class="item-info-top_content">
-								<text class="unread-text">{{conversation.lastMessage.read === false && conversation.lastMessage.senderId === currentCustomer.uuid?'[未读]':''}}</text>
-								<text v-if="conversation.type === 'private'">{{conversation.lastMessage.senderId === currentCustomer.uuid? '我': conversation.data.name}}:</text>
-								<text v-else>{{conversation.lastMessage.senderId === currentCustomer.uuid? '我': conversation.lastMessage.senderData.name}}:</text>
+								<text class="unread-text">{{conversation.lastMessage.read === false && conversation.lastMessage.senderId === currentUser.uuid?'[未读]':''}}</text>
+								<text v-if="conversation.type === 'private'">{{conversation.lastMessage.senderId === currentUser.uuid? '我': conversation.data.name}}:</text>
+								<text v-else>{{conversation.lastMessage.senderId === currentUser.uuid? '我': conversation.lastMessage.senderData.name}}:</text>
 								<text v-if="conversation.lastMessage.type === 'text'">{{conversation.lastMessage.payload.text}}</text>
 								<text v-else-if="conversation.lastMessage.type === 'video'">[视频消息]</text>
 								<text v-else-if="conversation.lastMessage.type === 'audio'">[语音消息]</text>
@@ -37,101 +37,51 @@
 </template>
 
 <script>
-	import restApi from '../../lib/restapi';
 	export default {
 		name: 'conversation',
 		data () {
 			return {
 				unreadTotal : 0,
 				conversations : [],
-
-				actionPopup : {
-					conversation : null,
-					visible : false
-				},
-				currentCustomer: null
+				currentUser: null
 			}
 		},
 		onShow () {
-			this.currentCustomer = uni.getStorageSync('currentCustomer');
-			console.log('this.currentCustomer:',this.currentCustomer);
-			if(!this.currentCustomer){
-				uni.navigateTo({url: '../login/login'});
-				return;
-			}
-
-			//todo：明显不应该在这里啊，怎么能反复连接呢？home页才是默认页
-			if(this.goEasy.getConnectionStatus() === 'disconnected') {
-				this.connectGoEasy();  //连接goeasy
-			}
-			this.loadConversations(); //加载会话列表 
+			this.currentUser = uni.getStorageSync('currentUser');
+			this.loadConversations(); //加载会话列表
 			this.goEasy.im.on(this.GoEasy.IM_EVENT.CONVERSATIONS_UPDATED, this.renderConversations);
 		},
 		beforeDestroy() {
-			this.goEasy.im.off(this.GoEasy.IM_EVENT.CONVERSATIONS_UPDATED, this.setUnreadNumber);
+			this.goEasy.im.off(this.GoEasy.IM_EVENT.CONVERSATIONS_UPDATED, this.renderConversations);
 		},
 		methods : {
-			connectGoEasy() {
-				uni.showLoading();
-				this.goEasy.connect({
-					id: this.currentCustomer.uuid,
-					data: {
-						name: this.currentCustomer.name,
-						avatar: this.currentCustomer.avatar
-					},
-					onSuccess: () => {
-						console.log('GoEasy connect successfully.')
-					},
-					onFailed: (error) => {
-						console.log('Failed to connect GoEasy, code:'+error.code+ ',error:'+error.content);
-					},
-					onProgress: (attempts) => {
-						console.log('GoEasy is connecting', attempts);
-					}
-				});
-			},
-
 			// 加载最新的会话列表
 			loadConversations() {
-				console.log('loadConversations')
 				this.goEasy.im.latestConversations({
 					onSuccess: (result) => {
-						console.log('loadConversations',result.content)
-						uni.hideLoading();
 						let content = result.content;
 						this.renderConversations(content);
+						if(content.unreadTotal > 0) {
+							uni.setTabBarBadge({
+								index: 1,
+								text: unreadTotal.toString()
+							});
+						}else{
+							uni.removeTabBarBadge({index: 1});
+						}
 					},
 					onFailed: (error) => {
-						uni.hideLoading();
 						console.log('获取最新会话列表失败, error:',error);
 					}
 				});
 			},
 			renderConversations(content){
 				this.conversations = content.conversations;
-				console.log('this.conversations:',this.conversations);
-				this.setUnreadAmount(content.unreadTotal);
-			},
-			//todo：这个应该就不需要了
-			setUnreadAmount (unreadTotal) {
-				this.unreadTotal = unreadTotal;
-				if(this.unreadTotal > 0) {
-					uni.setTabBarBadge({
-						index: 1,
-						text: this.unreadTotal.toString()
-					});
-				}else{
-					uni.removeTabBarBadge({index: 1});
-				}
 			},
 			navigateToChat (conversation) {
 				uni.navigateTo({
-					url: '../chat/chat?to=' + conversation.id
+					url: './chat?to=' + conversation.id
 				});
-			},
-			showAction (conversation) {
-				this.actionPopup.conversation = conversation;
-				this.actionPopup.visible = true;
 			}
 		}
 	}

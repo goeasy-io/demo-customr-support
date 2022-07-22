@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import restApi from '../../api/restapi';
+import restApi from '../api/restapi';
 export default {
   name: 'Login',
   data() {
@@ -44,17 +44,18 @@ export default {
     };
   },
   mounted() {
-    // this.$nextTick(() => {
-    //   this.$refs.username.focus();
-    // });
+    this.$nextTick(() => {
+      this.$refs.username.focus();
+    });
   },
   methods: {
     login() {
       if (this.username.trim() !== '' && this.password.trim() !== '') {
         let user = restApi.findStaff(this.username, this.password);
+        console.log('user:',user);
         if (user) {
-          localStorage.setItem('currentStaff', JSON.stringify(user));
-          this.$router.push('../conversation');
+          localStorage.setItem('staffData', JSON.stringify(user));
+          this.$router.push({ path: './conversation'});
           return;
         }
       }
@@ -75,8 +76,6 @@ export default {
     width: 1000px;
     height: 700px;
     border-radius: 12px;
-    //box-shadow: 0 11px 20px 0 rgba(0, 0, 0, 0.3);
-    //background: linear-gradient(45deg, #996666, transparent);
     .login-main {
       width: 600px;
       margin: 170px auto;

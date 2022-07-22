@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import Chat from "../Chat/Chat";
+import Chat from "./Chat";
 export default {
   name: 'Conversation',
   components: {
@@ -51,13 +51,11 @@ export default {
   },
   data() {
     return {
-      currentStaff: {}, //todo: 拿来干啥？
       pendingConversations: [],
       conversations : [],
     }
   },
   created() {
-    this.currentStaff = localStorage.getItem('currentStaff');
     this.listenConversationUpdate(); //监听会话列表变化
     this.loadConversations(); //加载会话列表
   },
@@ -69,8 +67,7 @@ export default {
     loadConversations() {
       this.goEasy.im.pendingConversations({
         onSuccess: (result) => {
-          let content = result.content;
-          this.renderPendingConversations(content);
+          this.renderPendingConversations(result.content);
         },
         onFailed: (error) => {
           console.log('获取待接入列表失败, code:' + error.code + 'content:' + error.content);
@@ -78,8 +75,7 @@ export default {
       });
       this.goEasy.im.latestConversations({
         onSuccess: (result) => {
-          let content = result.content;
-          this.renderLatestConversations(content);
+          this.renderLatestConversations(result.content);
         },
         onFailed: (error) => {
           console.log('获取已接入列表失败, code:' + error.code + 'content:' + error.content);
@@ -91,18 +87,11 @@ export default {
       this.goEasy.im.on(this.GoEasy.IM_EVENT.CONVERSATIONS_UPDATED, this.renderLatestConversations);
       this.goEasy.im.on(this.GoEasy.IM_EVENT.PENDING_CONVERSATIONS_UPDATED, this.renderPendingConversations);
     },
-
-
     renderPendingConversations(content) {
-      this.pendingConversations = content.conversations.filter((conversation) => {
-        //todo:为啥要过滤，pending就只有cs
-        return conversation.type === 'cs'
-      });
+      this.pendingConversations = content.conversations;
     },
     renderLatestConversations(content) {
-      this.conversations = content.conversations.filter((conversation) => {
-        return conversation.type === 'cs'
-      });
+      this.conversations = content.conversations;
     },
     goChatPage (id) {
       this.$router.push({
@@ -119,7 +108,7 @@ export default {
   width: 100%;
   height: 100%;
   display: flex;
-  background: #F7F7F7;
+  background: #FFFFFF;
   .conversation-list {
     width: 240px;
     border-right: 1px solid #eee;
@@ -128,8 +117,9 @@ export default {
     padding: 10px;
     .conversation-list-item {
       .conversation-list-title {
-        font-size: 18px;
+        font-size: 16px;
         margin: 10px;
+        color: #666666;
       }
       .conversation-list-body {
         overflow-y: auto;
@@ -170,13 +160,12 @@ export default {
       }
     }
     .checked {
-      //border: 1px solid #dae3ef;
-      background: #dae3ef;
+      background: #eeeeee;
     }
   }
   .conversation-main {
     flex: 1;
-    background: #F0F0F0;
+    background: #FFFFFF;
   }
 }
 

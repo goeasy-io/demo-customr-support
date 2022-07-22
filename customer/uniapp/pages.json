@@ -1,7 +1,7 @@
 {
 	"pages": [
 		{
-			"path": "pages/home/home",
+			"path": "pages/home",
 			"style": {
 				"navigationBarTitleText": "首页",
 				"navigationBarBackgroundColor" : "#F3F4F7",
@@ -9,7 +9,7 @@
 			}			
 		},
 		{
-			"path": "pages/conversations/conversations",
+			"path": "pages/conversations",
 			"style": {
 				"navigationBarTitleText": "消息",
 				"navigationBarBackgroundColor" : "#F3F4F7",
@@ -20,7 +20,7 @@
 			}			
 		},
 		{
-			"path": "pages/login/login",
+			"path": "pages/login",
 			"style": {
 				"navigationBarTitleText": "登录",
 				"navigationBarBackgroundColor" : "#ffffff",
@@ -31,7 +31,7 @@
 			}
 		},
 		{
-			"path": "pages/mine/mine",
+			"path": "pages/mine",
 			"style": {
 				"navigationBarTitleText": "我",
 				"navigationBarBackgroundColor" : "#F3F4F7",
@@ -39,7 +39,7 @@
 			}			
 		},
 		{
-			"path": "pages/chat/chat",
+			"path": "pages/chat",
 			"style": {
 				"navigationBarTitleText": "聊天",
 				"navigationBarBackgroundColor" : "#F3F4F7",
@@ -61,19 +61,19 @@
 		"height" : "60px",
 		"list" : [
 			{
-				"pagePath" : "pages/home/home",
+				"pagePath" : "pages/home",
 				"text":"首页",
 				"iconPath":"static/images/shop.png",
 				"selectedIconPath":"static/images/shop-active.png"
 			},
 			{
-				"pagePath" : "pages/conversations/conversations",
+				"pagePath" : "pages/conversations",
 				"text" : "消息",
 				"iconPath":"static/images/msg.png",
 				"selectedIconPath":"static/images/msg-active.png"
 			},
 			{
-				"pagePath" : "pages/mine/mine",
+				"pagePath" : "pages/mine",
 				"text" : "我",
 				"iconPath":"static/images/mine.png",
 				"selectedIconPath":"static/images/mine-active.png"

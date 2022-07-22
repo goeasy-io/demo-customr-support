@@ -2,7 +2,7 @@
   <div class="home">
     <div class="home-container">
       <div class="home-menu">
-        <img class="user-avatar" :src="currentTeam.avatar"/>
+        <img class="user-avatar" :src="teamData.avatar"/>
         <div class="menu-box">
           <div class="menu-list">
             <div class="menu-item">
@@ -17,16 +17,16 @@
             <div class="menu-item">
               <router-link to="/contact">
                 <i
-                  class="iconfont icon-lianxiren1"
+                  class="iconfont icon-haoyou"
                   :class="{ selected: currentPage === 'Contact' }"
                 ></i>
               </router-link>
             </div>
           </div>
           <div class="staff-info">
-            <img class="user-avatar" :src="currentStaff.avatar" @click="showCountActionBox = !showCountActionBox"/>
+            <img class="user-avatar" :src="staffData.avatar" @click="showOnlineConfig = !showOnlineConfig"/>
             <span :class="isOnline ?'user-online':'user-offline'"></span>
-            <div class="action-box" v-if="showCountActionBox">
+            <div class="action-box" v-if="showOnlineConfig">
               <div class="action-item" @click="switchOnlineStatus">
                 <span>{{ isOnline ? '下线':'上线' }}</span>
               </div>
@@ -43,28 +43,29 @@
 </template>
 
 <script>
-import RestApi from '../../api/restapi'
+import RestApi from '../api/restapi'
 export default {
   name: 'Home',
   data() {
     return {
       isOnline: false,
-      currentStaff: null,  //todo:mydata
-      currentTeam: null,   //team data
+      staffData: null,
+      teamData: null,
       currentPage: this.$route.name,
       unreadTotal: null,
-      showCountActionBox: false  //todo: 啥意思?
+      showOnlineConfig: false
     };
   },
   created() {
-    this.currentStaff = JSON.parse(localStorage.getItem('currentStaff'));
-    this.currentTeam = RestApi.findShopByStaff(this.currentStaff.uuid);
-    console.log('this.currentTeam',this.currentTeam);
+    this.staffData = JSON.parse(localStorage.getItem('staffData'));
+    if (!this.staffData) {
+      this.$router.push({ name: 'Login'});
+    }
+    this.teamData = RestApi.findShopByStaff(this.staffData.uuid);
     if(this.goEasy.getConnectionStatus() === 'disconnected') {
       this.connectGoEasy();  //连接goeasy
     }
-    //initial online status
-    this.getOnlineStatus();
+    this.initialOnlineStatus();
   },
   watch: {
     $route() {
@@ -74,8 +75,8 @@ export default {
   methods: {
     connectGoEasy () {
       this.goEasy.connect({
-        id: this.currentStaff.uuid,
-        data: this.currentStaff,
+        id: this.staffData.uuid,
+        data: this.staffData,
         onSuccess: function () {  //连接成功
           console.log("GoEasy connect successfully.") //连接成功
         },
@@ -87,11 +88,10 @@ export default {
         }
       });
     },
-    getOnlineStatus () {
-      this.goEasy.im.csTeam(this.currentTeam.id).isOnline({
+    initialOnlineStatus () {
+      this.goEasy.im.csTeam(this.teamData.id).isOnline({
         onSuccess: (result) => {
           this.isOnline = result.content;
-          console.log('getOnlineStatus --- ',result.content);
         },
         onFailed:(error) =>{
           console.log('获取在线状态失败，error:',error)
@@ -99,23 +99,22 @@ export default {
       })
     },
     switchOnlineStatus () {
-      this.showCountActionBox = false;
+      this.showOnlineConfig = false;
       if (this.isOnline) {
-        this.goEasy.im.csTeam(this.currentTeam.id).offline({
+        this.goEasy.im.csTeam(this.teamData.id).offline({
           onSuccess: () => {
-            //todo: 直接设为false，没有信心吗？
-            this.getOnlineStatus();
+            this.isOnline = false;
           },
           onFailed:(error) => {
             console.log('下线失败,error:',error);
           }
         })
       } else {
-        this.goEasy.im.csTeam(this.currentTeam.id).online({
-          teamData: this.currentTeam,
-          staffData: this.currentStaff, //userdata/staffdata/
+        this.goEasy.im.csTeam(this.teamData.id).online({
+          teamData: this.teamData,
+          staffData: this.staffData,
           onSuccess: () => {
-            this.getOnlineStatus();
+            this.isOnline = true;
           },
           onFailed: (error) => {
             console.log('上线失败,error:',error);
@@ -124,9 +123,15 @@ export default {
       }
     },
     logout() {
-      //todo: disconnect?
-      localStorage.removeItem('currentStaff');
-      this.$router.push('../login');
+      this.goEasy.disconnect({
+        onSuccess: () => {
+          localStorage.removeItem('staffData');
+          this.$router.push({ name: 'Login'});
+        },
+        onFailed: (error) => {
+          console.log("Failed to disconnect GoEasy, code:"+error.code+ ",error:"+error.content);
+        }
+      });
     },
   },
 };
@@ -140,12 +145,12 @@ export default {
   justify-content: center;
   align-items: center;
   .home-container {
-    border: 2px solid #eeeeee;
     width: 900px;
     height: 700px;
     background: #FFFFFF;
     display: flex;
     position: relative;
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,0.1);
     .home-menu {
       width: 80px;
       background-color: #F7F7F7;
@@ -158,6 +163,7 @@ export default {
         height: 50px;
         margin: 20px auto;
         border-radius: 50%;
+        cursor: pointer;
       }
       .menu-box {
         padding: 40px 0;
@@ -196,7 +202,7 @@ export default {
           color: #ffffff;
         }
         .selected {
-          color: #9fc8ff !important;
+          color: #af4e4e !important;
         }
       }
       .staff-info {

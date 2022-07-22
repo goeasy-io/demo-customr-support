@@ -79,7 +79,7 @@ export default {
     max-width: 750px;
     max-height: 500px;
     overflow: hidden;
-    background: #3e3e3e;
+    background: rgba(0,0,0,0.8);
     display: flex;
     align-items: center;
     justify-content: center;

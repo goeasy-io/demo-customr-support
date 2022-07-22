@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "493216",
+      "name": "好友",
+      "font_class": "haoyou",
+      "unicode": "e784",
+      "unicode_decimal": 59268
+    },
+    {
+      "icon_id": "2506171",
+      "name": "好友",
+      "font_class": "haoyou1",
+      "unicode": "e626",
+      "unicode_decimal": 58918
+    },
+    {
       "icon_id": "4736757",
       "name": "结束",
       "font_class": "jieshu",
@@ -18,13 +32,6 @@
       "font_class": "more",
       "unicode": "e6a3",
       "unicode_decimal": 59043
-    },
-    {
-      "icon_id": "1876334",
-      "name": "客户群组",
-      "font_class": "kehuqunzu",
-      "unicode": "e673",
-      "unicode_decimal": 58995
     },
     {
       "icon_id": "2170949",
@@ -81,13 +88,6 @@
       "font_class": "dingdan",
       "unicode": "e634",
       "unicode_decimal": 58932
-    },
-    {
-      "icon_id": "10487555",
-      "name": "联系人",
-      "font_class": "lianxiren1",
-      "unicode": "e697",
-      "unicode_decimal": 59031
     },
     {
       "icon_id": "4553729",
