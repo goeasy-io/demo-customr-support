@@ -13,7 +13,7 @@
 						<view v-if="message.type === 'ACCEPTED'" class="accept-message">
 							{{message.senderData.name}}将为您服务
 						</view>
-						<view v-if="message.type === 'CLOSED'" class="accept-message">
+						<view v-else-if="message.type === 'CLOSED'" class="accept-message">
 							{{message.payload.text}}
 						</view>
 						<view v-else class="message-item-content" :class="{'self' : message.senderId ===  currentUser.uuid}">
@@ -456,7 +456,7 @@
 		box-sizing: border-box;
 		-webkit-overflow-scrolling: touch;
 		padding-bottom: 140rpx;
-		background-color: #EFEFEF;
+		background-color: #FFFFFF;
 	}
 	.scroll-view .all-history-loaded{
 		font-size: 24rpx;
@@ -504,6 +504,7 @@
 		width: 100%;
 		text-align: center;
 		color: #333333;
+		font-size: 28rpx;
 	}
 
 	.scroll-view .content{
@@ -540,7 +541,7 @@
 	}
 	.scroll-view .content .goods-content {
 		border-radius: 20rpx;
-		background: #ffffff;
+		background: #EFEFEF;
 		padding: 16rpx;
 		display: flex;
 		flex-direction: column;
@@ -785,7 +786,6 @@
 	}
 
 	.message-unread {
-		/* color: #618DFF; */
 		color: #6896c1;
 		font-size: 24rpx;
 		text-align: end;

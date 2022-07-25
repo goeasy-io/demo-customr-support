@@ -5,15 +5,19 @@
         <div class="conversation-list-title">待接入 {{ pendingConversations.length }}</div>
         <div class="conversation-list-body">
           <div
-            class="consult-user"
+            class="conversation-item"
             v-for="(conversation, key) in pendingConversations" :key="key"
             @click="goChatPage(conversation.id)"
             :class="{checked:conversation.id === $route.params.id}"
           >
-            <img class="user-avatar" :src="conversation.data.avatar" />
-            <div class="consult-content">
-              <div class="consult-name">{{ conversation.data.name }}</div>
-              <div class="consult-msg">{{ renderLastMessageContent(conversation) }}</div>
+            <img class="item-avatar" :src="conversation.data.avatar" />
+            <div class="item-info">
+              <div class="item-info-name">{{ conversation.data.name }}</div>
+              <div class="item-info-message" v-if="conversation.lastMessage.type === 'text'">{{ conversation.lastMessage.payload.text }}</div>
+              <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'image'">[图片消息]</div>
+              <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'video'">[视频消息]</div>
+              <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'audio'">[语音消息]</div>
+              <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'goods'">[自定义消息:商品]</div>
             </div>
           </div>
         </div>
@@ -27,16 +31,27 @@
             @click="goChatPage(conversation.id)"
             :class="{checked:conversation.id === $route.params.id}"
           >
-            <div class="consult-user">
-              <img class="user-avatar" :src="conversation.data.avatar" />
-              <div class="consult-content">
-                <div class="consult-name">{{ conversation.data.name }}</div>
-                <div class="consult-msg">{{ renderLastMessageContent(conversation) }}</div>
+            <img class="item-avatar" :src="conversation.data.avatar" />
+            <div class="item-info">
+              <div class="item-info-top">
+                <div class="item-info-name">{{ conversation.data.name }}</div>
+                <div class="item-info-time">{{ formatDate(conversation.lastMessage.timestamp) }}</div>
               </div>
+              <div class="item-info-bottom">
+                <div class="item-info-message" v-if="conversation.lastMessage.type === 'text'">{{ conversation.lastMessage.payload.text }}</div>
+                <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'image'">[图片消息]</div>
+                <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'video'">[视频消息]</div>
+                <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'audio'">[语音消息]</div>
+                <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'goods'">[自定义消息:商品]</div>
+                <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'CLOSED'">会话已结束</div>
+                <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'ACCEPTED'">{{ conversation.lastMessage.senderData.name }}已接入</div>
+                <div class="item-info-message" v-else>[未识别内容]</div>
+                <span class="more-action" @click.stop="showAction(conversation)">
+                  <i class="iconfont icon-more"></i>
+                </span>
+              </div>
+
             </div>
-            <span class="more-action" @click.stop="showAction(conversation)">
-              <i class="iconfont icon-more"></i>
-            </span>
           </div>
         </div>
       </div>
@@ -147,37 +162,6 @@ export default {
         },
       });
     },
-    renderLastMessageContent (conversation) {
-      let content = '[未识别内容]';
-      switch (conversation.lastMessage.type) {
-        case 'text' :
-          content = conversation.lastMessage.payload.text;
-          break
-        case 'image' :
-          content = '[图片消息]';
-          break
-        case 'video' :
-          content = '[视频消息]';
-          break
-        case 'audio' :
-          content = '[语音消息]';
-          break
-        case 'goods' :
-          content = '[自定义消息:商品]';
-          break
-        case 'CLOSED' :
-          content = '会话已结束';
-          break
-        case 'ACCEPTED' :
-          content = `${conversation.lastMessage.senderData.name}已接入`;
-          break
-        default: {
-          content = '[未识别内容]';
-          break
-        }
-      }
-      return content;
-    }
   }
 }
 </script>
@@ -209,17 +193,17 @@ export default {
         }
         scrollbar-width: none; // firefox
         -ms-overflow-style: none; // IE 10+
-        .conversation-item {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          border-radius: 5px;
-          .more-action {
-            margin: 8px;
-            font-size: 18px;
-            cursor: pointer;
-          }
-        }
+        //.conversation-item {
+        //  display: flex;
+        //  justify-content: space-between;
+        //  align-items: center;
+        //  border-radius: 5px;
+        //  .more-action {
+        //    margin: 8px;
+        //    font-size: 18px;
+        //    cursor: pointer;
+        //  }
+        //}
       }
     }
     .layer {
@@ -250,28 +234,47 @@ export default {
       border-bottom: 1px solid #efefef;
       cursor: pointer;
     }
-    .consult-user {
+    .conversation-item {
       display: flex;
       padding: 5px;
+      flex: 1;
       margin-top: 5px;
-      .user-avatar {
+      .item-avatar {
         width: 45px;
         height: 45px;
         margin-right: 5px;
       }
-      .consult-content {
+      .item-info {
+        flex: 1;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        .consult-name {
-          font-size: 15px;
+        .item-info-top {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+        .item-info-name {
+          font-size: 16px;
           line-height: 25px;
           color: #333333;
         }
-        .consult-msg {
+        .item-info-bottom {
+          display: flex;
+          justify-content: space-between;
+          .more-action {
+            font-size: 18px;
+            cursor: pointer;
+          }
+        }
+        .item-info-message {
           font-size: 12px;
           line-height: 20px;
           color: #606266;
+          width: 160px;
+          overflow: hidden;
+          text-overflow:ellipsis;
+          white-space: nowrap;
         }
       }
     }

@@ -2,7 +2,7 @@
   <div class="home">
     <div class="home-container">
       <div class="home-menu">
-        <img class="user-avatar" :src="teamData.avatar"/>
+        <img class="shop-avatar" :src="teamData.avatar"/>
         <div class="menu-box">
           <div class="menu-list">
             <div class="menu-item">
@@ -24,12 +24,10 @@
             </div>
           </div>
           <div class="staff-info">
-            <img class="user-avatar" :src="staffData.avatar" @click="showOnlineConfig = !showOnlineConfig"/>
-            <span :class="isOnline ?'user-online':'user-offline'"></span>
+            <img class="staff-avatar" :src="staffData.avatar" @click="showOnlineConfig = !showOnlineConfig"/>
+            <span :class="isOnline ?'spot online':'spot offline'"></span>
             <div class="action-box" v-if="showOnlineConfig">
-              <div class="action-item" @click="switchOnlineStatus">
-                <span>{{ isOnline ? '下线':'上线' }}</span>
-              </div>
+              <div class="action-item" @click="switchOnlineStatus">{{ isOnline ? '下线':'上线' }}</div>
               <div class="action-item" @click="logout">退出登录</div>
             </div>
           </div>
@@ -158,12 +156,11 @@ export default {
       display: flex;
       flex-direction: column;
       align-items: center;
-      .user-avatar {
+      .shop-avatar {
         width: 50px;
         height: 50px;
         margin: 20px auto;
-        border-radius: 50%;
-        cursor: pointer;
+        border-radius: 10px;
       }
       .menu-box {
         padding: 40px 0;
@@ -207,22 +204,25 @@ export default {
       }
       .staff-info {
         position: relative;
-        .user-online {
+        .staff-avatar {
+          width: 45px;
+          height: 45px;
+          border-radius: 50%;
+          position: relative;
+          cursor: pointer;
+        }
+        .spot {
           position: absolute;
-          left: 38px;
-          top: 60px;
+          left: 34px;
+          top: 34px;
           width: 10px;
           height: 10px;
           border-radius: 50%;
+        }
+        .online {
           background-color: #56d547;
         }
-        .user-offline {
-          position: absolute;
-          left: 38px;
-          top: 60px;
-          width: 10px;
-          height: 10px;
-          border-radius: 50%;
+        .offline {
           background-color: #999999;
         }
         .action-box {
@@ -231,10 +231,11 @@ export default {
           top: -25px;
           width: 100px;
           height: 100px;
-          background: #cccccc;
+          background: #dddddd;
           border-radius: 10px;
-          font-size: 15px;
+          font-size: 14px;
           text-align: center;
+          z-index: 99;
           .action-item {
             height: 50px;
             display: flex;

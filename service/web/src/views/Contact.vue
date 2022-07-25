@@ -4,7 +4,7 @@
       <div class="contact-tab">客户列表</div>
       <div class="contact-list">
         <div
-          :class="currentContact && currentContact.uuid === user.uuid ?'user-items checked' : 'user-items'"
+          :class="currentContact && currentContact.uuid === user.uuid ?'user-item checked' : 'user-item'"
           v-for="(user, key) in customers || []"
           :key="key"
           @click="handleListItem(user)"
@@ -12,21 +12,18 @@
           <div class="user-avatar">
             <img :src="user.avatar" />
           </div>
-          <div class="user-info">
-            <div class="user-name">{{ user.name }}</div>
-            <div class="user-mail">{{ user.email }}</div>
-          </div>
+          <div class="user-info">{{ user.name }}</div>
         </div>
       </div>
     </div>
     <div class="contact-main">
       <div class="profile-card" v-if="currentContact">
         <div class="card-title">
-          <div class="user-name">
+          <div class="profile-name">
             <i class="iconfont icon-zhanghu"></i>
             <div>{{ currentContact.name }}</div>
           </div>
-          <div class="user-avatar">
+          <div class="profile-avatar">
             <img :src="currentContact.avatar" />
           </div>
         </div>
@@ -107,34 +104,24 @@ export default {
       flex-direction: column;
       overflow-y: auto;
     }
-    .user-items {
+    .user-item {
       display: flex;
       padding: 5px 10px;
+      cursor: pointer;
       .user-avatar {
-        width: 60px;
+        width: 45px;
         img {
-          width: 50px;
-          height: 50px;
+          width: 45px;
+          height: 45px;
           border-radius: 10%;
-          margin-left: 10px;
         }
       }
       .user-info {
-        width: 65%;
-        margin: 0;
         display: flex;
-        flex-direction: column;
+        align-items: center;
         text-align: left;
         padding-left: 10px;
-        .user-name {
-          margin: 0;
-          font-size: 16px;
-          font-weight: 400;
-        }
-        .user-mail {
-          line-height: 30px;
-          color: #888888;
-        }
+        font-size: 15px;
       }
     }
     .checked {
@@ -195,7 +182,7 @@ export default {
     border-bottom: 1px solid #eeeeee;
     display: flex;
     justify-content: space-around;
-    .user-name {
+    .profile-name {
       width: 300px;
       font-size: 18px;
       display: flex;
@@ -206,13 +193,12 @@ export default {
         margin-right: 10px;
       }
     }
-    .user-avatar {
-      width: 60px;
+    .profile-avatar {
+      width: 80px;
       img {
         width: 80px;
         height: 80px;
         border-radius: 10%;
-        margin-left: 10px;
       }
     }
   }

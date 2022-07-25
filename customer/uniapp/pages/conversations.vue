@@ -171,7 +171,7 @@
 
 	}
 	.conversations .item-info-top_name{
-		font-size: 34rpx;
+		font-size: 32rpx;
 		color: #262628;
 	}
 	.conversations .item-info-top_time{
@@ -189,8 +189,9 @@
 		justify-content: space-between;
 	}
 	.item-info-bottom .item-info-top_content{
-		font-size: 30rpx;
+		font-size: 28rpx;
 		color: #b3b3b3;
+		width: 520rpx;
 		overflow: hidden;
 		text-overflow:ellipsis;
 		white-space: nowrap;

@@ -226,7 +226,9 @@ export default {
 
     this.loadHistoryMessage(true,0);
     this.getCustomerStatus();
-
+    if (this.customerStatus.status === 'ACCEPTED') {
+      this.markMessageAsRead();
+    }
     this.goEasy.im.on(this.GoEasy.IM_EVENT.CS_MESSAGE_RECEIVED, this.onReceivedMessage);
   },
   beforeDestroy() {
@@ -251,7 +253,9 @@ export default {
     onReceivedMessage (message) {
       if (message.senderId === this.customer.uuid || message.type === 'ACCEPTED' || message.type === 'CLOSED') {
         this.history.messages.push(message);
-        this.markMessageAsRead();
+        if (this.customerStatus.status === 'ACCEPTED') {
+          this.markMessageAsRead();
+        }
       }
       this.scrollToBottom(0);
     },
@@ -291,8 +295,6 @@ export default {
             }
             if (scrollToBottom) {
               this.scrollToBottom(offsetHeight);
-              //收到的消息设置为已读
-              this.markMessageAsRead();
             }
           }
         },
