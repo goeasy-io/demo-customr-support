@@ -30,6 +30,7 @@
             v-for="(conversation, key) in conversations" :key="key"
             @click="goChatPage(conversation.id)"
             :class="{checked:conversation.id === $route.params.id}"
+            @contextmenu.prevent.stop="e => showAction(e,conversation)"
           >
             <img class="item-avatar" :src="conversation.data.avatar" />
             <div class="item-info">
@@ -46,23 +47,14 @@
                 <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'CLOSED'">会话已结束</div>
                 <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'ACCEPTED'">{{ conversation.lastMessage.senderData.name }}已接入</div>
                 <div class="item-info-message" v-else>[未识别内容]</div>
-                <span class="more-action" @click.stop="showAction(conversation)">
-                  <i class="iconfont icon-more"></i>
-                </span>
               </div>
-
             </div>
           </div>
         </div>
       </div>
-      <div v-if="actionPopup.visible">
-        <div class="layer" @click="actionPopup.visible = false"></div>
-        <div class="action-box">
-          <div class="action-item" @click="topConversation">
-            {{ actionPopup.conversation.top ? '取消置顶' : '置顶聊天' }}
-          </div>
-          <div class="action-item" @click="deleteConversation">删除聊天</div>
-        </div>
+      <div v-if="actionPopup.visible" class="action-box" :style="{'left': actionPopup.left + 'px', 'top': actionPopup.top + 'px'}">
+        <div class="action-item" @click="topConversation">{{ actionPopup.conversation.top ? '取消置顶' : '置顶' }}</div>
+        <div class="action-item" @click="deleteConversation">删除聊天</div>
       </div>
     </div>
     <div class="conversation-main">
@@ -85,10 +77,15 @@ export default {
       actionPopup: {
         conversation: null,
         visible: false,
+        left: null,
+        right: null,
       },
     }
   },
   created() {
+    document.addEventListener('click', () => {
+      this.actionPopup.visible = false
+    })
     this.listenConversationUpdate(); //监听会话列表变化
     this.loadConversations(); //加载会话列表
   },
@@ -132,9 +129,11 @@ export default {
         params: { id: id },
       });
     },
-    showAction(conversation) {
+    showAction(e,conversation) {
       this.actionPopup.conversation = conversation;
       this.actionPopup.visible = true;
+      this.actionPopup.left = e.pageX;
+      this.actionPopup.top = e.pageY;
     },
     topConversation () {
       this.actionPopup.visible = false;
@@ -193,46 +192,26 @@ export default {
         }
         scrollbar-width: none; // firefox
         -ms-overflow-style: none; // IE 10+
-        //.conversation-item {
-        //  display: flex;
-        //  justify-content: space-between;
-        //  align-items: center;
-        //  border-radius: 5px;
-        //  .more-action {
-        //    margin: 8px;
-        //    font-size: 18px;
-        //    cursor: pointer;
-        //  }
-        //}
       }
     }
-    .layer {
-      position: absolute;
-      top: 0;
-      left: 0;
-      background: rgba(51, 51, 51, 0.5);
-      width: 260px;
-      height: 100%;
-      z-index: 99;
-    }
     .action-box {
-      width: 150px;
-      height: 80px;
+      width: 100px;
+      height: 60px;
       background: #ffffff;
-      position: absolute;
-      top: 310px;
-      left: 55px;
+      border: 1px solid #cccccc;
+      position: fixed;
       z-index: 100;
-      border-radius: 10px;
-      overflow: hidden;
+      border-radius: 5px;
     }
     .action-item {
-      text-align: center;
-      line-height: 40px;
-      font-size: 15px;
+      padding-left: 15px;
+      line-height: 30px;
+      font-size: 13px;
       color: #262628;
-      border-bottom: 1px solid #efefef;
       cursor: pointer;
+      &:hover {
+        background: #dddddd;
+      }
     }
     .conversation-item {
       display: flex;

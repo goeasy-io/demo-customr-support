@@ -78,26 +78,27 @@
 	display: flex;
 	justify-content: space-between;
 	padding: 0 20rpx;
-	margin: 10rpx 0;
+	margin: 16rpx 0;
 	align-items: center;
 }
 .item-head image {
 	border-radius: 50%;
-	width: 90rpx;
-	height: 90rpx;
+	width: 80rpx;
+	height: 80rpx;
 	margin-right: 20rpx;
 }
 .shop-info {
 	display: flex;
 	align-items: center;
 	flex: 1;
+	font-size: 14px;
 }
 .consult-buton {
 	width: 100rpx;
 	height: 50rpx;
 	border-radius: 20px;
-	background: #d02129;
-	color: #ffffff;
+	color: #d02129;
+	border: 2rpx solid #d02129;
 	text-align: center;
 	font-size: 28rpx;
 	line-height: 50rpx;
@@ -108,8 +109,8 @@
 	justify-content: space-around;
 }
 .item-body image {
-	width: 200rpx;
-	height: 200rpx;
+	width: 180rpx;
+	height: 180rpx;
 }
 
 </style>

@@ -24,9 +24,9 @@
             </div>
           </div>
           <div class="staff-info">
-            <img class="staff-avatar" :src="staffData.avatar" @click="showOnlineConfig = !showOnlineConfig"/>
+            <img class="staff-avatar" :src="staffData.avatar" @contextmenu.prevent.stop="onlineConfigVisible = true"/>
             <span :class="isOnline ?'spot online':'spot offline'"></span>
-            <div class="action-box" v-if="showOnlineConfig">
+            <div class="action-box" v-if="onlineConfigVisible">
               <div class="action-item" @click="switchOnlineStatus">{{ isOnline ? '下线':'上线' }}</div>
               <div class="action-item" @click="logout">退出登录</div>
             </div>
@@ -51,7 +51,7 @@ export default {
       teamData: null,
       currentPage: this.$route.name,
       unreadTotal: null,
-      showOnlineConfig: false
+      onlineConfigVisible: false
     };
   },
   created() {
@@ -64,6 +64,9 @@ export default {
       this.connectGoEasy();  //连接goeasy
     }
     this.initialOnlineStatus();
+    document.addEventListener('click', () => {
+      this.onlineConfigVisible = false
+    })
   },
   watch: {
     $route() {
@@ -97,7 +100,7 @@ export default {
       })
     },
     switchOnlineStatus () {
-      this.showOnlineConfig = false;
+      this.onlineConfigVisible = false;
       if (this.isOnline) {
         this.goEasy.im.csTeam(this.teamData.id).offline({
           onSuccess: () => {

@@ -17,12 +17,13 @@
 		padding: 16rpx;
 		border-radius: 20rpx;
 		color: #000000;
-		background: #ffffff;
+		background: #EFEFEF;
 		word-break: break-all;
 		text-align: left;
 		vertical-align: center;
 		display: block;
 		display: flex;
 		flex-direction: row;
+		font-size: 28rpx;
 	}
 </style>
