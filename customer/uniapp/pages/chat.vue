@@ -448,7 +448,7 @@
 	}
 	.chatInterface{
 		height: 100%;
-		background-color: #EFEFEF;
+		background-color: #FFFFFF;
 	}
 	.scroll-view{
 		padding-left: 20rpx;

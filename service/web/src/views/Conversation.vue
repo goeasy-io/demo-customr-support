@@ -240,7 +240,6 @@ export default {
         }
         .item-info-bottom {
           display: flex;
-          justify-content: space-between;
           .more-action {
             font-size: 18px;
             cursor: pointer;

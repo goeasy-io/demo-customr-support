@@ -22,7 +22,7 @@
 								<text v-else-if="conversation.lastMessage.type === 'image'">[图片消息]</text>
 								<text v-else-if="conversation.lastMessage.type === 'goods'">[自定义消息:商品]</text>
 								<text v-else-if="conversation.lastMessage.type === 'CLOSED'">会话已结束</text>
-								<text v-else-if="conversation.lastMessage.type === 'ACCEPTED'">{{conversation.lastMessage.senderData.name}}已接入</text>
+								<text v-else-if="conversation.lastMessage.type === 'ACCEPTED'">已接入</text>
 								<text v-else>[[未识别内容]]</text>
 							</view>
 							<view class="item-info-bottom_action" @click.stop="showAction(conversation)"></view>

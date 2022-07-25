@@ -13,8 +13,8 @@ new Vue({
 }).$mount('#app')
 
 const goEasy = GoEasy.getInstance({
-	host: 'jchangzhou.goeasy.io', //应用所在的区域地址: 【hangzhou.goeasy.io |singapore.goeasy.io】
-	appkey: 'BC-b8461c8da1864bf7a4e9a1c36d9fbe75', // common key,
+	host: 'hangzhou.goeasy.io', //应用所在的区域地址: 【hangzhou.goeasy.io |singapore.goeasy.io】
+	appkey: 'BC-xxxx', // common key,
 	modules: ['im'],
 	// true表示支持通知栏提醒，false则表示不需要通知栏提醒
 	allowNotification: true, //仅有效于app,小程序和H5将会被自动忽略
