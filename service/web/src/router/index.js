@@ -17,11 +17,8 @@ const routes = [
   {
     path: '/',
     component: Home,
+	  redirect: "/conversation",
     children: [
-      {
-        path: '',
-        redirect: '/conversation'
-      },
       {
         path: '/conversation',
         name: 'Conversation',
