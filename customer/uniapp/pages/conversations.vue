@@ -20,7 +20,7 @@
 								<text v-else-if="conversation.lastMessage.type === 'video'">[视频消息]</text>
 								<text v-else-if="conversation.lastMessage.type === 'audio'">[语音消息]</text>
 								<text v-else-if="conversation.lastMessage.type === 'image'">[图片消息]</text>
-								<text v-else-if="conversation.lastMessage.type === 'goods'">[自定义消息:商品]</text>
+								<text v-else-if="conversation.lastMessage.type === 'order'">[自定义消息:订单]</text>
 								<text v-else-if="conversation.lastMessage.type === 'CLOSED'">会话已结束</text>
 								<text v-else-if="conversation.lastMessage.type === 'ACCEPTED'">已接入</text>
 								<text v-else>[[未识别内容]]</text>

@@ -88,7 +88,7 @@ export default {
         text-align: center;
         font-size: 35px;
         font-weight: 600;
-        color: #93262b;
+        color: #d02129;
       }
       .login-form {
         width: 300px;
@@ -119,7 +119,7 @@ export default {
           .form-item-btn {
             width: 100%;
             color: #FFFFFF;
-            background-color: #93262b;
+            background-color: #d02129;
             border: none;
             height: 35px;
             cursor: pointer;
@@ -129,7 +129,7 @@ export default {
           }
         }
         .form-error {
-          color: #93262b;
+          color: #d02129;
           margin-bottom: 22px;
         }
       }

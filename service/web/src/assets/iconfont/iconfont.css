@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2486466 */
-  src: url('iconfont.woff2?t=1658397556896') format('woff2'),
-       url('iconfont.woff?t=1658397556896') format('woff'),
-       url('iconfont.ttf?t=1658397556896') format('truetype');
+  src: url('iconfont.woff2?t=1658808692204') format('woff2'),
+       url('iconfont.woff?t=1658808692204') format('woff'),
+       url('iconfont.ttf?t=1658808692204') format('truetype');
 }
 
 .iconfont {
@@ -13,16 +13,40 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-gengduo:before {
+  content: "\e605";
+}
+
+.icon-gengduo1:before {
+  content: "\e8a6";
+}
+
+.icon-end_chat:before {
+  content: "\e6f4";
+}
+
+.icon-quxiaogoutong:before {
+  content: "\e662";
+}
+
+.icon-luyin:before {
+  content: "\e610";
+}
+
+.icon-IMweb_news:before {
+  content: "\e619";
+}
+
+.icon-keyborad:before {
+  content: "\e91c";
+}
+
 .icon-haoyou:before {
   content: "\e784";
 }
 
 .icon-haoyou1:before {
   content: "\e626";
-}
-
-.icon-jieshu:before {
-  content: "\e617";
 }
 
 .icon-more:before {
@@ -61,12 +85,20 @@
   content: "\e634";
 }
 
-.icon-jianpanqiehuan:before {
-  content: "\e7db";
-}
-
 .icon-zhanghu:before {
   content: "\e601";
+}
+
+.icon-dingdan1:before {
+  content: "\e898";
+}
+
+.icon-jianpan:before {
+  content: "\e608";
+}
+
+.icon-maikefeng:before {
+  content: "\e73b";
 }
 
 .icon-at:before {

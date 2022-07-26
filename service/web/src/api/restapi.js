@@ -109,7 +109,7 @@ class RestApi {
 			phone: '138xxxxxxxx',
 		}
 	];
-	goods = [
+	orders = [
 		{
 			url: '/static/images/goods1-1.jpg',
 			name: '青桔柠檬气泡美式',
@@ -146,8 +146,8 @@ class RestApi {
 		return this.shop.find((shop) => shop.staffs.indexOf(staffId) !== -1);
 	}
 
-	getGoodsList () {
-		return this.goods;
+	getOrderList () {
+		return this.orders;
 	}
 
 	findStaff (username, password) {

@@ -24,7 +24,7 @@
             </div>
           </div>
           <div class="staff-info">
-            <img class="staff-avatar" :src="staffData.avatar" @contextmenu.prevent.stop="onlineConfigVisible = true"/>
+            <img class="staff-avatar" :src="staffData.avatar" @click="onlineConfigVisible = !onlineConfigVisible"/>
             <span :class="isOnline ?'spot online':'spot offline'"></span>
             <div class="action-box" v-if="onlineConfigVisible">
               <div class="action-item" @click="switchOnlineStatus">{{ isOnline ? '下线':'上线' }}</div>
@@ -64,9 +64,6 @@ export default {
       this.connectGoEasy();  //连接goeasy
     }
     this.initialOnlineStatus();
-    document.addEventListener('click', () => {
-      this.onlineConfigVisible = false
-    })
   },
   watch: {
     $route() {
@@ -202,7 +199,7 @@ export default {
           color: #ffffff;
         }
         .selected {
-          color: #af4e4e !important;
+          color: #d02129 !important;
         }
       }
       .staff-info {

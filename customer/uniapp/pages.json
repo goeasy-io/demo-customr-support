@@ -4,7 +4,7 @@
 			"path": "pages/home",
 			"style": {
 				"navigationBarTitleText": "首页",
-				"navigationBarBackgroundColor" : "#F3F4F7",
+				"navigationBarBackgroundColor" : "#FFFFFF",
 				"navigationBarTextStyle" : "black"
 			}			
 		},
@@ -12,7 +12,7 @@
 			"path": "pages/conversations",
 			"style": {
 				"navigationBarTitleText": "消息",
-				"navigationBarBackgroundColor" : "#F3F4F7",
+				"navigationBarBackgroundColor" : "#FFFFFF",
 				"navigationBarTextStyle" : "black",
 				"app-plus" : {
 					"titleNView" : true
@@ -23,7 +23,7 @@
 			"path": "pages/login",
 			"style": {
 				"navigationBarTitleText": "登录",
-				"navigationBarBackgroundColor" : "#ffffff",
+				"navigationBarBackgroundColor" : "#FFFFFF",
 				"navigationBarTextStyle":"white",
 				"app-plus" : {
 					"titleNView" : true
@@ -34,7 +34,7 @@
 			"path": "pages/mine",
 			"style": {
 				"navigationBarTitleText": "我",
-				"navigationBarBackgroundColor" : "#F3F4F7",
+				"navigationBarBackgroundColor" : "#FFFFFF",
 				"navigationBarTextStyle" : "black"
 			}			
 		},
@@ -42,7 +42,7 @@
 			"path": "pages/chat",
 			"style": {
 				"navigationBarTitleText": "聊天",
-				"navigationBarBackgroundColor" : "#F3F4F7",
+				"navigationBarBackgroundColor" : "#FFFFFF",
 				"enablePullDownRefresh": true
 			}			
 		}  
@@ -50,31 +50,31 @@
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "",
-		"navigationBarBackgroundColor": "#F3F4F7",
+		"navigationBarBackgroundColor": "#FFFFFF",
 		"backgroundColor": "#F8F8F8"
 	},
 	"tabBar" : {
 		"color":"#454750",
 		"selectedColor":"#d02129",
 		"borderStyle":"black",
-		"backgroundColor":"#F8F7F7",
+		"backgroundColor":"#FFFFFF",
 		"height" : "60px",
 		"list" : [
 			{
 				"pagePath" : "pages/home",
-				"text":"首页",
+				"text":"",
 				"iconPath":"static/images/shop.png",
 				"selectedIconPath":"static/images/shop-active.png"
 			},
 			{
 				"pagePath" : "pages/conversations",
-				"text" : "消息",
+				"text" : "",
 				"iconPath":"static/images/msg.png",
 				"selectedIconPath":"static/images/msg-active.png"
 			},
 			{
 				"pagePath" : "pages/mine",
-				"text" : "我",
+				"text" : "",
 				"iconPath":"static/images/mine.png",
 				"selectedIconPath":"static/images/mine-active.png"
 			}

@@ -43,14 +43,14 @@
 										<view class="video-play-icon"></view>
 									</view>
 									<GoEasyAudioPlayer v-if="message.type ==='audio'" :src="message.payload.url" :duration="message.payload.duration" />
-									<view v-if="message.type === 'goods'" class="goods-content">
-										<view class="goods-description">为你推荐：</view>
-										<view style="display: flex;background-color: #fffcfc;">
+									<view v-if="message.type === 'order'" class="order-content">
+										<view class="order-description">发送订单：</view>
+										<view class="order-body">
 											<image :src="message.payload.url"></image>
-											<view class="goods-info">
-												<view class="goods-name">{{message.payload.name}}</view>
-												<view style="color: #434343;">月销{{message.payload.sales}}</view>
-												<view class="foods-price">{{message.payload.price}}</view>
+											<view class="order-info">
+												<view class="order-name">{{message.payload.name}}</view>
+												<view>月销{{message.payload.sales}}</view>
+												<view>{{message.payload.price}}</view>
 											</view>
 										</view>
 									</view>
@@ -90,10 +90,34 @@
 					<image src="/static/images/shipin.png"></image>
 					<text>视频</text>
 				</view>
+				<view class="more-item" @click="customMessage.visible = true">
+					<image src="/static/images/zidingyi.png"></image>
+					<text>自定义消息</text>
+				</view>
 			</view>
 		</view>
 		<view class="record-loading" v-if="audio.recording"></view>
 		<video v-if="videoPlayer.visible" :src="videoPlayer.url" id="videoPlayer" @fullscreenchange="onVideoFullScreenChange"></video>
+		<view class="order-list" v-if="customMessage.visible">
+			<view class="orders-content">
+				<view class="title">选择一个订单</view>
+				<view class="orders">
+					<view
+						:class="customMessage.selectedOrder === order ? 'order-item order-item-checked':'order-item'"
+						v-for="order in customMessage.orderList"
+						@click="selectOrder(order)"
+					>
+						<image class="order-img" :src="order.url"></image>
+						<view class="order-name">{{order.name}}</view>
+						<view class="order-price">{{order.price}}</view>
+					</view>
+					<view class="action">
+						<view class="cancel-btn" @click="closeCustomMessageForm">取消</view>
+						<view class="send-btn" @click="sendCustomMessage">发送</view>
+					</view>
+				</view>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -130,6 +154,11 @@
 				},
 				//是否展示‘其他消息类型面板’
 				otherTypesMessagePanelVisible: false,
+				customMessage: {
+					orderList:[],
+					visible: false,
+					selectedOrder: null
+				},
 				history: {
 					messages: [],
 					allLoaded: false,
@@ -165,6 +194,7 @@
 		onLoad(options) {
 			let shopId = options.to;
 			this.shop = restApi.findShopById(shopId);
+			this.customMessage.orderList = restApi.getOrderList();
 			this.to = {
 				id : this.shop.id,
 				type : this.GoEasy.IM_SCENE.CS,
@@ -261,7 +291,7 @@
 				this.text +=emojiKey;
 			},
 			sendAudioMessage (file) {
-				let audioMessage = this.goEasy.im.createAudioMessage({
+				this.goEasy.im.createAudioMessage({
 					to : this.to,
 					file: file,
 					onProgress :function (progress) {
@@ -365,7 +395,7 @@
 			sendVideoMessage () {
 				uni.chooseVideo({
 					success : (res) => {
-						let videoMessage = this.goEasy.im.createVideoMessage({
+						this.goEasy.im.createVideoMessage({
 							to : this.to,
 							file: res,
 							onProgress :function (progress) {
@@ -386,7 +416,7 @@
 					count : 9,
 					success: (res) => {
 						res.tempFiles.forEach(file => {
-							let imageMessage = this.goEasy.im.createImageMessage({
+							this.goEasy.im.createImageMessage({
 								to : this.to,
 								file: file,
 								onProgress :function (progress) {
@@ -402,6 +432,23 @@
 						})
 					}
 				});
+			},
+			selectOrder (order) {
+				this.customMessage.selectedOrder = order;
+			},
+			closeCustomMessageForm () {
+				this.customMessage.visible = false;
+				this.customMessage.selectedOrder = null;
+			},
+			sendCustomMessage () {
+				let customMessage = this.goEasy.im.createCustomMessage({
+					type : 'order',
+					payload : this.customMessage.selectedOrder,
+					to : this.to,
+				});
+				this.sendMessage(customMessage);
+				this.customMessage.selectedOrder = null;
+				this.customMessage.visible = false;
 			},
 			showImageFullScreen (e) {
 				let imagesUrl = [e.currentTarget.dataset.url];
@@ -539,31 +586,35 @@
 		width: 50rpx;
 		height: 50rpx;
 	}
-	.scroll-view .content .goods-content {
+	.scroll-view .content .order-content {
 		border-radius: 20rpx;
 		background: #EFEFEF;
 		padding: 16rpx;
 		display: flex;
 		flex-direction: column;
 	}
-	.scroll-view .content .goods-content .goods-description {
+	.scroll-view .content .order-content .order-description {
 		font-weight: bold;
 		margin-bottom: 10rpx;
 	}
-	.scroll-view .content .goods-content .goods-info {
+	.scroll-view .content .order-content .order-body {
+		display: flex;
+		background-color: #fffcfc;
+	}
+	.scroll-view .content .order-content .order-info {
 		display: flex;
 		flex-direction: column;
 		justify-content: space-around;
 		font-size: 28rpx;
 		padding: 25rpx 10rpx;
 	}
-	.scroll-view .content .goods-content .goods-info .goods-name{
+	.scroll-view .content .order-content .order-info .order-name{
 		font-size: 30rpx;
 	}
-	.scroll-view .content .goods-content .goods-info .foods-price{
+	.scroll-view .content .order-content .order-info .foods-price{
 		color: #d02129;
 	}
-	.scroll-view .content .goods-content image{
+	.scroll-view .content .order-content image{
 		width: 200rpx;
 		height: 200rpx;
 	}
@@ -602,7 +653,7 @@
 		width: 100%;
 	}
 	.action-box .action-top .record-icon{
-		border-radius: 50%;
+		border-radius: 55%;
 		font-size: 32rpx;
 		margin: 0 10rpx;
 		width: 80rpx;
@@ -624,8 +675,8 @@
 		-webkit-tap-highlight-color:rgba(0,0,0,0);
 	}
 	.action-box .record-icon.record-open{
-		background: url("/static/images/jianpan.png") no-repeat center;
-		background-size: 70%;
+		background: url("/static/images/jianpan.png") no-repeat center #ffffff;
+		background-size: 60%;
 		-webkit-tap-highlight-color:rgba(0,0,0,0);
 	}
 	.action-box .action-top .img-video{
@@ -684,7 +735,7 @@
 		width: 80rpx;
 		height: 80rpx;
 		background: url("/static/images/send.png") no-repeat center;
-		background-size: 56%;
+		background-size: 55%;
 	}
 	.action-bottom{
 		height: 300rpx;
@@ -750,6 +801,89 @@
 	.img-layer {
 		height: 100%!important;
 		width: 100%!important;
+	}
+	
+	.order-list {
+		position: fixed;
+		top: 0;
+		bottom: 0;
+		z-index: 10;
+		width: 100vw;
+		height: 100vh;
+		background: rgba(0,0,0,0.5);
+	}
+
+	.orders-content {
+		position: absolute;
+		width: 100%;
+		height: 600rpx;
+		bottom: 0;
+		background: #F4F5F9;
+		z-index: 200;
+	}
+
+	.title{
+		text-align: center;
+		font-weight: 600;
+		font-size: 34rpx;
+		color: #000000;
+		line-height: 80rpx;
+	}
+
+	.orders {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.order-item{
+		height: 80rpx;
+		display: flex;
+		align-items: center;
+		justify-content: space-around;
+		padding: 10px 0;
+	}
+	
+	.order-item-checked {
+		background-color: #e9dddd;
+	}
+	
+	.order-img {
+		width: 80rpx;
+		height: 80rpx;
+	}
+
+	.order-name {
+		width: 280rpx;
+	}
+
+	.action{
+		display: flex;
+		justify-content: space-around;
+		height: 80rpx;
+		margin-top: 40rpx;
+	}
+
+	.send-btn{
+		width:200rpx;
+		height: 80rpx;
+		background: #d02129;
+		line-height:80rpx;
+		text-align: center;
+		border-radius: 10rpx;
+		color: #FFFFFF;
+		font-size: 32rpx;
+	}
+	.cancel-btn{
+		width:200rpx;
+		height: 80rpx;
+		background: #FFFFFF;
+		line-height:80rpx;
+		text-align: center;
+		border-radius: 10rpx;
+		color: #666666;
+		font-size: 32rpx;
+		border: 1px solid grey;
+		box-sizing: border-box;
 	}
 
 	.video-snapshot{

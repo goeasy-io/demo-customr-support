@@ -43,7 +43,7 @@
                 <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'image'">[图片消息]</div>
                 <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'video'">[视频消息]</div>
                 <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'audio'">[语音消息]</div>
-                <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'goods'">[自定义消息:商品]</div>
+                <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'order'">[自定义消息:订单]</div>
                 <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'CLOSED'">会话已结束</div>
                 <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'ACCEPTED'">{{ conversation.lastMessage.senderData.name }}已接入</div>
                 <div class="item-info-message" v-else>[未识别内容]</div>

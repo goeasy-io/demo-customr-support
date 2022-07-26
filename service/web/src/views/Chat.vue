@@ -20,10 +20,14 @@
             <div v-if="message.type === 'ACCEPTED'" class="accept-message">
               {{message.senderData.name}}已接入
             </div>
-            <div v-if="message.type === 'CLOSED'" class="accept-message">
+            <div v-else-if="message.type === 'CLOSED'" class="accept-message">
               {{message.payload.text}}
             </div>
             <div v-else class="message-item-content" :class="{ self: message.senderId !== customer.uuid }">
+              <div class="sender-info">
+                <img class="sender-avatar" :src="message.senderData.avatar" />
+                <div class="sender-name" v-if="message.senderId !== customer.uuid">{{message.senderData.name}}</div>
+              </div>
               <div class="message-content">
                 <div class="message-payload">
                   <div class="pending" v-if="message.status === 'sending'"></div>
@@ -47,14 +51,14 @@
                     :thumbnail="message.payload.thumbnail"
                     :src="message.payload.video.url"
                   />
-                  <div v-if="message.type === 'goods'" class="content-link">
-                    <div class="goods-description">为你推荐：</div>
-                    <div style="display: flex;background-color: #fffcfc;">
+                  <div v-if="message.type === 'order'" class="content-order">
+                    <div class="order-description">发送订单：</div>
+                    <div class="order-content">
                       <img :src="message.payload.url"/>
-                      <div class="goods-info">
-                        <div class="goods-name">{{message.payload.name}}</div>
+                      <div class="order-info">
+                        <div class="order-name">{{message.payload.name}}</div>
                         <div>月销17</div>
-                        <div class="foods-price">{{message.payload.price}}</div>
+                        <div>{{message.payload.price}}</div>
                       </div>
                     </div>
                   </div>
@@ -125,16 +129,16 @@
             <!-- 商品链接 -->
             <div class="action-item">
               <div v-if="customMessage.visible" class="link-box">
-                <div class="goods-item" v-for="goods in customMessage.goodsList" @click="sendCustomMessage(goods)">
-                  <img class="goods-img" :src="goods.url">
-                  <div>{{goods.name}}</div>
+                <div class="order-item" v-for="order in customMessage.orderList" @click="sendCustomMessage(order)">
+                  <img class="order-img" :src="order.url">
+                  <div>{{order.name}}</div>
                 </div>
               </div>
               <i class="iconfont icon-lianjie" title="商品链接" @click="showLinkBox"></i>
             </div>
           </div>
           <div class="session-action">
-            <i class="iconfont icon-h" title="结束会话" @click="endSession"></i>
+            <i class="iconfont icon-end_chat" title="结束会话" @click="endSession"></i>
           </div>
         </div>
 
@@ -207,7 +211,7 @@ export default {
         url: ''
       },
       customMessage: {
-        goodsList:[],
+        orderList:[],
         visible: false,
       }
     }
@@ -222,11 +226,11 @@ export default {
     }
     this.staffData = JSON.parse(localStorage.getItem("staffData"));
     this.teamData = restApi.findShopByStaff(this.staffData.uuid);
-    this.customMessage.goodsList = restApi.getGoodsList();
+    this.customMessage.orderList = restApi.getOrderList();
 
     this.loadHistoryMessage(true,0);
     this.getCustomerStatus();
-    if (this.customerStatus.status === 'ACCEPTED') {
+    if (this.customerStatus.status === 'ACCEPTED') { // 已接入的会话才标记已读
       this.markMessageAsRead();
     }
     this.goEasy.im.on(this.GoEasy.IM_EVENT.CS_MESSAGE_RECEIVED, this.onReceivedMessage);
@@ -253,11 +257,11 @@ export default {
     onReceivedMessage (message) {
       if (message.senderId === this.customer.uuid || message.type === 'ACCEPTED' || message.type === 'CLOSED') {
         this.history.messages.push(message);
-        if (this.customerStatus.status === 'ACCEPTED') {
+        if (this.customerStatus.status === 'ACCEPTED') { // 已接入的会话才标记已读
           this.markMessageAsRead();
         }
       }
-      this.scrollToBottom(0);
+      this.scrollTo(0);
     },
     markMessageAsRead() {
       this.goEasy.im.csTeam(this.teamData.id).markMessageAsRead({
@@ -271,7 +275,7 @@ export default {
         },
       });
     },
-    loadHistoryMessage(scrollToBottom,offsetHeight) {
+    loadHistoryMessage(scrollTo,offsetHeight) {
       this.history.loading = true;
       let lastMessageTimeStamp = null;
       let lastMessage = this.history.messages[0];
@@ -290,11 +294,12 @@ export default {
             this.history.allLoaded = true;
           } else {
             this.history.messages = messages.concat(this.history.messages);
+            console.log('history:',this.history.messages);
             if (messages.length < 9) {
               this.history.allLoaded = true;
             }
-            if (scrollToBottom) {
-              this.scrollToBottom(offsetHeight);
+            if (scrollTo) {
+              this.scrollTo(offsetHeight);
             }
           }
         },
@@ -372,7 +377,7 @@ export default {
     sendImageMessage(e) {
       let fileList = [...e.target.files];
       fileList.forEach((file) => {
-        const imageMessage = this.goEasy.im.csTeam(this.teamData.id).createImageMessage({
+        this.goEasy.im.csTeam(this.teamData.id).createImageMessage({
           file: file,
           to: this.to,
           onProgress :function (progress) {
@@ -389,7 +394,7 @@ export default {
     },
     sendVideoMessage(e) {
       const file = e.target.files[0];
-      const videoMessage = this.goEasy.im.csTeam(this.teamData.id).createVideoMessage({
+      this.goEasy.im.csTeam(this.teamData.id).createVideoMessage({
         file: file,
         to: this.to,
         onProgress :function (progress) {
@@ -406,18 +411,18 @@ export default {
     showLinkBox () {
       this.customMessage.visible = true;
     },
-    sendCustomMessage(goods) {
+    sendCustomMessage(order) {
       this.customMessage.visible = false;
       const customMessage = this.goEasy.im.csTeam(this.teamData.id).createCustomMessage({
-        type : 'goods',
-        payload : goods,
+        type : 'order',
+        payload : order,
         to: this.to,
       });
       this.sendMessage(customMessage);
     },
     sendMessage(message) {
       this.history.messages.push(message);
-      this.scrollToBottom(0);
+      this.scrollTo(0);
       this.goEasy.im.sendMessage({
         message: message,
         onSuccess: (message) => {
@@ -425,13 +430,16 @@ export default {
         },
       });
     },
-    listenScroll(e){
+    listenScroll(e){ // todo:命名
+      // 监听视图滚动到顶部，自动加载历史消息
       if (e.target.scrollTop === 0 && !this.history.allLoaded) {
         const offsetHeight = this.$refs.messageList.offsetHeight;
+        // 记录加载消息前scrollView的高度，加载历史消息之后滚动回原来的位置
         this.loadHistoryMessage(true,offsetHeight);
       }
     },
-    scrollToBottom(offsetHeight) {
+    scrollTo(offsetHeight) {
+      // offsetHeight 距底部的偏移高度，为0则表示滚动到底部
       this.$nextTick(() => {
         this.$refs.scrollView.scrollTop = this.$refs.messageList.scrollHeight - offsetHeight;
       });
@@ -457,6 +465,7 @@ export default {
     .chat-avatar {
       width: 40px;
       height: 40px;
+      border-radius: 50%;
     }
     .chat-name {
       margin-left: 10px;
@@ -466,7 +475,7 @@ export default {
     display: flex;
     flex-direction: column;
     overflow-y: scroll;
-    padding: 0 15px 250px 15px;
+    padding: 0 15px 200px 15px;
     scrollbar-color: transparent transparent;
     scrollbar-track-color: transparent;
     -ms-scrollbar-track-color: transparent;
@@ -479,7 +488,7 @@ export default {
     .history-loaded {
       text-align: center;
       font-size: 12px;
-      color: #af4e4e;
+      color: #d02129;
       cursor: pointer;
       line-height: 20px;
     }
@@ -506,6 +515,18 @@ export default {
         margin: 5px 0;
         overflow: hidden;
         display: flex;
+        .sender-info {
+          margin: 5px;
+          .sender-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+          }
+          .sender-name {
+            color: #606164;
+            text-align: center;
+          }
+        }
         .message-content {
           max-width: calc(100% - 100px);
           .message-payload{
@@ -528,11 +549,10 @@ export default {
             color: gray;
             font-size: 12px;
             text-align: end;
-            margin: 0 10px;
             height: 16px;
           }
           .message-unread {
-            color: #af4e4e;
+            color: #d02129;
             font-size: 12px;
             text-align: end;
             margin: 0 10px;
@@ -546,7 +566,7 @@ export default {
             font-size: 14px;
             font-weight: 500;
             padding: 6px 8px;
-            margin: 5px;
+            margin: 5px 0;
             line-height: 25px;
             white-space: pre-line;
             overflow-wrap: anywhere;
@@ -569,7 +589,7 @@ export default {
           .normal-img {
             height: 100%;
           }
-          .content-link {
+          .content-order {
             border-radius: 10px;
             background: #eeeeee;
             padding: 8px;
@@ -579,17 +599,21 @@ export default {
               width: 100px;
               height: 100px;
             }
-            .goods-description {
+            .order-description {
               font-weight: bold;
               margin-bottom: 20px;
             }
-            .goods-info {
+            .order-content {
+              display: flex;
+              background-color: #fffcfc;
+            }
+            .order-info {
               display: flex;
               flex-direction: column;
               justify-content: space-around;
               font-size: 14px;
               padding: 14px 5px;
-              .goods-name{
+              .order-name{
                 font-size: 15px;
               }
             }
@@ -615,7 +639,7 @@ export default {
   .chat-footer {
     border-top: 1px solid #dcdfe6;
     width: 100%;
-    height: 250px;
+    height: 200px;
     position: absolute;
     bottom: 0;
     background: #FFFFFF;
@@ -638,7 +662,7 @@ export default {
             outline: none;
           }
           &:hover {
-            color: #af4e4e;
+            color: #d02129;
           }
         }
         .chat-action {
@@ -674,7 +698,7 @@ export default {
               }
             }
             .link-box {
-              width: 156px;
+              width: 160px;
               position: absolute;
               top: -146px;
               left: -11px;
@@ -687,12 +711,15 @@ export default {
               box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
               word-break: break-all;
               border-radius: 4px;
-              .goods-item {
+              .order-item {
                 display: flex;
                 align-items: center;
-                .goods-img {
+                margin: 5px 0;
+                cursor: pointer;
+                .order-img {
                   width: 40px;
                   height: 40px;
+                  margin-right: 5px;
                 }
               }
             }
@@ -709,7 +736,7 @@ export default {
         padding: 0 10px;
         flex: 1;
         .input-content {
-          height: 160px;
+          height: 110px;
           border: none;
           resize: none;
           display: block;
@@ -728,9 +755,9 @@ export default {
           width: 60px;
           height: 30px;
           font-size: 15px;
-          border: 1px solid #af4e4e;
+          border: 1px solid #d02129;
           background-color: #ffffff;
-          color: #af4e4e;
+          color: #d02129;
           border-radius: 5px;
         }
       }
@@ -744,16 +771,16 @@ export default {
       justify-content: center;
       .accept-info {
         font-size: 18px;
-        color: #af4e4e;
+        color: #d02129;
         margin-bottom: 10px;
       }
       .accept-btn {
         width: 75px;
         height: 30px;
         font-size: 15px;
-        border: 1px solid #af4e4e;
+        border: 1px solid #d02129;
         background-color: #ffffff;
-        color: #af4e4e;
+        color: #d02129;
         border-radius: 5px;
         cursor: pointer;
       }
