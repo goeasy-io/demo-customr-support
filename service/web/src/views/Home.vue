@@ -2,7 +2,12 @@
   <div class="home">
     <div class="home-container">
       <div class="home-menu">
-        <img class="shop-avatar" :src="teamData.avatar"/>
+        <div class="menu-header">
+			<img class="shop-avatar" :src="teamData.avatar" />
+			<div class="team-info">
+				{{teamData.name}}asd54dsaaaaaaaaaasd54dsaaaaaaaaaasd54dsaaaaaaaaaasd54dsaaaaaaaaaasd54dsaaaaaaaaaasd54dsaaaaaaaaa
+			</div>
+		</div>
         <div class="menu-box">
           <div class="menu-list">
             <div class="menu-item">
@@ -26,11 +31,13 @@
           <div class="staff-info">
             <img class="staff-avatar" :src="staffData.avatar" @click="onlineConfigVisible = !onlineConfigVisible"/>
             <span :class="isOnline ?'spot online':'spot offline'"></span>
-            <div class="action-box" v-if="onlineConfigVisible">
-              <div class="action-item" @click="switchOnlineStatus">{{ isOnline ? '下线':'上线' }}</div>
-              <div class="action-item" @click="logout">退出登录</div>
-            </div>
           </div>
+		  <div @click.prevent="closeOnlinePopup()" class="action-wrap" v-if="onlineConfigVisible">
+		  	<div class="action-box" v-if="onlineConfigVisible">
+		  	  <div class="action-item" @click="switchOnlineStatus">{{ isOnline ? '下线':'上线' }}</div>
+		  	  <div class="action-item" @click="logout">退出登录</div>
+		  	</div>
+		  </div>
         </div>
       </div>
       <div class="home-main">
@@ -50,8 +57,8 @@ export default {
       staffData: null,
       teamData: null,
       currentPage: this.$route.name,
-      unreadTotal: null,
-      onlineConfigVisible: false
+      unreadTotal: 0,
+      onlineConfigVisible: false,
     };
   },
   created() {
@@ -64,6 +71,7 @@ export default {
       this.connectGoEasy();  //连接goeasy
     }
     this.initialOnlineStatus();
+	 this.goEasy.im.on(this.GoEasy.IM_EVENT.CONVERSATIONS_UPDATED, this.setUnreadTotal);
   },
   watch: {
     $route() {
@@ -86,6 +94,9 @@ export default {
         }
       });
     },
+	setUnreadTotal(content) {
+		this.unreadTotal = content.unreadTotal;
+	},
     initialOnlineStatus () {
       this.goEasy.im.csTeam(this.teamData.id).isOnline({
         onSuccess: (result) => {
@@ -131,6 +142,9 @@ export default {
         }
       });
     },
+	closeOnlinePopup() {
+		this.onlineConfigVisible = false;
+	}
   },
 };
 </script>
@@ -159,9 +173,42 @@ export default {
       .shop-avatar {
         width: 50px;
         height: 50px;
-        margin: 20px auto;
         border-radius: 10px;
       }
+	  
+	  .menu-header {
+	  	  position: relative;
+	  	  margin: 20px auto;
+		  cursor: pointer;
+	  }
+	  
+	  .menu-header:hover .team-info {
+	  	  display: block;
+		  text-decoration: none;
+	  }
+	  
+	  .team-info {
+	  	  display: none;
+	  	  position: absolute;
+	  	  bottom: -20px;
+	  	  left: 0;
+	  	  right: 0;
+	  	  z-index: 1;
+		  
+		  width: 100px;
+		  padding: 0 8px;
+		  
+		  border: 0.5px solid hsla(0,9%,39%,.15);
+		  border-radius: 4px;
+		  box-sizing: border-box;
+		  
+		  overflow: hidden;
+		  text-overflow: ellipsis;
+		  white-space: nowrap;
+		  font-size: 12px;
+		  color: rgba(0,0,0,.5);
+	  }
+	  
       .menu-box {
         padding: 40px 0;
         flex: 1;
@@ -195,7 +242,7 @@ export default {
           line-height: 18px;
           text-align: center;
           border-radius: 50%;
-          background-color: #AF4E4E;
+          background-color: #fa5151;
           color: #ffffff;
         }
         .selected {
@@ -225,17 +272,19 @@ export default {
         .offline {
           background-color: #999999;
         }
+		
         .action-box {
           position: absolute;
-          left: 60px;
-          top: -25px;
+          left: 78px;
+		  bottom: 40px;
           width: 100px;
           height: 100px;
-          background: #dddddd;
+          background: #fff;
           border-radius: 10px;
           font-size: 14px;
           text-align: center;
-          z-index: 99;
+          z-index: 3;
+		  box-shadow: 2px 8px 20px #999999;
           .action-item {
             height: 50px;
             display: flex;
@@ -247,6 +296,38 @@ export default {
           }
         }
       }
+	  
+	  .action-wrap {
+	  	position: absolute;
+	  	top: 0;
+	  	left: 0;
+	  	right: 0;
+	  	bottom: 0;
+	  	z-index: 2;
+		
+		.action-box {
+		  position: absolute;
+		  left: 80px;
+		  bottom: 40px;
+		  width: 100px;
+		  height: 100px;
+		  background: #fff;
+		  border-radius: 10px;
+		  font-size: 14px;
+		  text-align: center;
+		  z-index: 3;
+		  box-shadow: 2px 8px 20px #999999;
+		  .action-item {
+		    height: 50px;
+		    display: flex;
+		    align-items: center;
+		    justify-content: center;
+		    &:hover {
+		      cursor: pointer;
+		    }
+		  }
+		}
+	  }
     }
 
     .home-main {

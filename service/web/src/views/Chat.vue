@@ -17,11 +17,11 @@
             {{ renderMessageDate(message, index) }}
           </div>
           <div class="message-item">
-            <div v-if="message.type === 'ACCEPTED'" class="accept-message">
+            <div v-if="message.type === 'CS_ACCEPTED'" class="accept-message">
               {{message.senderData.name}}已接入
             </div>
-            <div v-else-if="message.type === 'CLOSED'" class="accept-message">
-              {{message.payload.text}}
+            <div v-else-if="message.type === 'CS_ENDED'" class="accept-message">
+              {{message.senderData.name}}已结束
             </div>
             <div v-else class="message-item-content" :class="{ self: message.senderId !== customer.uuid }">
               <div class="sender-info">
@@ -129,7 +129,7 @@
             <!-- 商品链接 -->
             <div class="action-item">
               <div v-if="customMessage.visible" class="link-box">
-                <div class="order-item" v-for="order in customMessage.orderList" @click="sendCustomMessage(order)">
+                <div class="order-item" v-for="(order, index) in customMessage.orderList" :key="index" @click="sendCustomMessage(order)">
                   <img class="order-img" :src="order.url">
                   <div>{{order.name}}</div>
                 </div>
@@ -213,7 +213,7 @@ export default {
       customMessage: {
         orderList:[],
         visible: false,
-      }
+      },
     }
   },
   created() {
@@ -227,12 +227,10 @@ export default {
     this.staffData = JSON.parse(localStorage.getItem("staffData"));
     this.teamData = restApi.findShopByStaff(this.staffData.uuid);
     this.customMessage.orderList = restApi.getOrderList();
-
-    this.loadHistoryMessage(true,0);
+	
+    this.loadHistoryMessage(true, 0);
     this.getCustomerStatus();
-    if (this.customerStatus.status === 'ACCEPTED') { // 已接入的会话才标记已读
-      this.markMessageAsRead();
-    }
+	this.markMessageAsRead();
     this.goEasy.im.on(this.GoEasy.IM_EVENT.CS_MESSAGE_RECEIVED, this.onReceivedMessage);
   },
   beforeDestroy() {
@@ -242,26 +240,28 @@ export default {
     renderTextMessage(text) {
       return this.emoji.decoder.decode(text);
     },
-
     getCustomerStatus () {
-      this.goEasy.im.csTeam(this.teamData.id).customerStatus({
-        id: this.customer.uuid,
-        onSuccess: (result) => {
-          this.customerStatus = result.content;
-        },
-        onFailed: (error) => {
-          console.log('获取用户当前状态失败',error)
-        }
-      })
+		this.goEasy.im.csTeam(this.teamData.id).customerStatus({
+		  id: this.customer.uuid,
+		  onSuccess: (result) => {
+		    this.customerStatus = result.content;
+		  },
+		  onFailed: (error) => {
+		    console.log('获取用户当前状态失败',error);
+		  }
+		})
     },
     onReceivedMessage (message) {
-      if (message.senderId === this.customer.uuid || message.type === 'ACCEPTED' || message.type === 'CLOSED') {
-        this.history.messages.push(message);
-        if (this.customerStatus.status === 'ACCEPTED') { // 已接入的会话才标记已读
-          this.markMessageAsRead();
-        }
-      }
-      this.scrollTo(0);
+		if (this.teamData.id === message.teamId && (this.customer.uuid === message.senderId || this.customer.uuid === message.to)) {
+			if (this.customerStatus.sessionId === message.sessionId) {
+				this.history.messages.push(message);
+				this.markMessageAsRead();
+			} else {
+				this.reloadHistory();
+				this.getCustomerStatus();
+			}
+			this.scrollTo(0);
+		}
     },
     markMessageAsRead() {
       this.goEasy.im.csTeam(this.teamData.id).markMessageAsRead({
@@ -275,18 +275,23 @@ export default {
         },
       });
     },
+	reloadHistory(message) {
+		this.history.messages = [];
+		this.history.messages.push(message);
+	},
     loadHistoryMessage(scrollTo,offsetHeight) {
       this.history.loading = true;
-      let lastMessageTimeStamp = null;
+      let lastMessageTimeStamp;
       let lastMessage = this.history.messages[0];
       if (lastMessage) {
         lastMessageTimeStamp = lastMessage.timestamp;
       }
+	  let limit = 10;
       this.goEasy.im.csTeam(this.teamData.id).history({
         id: this.customer.uuid,
         type: this.GoEasy.IM_SCENE.CS,
         lastTimestamp: lastMessageTimeStamp,
-        limit: 10,
+        limit: limit,
         onSuccess: (result) => {
           this.history.loading = false;
           let messages = result.content;
@@ -295,7 +300,7 @@ export default {
           } else {
             this.history.messages = messages.concat(this.history.messages);
             console.log('history:',this.history.messages);
-            if (messages.length < 9) {
+            if (messages.length < limit) {
               this.history.allLoaded = true;
             }
             if (scrollTo) {
@@ -337,7 +342,13 @@ export default {
       this.goEasy.im.csTeam(this.teamData.id).accept({
         id: this.customer.uuid,
         onSuccess: (result) => {
-          this.getCustomerStatus();
+			if (this.customerStatus.sessionId === result.customerStatus.sessionId) {
+				this.history.messages.push(result.message);
+				this.scrollTo(0);
+			} else {
+				this.reloadHistory(result.message);
+				this.customerStatus = result.customerStatus;
+			}
         },
         onFailed: (error) => {
           console.log('accept failed',error);
@@ -348,7 +359,9 @@ export default {
       this.goEasy.im.csTeam(this.teamData.id).end({
         id: this.customer.uuid,
         onSuccess: (result) => {
-          this.getCustomerStatus();
+			this.customerStatus = result.customerStatus;
+			this.history.messages.push(result.message);
+			this.scrollTo(0);
         },
         onFailed: (error) => {
           console.log('endSession failed',error);
@@ -367,12 +380,17 @@ export default {
         console.log('输入为空');
         return
       }
-      const textMessage = this.goEasy.im.csTeam(this.teamData.id).createTextMessage({
+      this.goEasy.im.csTeam(this.teamData.id).createTextMessage({
         text: this.text,
         to: this.to,
-      });
-      this.sendMessage(textMessage);
-      this.text = '';
+		onSuccess: (message) => {
+			this.sendMessage(message);
+			this.text = '';
+		},
+		onFailed: (err) => {
+			console.log("创建消息err:", err);
+		}
+	  });
     },
     sendImageMessage(e) {
       let fileList = [...e.target.files];
@@ -413,12 +431,17 @@ export default {
     },
     sendCustomMessage(order) {
       this.customMessage.visible = false;
-      const customMessage = this.goEasy.im.csTeam(this.teamData.id).createCustomMessage({
+      this.goEasy.im.csTeam(this.teamData.id).createCustomMessage({
         type : 'order',
         payload : order,
         to: this.to,
+		onSuccess: (message) => {
+			this.sendMessage(message);
+		},
+		onFailed: (err) => {
+			console.log("创建消息err:", err);
+		}
       });
-      this.sendMessage(customMessage);
     },
     sendMessage(message) {
       this.history.messages.push(message);
@@ -534,13 +557,13 @@ export default {
             align-items: center;
           }
           .pending{
-            background: url("/static/images/pending.gif") no-repeat center;
+            background: url(/static/images/pending.gif) no-repeat center;
             background-size: 13px;
             width: 15px;
             height: 15px;
           }
           .send-fail{
-            background: url("/static/images/failed.png") no-repeat center;
+            background: url(/static/images/failed.png) no-repeat center;
             background-size: 13px;
             width: 15px;
             height: 15px;

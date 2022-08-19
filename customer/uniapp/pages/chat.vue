@@ -10,11 +10,11 @@
 						{{renderMessageDate(message, index)}}
 					</view>
 					<view class="message-item">
-						<view v-if="message.type === 'ACCEPTED'" class="accept-message">
+						<view v-if="message.type === 'CS_ACCEPTED'" class="accept-message">
 							{{message.senderData.name}}将为您服务
 						</view>
-						<view v-else-if="message.type === 'CLOSED'" class="accept-message">
-							{{message.payload.text}}
+						<view v-else-if="message.type === 'CS_ENDED'" class="accept-message">
+							{{message.senderData.name}}已结束
 						</view>
 						<view v-else class="message-item-content" :class="{'self' : message.senderId ===  currentUser.uuid}">
 							<view class="avatar">
@@ -104,7 +104,7 @@
 				<view class="orders">
 					<view
 						:class="customMessage.selectedOrder === order ? 'order-item order-item-checked':'order-item'"
-						v-for="order in customMessage.orderList"
+						v-for="(order, index) in customMessage.orderList" :key="index"
 						@click="selectOrder(order)"
 					>
 						<image class="order-img" :src="order.url"></image>
@@ -269,11 +269,11 @@
 				return '<span class="text-content">' + this.emoji.decoder.decode(message.payload.text) + '</span>'
 			},
 			onMessageReceived (message) {
-				if (message.senderId !== this.currentUser.uuid) {
+				if (message.teamId === this.shop.id) {
 					this.history.messages.push(message);
 					this.markMessageAsRead();
+					this.scrollToBottom();
 				}
-				this.scrollToBottom();
 			},
 			messageInputFocusin () {
 				this.otherTypesMessagePanelVisible = false;

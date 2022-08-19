@@ -10,7 +10,7 @@
 					<view class="consult-buton" @click="consult(shop.id)">咨询</view>
 				</view>
 				<view class="item-body">
-					<image v-for="good in shop.goods" :src="good"></image>
+					<image v-for="(good, index) in shop.goods" :key="index" :src="good"></image>
 				</view>
 			</view>
 		</view>

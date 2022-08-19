@@ -10,7 +10,9 @@
             @click="goChatPage(conversation.id)"
             :class="{checked:conversation.id === $route.params.id}"
           >
-            <img class="item-avatar" :src="conversation.data.avatar" />
+			<div class="item-head">
+				<img class="item-avatar" :src="conversation.data.avatar" />
+			</div>
             <div class="item-info">
               <div class="item-info-name">{{ conversation.data.name }}</div>
               <div class="item-info-message" v-if="conversation.lastMessage.type === 'text'">{{ conversation.lastMessage.payload.text }}</div>
@@ -32,22 +34,27 @@
             :class="{checked:conversation.id === $route.params.id}"
             @contextmenu.prevent.stop="e => showAction(e,conversation)"
           >
-            <img class="item-avatar" :src="conversation.data.avatar" />
+			<div class="item-head">
+				<img class="item-avatar" :src="conversation.data.avatar" />
+				<span class="item-unread-num" v-if="conversation.unread">{{conversation.unread}}</span>
+			</div>
             <div class="item-info">
               <div class="item-info-top">
                 <div class="item-info-name">{{ conversation.data.name }}</div>
                 <div class="item-info-time">{{ formatDate(conversation.lastMessage.timestamp) }}</div>
               </div>
               <div class="item-info-bottom">
+				<div class="item-info-sending" v-if="conversation.lastMessage.status === 'sending'"></div>
+				<div class="item-info-failed" v-if="conversation.lastMessage.status === 'fail'"></div>
                 <div class="item-info-message" v-if="conversation.lastMessage.type === 'text'">{{ conversation.lastMessage.payload.text }}</div>
                 <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'image'">[图片消息]</div>
                 <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'video'">[视频消息]</div>
                 <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'audio'">[语音消息]</div>
                 <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'order'">[自定义消息:订单]</div>
-                <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'CLOSED'">会话已结束</div>
-                <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'ACCEPTED'">{{ conversation.lastMessage.senderData.name }}已接入</div>
+                <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'CS_ENDED'">会话已结束</div>
+                <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'CS_ACCEPTED'">接入成功</div>
                 <div class="item-info-message" v-else>[未识别内容]</div>
-              </div>
+			  </div>
             </div>
           </div>
         </div>
@@ -182,7 +189,7 @@ export default {
       .conversation-list-title {
         font-size: 16px;
         margin: 10px;
-        color: #666666;
+		color: rgba(0,0,0,.9);
       }
       .conversation-list-body {
         overflow-y: auto;
@@ -215,14 +222,34 @@ export default {
     }
     .conversation-item {
       display: flex;
-      padding: 5px;
-      flex: 1;
-      margin-top: 5px;
-      .item-avatar {
-        width: 45px;
-        height: 45px;
-        margin-right: 5px;
-      }
+      padding: 12px;
+	  cursor: pointer;
+	  
+	  .item-head {
+		position: relative;
+		margin-right: 14px;
+	  }
+	  
+	  .item-avatar {
+	    width: 45px;
+	    height: 45px;
+		border-radius: 4px;
+	  }
+	  
+	  .item-unread-num {
+			position: absolute;
+			top: -9px;
+			right: -9px;
+			width: 18px;
+			height: 18px;
+			line-height: 18px;
+			border-radius: 50%;
+			text-align: center;
+			color: #fff;
+			font-size: 12px;
+			background-color: #fa5151;
+	  }  
+	  
       .item-info {
         flex: 1;
         display: flex;
@@ -240,6 +267,7 @@ export default {
         }
         .item-info-bottom {
           display: flex;
+		  align-items: center;
           .more-action {
             font-size: 18px;
             cursor: pointer;
@@ -248,16 +276,34 @@ export default {
         .item-info-message {
           font-size: 12px;
           line-height: 20px;
-          color: #606266;
-          width: 160px;
           overflow: hidden;
           text-overflow:ellipsis;
           white-space: nowrap;
+		  flex: 0 80px;
+          color: #606266;
         }
+		
+		.item-info-failed {
+			background: url("/static/images/failed.png") no-repeat center;
+			background-size: 12px;
+			width: 12px;
+			height: 12px;
+			margin-right: 2px;
+		}
+		
+		.item-info-sending {
+			background: url("/static/images/pending.gif") no-repeat center;
+			background-size: 12px;
+			width: 12px;
+			height: 12px;
+			margin-right: 2px;
+		}
       }
     }
+	
     .checked {
       background: #eeeeee;
+	  border-radius: 5px;
     }
   }
   .conversation-main {

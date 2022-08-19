@@ -197,15 +197,15 @@
 	  return uri;
 	};
 
-	var browser$1 = {exports: {}};
+	var browser$2 = {exports: {}};
 
-	var debug$5 = {exports: {}};
+	var debug$6 = {exports: {}};
 
-	var s = 1000;
-	var m = s * 60;
-	var h = m * 60;
-	var d = h * 24;
-	var y = d * 365.25;
+	var s$1 = 1000;
+	var m$1 = s$1 * 60;
+	var h$1 = m$1 * 60;
+	var d$1 = h$1 * 24;
+	var y$1 = d$1 * 365.25;
 	/**
 	 * Parse or format the given `val`.
 	 *
@@ -220,15 +220,15 @@
 	 * @api public
 	 */
 
-	var ms = function ms(val, options) {
+	var ms$1 = function ms(val, options) {
 	  options = options || {};
 
 	  var type = _typeof(val);
 
 	  if (type === 'string' && val.length > 0) {
-	    return parse(val);
+	    return parse$1(val);
 	  } else if (type === 'number' && isNaN(val) === false) {
-	    return options["long"] ? fmtLong(val) : fmtShort(val);
+	    return options["long"] ? fmtLong$1(val) : fmtShort$1(val);
 	  }
 
 	  throw new Error('val is not a non-empty string or a valid number. val=' + JSON.stringify(val));
@@ -242,7 +242,7 @@
 	 */
 
 
-	function parse(str) {
+	function parse$1(str) {
 	  str = String(str);
 
 	  if (str.length > 100) {
@@ -264,33 +264,33 @@
 	    case 'yrs':
 	    case 'yr':
 	    case 'y':
-	      return n * y;
+	      return n * y$1;
 
 	    case 'days':
 	    case 'day':
 	    case 'd':
-	      return n * d;
+	      return n * d$1;
 
 	    case 'hours':
 	    case 'hour':
 	    case 'hrs':
 	    case 'hr':
 	    case 'h':
-	      return n * h;
+	      return n * h$1;
 
 	    case 'minutes':
 	    case 'minute':
 	    case 'mins':
 	    case 'min':
 	    case 'm':
-	      return n * m;
+	      return n * m$1;
 
 	    case 'seconds':
 	    case 'second':
 	    case 'secs':
 	    case 'sec':
 	    case 's':
-	      return n * s;
+	      return n * s$1;
 
 	    case 'milliseconds':
 	    case 'millisecond':
@@ -312,21 +312,21 @@
 	 */
 
 
-	function fmtShort(ms) {
-	  if (ms >= d) {
-	    return Math.round(ms / d) + 'd';
+	function fmtShort$1(ms) {
+	  if (ms >= d$1) {
+	    return Math.round(ms / d$1) + 'd';
 	  }
 
-	  if (ms >= h) {
-	    return Math.round(ms / h) + 'h';
+	  if (ms >= h$1) {
+	    return Math.round(ms / h$1) + 'h';
 	  }
 
-	  if (ms >= m) {
-	    return Math.round(ms / m) + 'm';
+	  if (ms >= m$1) {
+	    return Math.round(ms / m$1) + 'm';
 	  }
 
-	  if (ms >= s) {
-	    return Math.round(ms / s) + 's';
+	  if (ms >= s$1) {
+	    return Math.round(ms / s$1) + 's';
 	  }
 
 	  return ms + 'ms';
@@ -340,15 +340,15 @@
 	 */
 
 
-	function fmtLong(ms) {
-	  return plural(ms, d, 'day') || plural(ms, h, 'hour') || plural(ms, m, 'minute') || plural(ms, s, 'second') || ms + ' ms';
+	function fmtLong$1(ms) {
+	  return plural$1(ms, d$1, 'day') || plural$1(ms, h$1, 'hour') || plural$1(ms, m$1, 'minute') || plural$1(ms, s$1, 'second') || ms + ' ms';
 	}
 	/**
 	 * Pluralization helper.
 	 */
 
 
-	function plural(ms, n, name) {
+	function plural$1(ms, n, name) {
 	  if (ms < n) {
 	    return;
 	  }
@@ -372,7 +372,7 @@
 	  exports.disable = disable;
 	  exports.enable = enable;
 	  exports.enabled = enabled;
-	  exports.humanize = ms;
+	  exports.humanize = ms$1;
 	  /**
 	   * Active `debug` instances.
 	   */
@@ -581,10 +581,10 @@
 	    if (val instanceof Error) return val.stack || val.message;
 	    return val;
 	  }
-	})(debug$5, debug$5.exports);
+	})(debug$6, debug$6.exports);
 
 	(function (module, exports) {
-	  exports = module.exports = debug$5.exports;
+	  exports = module.exports = debug$6.exports;
 	  exports.log = log;
 	  exports.formatArgs = formatArgs;
 	  exports.save = save;
@@ -741,14 +741,14 @@
 	      return window.localStorage;
 	    } catch (e) {}
 	  }
-	})(browser$1, browser$1.exports);
+	})(browser$2, browser$2.exports);
 
 	/**
 	 * Module dependencies.
 	 */
 
 	var parseuri$1 = parseuri$2;
-	var debug$4 = browser$1.exports('socket.io-client:url');
+	var debug$5 = browser$2.exports('socket.io-client:url');
 	/**
 	 * Module exports.
 	 */
@@ -779,7 +779,7 @@
 	    }
 
 	    if (!/^(https?|wss?):\/\//.test(uri)) {
-	      debug$4('protocol-less url %s', uri);
+	      debug$5('protocol-less url %s', uri);
 
 	      if ('undefined' !== typeof loc) {
 	        uri = loc.protocol + '//' + uri;
@@ -789,7 +789,7 @@
 	    } // parse
 
 
-	    debug$4('parse %s', uri);
+	    debug$5('parse %s', uri);
 	    obj = parseuri$1(uri);
 	  } // make sure we treat `localhost:80` and `localhost` equally
 
@@ -987,7 +987,7 @@
 	  /**
 	   * Module dependencies.
 	   */
-	  var debug = browser$1.exports('socket.io-parser');
+	  var debug = browser$2.exports('socket.io-parser');
 	  var Emitter = componentEmitter.exports; // var binary = require('./binary');
 
 	  var isArray = isarray; // var isBuf = require('./is-buffer');
@@ -1343,7 +1343,7 @@
 
 	var transports$1 = {};
 
-	var browser = {};
+	var browser$1 = {};
 
 	/**
 	 * Gets the keys for an object.
@@ -2366,12 +2366,12 @@
 	  //   });
 	  // };
 
-	})(browser);
+	})(browser$1);
 
 	/**
 	 * Module dependencies.
 	 */
-	var parser$4 = browser;
+	var parser$4 = browser$1;
 	var Emitter$4 = componentEmitter.exports;
 	/**
 	 * Module exports.
@@ -2642,6 +2642,552 @@
 	yeast$2.decode = decode;
 	var yeast_1 = yeast$2;
 
+	var browser = {exports: {}};
+
+	var debug$4 = {exports: {}};
+
+	var s = 1000;
+	var m = s * 60;
+	var h = m * 60;
+	var d = h * 24;
+	var y = d * 365.25;
+	/**
+	 * Parse or format the given `val`.
+	 *
+	 * Options:
+	 *
+	 *  - `long` verbose formatting [false]
+	 *
+	 * @param {String|Number} val
+	 * @param {Object} [options]
+	 * @throws {Error} throw an error if val is not a non-empty string or a number
+	 * @return {String|Number}
+	 * @api public
+	 */
+
+	var ms = function ms(val, options) {
+	  options = options || {};
+
+	  var type = _typeof(val);
+
+	  if (type === 'string' && val.length > 0) {
+	    return parse(val);
+	  } else if (type === 'number' && isNaN(val) === false) {
+	    return options["long"] ? fmtLong(val) : fmtShort(val);
+	  }
+
+	  throw new Error('val is not a non-empty string or a valid number. val=' + JSON.stringify(val));
+	};
+	/**
+	 * Parse the given `str` and return milliseconds.
+	 *
+	 * @param {String} str
+	 * @return {Number}
+	 * @api private
+	 */
+
+
+	function parse(str) {
+	  str = String(str);
+
+	  if (str.length > 100) {
+	    return;
+	  }
+
+	  var match = /^((?:\d+)?\.?\d+) *(milliseconds?|msecs?|ms|seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|years?|yrs?|y)?$/i.exec(str);
+
+	  if (!match) {
+	    return;
+	  }
+
+	  var n = parseFloat(match[1]);
+	  var type = (match[2] || 'ms').toLowerCase();
+
+	  switch (type) {
+	    case 'years':
+	    case 'year':
+	    case 'yrs':
+	    case 'yr':
+	    case 'y':
+	      return n * y;
+
+	    case 'days':
+	    case 'day':
+	    case 'd':
+	      return n * d;
+
+	    case 'hours':
+	    case 'hour':
+	    case 'hrs':
+	    case 'hr':
+	    case 'h':
+	      return n * h;
+
+	    case 'minutes':
+	    case 'minute':
+	    case 'mins':
+	    case 'min':
+	    case 'm':
+	      return n * m;
+
+	    case 'seconds':
+	    case 'second':
+	    case 'secs':
+	    case 'sec':
+	    case 's':
+	      return n * s;
+
+	    case 'milliseconds':
+	    case 'millisecond':
+	    case 'msecs':
+	    case 'msec':
+	    case 'ms':
+	      return n;
+
+	    default:
+	      return undefined;
+	  }
+	}
+	/**
+	 * Short format for `ms`.
+	 *
+	 * @param {Number} ms
+	 * @return {String}
+	 * @api private
+	 */
+
+
+	function fmtShort(ms) {
+	  if (ms >= d) {
+	    return Math.round(ms / d) + 'd';
+	  }
+
+	  if (ms >= h) {
+	    return Math.round(ms / h) + 'h';
+	  }
+
+	  if (ms >= m) {
+	    return Math.round(ms / m) + 'm';
+	  }
+
+	  if (ms >= s) {
+	    return Math.round(ms / s) + 's';
+	  }
+
+	  return ms + 'ms';
+	}
+	/**
+	 * Long format for `ms`.
+	 *
+	 * @param {Number} ms
+	 * @return {String}
+	 * @api private
+	 */
+
+
+	function fmtLong(ms) {
+	  return plural(ms, d, 'day') || plural(ms, h, 'hour') || plural(ms, m, 'minute') || plural(ms, s, 'second') || ms + ' ms';
+	}
+	/**
+	 * Pluralization helper.
+	 */
+
+
+	function plural(ms, n, name) {
+	  if (ms < n) {
+	    return;
+	  }
+
+	  if (ms < n * 1.5) {
+	    return Math.floor(ms / n) + ' ' + name;
+	  }
+
+	  return Math.ceil(ms / n) + ' ' + name + 's';
+	}
+
+	(function (module, exports) {
+	  /**
+	   * This is the common logic for both the Node.js and web browser
+	   * implementations of `debug()`.
+	   *
+	   * Expose `debug()` as the module.
+	   */
+	  exports = module.exports = createDebug.debug = createDebug['default'] = createDebug;
+	  exports.coerce = coerce;
+	  exports.disable = disable;
+	  exports.enable = enable;
+	  exports.enabled = enabled;
+	  exports.humanize = ms;
+	  /**
+	   * Active `debug` instances.
+	   */
+
+	  exports.instances = [];
+	  /**
+	   * The currently active debug mode names, and names to skip.
+	   */
+
+	  exports.names = [];
+	  exports.skips = [];
+	  /**
+	   * Map of special "%n" handling functions, for the debug "format" argument.
+	   *
+	   * Valid key names are a single, lower or upper-case letter, i.e. "n" and "N".
+	   */
+
+	  exports.formatters = {};
+	  /**
+	   * Select a color.
+	   * @param {String} namespace
+	   * @return {Number}
+	   * @api private
+	   */
+
+	  function selectColor(namespace) {
+	    var hash = 0,
+	        i;
+
+	    for (i in namespace) {
+	      hash = (hash << 5) - hash + namespace.charCodeAt(i);
+	      hash |= 0; // Convert to 32bit integer
+	    }
+
+	    return exports.colors[Math.abs(hash) % exports.colors.length];
+	  }
+	  /**
+	   * Create a debugger with the given `namespace`.
+	   *
+	   * @param {String} namespace
+	   * @return {Function}
+	   * @api public
+	   */
+
+
+	  function createDebug(namespace) {
+	    var prevTime;
+
+	    function debug() {
+	      // disabled?
+	      if (!debug.enabled) return;
+	      var self = debug; // set `diff` timestamp
+
+	      var curr = +new Date();
+	      var ms = curr - (prevTime || curr);
+	      self.diff = ms;
+	      self.prev = prevTime;
+	      self.curr = curr;
+	      prevTime = curr; // turn the `arguments` into a proper Array
+
+	      var args = new Array(arguments.length);
+
+	      for (var i = 0; i < args.length; i++) {
+	        args[i] = arguments[i];
+	      }
+
+	      args[0] = exports.coerce(args[0]);
+
+	      if ('string' !== typeof args[0]) {
+	        // anything else let's inspect with %O
+	        args.unshift('%O');
+	      } // apply any `formatters` transformations
+
+
+	      var index = 0;
+	      args[0] = args[0].replace(/%([a-zA-Z%])/g, function (match, format) {
+	        // if we encounter an escaped % then don't increase the array index
+	        if (match === '%%') return match;
+	        index++;
+	        var formatter = exports.formatters[format];
+
+	        if ('function' === typeof formatter) {
+	          var val = args[index];
+	          match = formatter.call(self, val); // now we need to remove `args[index]` since it's inlined in the `format`
+
+	          args.splice(index, 1);
+	          index--;
+	        }
+
+	        return match;
+	      }); // apply env-specific formatting (colors, etc.)
+
+	      exports.formatArgs.call(self, args);
+	      var logFn = debug.log || exports.log || console.log.bind(console);
+	      logFn.apply(self, args);
+	    }
+
+	    debug.namespace = namespace;
+	    debug.enabled = exports.enabled(namespace);
+	    debug.useColors = exports.useColors();
+	    debug.color = selectColor(namespace);
+	    debug.destroy = destroy; // env-specific initialization logic for debug instances
+
+	    if ('function' === typeof exports.init) {
+	      exports.init(debug);
+	    }
+
+	    exports.instances.push(debug);
+	    return debug;
+	  }
+
+	  function destroy() {
+	    var index = exports.instances.indexOf(this);
+
+	    if (index !== -1) {
+	      exports.instances.splice(index, 1);
+	      return true;
+	    } else {
+	      return false;
+	    }
+	  }
+	  /**
+	   * Enables a debug mode by namespaces. This can include modes
+	   * separated by a colon and wildcards.
+	   *
+	   * @param {String} namespaces
+	   * @api public
+	   */
+
+
+	  function enable(namespaces) {
+	    exports.save(namespaces);
+	    exports.names = [];
+	    exports.skips = [];
+	    var i;
+	    var split = (typeof namespaces === 'string' ? namespaces : '').split(/[\s,]+/);
+	    var len = split.length;
+
+	    for (i = 0; i < len; i++) {
+	      if (!split[i]) continue; // ignore empty strings
+
+	      namespaces = split[i].replace(/\*/g, '.*?');
+
+	      if (namespaces[0] === '-') {
+	        exports.skips.push(new RegExp('^' + namespaces.substr(1) + '$'));
+	      } else {
+	        exports.names.push(new RegExp('^' + namespaces + '$'));
+	      }
+	    }
+
+	    for (i = 0; i < exports.instances.length; i++) {
+	      var instance = exports.instances[i];
+	      instance.enabled = exports.enabled(instance.namespace);
+	    }
+	  }
+	  /**
+	   * Disable debug output.
+	   *
+	   * @api public
+	   */
+
+
+	  function disable() {
+	    exports.enable('');
+	  }
+	  /**
+	   * Returns true if the given mode name is enabled, false otherwise.
+	   *
+	   * @param {String} name
+	   * @return {Boolean}
+	   * @api public
+	   */
+
+
+	  function enabled(name) {
+	    if (name[name.length - 1] === '*') {
+	      return true;
+	    }
+
+	    var i, len;
+
+	    for (i = 0, len = exports.skips.length; i < len; i++) {
+	      if (exports.skips[i].test(name)) {
+	        return false;
+	      }
+	    }
+
+	    for (i = 0, len = exports.names.length; i < len; i++) {
+	      if (exports.names[i].test(name)) {
+	        return true;
+	      }
+	    }
+
+	    return false;
+	  }
+	  /**
+	   * Coerce `val`.
+	   *
+	   * @param {Mixed} val
+	   * @return {Mixed}
+	   * @api private
+	   */
+
+
+	  function coerce(val) {
+	    if (val instanceof Error) return val.stack || val.message;
+	    return val;
+	  }
+	})(debug$4, debug$4.exports);
+
+	(function (module, exports) {
+	  exports = module.exports = debug$4.exports;
+	  exports.log = log;
+	  exports.formatArgs = formatArgs;
+	  exports.save = save;
+	  exports.load = load;
+	  exports.useColors = useColors;
+	  exports.storage = 'undefined' != typeof chrome && 'undefined' != typeof chrome.storage ? chrome.storage.local : localstorage();
+	  /**
+	   * Colors.
+	   */
+
+	  exports.colors = ['#0000CC', '#0000FF', '#0033CC', '#0033FF', '#0066CC', '#0066FF', '#0099CC', '#0099FF', '#00CC00', '#00CC33', '#00CC66', '#00CC99', '#00CCCC', '#00CCFF', '#3300CC', '#3300FF', '#3333CC', '#3333FF', '#3366CC', '#3366FF', '#3399CC', '#3399FF', '#33CC00', '#33CC33', '#33CC66', '#33CC99', '#33CCCC', '#33CCFF', '#6600CC', '#6600FF', '#6633CC', '#6633FF', '#66CC00', '#66CC33', '#9900CC', '#9900FF', '#9933CC', '#9933FF', '#99CC00', '#99CC33', '#CC0000', '#CC0033', '#CC0066', '#CC0099', '#CC00CC', '#CC00FF', '#CC3300', '#CC3333', '#CC3366', '#CC3399', '#CC33CC', '#CC33FF', '#CC6600', '#CC6633', '#CC9900', '#CC9933', '#CCCC00', '#CCCC33', '#FF0000', '#FF0033', '#FF0066', '#FF0099', '#FF00CC', '#FF00FF', '#FF3300', '#FF3333', '#FF3366', '#FF3399', '#FF33CC', '#FF33FF', '#FF6600', '#FF6633', '#FF9900', '#FF9933', '#FFCC00', '#FFCC33'];
+	  /**
+	   * Currently only WebKit-based Web Inspectors, Firefox >= v31,
+	   * and the Firebug extension (any Firefox version) are known
+	   * to support "%c" CSS customizations.
+	   *
+	   * TODO: add a `localStorage` variable to explicitly enable/disable colors
+	   */
+
+	  function useColors() {
+	    // NB: In an Electron preload script, document will be defined but not fully
+	    // initialized. Since we know we're in Chrome, we'll just detect this case
+	    // explicitly
+	    if (typeof window !== 'undefined' && window.process && window.process.type === 'renderer') {
+	      return true;
+	    } // Internet Explorer and Edge do not support colors.
+
+
+	    if (typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.toLowerCase().match(/(edge|trident)\/(\d+)/)) {
+	      return false;
+	    } // is webkit? http://stackoverflow.com/a/16459606/376773
+	    // document is undefined in react-native: https://github.com/facebook/react-native/pull/1632
+
+
+	    return typeof document !== 'undefined' && document.documentElement && document.documentElement.style && document.documentElement.style.WebkitAppearance || // is firebug? http://stackoverflow.com/a/398120/376773
+	    typeof window !== 'undefined' && window.console && (window.console.firebug || window.console.exception && window.console.table) || // is firefox >= v31?
+	    // https://developer.mozilla.org/en-US/docs/Tools/Web_Console#Styling_messages
+	    typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/) && parseInt(RegExp.$1, 10) >= 31 || // double check webkit in userAgent just in case we are in a worker
+	    typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.toLowerCase().match(/applewebkit\/(\d+)/);
+	  }
+	  /**
+	   * Map %j to `JSON.stringify()`, since no Web Inspectors do that by default.
+	   */
+
+
+	  exports.formatters.j = function (v) {
+	    try {
+	      return JSON.stringify(v);
+	    } catch (err) {
+	      return '[UnexpectedJSONParseError]: ' + err.message;
+	    }
+	  };
+	  /**
+	   * Colorize log arguments if enabled.
+	   *
+	   * @api public
+	   */
+
+
+	  function formatArgs(args) {
+	    var useColors = this.useColors;
+	    args[0] = (useColors ? '%c' : '') + this.namespace + (useColors ? ' %c' : ' ') + args[0] + (useColors ? '%c ' : ' ') + '+' + exports.humanize(this.diff);
+	    if (!useColors) return;
+	    var c = 'color: ' + this.color;
+	    args.splice(1, 0, c, 'color: inherit'); // the final "%c" is somewhat tricky, because there could be other
+	    // arguments passed either before or after the %c, so we need to
+	    // figure out the correct index to insert the CSS into
+
+	    var index = 0;
+	    var lastC = 0;
+	    args[0].replace(/%[a-zA-Z%]/g, function (match) {
+	      if ('%%' === match) return;
+	      index++;
+
+	      if ('%c' === match) {
+	        // we only are interested in the *last* %c
+	        // (the user may have provided their own)
+	        lastC = index;
+	      }
+	    });
+	    args.splice(lastC, 0, c);
+	  }
+	  /**
+	   * Invokes `console.log()` when available.
+	   * No-op when `console.log` is not a "function".
+	   *
+	   * @api public
+	   */
+
+
+	  function log() {
+	    // this hackery is required for IE8/9, where
+	    // the `console.log` function doesn't have 'apply'
+	    return 'object' === (typeof console === "undefined" ? "undefined" : _typeof(console)) && console.log && Function.prototype.apply.call(console.log, console, arguments);
+	  }
+	  /**
+	   * Save `namespaces`.
+	   *
+	   * @param {String} namespaces
+	   * @api private
+	   */
+
+
+	  function save(namespaces) {
+	    try {
+	      if (null == namespaces) {
+	        exports.storage.removeItem('debug');
+	      } else {
+	        exports.storage.debug = namespaces;
+	      }
+	    } catch (e) {}
+	  }
+	  /**
+	   * Load `namespaces`.
+	   *
+	   * @return {String} returns the previously persisted debug modes
+	   * @api private
+	   */
+
+
+	  function load() {
+	    var r;
+
+	    try {
+	      r = exports.storage.debug;
+	    } catch (e) {} // If debug isn't set in LS, and we're in Electron, try to load $DEBUG
+
+
+	    if (!r && typeof process !== 'undefined' && 'env' in process) {
+	      r = process.env.DEBUG;
+	    }
+
+	    return r;
+	  }
+	  /**
+	   * Enable namespaces listed in `localStorage.debug` initially.
+	   */
+
+
+	  exports.enable(load());
+	  /**
+	   * Localstorage attempts to return the localstorage.
+	   *
+	   * This is necessary because safari throws
+	   * when a user disables cookies/localstorage
+	   * and you attempt to access it.
+	   *
+	   * @return {LocalStorage}
+	   * @api private
+	   */
+
+	  function localstorage() {
+	    try {
+	      return window.localStorage;
+	    } catch (e) {}
+	  }
+	})(browser, browser.exports);
+
 	var hasCors = {exports: {}};
 
 	/**
@@ -2698,10 +3244,10 @@
 	 */
 	var Transport$1 = transport;
 	var parseqs$2 = parseqs$3;
-	var parser$3 = browser;
+	var parser$3 = browser$1;
 	var inherit$2 = componentInherit;
 	var yeast$1 = yeast_1;
-	var debug$3 = browser$1.exports('engine.io-client:polling');
+	var debug$3 = browser.exports('engine.io-client:polling');
 	/**
 	 * Module exports.
 	 */
@@ -3163,11 +3709,11 @@
 	};
 
 	var Transport = transport;
-	var parser$2 = browser;
+	var parser$2 = browser$1;
 	var parseqs$1 = parseqs$3;
 	var inherit = componentInherit;
 	var yeast = yeast_1;
-	var debug$2 = browser$1.exports('engine.io-client:websocket');
+	var debug$2 = browser.exports('engine.io-client:websocket');
 	var BrowserWebSocket, NodeWebSocket;
 
 	if (typeof uni === "undefined" && typeof wx === "undefined" || typeof WebSocket !== "undefined") {
@@ -3672,9 +4218,9 @@
 
 	var transports = transports$1;
 	var Emitter$3 = componentEmitter.exports;
-	var debug$1 = browser$1.exports('engine.io-client:socket');
+	var debug$1 = browser.exports('engine.io-client:socket');
 	var index = indexof;
-	var parser$1 = browser;
+	var parser$1 = browser$1;
 	var parseuri = parseuri$2;
 	var parseqs = parseqs$3;
 	/**
@@ -3800,7 +4346,7 @@
 	Socket$1.Socket = Socket$1;
 	Socket$1.Transport = transport;
 	Socket$1.transports = transports$1;
-	Socket$1.parser = browser;
+	Socket$1.parser = browser$1;
 	/**
 	 * Creates transport of the given type.
 	 *
@@ -4381,7 +4927,7 @@
 	 *
 	 */
 
-	lib.exports.parser = browser;
+	lib.exports.parser = browser$1;
 
 	var socket = {exports: {}};
 
@@ -4452,7 +4998,7 @@
 	  var toArray = toArray_1;
 	  var on = on_1;
 	  var bind = componentBind;
-	  var debug = browser$1.exports('socket.io-client:socket');
+	  var debug = browser$2.exports('socket.io-client:socket');
 	  var parseqs = parseqs$3;
 	  var hasBin = hasBinary2;
 	  /**
@@ -5274,7 +5820,7 @@
 
 	var cookie = {};
 
-	var __values$1 = commonjsGlobal && commonjsGlobal.__values || function (o) {
+	var __values$3 = commonjsGlobal && commonjsGlobal.__values || function (o) {
 	  var s = typeof Symbol === "function" && Symbol.iterator,
 	      m = s && o[s],
 	      i = 0;
@@ -5306,7 +5852,7 @@
 	    var cookies = document.cookie.split('; ');
 
 	    try {
-	      for (var cookies_1 = __values$1(cookies), cookies_1_1 = cookies_1.next(); !cookies_1_1.done; cookies_1_1 = cookies_1.next()) {
+	      for (var cookies_1 = __values$3(cookies), cookies_1_1 = cookies_1.next(); !cookies_1_1.done; cookies_1_1 = cookies_1.next()) {
 	        var cookie = cookies_1_1.value;
 
 	        if (cookie.startsWith(cookieName)) {
@@ -5390,7 +5936,7 @@
 
 	cookie.Cookie = Cookie;
 
-	var __values = commonjsGlobal && commonjsGlobal.__values || function (o) {
+	var __values$2 = commonjsGlobal && commonjsGlobal.__values || function (o) {
 	  var s = typeof Symbol === "function" && Symbol.iterator,
 	      m = s && o[s],
 	      i = 0;
@@ -5541,7 +6087,7 @@
 	    var e_1, _a;
 
 	    try {
-	      for (var _b = __values(LocalStorageDispatcher.storages), _c = _b.next(); !_c.done; _c = _b.next()) {
+	      for (var _b = __values$2(LocalStorageDispatcher.storages), _c = _b.next(); !_c.done; _c = _b.next()) {
 	        var storage = _c.value;
 
 	        if (storage.support()) {
@@ -5614,7 +6160,7 @@
 	var parser = socket_ioParser;
 	var on = on_1;
 	var bind = componentBind;
-	var debug = browser$1.exports('socket.io-client:manager');
+	var debug = browser$2.exports('socket.io-client:manager');
 	var indexOf = indexof;
 	var Backoff = backo2;
 	var uniApp = UniApp$1.uniApp;
@@ -6197,7 +6743,7 @@
 	  var url = url_1;
 	  var parser = socket_ioParser;
 	  var Manager = manager;
-	  var debug = browser$1.exports('socket.io-client');
+	  var debug = browser$2.exports('socket.io-client');
 	  /**
 	   * Module exports.
 	   */
@@ -6902,7 +7448,7 @@
 
 	anonymousUserIdRepository.__esModule = true;
 	anonymousUserIdRepository.AnonymousUserIdRepository = void 0;
-	var Calibrator_1$h = Calibrator;
+	var Calibrator_1$j = Calibrator;
 	var local_storage_dispatcher_1 = localStorageDispatcher;
 
 	var AnonymousUserIdRepository =
@@ -6916,7 +7462,7 @@
 	    if (storage !== null) {
 	      var userId = storage.get(AnonymousUserIdRepository.ANONYMOUS_USER_ID_KEY);
 
-	      if (!Calibrator_1$h["default"].isEmpty(userId)) {
+	      if (!Calibrator_1$j["default"].isEmpty(userId)) {
 	        return userId.toString();
 	      }
 	    }
@@ -7024,9 +7570,9 @@
 	    RocketTypes["RTC_CLIENT_BUSY"] = "RTC_CLIENT_BUSY";
 	    RocketTypes["RTC_TIMEOUT"] = "RTC_TIMEOUT";
 	    RocketTypes["RTC_CALL_DATA"] = "RTC_CALL_DATA";
-	    RocketTypes["CS_ACCEPT_CONVERSATION"] = "CS_ACCEPT_CONVERSATION";
-	    RocketTypes["CS_END_CONVERSATION"] = "CS_END_CONVERSATION";
-	    RocketTypes["CS_QUERY_CONVERSATION"] = "CS_QUERY_CONVERSATION";
+	    RocketTypes["CS_ACCEPT"] = "CS_ACCEPT";
+	    RocketTypes["CS_END"] = "CS_END";
+	    RocketTypes["CS_CUSTOMER_STATUS"] = "CS_CUSTOMER_STATUS";
 	    RocketTypes["CS_IS_ONLINE"] = "CS_IS_ONLINE";
 	    RocketTypes["CS_ONLINE"] = "CS_ONLINE";
 	    RocketTypes["CS_OFFLINE"] = "CS_OFFLINE";
@@ -7039,7 +7585,7 @@
 
 	GNS$1.__esModule = true;
 	GNS$1.GNS = void 0;
-	var Calibrator_1$g = Calibrator;
+	var Calibrator_1$i = Calibrator;
 	var framework_detector_1$2 = frameworkDetector;
 	var platform_detector_1$1 = platformDetector;
 	var UniApp_1 = UniApp$1; // TODO:
@@ -7226,7 +7772,7 @@
 	      return;
 	    }
 
-	    if (!Calibrator_1$g["default"].isFunction(clickHandler)) {
+	    if (!Calibrator_1$i["default"].isFunction(clickHandler)) {
 	      throw new Error('The arguments must be a function.');
 	    }
 
@@ -7392,6 +7938,32 @@
 	        this.userData = options.data;
 	      }
 
+	      if (Calibrator_1["default"].isObject(options.wxTemplateMessage)) {
+	        if (Calibrator_1["default"].isEmpty(options.wxTemplateMessage.appId)) {
+	          throw {
+	            code: 400,
+	            content: 'wx.appId is required.'
+	          };
+	        }
+
+	        if (Calibrator_1["default"].isEmpty(options.wxTemplateMessage.openId)) {
+	          throw {
+	            code: 400,
+	            content: 'wx.openId is required. requires string.'
+	          };
+	        }
+	      } else if (Calibrator_1["default"].isPrimitive(options.wxTemplateMessage)) {
+	        throw {
+	          code: 400,
+	          content: 'TypeError: wx requires an object.'
+	        };
+	      }
+
+	      if (Calibrator_1["default"].isDef(options.wxTemplateMessage)) {
+	        this.wxAppId = options.wxTemplateMessage.appId;
+	        this.wxOpenId = options.wxTemplateMessage.openId;
+	      }
+
 	      this.otp = options.otp || null;
 	    };
 
@@ -7525,6 +8097,10 @@
 	        // imVersion : this.imVersion,
 	        allowNT: this.allowNotification,
 	        regId: this.regId,
+	        wxOpenId: {
+	          appId: this.wxAppId,
+	          openId: this.wxOpenId
+	        },
 	        modules: this.modules,
 	        a: this.anonymous,
 	        z: ClientInfo_1.clientInfo.z
@@ -7894,7 +8470,13 @@
 	        content: options.message,
 	        nt: options.notification,
 	        at: options.accessToken,
-	        guid: UUID_1["default"].get()
+	        guid: UUID_1["default"].get(),
+	        wxTemplateMessage: {
+	          templateId: options.wxTemplateMessage.templateId,
+	          url: options.wxTemplateMessage.url,
+	          miniProgram: options.wxTemplateMessage.miniProgram,
+	          data: JSON.stringify(options.wxTemplateMessage.data)
+	        }
 	      };
 
 	      var success = function success(ack) {
@@ -8008,15 +8590,15 @@
 	Subscriber$1.__esModule = true;
 	Subscriber$1.Subscriber = void 0;
 	var noop_1$3 = noop;
-	var Calibrator_1$f = Calibrator;
-	var Rocket_1$b = Rocket;
-	var Permission_1$b = Permission;
+	var Calibrator_1$h = Calibrator;
+	var Rocket_1$a = Rocket;
+	var Permission_1$a = Permission;
 	var Subscription_1 = Subscription$1;
-	var SocketTimeout_1$b = SocketTimeout;
+	var SocketTimeout_1$a = SocketTimeout;
 	var NetworkStatus_1$2 = NetworkStatus;
-	var RocketTypes_1$b = RocketTypes;
+	var RocketTypes_1$c = RocketTypes;
 	var RemoteEvents_1$5 = RemoteEvents;
-	var validator_utils_1$8 = validatorUtils;
+	var validator_utils_1$9 = validatorUtils;
 	var pubsub_1$1 = pubsub;
 	var GNS_1$1 = GNS$1;
 
@@ -8100,7 +8682,7 @@
 	  Subscriber.prototype.createNotification = function (message) {
 	    var supportGNS = GNS_1$1.GNS.instance.supportNotification();
 
-	    if (!Calibrator_1$f["default"].isObject(message.nt) || !supportGNS) {
+	    if (!Calibrator_1$h["default"].isObject(message.nt) || !supportGNS) {
 	      return;
 	    }
 
@@ -8114,7 +8696,7 @@
 	  Subscriber.prototype.formatOptions = function (options) {
 	    this.formatCallback(options);
 
-	    if (!Calibrator_1$f["default"].isFunction(options.onMessage)) {
+	    if (!Calibrator_1$h["default"].isFunction(options.onMessage)) {
 	      options.onMessage = noop_1$3["default"];
 	    }
 
@@ -8129,11 +8711,11 @@
 	  };
 
 	  Subscriber.prototype.formatCallback = function (options) {
-	    if (!Calibrator_1$f["default"].isFunction(options.onSuccess)) {
+	    if (!Calibrator_1$h["default"].isFunction(options.onSuccess)) {
 	      options.onSuccess = noop_1$3["default"];
 	    }
 
-	    if (!Calibrator_1$f["default"].isFunction(options.onFailed)) {
+	    if (!Calibrator_1$h["default"].isFunction(options.onFailed)) {
 	      options.onFailed = noop_1$3["default"];
 	    }
 	  }; //订阅
@@ -8142,7 +8724,7 @@
 	  Subscriber.prototype.subscribe = function (options) {
 	    var _this = this;
 
-	    validator_utils_1$8["default"].validateChannelAndChannels(options.channel, options.channels);
+	    validator_utils_1$9["default"].validateChannelAndChannels(options.channel, options.channels);
 	    this.formatOptions(options);
 
 	    var success = function success() {
@@ -8169,11 +8751,11 @@
 	      });
 	    };
 
-	    var rocket = new Rocket_1$b["default"]({
-	      name: RocketTypes_1$b.RocketTypes.subscribe,
-	      permission: Permission_1$b.Permission.READ,
-	      singleTimeout: SocketTimeout_1$b.SocketTimeout.commonInfiniteSingle,
-	      totalTimeout: SocketTimeout_1$b.SocketTimeout.commonInfiniteTotal,
+	    var rocket = new Rocket_1$a["default"]({
+	      name: RocketTypes_1$c.RocketTypes.subscribe,
+	      permission: Permission_1$a.Permission.READ,
+	      singleTimeout: SocketTimeout_1$a.SocketTimeout.commonInfiniteSingle,
+	      totalTimeout: SocketTimeout_1$a.SocketTimeout.commonInfiniteTotal,
 	      params: {
 	        channels: options.channels,
 	        accessToken: options.accessToken
@@ -8188,7 +8770,7 @@
 	  Subscriber.prototype.unsubscribe = function (options) {
 	    var _this = this;
 
-	    validator_utils_1$8["default"].validateChannel(options.channel, 'channel');
+	    validator_utils_1$9["default"].validateChannel(options.channel, 'channel');
 	    options.channel = options.channel.toString();
 
 	    if (!this.findSubscriptionByChannel(options.channel)) {
@@ -8215,14 +8797,14 @@
 	      });
 	    };
 
-	    var rocket = new Rocket_1$b["default"]({
-	      name: RocketTypes_1$b.RocketTypes.unsubscribe,
+	    var rocket = new Rocket_1$a["default"]({
+	      name: RocketTypes_1$c.RocketTypes.unsubscribe,
 	      params: {
 	        channel: options.channel
 	      },
-	      permission: Permission_1$b.Permission.READ,
-	      singleTimeout: SocketTimeout_1$b.SocketTimeout.commonRequestSingle,
-	      totalTimeout: SocketTimeout_1$b.SocketTimeout.commonRequestTotal,
+	      permission: Permission_1$a.Permission.READ,
+	      singleTimeout: SocketTimeout_1$a.SocketTimeout.commonRequestSingle,
+	      totalTimeout: SocketTimeout_1$a.SocketTimeout.commonRequestTotal,
 	      success: success,
 	      fail: fail
 	    });
@@ -8273,12 +8855,12 @@
 	History$2.__esModule = true;
 	History$2.History = void 0;
 	var noop_1$2 = noop;
-	var Calibrator_1$e = Calibrator;
-	var Rocket_1$a = Rocket;
-	var Permission_1$a = Permission;
-	var SocketTimeout_1$a = SocketTimeout;
-	var RocketTypes_1$a = RocketTypes;
-	var validator_utils_1$7 = validatorUtils;
+	var Calibrator_1$g = Calibrator;
+	var Rocket_1$9 = Rocket;
+	var Permission_1$9 = Permission;
+	var SocketTimeout_1$9 = SocketTimeout;
+	var RocketTypes_1$b = RocketTypes;
+	var validator_utils_1$8 = validatorUtils;
 
 	var History$1 =
 	/** @class */
@@ -8288,15 +8870,15 @@
 	  }
 
 	  History.prototype.get = function (options) {
-	    if (!Calibrator_1$e["default"].isFunction(options.onSuccess)) {
+	    if (!Calibrator_1$g["default"].isFunction(options.onSuccess)) {
 	      options.onSuccess = noop_1$2["default"];
 	    }
 
-	    if (!Calibrator_1$e["default"].isFunction(options.onFailed)) {
+	    if (!Calibrator_1$g["default"].isFunction(options.onFailed)) {
 	      options.onFailed = noop_1$2["default"];
 	    }
 
-	    validator_utils_1$7["default"].validateChannel(options.channel, 'channel');
+	    validator_utils_1$8["default"].validateChannel(options.channel, 'channel');
 	    options.channel = options.channel.toString();
 
 	    var ackCallback = function ackCallback(ack) {
@@ -8313,12 +8895,12 @@
 	      });
 	    };
 
-	    var rocket = new Rocket_1$a["default"]({
-	      name: RocketTypes_1$a.RocketTypes.historyMessages,
-	      permission: Permission_1$a.Permission.READ,
+	    var rocket = new Rocket_1$9["default"]({
+	      name: RocketTypes_1$b.RocketTypes.historyMessages,
+	      permission: Permission_1$9.Permission.READ,
 	      params: options,
-	      singleTimeout: SocketTimeout_1$a.SocketTimeout.commonQuerySingle,
-	      totalTimeout: SocketTimeout_1$a.SocketTimeout.commonQueryTotal,
+	      singleTimeout: SocketTimeout_1$9.SocketTimeout.commonQuerySingle,
+	      totalTimeout: SocketTimeout_1$9.SocketTimeout.commonQueryTotal,
 	      success: ackCallback,
 	      fail: failCallback
 	    });
@@ -8355,16 +8937,16 @@
 	PresenceSubscriber$1.__esModule = true;
 	PresenceSubscriber$1.PresenceSubscriber = void 0;
 	var noop_1$1 = noop;
-	var Calibrator_1$d = Calibrator;
-	var Rocket_1$9 = Rocket;
-	var Permission_1$9 = Permission;
-	var SocketTimeout_1$9 = SocketTimeout;
+	var Calibrator_1$f = Calibrator;
+	var Rocket_1$8 = Rocket;
+	var Permission_1$8 = Permission;
+	var SocketTimeout_1$8 = SocketTimeout;
 	var PresenceSubscription_1 = PresenceSubscription$1;
 	var NetworkStatus_1$1 = NetworkStatus;
-	var RocketTypes_1$9 = RocketTypes;
+	var RocketTypes_1$a = RocketTypes;
 	var RemoteEvents_1$4 = RemoteEvents;
 	var pubsub_1 = pubsub;
-	var validator_utils_1$6 = validatorUtils;
+	var validator_utils_1$7 = validatorUtils;
 
 	var PresenceSubscriber =
 	/** @class */
@@ -8432,7 +9014,7 @@
 	  PresenceSubscriber.prototype.formatOptions = function (options) {
 	    this.formatCallback(options);
 
-	    if (!Calibrator_1$d["default"].isFunction(options.onPresence)) {
+	    if (!Calibrator_1$f["default"].isFunction(options.onPresence)) {
 	      options.onPresence = noop_1$1["default"];
 	    }
 
@@ -8447,11 +9029,11 @@
 	  };
 
 	  PresenceSubscriber.prototype.formatCallback = function (options) {
-	    if (!Calibrator_1$d["default"].isFunction(options.onSuccess)) {
+	    if (!Calibrator_1$f["default"].isFunction(options.onSuccess)) {
 	      options.onSuccess = noop_1$1["default"];
 	    }
 
-	    if (!Calibrator_1$d["default"].isFunction(options.onFailed)) {
+	    if (!Calibrator_1$f["default"].isFunction(options.onFailed)) {
 	      options.onFailed = noop_1$1["default"];
 	    }
 	  };
@@ -8459,7 +9041,7 @@
 	  PresenceSubscriber.prototype.subscribePresence = function (options) {
 	    var _this = this;
 
-	    validator_utils_1$6["default"].validateChannelAndChannels(options.channel, options.channels);
+	    validator_utils_1$7["default"].validateChannelAndChannels(options.channel, options.channels);
 	    this.formatOptions(options);
 
 	    if (Array.isArray(options.channels)) {
@@ -8492,11 +9074,11 @@
 	      });
 	    };
 
-	    var rocket = new Rocket_1$9["default"]({
-	      name: RocketTypes_1$9.RocketTypes.subscribe,
-	      permission: Permission_1$9.Permission.READ,
-	      singleTimeout: SocketTimeout_1$9.SocketTimeout.commonInfiniteSingle,
-	      totalTimeout: SocketTimeout_1$9.SocketTimeout.commonInfiniteTotal,
+	    var rocket = new Rocket_1$8["default"]({
+	      name: RocketTypes_1$a.RocketTypes.subscribe,
+	      permission: Permission_1$8.Permission.READ,
+	      singleTimeout: SocketTimeout_1$8.SocketTimeout.commonInfiniteSingle,
+	      totalTimeout: SocketTimeout_1$8.SocketTimeout.commonInfiniteTotal,
 	      params: {
 	        channels: options.channels
 	      },
@@ -8511,7 +9093,7 @@
 
 	    this.formatCallback(options);
 
-	    if (!Calibrator_1$d["default"].isDef(options.channel)) {
+	    if (!Calibrator_1$f["default"].isDef(options.channel)) {
 	      options.onFailed({
 	        code: 400,
 	        content: 'channel is required'
@@ -8529,14 +9111,14 @@
 	      return;
 	    }
 
-	    var rocket = new Rocket_1$9["default"]({
-	      name: RocketTypes_1$9.RocketTypes.unsubscribe,
+	    var rocket = new Rocket_1$8["default"]({
+	      name: RocketTypes_1$a.RocketTypes.unsubscribe,
 	      params: {
 	        channel: options.channel
 	      },
-	      permission: Permission_1$9.Permission.READ,
-	      singleTimeout: SocketTimeout_1$9.SocketTimeout.commonRequestSingle,
-	      totalTimeout: SocketTimeout_1$9.SocketTimeout.commonRequestTotal,
+	      permission: Permission_1$8.Permission.READ,
+	      singleTimeout: SocketTimeout_1$8.SocketTimeout.commonRequestSingle,
+	      totalTimeout: SocketTimeout_1$8.SocketTimeout.commonRequestTotal,
 	      success: function success() {
 	        options.onSuccess({
 	          code: 200,
@@ -8599,12 +9181,12 @@
 	HereNow$1.__esModule = true;
 	HereNow$1.HereNow = void 0;
 	var noop_1 = noop;
-	var Calibrator_1$c = Calibrator;
-	var Rocket_1$8 = Rocket;
-	var Permission_1$8 = Permission;
-	var SocketTimeout_1$8 = SocketTimeout;
-	var RocketTypes_1$8 = RocketTypes;
-	var validator_utils_1$5 = validatorUtils;
+	var Calibrator_1$e = Calibrator;
+	var Rocket_1$7 = Rocket;
+	var Permission_1$7 = Permission;
+	var SocketTimeout_1$7 = SocketTimeout;
+	var RocketTypes_1$9 = RocketTypes;
+	var validator_utils_1$6 = validatorUtils;
 
 	var HereNow =
 	/** @class */
@@ -8620,15 +9202,15 @@
 	      distinct: false
 	    };
 
-	    if (!Calibrator_1$c["default"].isFunction(options.onSuccess)) {
+	    if (!Calibrator_1$e["default"].isFunction(options.onSuccess)) {
 	      options.onSuccess = noop_1["default"];
 	    }
 
-	    if (!Calibrator_1$c["default"].isFunction(options.onFailed)) {
+	    if (!Calibrator_1$e["default"].isFunction(options.onFailed)) {
 	      options.onFailed = noop_1["default"];
 	    }
 
-	    validator_utils_1$5["default"].validateChannelArray(options.channels, 'channels');
+	    validator_utils_1$6["default"].validateChannelArray(options.channels, 'channels');
 	    params.channels = options.channels.toString().split(','); // 转换为字符串数组
 
 	    params.includeUsers = options.includeUsers || false;
@@ -8664,12 +9246,12 @@
 	      });
 	    };
 
-	    var rocket = new Rocket_1$8["default"]({
-	      name: RocketTypes_1$8.RocketTypes.hereNow,
-	      permission: Permission_1$8.Permission.READ,
+	    var rocket = new Rocket_1$7["default"]({
+	      name: RocketTypes_1$9.RocketTypes.hereNow,
+	      permission: Permission_1$7.Permission.READ,
 	      params: params,
-	      singleTimeout: SocketTimeout_1$8.SocketTimeout.commonQuerySingle,
-	      totalTimeout: SocketTimeout_1$8.SocketTimeout.commonQueryTotal,
+	      singleTimeout: SocketTimeout_1$7.SocketTimeout.commonQuerySingle,
+	      totalTimeout: SocketTimeout_1$7.SocketTimeout.commonQueryTotal,
 	      success: ackCallback,
 	      fail: failCallback
 	    });
@@ -8682,15 +9264,15 @@
 	      distinct: true
 	    };
 
-	    if (!Calibrator_1$c["default"].isFunction(options.onSuccess)) {
+	    if (!Calibrator_1$e["default"].isFunction(options.onSuccess)) {
 	      options.onSuccess = noop_1["default"];
 	    }
 
-	    if (!Calibrator_1$c["default"].isFunction(options.onFailed)) {
+	    if (!Calibrator_1$e["default"].isFunction(options.onFailed)) {
 	      options.onFailed = noop_1["default"];
 	    }
 
-	    validator_utils_1$5["default"].validateIdArray(options.userIds, 'userIds');
+	    validator_utils_1$6["default"].validateIdArray(options.userIds, 'userIds');
 	    params.userIds = options.userIds.toString().split(',');
 
 	    if (options.distinct == false) {
@@ -8719,12 +9301,12 @@
 	      });
 	    };
 
-	    var rocket = new Rocket_1$8["default"]({
-	      name: RocketTypes_1$8.RocketTypes.hereNowByUserIds,
-	      permission: Permission_1$8.Permission.READ,
+	    var rocket = new Rocket_1$7["default"]({
+	      name: RocketTypes_1$9.RocketTypes.hereNowByUserIds,
+	      permission: Permission_1$7.Permission.READ,
 	      params: params,
-	      singleTimeout: SocketTimeout_1$8.SocketTimeout.commonQuerySingle,
-	      totalTimeout: SocketTimeout_1$8.SocketTimeout.commonQueryTotal,
+	      singleTimeout: SocketTimeout_1$7.SocketTimeout.commonQuerySingle,
+	      totalTimeout: SocketTimeout_1$7.SocketTimeout.commonQueryTotal,
 	      success: ackCallback,
 	      fail: failCallback
 	    });
@@ -8740,7 +9322,7 @@
 
 	callbackUtils.__esModule = true;
 	callbackUtils.CallbackUtils = void 0;
-	var Calibrator_1$b = Calibrator;
+	var Calibrator_1$d = Calibrator;
 
 	var CallbackUtils =
 	/** @class */
@@ -8748,13 +9330,13 @@
 	  function CallbackUtils() {}
 
 	  CallbackUtils.onSuccess = function (callbackOptions, result) {
-	    if (Calibrator_1$b["default"].isFunction(callbackOptions.onSuccess)) {
+	    if (Calibrator_1$d["default"].isFunction(callbackOptions.onSuccess)) {
 	      callbackOptions.onSuccess(result);
 	    }
 	  };
 
 	  CallbackUtils.onFailed = function (callbackOptions, error) {
-	    if (Calibrator_1$b["default"].isObject(callbackOptions) && Calibrator_1$b["default"].isFunction(callbackOptions.onFailed)) {
+	    if (Calibrator_1$d["default"].isObject(callbackOptions) && Calibrator_1$d["default"].isFunction(callbackOptions.onFailed)) {
 	      callbackOptions.onFailed(error);
 	    } else {
 	      throw error;
@@ -8773,7 +9355,7 @@
 	var History_1 = History$2;
 	var PresenceSubscriber_1 = PresenceSubscriber$1;
 	var HereNow_1 = HereNow$1;
-	var callback_utils_1$8 = callbackUtils;
+	var callback_utils_1$a = callbackUtils;
 	var NetworkStatus_1 = NetworkStatus;
 	var ModuleTypes_1$1 = ModuleTypes;
 
@@ -8809,7 +9391,7 @@
 	      this.validateOptions();
 	      functionObj();
 	    } catch (err) {
-	      callback_utils_1$8.CallbackUtils.onFailed(callbackOptions, err);
+	      callback_utils_1$a.CallbackUtils.onFailed(callbackOptions, err);
 	    }
 	  }; // todo: 方法名
 
@@ -8939,28 +9521,29 @@
 
 	apiEventCenter.__esModule = true;
 	apiEventCenter.ApiEventCenter = void 0;
-	var im_api_events_1$1 = imApiEvents;
+	var im_api_events_1$2 = imApiEvents;
 	var rtc_api_events_1$3 = rtcApiEvents;
 	var Emitter$1 = componentEmitter.exports;
-	var Calibrator_1$a = Calibrator;
+	var Calibrator_1$c = Calibrator;
 
 	var ApiEventCenter =
 	/** @class */
 	function () {
 	  function ApiEventCenter() {
 	    this.emitter = new Emitter$1();
-	  }
+	  } //todo： 考虑是否要在连接断开的时候清空？ 但因为考虑到用户在连接前都可以监听，所以目前考虑客户自己维护
+
 
 	  ApiEventCenter.prototype.on = function (apiEvent, callback) {
-	    if (!Calibrator_1$a["default"].isString(apiEvent)) {
+	    if (!Calibrator_1$c["default"].isString(apiEvent)) {
 	      throw Error('event require a string.');
 	    }
 
-	    if (!Calibrator_1$a["default"].isDef(im_api_events_1$1.ImApiEvents[apiEvent]) && !Calibrator_1$a["default"].isDef(rtc_api_events_1$3.RTCApiEvents[apiEvent])) {
+	    if (!Calibrator_1$c["default"].isDef(im_api_events_1$2.ImApiEvents[apiEvent]) && !Calibrator_1$c["default"].isDef(rtc_api_events_1$3.RTCApiEvents[apiEvent])) {
 	      throw Error('An event that is not defined');
 	    }
 
-	    if (!Calibrator_1$a["default"].isFunction(callback)) {
+	    if (!Calibrator_1$c["default"].isFunction(callback)) {
 	      throw Error('callback must be a function');
 	    }
 
@@ -9007,7 +9590,7 @@
 	  exports["default"] = AbstractFileUploader;
 	})(AbstractFileUploader);
 
-	var __extends$i = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$k = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -9042,7 +9625,7 @@
 	var UniAppFileUploader =
 	/** @class */
 	function (_super) {
-	  __extends$i(UniAppFileUploader, _super);
+	  __extends$k(UniAppFileUploader, _super);
 
 	  function UniAppFileUploader() {
 	    return _super.call(this) || this;
@@ -9110,7 +9693,7 @@
 
 	var WXFileUploader$1 = {};
 
-	var __extends$h = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$j = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -9145,7 +9728,7 @@
 	var WXFileUploader =
 	/** @class */
 	function (_super) {
-	  __extends$h(WXFileUploader, _super);
+	  __extends$j(WXFileUploader, _super);
 
 	  function WXFileUploader() {
 	    return _super !== null && _super.apply(this, arguments) || this;
@@ -9211,7 +9794,7 @@
 
 	var HtmlFileUploader$1 = {};
 
-	var __extends$g = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$i = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -9246,7 +9829,7 @@
 	var HtmlFileUploader =
 	/** @class */
 	function (_super) {
-	  __extends$g(HtmlFileUploader, _super);
+	  __extends$i(HtmlFileUploader, _super);
 
 	  function HtmlFileUploader() {
 	    return _super.call(this) || this;
@@ -9428,11 +10011,10 @@
 	    MessageType["FILE"] = "file";
 	    MessageType["VIDEO"] = "video";
 	    MessageType["AUDIO"] = "audio";
-	    MessageType["ACCEPTED"] = "ACCEPTED";
 	  })(exports.MessageType || (exports.MessageType = {}));
 	})(MessageType);
 
-	var __extends$f = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$h = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -9469,7 +10051,7 @@
 	var AliYunOSSRequestBuilder =
 	/** @class */
 	function (_super) {
-	  __extends$f(AliYunOSSRequestBuilder, _super);
+	  __extends$h(AliYunOSSRequestBuilder, _super);
 
 	  function AliYunOSSRequestBuilder() {
 	    return _super.call(this) || this;
@@ -9518,7 +10100,7 @@
 
 	var QiNiuYunOSSRequestBuilder$1 = {};
 
-	var __extends$e = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$g = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -9554,7 +10136,7 @@
 	var QiNiuYunOSSRequestBuilder =
 	/** @class */
 	function (_super) {
-	  __extends$e(QiNiuYunOSSRequestBuilder, _super);
+	  __extends$g(QiNiuYunOSSRequestBuilder, _super);
 
 	  function QiNiuYunOSSRequestBuilder() {
 	    return _super.call(this) || this;
@@ -9609,23 +10191,55 @@
 
 	var UploadTokenResolver = {};
 
+	var g = {};
+
+	g.__esModule = true;
+	g.G = void 0;
+
+	var G =
+	/** @class */
+	function () {
+	  function G() {}
+
+	  G.i = function (socket) {
+	    this.socket = socket;
+	  };
+
+	  G.s = function () {
+	    if (this.socket) {
+	      return this.socket;
+	    }
+
+	    throw new Error('Please connect first.');
+	  };
+
+	  G.u = function () {
+	    return this.s().userId;
+	  };
+
+	  G.ud = function () {
+	    return this.s().userData;
+	  };
+
+	  return G;
+	}();
+
+	g.G = G;
+
 	(function (exports) {
 
 	  exports.__esModule = true;
 	  var Rocket_1 = Rocket;
 	  var Permission_1 = Permission;
 	  var SocketTimeout_1 = SocketTimeout;
+	  var g_1 = g;
 
 	  var UploadTokenResolver =
 	  /** @class */
 	  function () {
-	    function UploadTokenResolver(goEasySocket) {
-	      this.goEasySocket = goEasySocket;
-	    }
+	    function UploadTokenResolver() {}
 
 	    UploadTokenResolver.prototype.resolve = function (name) {
-	      var _this = this;
-
 	      return new Promise(function (resolve, reject) {
 	        var rocket = new Rocket_1["default"]({
 	          name: 'uploadToken',
@@ -9646,8 +10260,7 @@
 	            }
 	          }
 	        });
-
-	        _this.goEasySocket.emit(rocket);
+	        g_1.G.s().emit(rocket);
 	      });
 	    };
 
@@ -9666,8 +10279,8 @@
 	  var RequestBuilder =
 	  /** @class */
 	  function () {
-	    function RequestBuilder(goEasySocket) {
-	      this.uploadTokenResolver = new UploadTokenResolver_1["default"](goEasySocket);
+	    function RequestBuilder() {
+	      this.uploadTokenResolver = new UploadTokenResolver_1["default"]();
 	    }
 
 	    RequestBuilder.prototype.build = function (file, name, messageType) {
@@ -9697,10 +10310,9 @@
 	var GoEasyUploader =
 	/** @class */
 	function () {
-	  function GoEasyUploader(goEasySocket) {
-	    this.requestBuilder = null;
+	  function GoEasyUploader() {
+	    this.requestBuilder = new RequestBuilder_1["default"]();
 	    this.fileUploader = FileUploader_1.fileUploader;
-	    this.requestBuilder = new RequestBuilder_1["default"](goEasySocket);
 	  }
 
 	  GoEasyUploader.prototype.upload = function (file, name, onProgress, messageType) {
@@ -9730,198 +10342,6 @@
 
 	GoEasyUploader$1.GoEasyUploader = GoEasyUploader;
 
-	var DataCache = {};
-
-	var ConversationIdUtils = {};
-
-	(function (exports) {
-
-	  exports.__esModule = true;
-	  var GoEasy_1 = GoEasy$1;
-	  var im_1 = im;
-
-	  var ConversationIdUtils =
-	  /** @class */
-	  function () {
-	    function ConversationIdUtils() {} // todo 目前先这样处理，前端的conversationId和后台的conversationId很可能顺序是相反的,后续会优化
-
-
-	    ConversationIdUtils.conversationId = function (scene, userId, targetId) {
-	      var conversationId = targetId;
-
-	      if (scene === GoEasy_1.Scene.PRIVATE) {
-	        conversationId = userId + ":" + targetId;
-	      }
-
-	      return conversationId;
-	    };
-
-	    ConversationIdUtils.targetId = function (scene, conversationId) {
-	      if (scene === GoEasy_1.Scene.PRIVATE) {
-	        var ids = conversationId.split(":", 2);
-	        return ids[0] === im_1.IM.userId ? ids[1] : ids[0];
-	      }
-
-	      return conversationId;
-	    };
-
-	    ConversationIdUtils.customerId = function (conversationId) {
-	      var ids = conversationId.split("#", 2);
-	      return ids[0];
-	    };
-
-	    ConversationIdUtils.teamId = function (conversationId) {
-	      var ids = conversationId.split("#", 2);
-	      return ids[1];
-	    };
-
-	    ConversationIdUtils.csConversationId = function (scene, customerId, teamId) {
-	      if (scene === GoEasy_1.Scene.CS) {
-	        return customerId + "#" + teamId;
-	      }
-
-	      throw new Error("scene:".concat(scene, " not support"));
-	    };
-
-	    return ConversationIdUtils;
-	  }();
-
-	  exports["default"] = ConversationIdUtils;
-	})(ConversationIdUtils);
-
-	(function (exports) {
-
-	  exports.__esModule = true;
-	  var Rocket_1 = Rocket;
-	  var Permission_1 = Permission;
-	  var SocketTimeout_1 = SocketTimeout;
-	  var GoEasy_1 = GoEasy$1;
-	  var RocketTypes_1 = RocketTypes;
-	  var Calibrator_1 = Calibrator;
-	  var ConversationIdUtils_1 = ConversationIdUtils;
-	  var im_1 = im;
-
-	  var DataCache =
-	  /** @class */
-	  function () {
-	    function DataCache(user, goEasySocket) {
-	      this.userData = new Map();
-	      this.groupData = new Map();
-	      this.teamData = new Map();
-	      this.goEasySocket = goEasySocket;
-	      this.userData.set(user.id, user.data);
-	    }
-
-	    DataCache.prototype.putData = function (scene, id, data) {
-	      if (!data) {
-	        data = {};
-	      }
-
-	      if (scene === GoEasy_1.Scene.PRIVATE) {
-	        this.userData.set(id, data);
-	      } else if (scene === GoEasy_1.Scene.GROUP) {
-	        this.groupData.set(id, data);
-	      } else if (scene === GoEasy_1.Scene.CS) {
-	        var teamId = ConversationIdUtils_1["default"].teamId(id);
-	        var customerId = ConversationIdUtils_1["default"].customerId(id);
-	        var isCustomer = im_1.IM.userId === customerId;
-
-	        if (isCustomer) {
-	          this.teamData.set(teamId, data);
-	        } else {
-	          this.userData.set(customerId, data);
-	        }
-	      } else {
-	        throw {
-	          code: 400,
-	          content: "scene ".concat(scene, " not exists")
-	        };
-	      }
-	    };
-
-	    DataCache.prototype.loadData = function (id, scene) {
-	      var _this = this;
-
-	      return new Promise(function (resolve, reject) {
-	        var data = _this.loadLocalData(id, scene);
-
-	        if (Calibrator_1["default"].isUndef(data)) {
-	          _this.loadServerData(id, scene).then(function (data) {
-	            console.log('load data from server by id=' + id + ' scene= ' + scene + 'data :', JSON.stringify(data));
-	            resolve(data);
-	          })["catch"](function (error) {
-	            reject(error);
-	          });
-	        } else {
-	          console.log('load data from local Cache by id=' + id + ' scene= ' + scene + 'data :', JSON.stringify(data));
-	          resolve(data);
-	        }
-	      });
-	    };
-
-	    DataCache.prototype.loadLocalData = function (id, scene) {
-	      if (GoEasy_1.Scene.PRIVATE === scene) {
-	        return this.userData.get(id);
-	      } else if (GoEasy_1.Scene.GROUP === scene) {
-	        return this.groupData.get(id);
-	      } else if (GoEasy_1.Scene.CS === scene) {
-	        var teamId = ConversationIdUtils_1["default"].teamId(id);
-	        var customerId = ConversationIdUtils_1["default"].customerId(id);
-	        var isCustomer = im_1.IM.userId === customerId;
-
-	        if (isCustomer) {
-	          return this.teamData.get(teamId);
-	        } else {
-	          return this.userData.get(customerId);
-	        }
-	      } else {
-	        throw {
-	          code: 400,
-	          content: "scene ".concat(scene, " not exists")
-	        };
-	      }
-	    };
-
-	    DataCache.prototype.loadServerData = function (id, scene) {
-	      var _this = this;
-
-	      return new Promise(function (resolve, reject) {
-	        var params = {
-	          targetId: id,
-	          type: scene
-	        };
-	        var rocket = new Rocket_1["default"]({
-	          name: RocketTypes_1.RocketTypes.imData,
-	          params: params,
-	          permission: Permission_1.Permission.READ,
-	          singleTimeout: SocketTimeout_1.SocketTimeout.commonQuerySingle,
-	          totalTimeout: SocketTimeout_1.SocketTimeout.commonQueryTotal,
-	          success: function success(result) {
-	            if (result.code === 200) {
-	              var data = JSON.parse(result.content);
-
-	              _this.putData(scene, id, data);
-
-	              resolve(data);
-	            } else {
-	              reject(result);
-	            }
-	          },
-	          fail: function fail(error) {
-	            reject(error);
-	          }
-	        });
-
-	        _this.goEasySocket.emit(rocket);
-	      });
-	    };
-
-	    return DataCache;
-	  }();
-
-	  exports["default"] = DataCache;
-	})(DataCache);
-
 	var IMMessageSender = {};
 
 	var PayloadImprover$1 = {};
@@ -9936,16 +10356,14 @@
 	var AbstractPayloadImprover =
 	/** @class */
 	function () {
-	  function AbstractPayloadImprover(goEasySocket) {
-	    this.goEasySocket = goEasySocket;
-	  }
+	  function AbstractPayloadImprover() {}
 
 	  return AbstractPayloadImprover;
 	}();
 
 	AbstractPayloadImprover$1.AbstractPayloadImprover = AbstractPayloadImprover;
 
-	var __extends$d = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$f = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -9982,12 +10400,12 @@
 	var FileMessagePayloadImprover =
 	/** @class */
 	function (_super) {
-	  __extends$d(FileMessagePayloadImprover, _super);
+	  __extends$f(FileMessagePayloadImprover, _super);
 
-	  function FileMessagePayloadImprover(goEasySocket) {
-	    var _this = _super.call(this, goEasySocket) || this;
+	  function FileMessagePayloadImprover() {
+	    var _this = _super !== null && _super.apply(this, arguments) || this;
 
-	    _this.goEasyUploader = new GoEasyUploader_1$1.GoEasyUploader(goEasySocket);
+	    _this.goEasyUploader = new GoEasyUploader_1$1.GoEasyUploader();
 	    return _this;
 	  }
 
@@ -10035,7 +10453,7 @@
 
 	var VideoMessagePayloadImprover$1 = {};
 
-	var __extends$c = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$e = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -10070,10 +10488,10 @@
 	var VideoMessagePayloadImprover =
 	/** @class */
 	function (_super) {
-	  __extends$c(VideoMessagePayloadImprover, _super);
+	  __extends$e(VideoMessagePayloadImprover, _super);
 
-	  function VideoMessagePayloadImprover(goEasySocket) {
-	    return _super.call(this, goEasySocket) || this;
+	  function VideoMessagePayloadImprover() {
+	    return _super !== null && _super.apply(this, arguments) || this;
 	  }
 
 	  VideoMessagePayloadImprover.prototype.setPayload = function (uploadResponse, message) {
@@ -10099,11 +10517,10 @@
 	var PayloadImprover =
 	/** @class */
 	function () {
-	  function PayloadImprover(goEasySocket) {
+	  function PayloadImprover() {
 	    var _a;
 
-	    this.goEasySocket = goEasySocket;
-	    this.improvers = (_a = {}, _a[MessageType_1$1.MessageType.FILE] = new FileMessagePayloadImprover_1.FileMessagePayloadImprover(goEasySocket), _a[MessageType_1$1.MessageType.AUDIO] = new FileMessagePayloadImprover_1.FileMessagePayloadImprover(goEasySocket), _a[MessageType_1$1.MessageType.IMAGE] = new FileMessagePayloadImprover_1.FileMessagePayloadImprover(goEasySocket), _a[MessageType_1$1.MessageType.VIDEO] = new VideoMessagePayloadImprover_1.VideoMessagePayloadImprover(goEasySocket), _a);
+	    this.improvers = (_a = {}, _a[MessageType_1$1.MessageType.FILE] = new FileMessagePayloadImprover_1.FileMessagePayloadImprover(), _a[MessageType_1$1.MessageType.AUDIO] = new FileMessagePayloadImprover_1.FileMessagePayloadImprover(), _a[MessageType_1$1.MessageType.IMAGE] = new FileMessagePayloadImprover_1.FileMessagePayloadImprover(), _a[MessageType_1$1.MessageType.VIDEO] = new VideoMessagePayloadImprover_1.VideoMessagePayloadImprover(), _a);
 	  }
 
 	  PayloadImprover.prototype.improve = function (options) {
@@ -10132,7 +10549,7 @@
 	  var BulletMessage =
 	  /** @class */
 	  function () {
-	    function BulletMessage(message, to, notification, accessToken) {
+	    function BulletMessage(message, to, notification, wximTemplateMessage, accessToken) {
 	      this.validate(message);
 	      this.mt = message.type;
 	      this.to = to.id.toString();
@@ -10145,6 +10562,12 @@
 
 	      if (accessToken) {
 	        this.at = accessToken;
+	      }
+
+	      if (wximTemplateMessage) {
+	        // @ts-ignore /todo：暂时先这样
+	        wximTemplateMessage.data = JSON.stringify(wximTemplateMessage.data);
+	        this.wxTemplateMessage = wximTemplateMessage;
 	      }
 
 	      var scene = to.type;
@@ -10254,16 +10677,14 @@
 	  (function (IM_INTERNAL_EVENTS) {
 	    IM_INTERNAL_EVENTS["MESSAGE_SENDING"] = "IM_INTERNAL_MESSAGE_SENDING";
 	    IM_INTERNAL_EVENTS["MESSAGE_SEND_SUCCESS"] = "IM_INTERNAL_MESSAGE_SEND_SUCCESS";
+	    IM_INTERNAL_EVENTS["MESSAGE_SEND_FAILED"] = "IM_INTERNAL_MESSAGE_SEND_FAILED";
 	    IM_INTERNAL_EVENTS["MESSAGE_RECEIVED"] = "IM_INTERNAL_MESSAGE_RECEIVED";
-	    IM_INTERNAL_EVENTS["REMOTE_MESSAGE_READ"] = "IM_INTERNAL_REMOTE_MESSAGE_READ";
-	    IM_INTERNAL_EVENTS["REMOTE_MESSAGE_DELETED"] = "IM_INTERNAL_REMOTE_MESSAGE_DELETED";
 	    IM_INTERNAL_EVENTS["MAX_MESSAGE_CHANGED"] = "IM_INTERNAL_MAX_MESSAGE_CHANGED";
-	    IM_INTERNAL_EVENTS["UNREAD_MESSAGE_CHANGED"] = "IM_INTERNAL_UNREAD_MESSAGE_CHANGED";
-	    IM_INTERNAL_EVENTS["REMOTE_MESSAGE_RECALLED"] = "IM_INTERNAL_REMOTE_MESSAGE_RECALLED";
-	    IM_INTERNAL_EVENTS["CONVERSATION_UPDATE"] = "CONVERSATION_UPDATE";
-	    IM_INTERNAL_EVENTS["LAST_MESSAGE_UPDATE"] = "LAST_MESSAGE_UPDATE";
-	    IM_INTERNAL_EVENTS["PENDING_MESSAGE_RECEIVED"] = "PENDING_MESSAGE_RECEIVED";
-	    IM_INTERNAL_EVENTS["PENDING_CONVERSATION_UPDATE"] = "PENDING_CONVERSATION_UPDATE";
+	    IM_INTERNAL_EVENTS["UNREAD_AMOUNT_CHANGED"] = "IM_INTERNAL_UNREAD_MESSAGE_CHANGED";
+	    IM_INTERNAL_EVENTS["CS_ONLINE_SUCCESS"] = "CS_ONLINE_SUCCESS";
+	    IM_INTERNAL_EVENTS["CS_OFFLINE_SUCCESS"] = "CS_OFFLINE_SUCCESS";
+	    IM_INTERNAL_EVENTS["CS_ACCEPTED"] = "CS_ACCEPTED";
+	    IM_INTERNAL_EVENTS["CS_ENDED"] = "CS_ENDED";
 	  })(exports.IM_INTERNAL_EVENTS || (exports.IM_INTERNAL_EVENTS = {}));
 	})(internalEvents);
 
@@ -10271,6 +10692,7 @@
 
 	AbstractMessage$1.__esModule = true;
 	AbstractMessage$1.AbstractMessage = void 0;
+	var g_1$b = g;
 
 	var AbstractMessage =
 	/** @class */
@@ -10279,6 +10701,16 @@
 
 	  AbstractMessage.prototype.clearUseLessAttribute = function () {
 	    delete this.buildOptions;
+	  };
+
+	  AbstractMessage.prototype.isOtherSent = function () {
+	    return this.senderId !== g_1$b.G.u();
+	  };
+
+	  AbstractMessage.prototype.getToData = function () {
+	    var buildOptions = this.buildOptions;
+	    var createOptions = buildOptions.createOptions;
+	    return createOptions.to.data;
 	  };
 
 	  return AbstractMessage;
@@ -10299,14 +10731,14 @@
 	  var GoEasy_1 = GoEasy$1;
 	  var AbstractMessage_1 = AbstractMessage$1;
 	  var RocketTypes_1 = RocketTypes;
+	  var g_1 = g;
+	  var callback_utils_1 = callbackUtils;
 
 	  var IMMessageSender =
 	  /** @class */
 	  function () {
-	    function IMMessageSender(goEasySocket, dataCache) {
-	      this.payloadImprover = new PayloadImprover_1.PayloadImprover(goEasySocket);
-	      this.goEasySocket = goEasySocket;
-	      this.dataCache = dataCache;
+	    function IMMessageSender() {
+	      this.payloadImprover = new PayloadImprover_1.PayloadImprover();
 	    }
 
 	    IMMessageSender.prototype.send = function (sendOptions) {
@@ -10318,26 +10750,18 @@
 	      var buildOptions = message.buildOptions;
 	      var createOptions = buildOptions.createOptions;
 	      var notification = createOptions.notification;
+	      var wxTemplateMessage = createOptions.wxTemplateMessage;
 	      var to = createOptions.to;
 
 	      if (!to.data) {
 	        to.data = {};
 	      }
 
-	      var scene = message.scene();
-
-	      if (GoEasy_1.Scene.CS === scene) {
-	        var csMessage = message;
-	        this.dataCache.putData(to.type, csMessage.targetId(), to.data);
-	      } else {
-	        this.dataCache.putData(to.type, to.id.toString(), to.data);
-	      }
-
 	      message.status = GoEasy_1.MessageStatus.SENDING;
 	      var buildPromise = buildOptions.complete;
 	      var improvePromise = this.payloadImprover.improve(sendOptions);
 	      Promise.all([buildPromise, improvePromise]).then(function () {
-	        _this.doSend(message, to, notification, accessToken, sendOptions);
+	        _this.doSend(message, to, notification, wxTemplateMessage, accessToken, sendOptions);
 	      })["catch"](function (error) {
 	        message.status = GoEasy_1.MessageStatus.FAIL;
 	        sendOptions.onFailed({
@@ -10347,8 +10771,8 @@
 	      });
 	    };
 
-	    IMMessageSender.prototype.doSend = function (message, to, notification, accessToken, options) {
-	      var bulletMessage = new BulletMessage_1["default"](message, to, notification, accessToken);
+	    IMMessageSender.prototype.doSend = function (message, to, notification, wxTemplateMessage, accessToken, options) {
+	      var bulletMessage = new BulletMessage_1["default"](message, to, notification, wxTemplateMessage, accessToken);
 	      goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.MESSAGE_SENDING, message);
 	      var rocket = new Rocket_1["default"]({
 	        name: RocketTypes_1.RocketTypes.publishIM,
@@ -10359,31 +10783,34 @@
 	        totalTimeout: SocketTimeout_1.SocketTimeout.commonRequestTotal,
 	        fail: function fail(error) {
 	          message.status = GoEasy_1.MessageStatus.FAIL;
-	          options.onFailed({
-	            code: error.resultCode || 408,
-	            content: error.content || 'Failed to send message.'
+	          goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.MESSAGE_SEND_FAILED, message);
+	          callback_utils_1.CallbackUtils.onFailed(options, {
+	            code: error.resultCode,
+	            content: error.content
 	          });
 	        },
 	        success: function success(result) {
-	          if (result.resultCode == 200) {
-	            message.status = GoEasy_1.MessageStatus.SUCCESS;
-	            message.timestamp = result.content.timestamp;
-	            message.clearUseLessAttribute();
-	            goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.MESSAGE_SEND_SUCCESS, message);
-	            options.onSuccess(message);
-	          } else {
-	            message.status = GoEasy_1.MessageStatus.FAIL;
-	            options.onFailed(result);
+	          message.status = GoEasy_1.MessageStatus.SUCCESS;
+	          message.timestamp = result.content.timestamp;
+
+	          if (message.scene() === GoEasy_1.Scene.CS) {
+	            var csMessage = message;
+
+	            if (csMessage.customerId() !== g_1.G.u()) {
+	              csMessage.sessionId = result.content.sessionId;
+	            }
 	          }
+
+	          message.clearUseLessAttribute();
+	          goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.MESSAGE_SEND_SUCCESS, message);
+	          callback_utils_1.CallbackUtils.onSuccess(options, message);
 	        }
 	      });
-	      this.goEasySocket.emit(rocket);
+	      g_1.G.s().emit(rocket);
 	    };
 
 	    IMMessageSender.prototype.validate = function (options) {
 	      var message = options.message;
-	      var buildOptions = message.buildOptions;
-	      buildOptions.createOptions;
 
 	      if (!(message instanceof AbstractMessage_1.AbstractMessage)) {
 	        throw new Error("it is invalid message");
@@ -10405,6 +10832,3972 @@
 	var Conversations$1 = {};
 
 	var Conversation$1 = {};
+
+	var histories = {};
+
+	var History = {};
+
+	var MessageCache = {};
+
+	var sortedInserter = {};
+
+	sortedInserter.__esModule = true;
+	sortedInserter.SortedInserter = void 0;
+
+	var SortedInserter =
+	/** @class */
+	function () {
+	  function SortedInserter() {}
+
+	  SortedInserter.prototype.insert = function (array, t) {
+	    var index = this.binarySearch(array, t);
+
+	    if (index >= 0) {
+	      // 覆盖
+	      array.splice(index, 1, t);
+	    } else {
+	      // 插入
+	      var newIndex = -index - 1;
+	      array.splice(newIndex, 0, t);
+	    }
+	  };
+	  /**
+	   * 相等就覆盖
+	   * 大于0往后查询
+	   * 小于0往前查询
+	   */
+
+
+	  SortedInserter.prototype.binarySearch = function (array, t) {
+	    var m = 0;
+	    var n = array.length - 1;
+
+	    while (m <= n) {
+	      var k = n + m >> 1;
+	      var cmp = this.compare(t, array[k]);
+
+	      if (cmp > 0) {
+	        // 往后查询
+	        m = k + 1;
+	      } else if (cmp < 0) {
+	        // 往前查询
+	        n = k - 1;
+	      } else {
+	        return k;
+	      }
+	    }
+
+	    return -m - 1;
+	  };
+
+	  return SortedInserter;
+	}();
+
+	sortedInserter.SortedInserter = SortedInserter;
+
+	(function (exports) {
+
+	  var __extends = commonjsGlobal && commonjsGlobal.__extends || function () {
+	    var _extendStatics = function extendStatics(d, b) {
+	      _extendStatics = Object.setPrototypeOf || {
+	        __proto__: []
+	      } instanceof Array && function (d, b) {
+	        d.__proto__ = b;
+	      } || function (d, b) {
+	        for (var p in b) {
+	          if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
+	        }
+	      };
+
+	      return _extendStatics(d, b);
+	    };
+
+	    return function (d, b) {
+	      if (typeof b !== "function" && b !== null) throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+
+	      _extendStatics(d, b);
+
+	      function __() {
+	        this.constructor = d;
+	      }
+
+	      d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	  }();
+
+	  exports.__esModule = true;
+	  var GoEasy_1 = GoEasy$1;
+	  var Calibrator_1 = Calibrator;
+	  var sorted_inserter_1 = sortedInserter;
+
+	  var MessageCache =
+	  /** @class */
+	  function () {
+	    function MessageCache(target) {
+	      this.messages = new Array();
+	      this.allLoaded = false; //是否已加载服务端的所有消息，如果已全部加载，就不要再向服务端发送请求
+
+	      this.target = target;
+	    }
+
+	    MessageCache.prototype.all = function () {
+	      return this.messages;
+	    };
+
+	    MessageCache.prototype.sliceOverLengthMessages = function () {
+	      //确保不超过最大消息，防止内存溢出，尤其是发送消息
+	      if (this.messages.length > MessageCache.CACHE_MAX_LENGTH) {
+	        this.messages = this.messages.slice(-MessageCache.CACHE_MAX_LENGTH);
+
+	        if (this.allLoaded === true) {
+	          this.allLoaded = false;
+	        }
+	      }
+	    };
+
+	    MessageCache.prototype.getMaxMessage = function () {
+	      return this.messages[this.messages.length - 1];
+	    };
+
+	    MessageCache.prototype.loadLocalMessages = function (limit, lastTimestamp) {
+	      var localMessages = [];
+	      var totalSize = this.messages.length;
+
+	      if (lastTimestamp) {
+	        if (totalSize > 0) {
+	          var minTimestamp = this.messages[0].timestamp;
+	          var maxTimestamp = this.messages[totalSize - 1].timestamp; // 大于等于最小，小于等于最大
+
+	          var between = lastTimestamp >= minTimestamp && lastTimestamp <= maxTimestamp;
+
+	          if (between) {
+	            for (var i = totalSize - 1; i >= 0; i--) {
+	              var message = this.messages[i];
+
+	              if (message.timestamp < lastTimestamp) {
+	                if (localMessages.length < limit) {
+	                  localMessages.unshift(message);
+	                } else {
+	                  break;
+	                }
+	              }
+	            }
+	          }
+	        }
+	      } else {
+	        localMessages = this.messages.slice(-limit);
+	      }
+
+	      return localMessages;
+	    };
+	    /**
+	     * 缓存条件：
+	     *  1.request.lastTimestamp为空
+	     *  2.本地的第一条消息的时间等于传入的request.lastTimestamp
+	     * 如果本地已经有消息，但是request.lastTimestamp不等于第一条消息，就丢掉
+	     */
+
+
+	    MessageCache.prototype.cacheServerMessages = function (request, serverMessages) {
+	      var firstMessage = this.messages[0];
+	      var totalSize = this.messages.length;
+
+	      if (!request.lastTimestamp || totalSize > 0 && firstMessage.timestamp === request.lastTimestamp) {
+	        this.messages = serverMessages.concat(this.messages);
+
+	        if (serverMessages.length < request.limit) {
+	          this.allLoaded = true;
+	        }
+
+	        this.sliceOverLengthMessages();
+	      }
+	    };
+
+	    MessageCache.prototype.findMessageByTime = function (time) {
+	      return this.messages.find(function (message) {
+	        return time === message.timestamp;
+	      });
+	    };
+
+	    MessageCache.prototype.findMessagesByTimes = function (times) {
+	      var _this = this;
+
+	      var messages = [];
+	      times.forEach(function (time) {
+	        var message = _this.findMessageByTime(time);
+
+	        if (Calibrator_1["default"].isDef(message)) {
+	          messages.push(message);
+	        }
+	      });
+	      return messages;
+	    };
+
+	    MessageCache.prototype.existsMessage = function (messageId) {
+	      return this.findMessageIndexById(messageId) > -1;
+	    };
+
+	    MessageCache.prototype.findMessageIndexById = function (messageId) {
+	      return this.messages.findIndex(function (message) {
+	        return messageId === message.messageId;
+	      });
+	    };
+
+	    MessageCache.prototype.deleteMessage = function (messageId) {
+	      var index = this.findMessageIndexById(messageId); //服务端按照指令成功删除最关键，本地与服务端不一致，可以忽略
+
+	      if (index >= 0) {
+	        this.messages.splice(index, 1);
+	      }
+	    };
+
+	    MessageCache.prototype.recallMessages = function (messages) {
+	      var _this = this;
+
+	      messages.forEach(function (message) {
+	        var localMessage = _this.findMessageByTime(message.timestamp);
+
+	        if (Calibrator_1["default"].isDef(localMessage)) {
+	          localMessage.recalled = true;
+	        }
+
+	        message.recalled = true;
+	      });
+	    };
+
+	    MessageCache.prototype.isEmpty = function () {
+	      return this.messages.length === 0;
+	    };
+
+	    MessageCache.prototype.deleteMessages = function (messages) {
+	      var _this = this;
+
+	      messages.forEach(function (message) {
+	        _this.deleteMessage(message.messageId);
+	      });
+	    };
+
+	    MessageCache.prototype.saveMessage = function (message) {
+	      MessageCache.sortedInserter.insert(this.messages, message);
+	      this.sliceOverLengthMessages();
+	    };
+
+	    MessageCache.prototype.maxSuccessMessageTime = function () {
+	      for (var i = this.messages.length - 1; i >= 0; i--) {
+	        if (this.messages[i].status === GoEasy_1.MessageStatus.SUCCESS) {
+	          return this.messages[i].timestamp;
+	        }
+	      }
+
+	      return 0;
+	    };
+
+	    MessageCache.prototype.minTime = function () {
+	      if (this.isEmpty()) {
+	        return 0;
+	      }
+
+	      return this.messages[0].timestamp;
+	    };
+
+	    MessageCache.prototype.correctPosition = function (message) {
+	      this.deleteMessage(message.messageId);
+	      this.saveMessage(message);
+	    };
+
+	    MessageCache.CACHE_MAX_LENGTH = 200;
+	    MessageCache.sortedInserter = new (
+	    /** @class */
+	    function (_super) {
+	      __extends(class_1, _super);
+
+	      function class_1() {
+	        return _super !== null && _super.apply(this, arguments) || this;
+	      }
+
+	      class_1.prototype.compare = function (a, b) {
+	        var c = a.timestamp - b.timestamp;
+	        return c > 0 ? 1 : c === 0 ? 0 : -1;
+	      };
+
+	      return class_1;
+	    }(sorted_inserter_1.SortedInserter))();
+	    return MessageCache;
+	  }();
+
+	  exports["default"] = MessageCache;
+	})(MessageCache);
+
+	var MessageDeleter = {};
+
+	var DeleteMessageRequest$1 = {};
+
+	var Target$1 = {};
+
+	var ConversationIdUtils = {};
+
+	(function (exports) {
+
+	  exports.__esModule = true;
+	  var GoEasy_1 = GoEasy$1;
+	  var g_1 = g;
+
+	  var ConversationIdUtils =
+	  /** @class */
+	  function () {
+	    function ConversationIdUtils() {}
+
+	    ConversationIdUtils.targetId = function (scene, conversationId) {
+	      if (scene === GoEasy_1.Scene.PRIVATE) {
+	        var ids = conversationId.split(":", 2);
+	        return ids[0] === g_1.G.u() ? ids[1] : ids[0];
+	      }
+
+	      return conversationId;
+	    };
+
+	    return ConversationIdUtils;
+	  }();
+
+	  exports["default"] = ConversationIdUtils;
+	})(ConversationIdUtils);
+
+	Target$1.__esModule = true;
+	Target$1.Target = void 0;
+	var GoEasy_1$e = GoEasy$1;
+	var Calibrator_1$b = Calibrator;
+	var ConversationIdUtils_1 = ConversationIdUtils;
+	var g_1$a = g;
+	/**
+	 * target.id不同的场景表达不同的含义:
+	 *  cs场景：customer端id为teamId，staff端id为customerId
+	 *  private: id为friendId
+	 *  group：id为groupId
+	 * 注意：cs中才有teamId
+	 */
+
+	var Target =
+	/** @class */
+	function () {
+	  function Target(scene, id, teamId) {
+	    this.scene = scene;
+	    this.id = id;
+
+	    if (Calibrator_1$b["default"].isDef(teamId)) {
+	      this.teamId = teamId;
+	    }
+	  }
+
+	  Target.prototype.toString = function () {
+	    if (GoEasy_1$e.Scene.PRIVATE === this.scene || GoEasy_1$e.Scene.GROUP === this.scene) {
+	      return this.scene + "#" + this.id;
+	    }
+
+	    return this.scene + "#" + this.id + "#" + this.teamId;
+	  };
+
+	  Target.prototype.isCS = function () {
+	    return GoEasy_1$e.Scene.CS === this.scene;
+	  };
+
+	  Target.prototype.customerId = function () {
+	    if (GoEasy_1$e.Scene.CS === this.scene) {
+	      if (this.id === this.teamId) {
+	        return g_1$a.G.u();
+	      } else {
+	        return this.id;
+	      }
+	    }
+	  };
+
+	  Target.byScene = function (scene, targetId, teamId) {
+	    return new Target(scene, targetId, teamId);
+	  };
+
+	  Target.byIds = function (userId, groupId) {
+	    var scene = GoEasy_1$e.Scene.PRIVATE;
+	    var targetId = userId;
+
+	    if (Calibrator_1$b["default"].isDef(groupId)) {
+	      scene = GoEasy_1$e.Scene.GROUP;
+	      targetId = groupId;
+	    }
+
+	    return Target.byScene(scene, targetId);
+	  };
+
+	  Target.byIMMessage = function (message) {
+	    var teamId;
+	    var id;
+	    var scene = message.scene();
+
+	    if (scene === GoEasy_1$e.Scene.PRIVATE) {
+	      var senderId = message.senderId;
+	      var receiverId = message.targetId();
+	      id = g_1$a.G.u() === senderId ? receiverId : senderId;
+	    } else if (scene === GoEasy_1$e.Scene.GROUP) {
+	      id = message.targetId();
+	    } else if (scene === GoEasy_1$e.Scene.CS) {
+	      id = message.targetId();
+	      var csMessage = message;
+	      teamId = csMessage.teamId;
+	    } else {
+	      throw {
+	        code: 400,
+	        content: "scene ".concat(scene, " not exists")
+	      };
+	    }
+
+	    return new Target(scene, id, teamId);
+	  };
+
+	  Target.byMessageReadRemoteEvent = function (event) {
+	    var scene = event.scene;
+	    var receiverId = event.targetId;
+	    var markerId = event.markerId;
+	    var teamId = event.teamId;
+	    var targetId;
+
+	    if (scene === GoEasy_1$e.Scene.PRIVATE) {
+	      targetId = g_1$a.G.u() === markerId ? receiverId : markerId;
+	    } else if (scene === GoEasy_1$e.Scene.GROUP) {
+	      targetId = receiverId;
+	    } else if (scene === GoEasy_1$e.Scene.CS) {
+	      if (receiverId === teamId) {
+	        // customer mark
+	        if (markerId === g_1$a.G.u()) {
+	          targetId = teamId;
+	        } else {
+	          targetId = markerId;
+	        }
+	      } else {
+	        // staff mark
+	        if (markerId === g_1$a.G.u()) {
+	          targetId = receiverId;
+	        } else {
+	          targetId = teamId;
+	        }
+	      }
+	    }
+
+	    return new Target(scene, targetId, teamId);
+	  };
+
+	  Target.byIMMessageDeletedEvent = function (event) {
+	    var scene = event.scene;
+	    var deleterId = event.deleterId;
+
+	    if (scene === GoEasy_1$e.Scene.PRIVATE) {
+	      var targetId = g_1$a.G.u() === deleterId ? event.targetId : deleterId;
+	      return new Target(scene, targetId);
+	    } else if (scene === GoEasy_1$e.Scene.GROUP) {
+	      return new Target(scene, event.targetId);
+	    }
+	  };
+
+	  Target.byMessageRecalledRemoteEvent = function (event) {
+	    var scene = event.scene;
+	    var targetId = ConversationIdUtils_1["default"].targetId(scene, event.conversationId);
+	    return new Target(scene, targetId);
+	  };
+
+	  Target.byIMHistoryQuery = function (options, teamId) {
+	    var targetId;
+	    var scene = options.type;
+
+	    if (GoEasy_1$e.Scene.CS == options.type) {
+	      targetId = options.id;
+
+	      if (Calibrator_1$b["default"].isUndef(teamId)) {
+	        teamId = options.id;
+	      }
+	    } // todo 兼容老版本
+
+
+	    if (Calibrator_1$b["default"].isDef(options.userId)) {
+	      scene = GoEasy_1$e.Scene.PRIVATE;
+	      targetId = options.userId;
+	    } else if (Calibrator_1$b["default"].isDef(options.groupId)) {
+	      scene = GoEasy_1$e.Scene.GROUP;
+	      targetId = options.groupId;
+	    }
+
+	    return new Target(scene, targetId, teamId);
+	  };
+
+	  return Target;
+	}();
+
+	Target$1.Target = Target;
+
+	DeleteMessageRequest$1.__esModule = true;
+	DeleteMessageRequest$1.DeleteMessageRequest = void 0;
+	var GoEasy_1$d = GoEasy$1;
+	var Target_1$3 = Target$1;
+
+	var DeleteMessageRequest =
+	/** @class */
+	function () {
+	  function DeleteMessageRequest(messages) {
+	    var _this = this;
+
+	    this.times = new Array();
+	    var message = messages[0];
+	    var target = Target_1$3.Target.byIMMessage(message);
+	    this.scene = target.scene;
+	    this.targetId = target.id;
+	    messages.forEach(function (message) {
+	      if (message.status === GoEasy_1$d.MessageStatus.SUCCESS) {
+	        //未成功的消息，不要发到服务端
+	        _this.times.push(message.timestamp);
+	      }
+	    }); // 升序排列
+
+	    this.times.sort(function (x, y) {
+	      return x < y ? -1 : x == y ? 0 : 1;
+	    });
+	  }
+
+	  return DeleteMessageRequest;
+	}();
+
+	DeleteMessageRequest$1.DeleteMessageRequest = DeleteMessageRequest;
+
+	(function (exports) {
+
+	  exports.__esModule = true;
+	  var AbstractMessage_1 = AbstractMessage$1;
+	  var Calibrator_1 = Calibrator;
+	  var GoEasy_1 = GoEasy$1;
+	  var DeleteMessageRequest_1 = DeleteMessageRequest$1;
+	  var Rocket_1 = Rocket;
+	  var Permission_1 = Permission;
+	  var SocketTimeout_1 = SocketTimeout;
+	  var RocketTypes_1 = RocketTypes;
+	  var Target_1 = Target$1;
+	  var g_1 = g;
+
+	  var MessageDeleter =
+	  /** @class */
+	  function () {
+	    function MessageDeleter() {}
+
+	    MessageDeleter.deleteServerMessages = function (messages) {
+	      var request = new DeleteMessageRequest_1.DeleteMessageRequest(messages);
+
+	      if (request.times.length < 0) {
+	        return Promise.resolve();
+	      }
+
+	      return new Promise(function (resolve, reject) {
+	        var rocket = new Rocket_1["default"]({
+	          name: RocketTypes_1.RocketTypes.IM_DELETE_MESSAGE,
+	          params: request,
+	          permission: Permission_1.Permission.WRITE,
+	          singleTimeout: SocketTimeout_1.SocketTimeout.commonQuerySingle,
+	          totalTimeout: SocketTimeout_1.SocketTimeout.commonQueryTotal,
+	          success: function success(res) {
+	            if (res.code === 200) {
+	              resolve(res);
+	            } else {
+	              reject(res);
+	            }
+	          },
+	          fail: function fail(err) {
+	            reject(err);
+	          }
+	        });
+	        g_1.G.s().emit(rocket);
+	      });
+	    };
+
+	    MessageDeleter.validate = function (options) {
+	      if (!Calibrator_1["default"].isArray(options.messages) || Calibrator_1["default"].isEmpty(options.messages)) {
+	        throw {
+	          code: 400,
+	          content: "messages requires non empty array"
+	        };
+	      }
+
+	      var messages = options.messages;
+
+	      if (messages.length > 50) {
+	        throw {
+	          code: 400,
+	          content: "a maximum of 50 messages can be deleted at a time"
+	        };
+	      }
+
+	      var firstTarget = Target_1.Target.byIMMessage(messages[0]);
+
+	      for (var i = 0; i < messages.length; i++) {
+	        var message = messages[i];
+
+	        if (!(message instanceof AbstractMessage_1.AbstractMessage)) {
+	          throw {
+	            code: 400,
+	            content: "message[" + i + "] is not a correct message"
+	          };
+	        }
+
+	        if (message.status === GoEasy_1.MessageStatus.SENDING) {
+	          throw {
+	            code: 400,
+	            content: "message[" + i + "] is '" + message.status + "' and cannot be deleted"
+	          };
+	        }
+
+	        if (i > 0) {
+	          var target = Target_1.Target.byIMMessage(message);
+
+	          if (target.scene !== firstTarget.scene || target.id !== firstTarget.id) {
+	            throw {
+	              code: 400,
+	              content: "each message must be from the same friend or group"
+	            };
+	          }
+	        }
+	      }
+	    };
+
+	    return MessageDeleter;
+	  }();
+
+	  exports["default"] = MessageDeleter;
+	})(MessageDeleter);
+
+	var MessageRecaller = {};
+
+	var RecallMessageRequest$1 = {};
+
+	RecallMessageRequest$1.__esModule = true;
+	RecallMessageRequest$1.RecallMessageRequest = void 0;
+	var Target_1$2 = Target$1;
+
+	var RecallMessageRequest =
+	/** @class */
+	function () {
+	  function RecallMessageRequest(messages) {
+	    var _this = this;
+
+	    this.times = new Array();
+	    var message = messages[0];
+	    var target = Target_1$2.Target.byIMMessage(message);
+	    this.scene = target.scene;
+	    this.targetId = target.id;
+	    messages.forEach(function (message) {
+	      _this.times.push(message.timestamp);
+	    }); // 升序排列
+
+	    this.times.sort(function (x, y) {
+	      return x < y ? -1 : x == y ? 0 : 1;
+	    });
+	  }
+
+	  return RecallMessageRequest;
+	}();
+
+	RecallMessageRequest$1.RecallMessageRequest = RecallMessageRequest;
+
+	(function (exports) {
+
+	  exports.__esModule = true;
+	  var GoEasy_1 = GoEasy$1;
+	  var RecallMessageRequest_1 = RecallMessageRequest$1;
+	  var Rocket_1 = Rocket;
+	  var Permission_1 = Permission;
+	  var SocketTimeout_1 = SocketTimeout;
+	  var AbstractMessage_1 = AbstractMessage$1;
+	  var Calibrator_1 = Calibrator;
+	  var RocketTypes_1 = RocketTypes;
+	  var Target_1 = Target$1;
+	  var g_1 = g;
+	  /**
+	   * todo MessageRecaller名称并不专业需要优化
+	   */
+
+	  var MessageRecaller =
+	  /** @class */
+	  function () {
+	    function MessageRecaller() {}
+
+	    MessageRecaller.recallServerMessages = function (messages) {
+	      var request = new RecallMessageRequest_1.RecallMessageRequest(messages);
+
+	      if (request.times.length === 0) {
+	        return Promise.resolve();
+	      }
+
+	      return new Promise(function (resolve, reject) {
+	        var rocket = new Rocket_1["default"]({
+	          name: RocketTypes_1.RocketTypes.IM_RECALL_MESSAGE,
+	          params: request,
+	          permission: Permission_1.Permission.WRITE,
+	          singleTimeout: SocketTimeout_1.SocketTimeout.commonRequestSingle,
+	          totalTimeout: SocketTimeout_1.SocketTimeout.commonRequestTotal,
+	          fail: function fail(err) {
+	            reject(err);
+	          },
+	          success: function success(res) {
+	            if (res.code === 200) {
+	              resolve(res);
+	            } else {
+	              reject(res);
+	            }
+	          }
+	        });
+	        g_1.G.s().emit(rocket);
+	      });
+	    };
+	    /**
+	     * 同一种会话的消息才能撤回，以传入的第一条消息作为会话标准
+	     * @param options
+	     */
+
+
+	    MessageRecaller.validate = function (options) {
+	      var messages = options.messages;
+
+	      if (!Calibrator_1["default"].isArray(messages) || Calibrator_1["default"].isEmpty(messages)) {
+	        throw {
+	          code: 400,
+	          content: "messages requires non empty array"
+	        };
+	      }
+
+	      if (messages.length > 50) {
+	        throw {
+	          code: 400,
+	          content: "a maximum of 50 messages can be recalled at a time"
+	        };
+	      }
+
+	      var firstTarget;
+
+	      for (var i = 0; i < messages.length; i++) {
+	        var message = messages[i];
+
+	        if (!(message instanceof AbstractMessage_1.AbstractMessage)) {
+	          throw {
+	            code: 400,
+	            content: "message[" + i + "] is an illegal message object"
+	          };
+	        }
+
+	        if (message.status !== GoEasy_1.MessageStatus.SUCCESS) {
+	          throw {
+	            code: 400,
+	            content: "message[" + i + "] is '" + message.status + "' and cannot be recalled"
+	          };
+	        }
+
+	        if (message.recalled) {
+	          throw {
+	            code: 400,
+	            content: "message[" + i + "] has been recalled"
+	          };
+	        }
+
+	        if (message.senderId !== g_1.G.u()) {
+	          throw {
+	            code: 400,
+	            content: "it is not allowed to recall messages sent by others"
+	          };
+	        }
+
+	        if (i > 0) {
+	          var target = Target_1.Target.byIMMessage(message);
+
+	          if (target.scene !== firstTarget.scene || target.id !== firstTarget.id) {
+	            throw {
+	              code: 400,
+	              content: "each message must be from the same friend or group"
+	            };
+	          }
+	        } else {
+	          firstTarget = Target_1.Target.byIMMessage(message);
+	        }
+	      }
+	    };
+
+	    return MessageRecaller;
+	  }();
+
+	  exports["default"] = MessageRecaller;
+	})(MessageRecaller);
+
+	var remoteHistory = {};
+
+	var HistoryChangeQueryRequest = {};
+
+	(function (exports) {
+
+	  exports.__esModule = true;
+
+	  var HistoryChangeQueryRequest =
+	  /** @class */
+	  function () {
+	    function HistoryChangeQueryRequest(scene, id, after, min, teamId) {
+	      this.scene = scene;
+	      this.id = id;
+	      this.after = after;
+	      this.min = min;
+	      this.teamId = teamId;
+	    }
+
+	    return HistoryChangeQueryRequest;
+	  }();
+
+	  exports["default"] = HistoryChangeQueryRequest;
+	})(HistoryChangeQueryRequest);
+
+	var ReadMessageMarkRequest$1 = {};
+
+	ReadMessageMarkRequest$1.__esModule = true;
+	ReadMessageMarkRequest$1.ReadMessageMarkRequest = void 0;
+
+	var ReadMessageMarkRequest =
+	/** @class */
+	function () {
+	  function ReadMessageMarkRequest(id, scene, lastTimestamp, teamId) {
+	    this.id = id;
+	    this.scene = scene;
+	    this.lastTimestamp = lastTimestamp;
+	    this.teamId = teamId;
+	  }
+
+	  return ReadMessageMarkRequest;
+	}();
+
+	ReadMessageMarkRequest$1.ReadMessageMarkRequest = ReadMessageMarkRequest;
+
+	var remoteAbbrMessageBuilder = {};
+
+	var PrivateMessage$1 = {};
+
+	var __extends$d = commonjsGlobal && commonjsGlobal.__extends || function () {
+	  var _extendStatics = function extendStatics(d, b) {
+	    _extendStatics = Object.setPrototypeOf || {
+	      __proto__: []
+	    } instanceof Array && function (d, b) {
+	      d.__proto__ = b;
+	    } || function (d, b) {
+	      for (var p in b) {
+	        if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
+	      }
+	    };
+
+	    return _extendStatics(d, b);
+	  };
+
+	  return function (d, b) {
+	    if (typeof b !== "function" && b !== null) throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+
+	    _extendStatics(d, b);
+
+	    function __() {
+	      this.constructor = d;
+	    }
+
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	  };
+	}();
+
+	PrivateMessage$1.__esModule = true;
+	PrivateMessage$1.PrivateMessage = void 0;
+	var AbstractMessage_1$2 = AbstractMessage$1;
+	var GoEasy_1$c = GoEasy$1;
+
+	var PrivateMessage =
+	/** @class */
+	function (_super) {
+	  __extends$d(PrivateMessage, _super);
+
+	  function PrivateMessage() {
+	    var _this = _super !== null && _super.apply(this, arguments) || this;
+
+	    _this.read = false;
+	    return _this;
+	  }
+
+	  PrivateMessage.prototype.scene = function () {
+	    return GoEasy_1$c.Scene.PRIVATE;
+	  };
+
+	  PrivateMessage.prototype.targetId = function () {
+	    return this.receiverId;
+	  };
+
+	  return PrivateMessage;
+	}(AbstractMessage_1$2.AbstractMessage);
+
+	PrivateMessage$1.PrivateMessage = PrivateMessage;
+
+	var GroupMessage$1 = {};
+
+	var __extends$c = commonjsGlobal && commonjsGlobal.__extends || function () {
+	  var _extendStatics = function extendStatics(d, b) {
+	    _extendStatics = Object.setPrototypeOf || {
+	      __proto__: []
+	    } instanceof Array && function (d, b) {
+	      d.__proto__ = b;
+	    } || function (d, b) {
+	      for (var p in b) {
+	        if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
+	      }
+	    };
+
+	    return _extendStatics(d, b);
+	  };
+
+	  return function (d, b) {
+	    if (typeof b !== "function" && b !== null) throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+
+	    _extendStatics(d, b);
+
+	    function __() {
+	      this.constructor = d;
+	    }
+
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	  };
+	}();
+
+	GroupMessage$1.__esModule = true;
+	GroupMessage$1.GroupMessage = void 0;
+	var AbstractMessage_1$1 = AbstractMessage$1;
+	var GoEasy_1$b = GoEasy$1;
+
+	var GroupMessage =
+	/** @class */
+	function (_super) {
+	  __extends$c(GroupMessage, _super);
+
+	  function GroupMessage() {
+	    return _super !== null && _super.apply(this, arguments) || this;
+	  } // readAmount: number;
+	  // readUsers: Array<string>;
+
+
+	  GroupMessage.prototype.scene = function () {
+	    return GoEasy_1$b.Scene.GROUP;
+	  };
+
+	  GroupMessage.prototype.targetId = function () {
+	    return this.groupId;
+	  };
+
+	  return GroupMessage;
+	}(AbstractMessage_1$1.AbstractMessage);
+
+	GroupMessage$1.GroupMessage = GroupMessage;
+
+	var csMessage = {};
+
+	var __extends$b = commonjsGlobal && commonjsGlobal.__extends || function () {
+	  var _extendStatics = function extendStatics(d, b) {
+	    _extendStatics = Object.setPrototypeOf || {
+	      __proto__: []
+	    } instanceof Array && function (d, b) {
+	      d.__proto__ = b;
+	    } || function (d, b) {
+	      for (var p in b) {
+	        if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
+	      }
+	    };
+
+	    return _extendStatics(d, b);
+	  };
+
+	  return function (d, b) {
+	    if (typeof b !== "function" && b !== null) throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+
+	    _extendStatics(d, b);
+
+	    function __() {
+	      this.constructor = d;
+	    }
+
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	  };
+	}();
+
+	csMessage.__esModule = true;
+	csMessage.CSMessage = void 0;
+	var AbstractMessage_1 = AbstractMessage$1;
+	var GoEasy_1$a = GoEasy$1;
+	var g_1$9 = g;
+
+	var CSMessage =
+	/** @class */
+	function (_super) {
+	  __extends$b(CSMessage, _super);
+
+	  function CSMessage() {
+	    var _this = _super !== null && _super.apply(this, arguments) || this;
+
+	    _this.accepted = false;
+	    return _this;
+	  }
+
+	  CSMessage.prototype.scene = function () {
+	    return GoEasy_1$a.Scene.CS;
+	  };
+	  /**
+	   * 当前用户是customer，返回teamId
+	   * 当前用户是staff，返回customerId
+	   */
+
+
+	  CSMessage.prototype.targetId = function () {
+	    if (g_1$9.G.u() === this.customerId()) {
+	      return this.teamId;
+	    } else {
+	      return this.customerId();
+	    }
+	  };
+
+	  CSMessage.prototype.sendByCustomer = function () {
+	    return this.to === this.teamId;
+	  };
+
+	  CSMessage.prototype.customerId = function () {
+	    if (this.sendByCustomer()) {
+	      return this.senderId;
+	    } else {
+	      return this.to;
+	    }
+	  }; //如果我是customer，这个发送方只要不是我，就是other
+	  //如果我是staff，这个发送方是customer，就是other
+
+
+	  CSMessage.prototype.isOtherSent = function () {
+	    if (g_1$9.G.u() === this.customerId()) {
+	      return this.senderId !== g_1$9.G.u();
+	    } else {
+	      return this.senderId === this.customerId();
+	    }
+	  };
+
+	  return CSMessage;
+	}(AbstractMessage_1.AbstractMessage);
+
+	csMessage.CSMessage = CSMessage;
+
+	remoteAbbrMessageBuilder.__esModule = true;
+	remoteAbbrMessageBuilder.RemoteAbbrMessageBuilder = void 0;
+	var GoEasy_1$9 = GoEasy$1;
+	var PrivateMessage_1$1 = PrivateMessage$1;
+	var GroupMessage_1$1 = GroupMessage$1;
+	var cs_message_1$1 = csMessage;
+	var Calibrator_1$a = Calibrator;
+	var g_1$8 = g;
+
+	var RemoteAbbrMessageBuilder =
+	/** @class */
+	function () {
+	  function RemoteAbbrMessageBuilder() {}
+
+	  RemoteAbbrMessageBuilder.prototype.build = function (remoteAbbrMessage) {
+	    var message;
+	    var scene = remoteAbbrMessage.t;
+
+	    if (scene === GoEasy_1$9.Scene.PRIVATE) {
+	      message = new PrivateMessage_1$1.PrivateMessage();
+	      message.read = false;
+	      message.receiverId = remoteAbbrMessage.r;
+	    } else if (scene === GoEasy_1$9.Scene.GROUP) {
+	      message = new GroupMessage_1$1.GroupMessage();
+	      message.groupId = remoteAbbrMessage.r;
+	      message.senderData = remoteAbbrMessage.d ? JSON.parse(remoteAbbrMessage.d) : {};
+	    } else if (scene === GoEasy_1$9.Scene.CS) {
+	      message = new cs_message_1$1.CSMessage();
+	      message.to = remoteAbbrMessage.r;
+	      message.teamId = remoteAbbrMessage.tid;
+	      message.senderData = remoteAbbrMessage.d ? JSON.parse(remoteAbbrMessage.d) : {};
+	      message.accepted = remoteAbbrMessage.accepted;
+	    }
+
+	    message.senderId = remoteAbbrMessage.s;
+	    message.messageId = remoteAbbrMessage.i;
+	    message.timestamp = remoteAbbrMessage.ts;
+	    message.type = remoteAbbrMessage.mt;
+
+	    if (Calibrator_1$a["default"].isDef(remoteAbbrMessage.p)) {
+	      message.payload = JSON.parse(remoteAbbrMessage.p);
+	    }
+
+	    message.recalled = remoteAbbrMessage.rc;
+	    message.status = GoEasy_1$9.MessageStatus.SUCCESS;
+
+	    if (scene === GoEasy_1$9.Scene.CS) {
+	      if (message.customerId() !== g_1$8.G.u()) {
+	        message.sessionId = remoteAbbrMessage.sessionId;
+	      }
+	    }
+
+	    return message;
+	  };
+
+	  return RemoteAbbrMessageBuilder;
+	}();
+
+	remoteAbbrMessageBuilder.RemoteAbbrMessageBuilder = RemoteAbbrMessageBuilder;
+
+	var __awaiter$9 = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
+	  function adopt(value) {
+	    return value instanceof P ? value : new P(function (resolve) {
+	      resolve(value);
+	    });
+	  }
+
+	  return new (P || (P = Promise))(function (resolve, reject) {
+	    function fulfilled(value) {
+	      try {
+	        step(generator.next(value));
+	      } catch (e) {
+	        reject(e);
+	      }
+	    }
+
+	    function rejected(value) {
+	      try {
+	        step(generator["throw"](value));
+	      } catch (e) {
+	        reject(e);
+	      }
+	    }
+
+	    function step(result) {
+	      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+	    }
+
+	    step((generator = generator.apply(thisArg, _arguments || [])).next());
+	  });
+	};
+
+	var __generator$9 = commonjsGlobal && commonjsGlobal.__generator || function (thisArg, body) {
+	  var _ = {
+	    label: 0,
+	    sent: function sent() {
+	      if (t[0] & 1) throw t[1];
+	      return t[1];
+	    },
+	    trys: [],
+	    ops: []
+	  },
+	      f,
+	      y,
+	      t,
+	      g;
+	  return g = {
+	    next: verb(0),
+	    "throw": verb(1),
+	    "return": verb(2)
+	  }, typeof Symbol === "function" && (g[Symbol.iterator] = function () {
+	    return this;
+	  }), g;
+
+	  function verb(n) {
+	    return function (v) {
+	      return step([n, v]);
+	    };
+	  }
+
+	  function step(op) {
+	    if (f) throw new TypeError("Generator is already executing.");
+
+	    while (_) {
+	      try {
+	        if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+	        if (y = 0, t) op = [op[0] & 2, t.value];
+
+	        switch (op[0]) {
+	          case 0:
+	          case 1:
+	            t = op;
+	            break;
+
+	          case 4:
+	            _.label++;
+	            return {
+	              value: op[1],
+	              done: false
+	            };
+
+	          case 5:
+	            _.label++;
+	            y = op[1];
+	            op = [0];
+	            continue;
+
+	          case 7:
+	            op = _.ops.pop();
+
+	            _.trys.pop();
+
+	            continue;
+
+	          default:
+	            if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
+	              _ = 0;
+	              continue;
+	            }
+
+	            if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
+	              _.label = op[1];
+	              break;
+	            }
+
+	            if (op[0] === 6 && _.label < t[1]) {
+	              _.label = t[1];
+	              t = op;
+	              break;
+	            }
+
+	            if (t && _.label < t[2]) {
+	              _.label = t[2];
+
+	              _.ops.push(op);
+
+	              break;
+	            }
+
+	            if (t[2]) _.ops.pop();
+
+	            _.trys.pop();
+
+	            continue;
+	        }
+
+	        op = body.call(thisArg, _);
+	      } catch (e) {
+	        op = [6, e];
+	        y = 0;
+	      } finally {
+	        f = t = 0;
+	      }
+	    }
+
+	    if (op[0] & 5) throw op[1];
+	    return {
+	      value: op[0] ? op[1] : void 0,
+	      done: true
+	    };
+	  }
+	};
+
+	remoteHistory.__esModule = true;
+	remoteHistory.RemoteHistory = void 0;
+	var GoEasy_1$8 = GoEasy$1;
+	var HistoryChangeQueryRequest_1 = HistoryChangeQueryRequest;
+	var Rocket_1$6 = Rocket;
+	var RocketTypes_1$8 = RocketTypes;
+	var Permission_1$6 = Permission;
+	var SocketTimeout_1$6 = SocketTimeout;
+	var g_1$7 = g;
+	var ReadMessageMarkRequest_1 = ReadMessageMarkRequest$1;
+	var remote_abbr_message_builder_1$2 = remoteAbbrMessageBuilder;
+
+	var RemoteHistory =
+	/** @class */
+	function () {
+	  function RemoteHistory() {
+	    this.builder = new remote_abbr_message_builder_1$2.RemoteAbbrMessageBuilder();
+	  }
+
+	  RemoteHistory.prototype.sync = function (scene, targetId, after, min, teamId) {
+	    var request = new HistoryChangeQueryRequest_1["default"](scene, targetId, after, min, teamId);
+	    return new Promise(function (resolve, reject) {
+	      var rocket = new Rocket_1$6["default"]({
+	        name: RocketTypes_1$8.RocketTypes.IM_HISTORY_CHANGE,
+	        params: request,
+	        permission: Permission_1$6.Permission.READ,
+	        singleTimeout: SocketTimeout_1$6.SocketTimeout.commonQuerySingle,
+	        totalTimeout: SocketTimeout_1$6.SocketTimeout.commonQueryTotal,
+	        fail: function fail(err) {
+	          reject(err);
+	        },
+	        success: function success(res) {
+	          var content = res.content;
+	          resolve(content);
+	        }
+	      });
+	      g_1$7.G.s().emit(rocket);
+	    });
+	  };
+
+	  RemoteHistory.prototype.loadServerMessages = function (target, request) {
+	    var _this = this;
+
+	    return new Promise(function (resolve, reject) {
+	      var rocket = new Rocket_1$6["default"]({
+	        name: RocketTypes_1$8.RocketTypes.IM_HISTORY,
+	        params: request,
+	        permission: Permission_1$6.Permission.READ,
+	        singleTimeout: SocketTimeout_1$6.SocketTimeout.commonQuerySingle,
+	        totalTimeout: SocketTimeout_1$6.SocketTimeout.commonQueryTotal,
+	        fail: function fail(err) {
+	          reject(err);
+	        },
+	        success: function success(res) {
+	          var content = res.content;
+	          content.messages = _this.convertServerMessages(target, content.messages);
+	          resolve(content);
+	        }
+	      });
+	      g_1$7.G.s().emit(rocket);
+	    });
+	  };
+
+	  RemoteHistory.prototype.convertServerMessages = function (target, serverMessages) {
+	    var _this = this;
+
+	    var messages = [];
+	    var scene = target.scene;
+	    var targetId = target.id;
+	    serverMessages.forEach(function (remoteAbbrMessage) {
+	      remoteAbbrMessage.t = scene; // todo 这里拼接remoteAbbrMessage.r会有问题,任何人都可以查询该会话的history,所以这里拼接出来导致remoteAbbrMessage.r可能是当前用户id
+
+	      if (GoEasy_1$8.Scene.PRIVATE === scene) {
+	        remoteAbbrMessage.r = remoteAbbrMessage.s === g_1$7.G.u() ? targetId : g_1$7.G.u();
+	      } else if (GoEasy_1$8.Scene.GROUP === scene) {
+	        remoteAbbrMessage.r = targetId;
+	      } else if (GoEasy_1$8.Scene.CS === scene) {
+	        var customerId = target.customerId();
+	        var teamId = target.teamId;
+
+	        if (customerId === g_1$7.G.u()) {
+	          remoteAbbrMessage.r = teamId;
+	        } else {
+	          remoteAbbrMessage.r = customerId;
+	        }
+	      }
+
+	      var message = _this.builder.build(remoteAbbrMessage);
+
+	      messages.push(message);
+	    });
+	    return messages;
+	  };
+
+	  RemoteHistory.prototype.updateServerOffsets = function (markTime, target) {
+	    return __awaiter$9(this, void 0, void 0, function () {
+	      var request;
+	      return __generator$9(this, function (_a) {
+	        request = new ReadMessageMarkRequest_1.ReadMessageMarkRequest(target.id, target.scene, markTime, target.teamId);
+	        return [2
+	        /*return*/
+	        , new Promise(function (resolve, reject) {
+	          var rocket = new Rocket_1$6["default"]({
+	            name: RocketTypes_1$8.RocketTypes.MARK_AS_READ,
+	            params: request,
+	            permission: Permission_1$6.Permission.WRITE,
+	            singleTimeout: SocketTimeout_1$6.SocketTimeout.commonRequestSingle,
+	            totalTimeout: SocketTimeout_1$6.SocketTimeout.commonRequestTotal,
+	            success: function success(res) {
+	              resolve(res);
+	            },
+	            fail: function fail(err) {
+	              reject(err);
+	            }
+	          });
+	          g_1$7.G.s().emit(rocket);
+	        })];
+	      });
+	    });
+	  };
+
+	  RemoteHistory.instance = new RemoteHistory();
+	  return RemoteHistory;
+	}();
+
+	remoteHistory.RemoteHistory = RemoteHistory;
+
+	var UserOffsets$1 = {};
+
+	UserOffsets$1.__esModule = true;
+	UserOffsets$1.UserOffsets = void 0;
+	var Calibrator_1$9 = Calibrator;
+	var g_1$6 = g;
+
+	var UserOffsets =
+	/** @class */
+	function () {
+	  function UserOffsets() {
+	    this.offsetMap = new Map(); // 对于私聊保存的是userId与friendId的userOffset,群聊则是保存群所有人的userOffSet
+
+	    this.markingTime = 0; // 用于mark异步请求(是否多次mark)
+
+	    this.userId = g_1$6.G.u();
+	  }
+
+	  UserOffsets.prototype.updateOffset = function (userId, offset) {
+	    var oldOffset = this.offsetMap.get(userId);
+
+	    if (Calibrator_1$9["default"].isDef(oldOffset)) {
+	      if (offset > oldOffset) {
+	        this.offsetMap.set(userId, offset);
+	        return true;
+	      }
+	    } else {
+	      this.offsetMap.set(userId, offset);
+	      return true;
+	    }
+
+	    return false;
+	  };
+
+	  UserOffsets.prototype.updateUserOffsets = function (userOffsets) {
+	    var _this = this;
+
+	    userOffsets.forEach(function (userOffset) {
+	      var userId = userOffset.userId;
+	      var offset = userOffset.offset;
+
+	      _this.updateOffset(userId, offset);
+	    });
+	  };
+
+	  UserOffsets.prototype.updateMyOffset = function (offset) {
+	    return this.updateOffset(this.userId, offset);
+	  };
+
+	  UserOffsets.prototype.myOffset = function () {
+	    return this.getOffset(this.userId);
+	  };
+
+	  UserOffsets.prototype.getOffset = function (userId) {
+	    var offset = this.offsetMap.get(userId);
+
+	    if (offset) {
+	      return offset;
+	    }
+
+	    return 0;
+	  };
+
+	  return UserOffsets;
+	}();
+
+	UserOffsets$1.UserOffsets = UserOffsets;
+
+	var HistoryQueryRequest = {};
+
+	(function (exports) {
+
+	  exports.__esModule = true;
+
+	  var HistoryQueryRequest =
+	  /** @class */
+	  function () {
+	    function HistoryQueryRequest(id, scene, lastTimestamp, limit, teamId) {
+	      this.id = id;
+	      this.scene = scene;
+	      this.lastTimestamp = lastTimestamp;
+	      this.limit = limit;
+	      this.teamId = teamId;
+	    }
+
+	    return HistoryQueryRequest;
+	  }();
+
+	  exports["default"] = HistoryQueryRequest;
+	})(HistoryQueryRequest);
+
+	var unreadamountMaxmessageChangeDetector = {};
+
+	unreadamountMaxmessageChangeDetector.__esModule = true;
+	unreadamountMaxmessageChangeDetector.UnreadAmountMaxMessageChangeDetector = void 0;
+	var goeasy_event_center_1$c = goeasyEventCenter;
+	var internal_events_1$4 = internalEvents;
+
+	var UnreadAmountMaxMessageChangeDetector =
+	/** @class */
+	function () {
+	  function UnreadAmountMaxMessageChangeDetector(history) {
+	    this.history = history;
+	  }
+
+	  UnreadAmountMaxMessageChangeDetector.prototype.pre = function () {
+	    this.oldLastMessage = this.history.getMaxMessage();
+	    this.oldUnreadAmount = this.history.unreadAmount();
+
+	    if (this.oldLastMessage) {
+	      this.oldLastMessageRecalled = this.oldLastMessage.recalled;
+	      this.oldLastMessageRead = this.oldLastMessage.read;
+	      this.oldLastMessageStatus = this.oldLastMessage.status;
+	    }
+	  };
+	  /**
+	   * 1.自己发送消息
+	   *  a.sending
+	   *  b.发送成功后触发
+	   *      1.mark对方->read变化,unreadAmount变化
+	   *  c.failed
+	   * 2.接收对方的消息
+	   *  a.对方mark自己
+	   *      1.自己消息的read变化,unreadAmount变化
+	   * 3.接收自己多端的消息
+	   *  a.mark对方->read变化,unreadAmount变化
+	   * 4.对方mark
+	   *  a.自己消息的read变化,unreadAmount变化
+	   * 5.多端mark
+	   *  a.mark对方->read变化,unreadAmount变化
+	   * 6.delete
+	   * 7.recall
+	   */
+
+
+	  UnreadAmountMaxMessageChangeDetector.prototype.post = function () {
+	    var newUnreadAmount = this.history.unreadAmount();
+	    var newLastMessage = this.history.getMaxMessage();
+	    var newLastMessageRead;
+	    var newLastMessageRecalled;
+	    var newLastMessageStatus; // lastMessage 为空的情况：只查询了conversation缓存了lastMessage，多端删除,同步删除的消息后,本地不再有消息缓存
+
+	    if (newLastMessage) {
+	      newLastMessageStatus = newLastMessage.status;
+	      newLastMessageRead = newLastMessage.read;
+	      newLastMessageRecalled = newLastMessage.recalled;
+	    }
+
+	    if (this.oldLastMessage !== newLastMessage || this.oldLastMessageRead !== newLastMessageRead || this.oldLastMessageRecalled !== newLastMessageRecalled || this.oldLastMessageStatus !== newLastMessageStatus) {
+	      goeasy_event_center_1$c.GoEasyEventCenter.fire(internal_events_1$4.IM_INTERNAL_EVENTS.MAX_MESSAGE_CHANGED, newLastMessage);
+	    } else if (this.oldUnreadAmount !== newUnreadAmount) {
+	      goeasy_event_center_1$c.GoEasyEventCenter.fire(internal_events_1$4.IM_INTERNAL_EVENTS.UNREAD_AMOUNT_CHANGED, this.history.target);
+	    }
+	  };
+
+	  return UnreadAmountMaxMessageChangeDetector;
+	}();
+
+	unreadamountMaxmessageChangeDetector.UnreadAmountMaxMessageChangeDetector = UnreadAmountMaxMessageChangeDetector;
+
+	(function (exports) {
+
+	  var __awaiter = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
+	    function adopt(value) {
+	      return value instanceof P ? value : new P(function (resolve) {
+	        resolve(value);
+	      });
+	    }
+
+	    return new (P || (P = Promise))(function (resolve, reject) {
+	      function fulfilled(value) {
+	        try {
+	          step(generator.next(value));
+	        } catch (e) {
+	          reject(e);
+	        }
+	      }
+
+	      function rejected(value) {
+	        try {
+	          step(generator["throw"](value));
+	        } catch (e) {
+	          reject(e);
+	        }
+	      }
+
+	      function step(result) {
+	        result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+	      }
+
+	      step((generator = generator.apply(thisArg, _arguments || [])).next());
+	    });
+	  };
+
+	  var __generator = commonjsGlobal && commonjsGlobal.__generator || function (thisArg, body) {
+	    var _ = {
+	      label: 0,
+	      sent: function sent() {
+	        if (t[0] & 1) throw t[1];
+	        return t[1];
+	      },
+	      trys: [],
+	      ops: []
+	    },
+	        f,
+	        y,
+	        t,
+	        g;
+	    return g = {
+	      next: verb(0),
+	      "throw": verb(1),
+	      "return": verb(2)
+	    }, typeof Symbol === "function" && (g[Symbol.iterator] = function () {
+	      return this;
+	    }), g;
+
+	    function verb(n) {
+	      return function (v) {
+	        return step([n, v]);
+	      };
+	    }
+
+	    function step(op) {
+	      if (f) throw new TypeError("Generator is already executing.");
+
+	      while (_) {
+	        try {
+	          if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+	          if (y = 0, t) op = [op[0] & 2, t.value];
+
+	          switch (op[0]) {
+	            case 0:
+	            case 1:
+	              t = op;
+	              break;
+
+	            case 4:
+	              _.label++;
+	              return {
+	                value: op[1],
+	                done: false
+	              };
+
+	            case 5:
+	              _.label++;
+	              y = op[1];
+	              op = [0];
+	              continue;
+
+	            case 7:
+	              op = _.ops.pop();
+
+	              _.trys.pop();
+
+	              continue;
+
+	            default:
+	              if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
+	                _ = 0;
+	                continue;
+	              }
+
+	              if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
+	                _.label = op[1];
+	                break;
+	              }
+
+	              if (op[0] === 6 && _.label < t[1]) {
+	                _.label = t[1];
+	                t = op;
+	                break;
+	              }
+
+	              if (t && _.label < t[2]) {
+	                _.label = t[2];
+
+	                _.ops.push(op);
+
+	                break;
+	              }
+
+	              if (t[2]) _.ops.pop();
+
+	              _.trys.pop();
+
+	              continue;
+	          }
+
+	          op = body.call(thisArg, _);
+	        } catch (e) {
+	          op = [6, e];
+	          y = 0;
+	        } finally {
+	          f = t = 0;
+	        }
+	      }
+
+	      if (op[0] & 5) throw op[1];
+	      return {
+	        value: op[0] ? op[1] : void 0,
+	        done: true
+	      };
+	    }
+	  };
+
+	  var __values = commonjsGlobal && commonjsGlobal.__values || function (o) {
+	    var s = typeof Symbol === "function" && Symbol.iterator,
+	        m = s && o[s],
+	        i = 0;
+	    if (m) return m.call(o);
+	    if (o && typeof o.length === "number") return {
+	      next: function next() {
+	        if (o && i >= o.length) o = void 0;
+	        return {
+	          value: o && o[i++],
+	          done: !o
+	        };
+	      }
+	    };
+	    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+	  };
+
+	  exports.__esModule = true;
+	  var GoEasy_1 = GoEasy$1;
+	  var callback_utils_1 = callbackUtils;
+	  var im_api_events_1 = imApiEvents;
+	  var MessageCache_1 = MessageCache;
+	  var MessageDeleter_1 = MessageDeleter;
+	  var MessageRecaller_1 = MessageRecaller;
+	  var im_1 = im;
+	  var g_1 = g;
+	  var remote_history_1 = remoteHistory;
+	  var UserOffsets_1 = UserOffsets$1;
+	  var HistoryQueryRequest_1 = HistoryQueryRequest;
+	  var Calibrator_1 = Calibrator;
+	  var unreadamount_maxmessage_change_detector_1 = unreadamountMaxmessageChangeDetector;
+	  var goeasy_event_center_1 = goeasyEventCenter;
+	  var internal_events_1 = internalEvents;
+
+	  var History =
+	  /** @class */
+	  function () {
+	    function History(target) {
+	      this.expiredTime = 0;
+	      this.remoteHistory = remote_history_1.RemoteHistory.instance;
+	      this.target = target;
+	      this.userOffsets = new UserOffsets_1.UserOffsets();
+	      this.messageCache = new MessageCache_1["default"](target);
+	    }
+	    /**
+	     * todo 该方法插入可能会出现消息顺序问题，conversation的查询，新消息的接收，history的查询，三者的异步操作可能导致消息列表顺序混乱,后面线上出现问题再优化
+	     *
+	     * 需要确认
+	     * @param message
+	     * @param userOffsets
+	     */
+
+
+	    History.prototype.initMaxMessageAndOffsets = function (message, userOffsets) {
+	      var _this = this;
+
+	      if (!this.existsMessage(message)) {
+	        this.messageCache.saveMessage(message);
+	        userOffsets.forEach(function (userOffset) {
+	          _this.markLocalMessagesRead(_this.messageCache.all(), userOffset.userId, userOffset.offset, false);
+	        });
+	      }
+	    };
+
+	    History.prototype.existsMessage = function (message) {
+	      return this.messageCache.existsMessage(message.messageId);
+	    };
+
+	    History.prototype.loadHistory = function (lastTimestamp, limit) {
+	      return __awaiter(this, void 0, void 0, function () {
+	        return __generator(this, function (_a) {
+	          switch (_a.label) {
+	            case 0:
+	              if (!(this.expiredTime > 0 && !this.messageCache.isEmpty())) return [3
+	              /*break*/
+	              , 2];
+	              return [4
+	              /*yield*/
+	              , this.updateByServerChange()];
+
+	            case 1:
+	              _a.sent();
+
+	              _a.label = 2;
+
+	            case 2:
+	              if (Calibrator_1["default"].isUndef(limit)) {
+	                limit = 10;
+	              } else {
+	                if (limit > 30) {
+	                  limit = 30;
+	                }
+	              }
+
+	              return [4
+	              /*yield*/
+	              , this.loadServerMessages(lastTimestamp, limit)];
+
+	            case 3:
+	              return [2
+	              /*return*/
+	              , _a.sent()];
+	          }
+	        });
+	      });
+	    };
+
+	    History.prototype.loadServerMessages = function (lastTimestamp, limit) {
+	      return __awaiter(this, void 0, void 0, function () {
+	        var messages, newLimit, newLastTimestamp, request, content, serverMessages_1;
+
+	        var _this = this;
+
+	        return __generator(this, function (_a) {
+	          switch (_a.label) {
+	            case 0:
+	              messages = this.messageCache.loadLocalMessages(limit, lastTimestamp);
+	              if (!(this.messageCache.allLoaded === false && messages.length !== limit)) return [3
+	              /*break*/
+	              , 2];
+	              newLimit = limit - messages.length;
+	              newLastTimestamp = messages[0] ? messages[0].timestamp : lastTimestamp;
+	              request = new HistoryQueryRequest_1["default"](this.target.id.toString(), this.target.scene, newLastTimestamp, newLimit, this.target.teamId);
+	              return [4
+	              /*yield*/
+	              , this.remoteHistory.loadServerMessages(this.target, request)];
+
+	            case 1:
+	              content = _a.sent();
+	              serverMessages_1 = content.messages;
+	              messages = serverMessages_1.concat(messages);
+	              this.messageCache.cacheServerMessages(request, serverMessages_1);
+	              content.userOffsets.forEach(function (userOffset) {
+	                _this.userOffsets.updateOffset(userOffset.userId, userOffset.offset);
+	              });
+	              this.userOffsets.offsetMap.forEach(function (offset, userId) {
+	                _this.markLocalMessagesRead(serverMessages_1, userId, offset, false);
+	              });
+	              _a.label = 2;
+
+	            case 2:
+	              return [2
+	              /*return*/
+	              , messages];
+	          }
+	        });
+	      });
+	    };
+
+	    History.prototype.deleteMessages = function (options) {
+	      return __awaiter(this, void 0, void 0, function () {
+	        var _this = this;
+
+	        return __generator(this, function (_a) {
+	          this.aopUnreadAmountMaxMessage(function () {
+	            return __awaiter(_this, void 0, void 0, function () {
+	              var messages;
+	              return __generator(this, function (_a) {
+	                switch (_a.label) {
+	                  case 0:
+	                    messages = options.messages;
+	                    return [4
+	                    /*yield*/
+	                    , MessageDeleter_1["default"].deleteServerMessages(messages)];
+
+	                  case 1:
+	                    _a.sent();
+
+	                    this.messageCache.deleteMessages(messages);
+	                    callback_utils_1.CallbackUtils.onSuccess(options);
+	                    return [2
+	                    /*return*/
+	                    ];
+	                }
+	              });
+	            });
+	          });
+	          return [2
+	          /*return*/
+	          ];
+	        });
+	      });
+	    };
+
+	    History.prototype.syncDeletedMessage = function (deleterId, times) {
+	      var _this = this;
+
+	      this.aopUnreadAmountMaxMessage(function () {
+	        _this.doSyncDeletedMessage(deleterId, times);
+	      });
+	    };
+
+	    History.prototype.doSyncDeletedMessage = function (deleterId, times) {
+	      if (deleterId === g_1.G.u()) {
+	        var messages = this.messageCache.findMessagesByTimes(times);
+	        this.messageCache.deleteMessages(messages);
+
+	        if (messages.length > 0) {
+	          im_1.IM.aec.fire(im_api_events_1.ImApiEvents.MESSAGE_DELETED, messages);
+	        }
+	      }
+	    };
+
+	    History.prototype.recallMessage = function (options) {
+	      return __awaiter(this, void 0, void 0, function () {
+	        var _this = this;
+
+	        return __generator(this, function (_a) {
+	          this.aopUnreadAmountMaxMessage(function () {
+	            return __awaiter(_this, void 0, void 0, function () {
+	              var messages;
+	              return __generator(this, function (_a) {
+	                switch (_a.label) {
+	                  case 0:
+	                    messages = options.messages;
+	                    return [4
+	                    /*yield*/
+	                    , MessageRecaller_1["default"].recallServerMessages(messages)];
+
+	                  case 1:
+	                    _a.sent();
+
+	                    this.messageCache.recallMessages(messages);
+	                    callback_utils_1.CallbackUtils.onSuccess(options);
+	                    return [2
+	                    /*return*/
+	                    ];
+	                }
+	              });
+	            });
+	          });
+	          return [2
+	          /*return*/
+	          ];
+	        });
+	      });
+	    };
+
+	    History.prototype.syncRecalledMessage = function (times) {
+	      var _this = this;
+
+	      this.aopUnreadAmountMaxMessage(function () {
+	        return __awaiter(_this, void 0, void 0, function () {
+	          return __generator(this, function (_a) {
+	            this.doSyncRecalledMessage(times);
+	            return [2
+	            /*return*/
+	            ];
+	          });
+	        });
+	      });
+	    };
+
+	    History.prototype.doSyncRecalledMessage = function (times) {
+	      var messages = this.messageCache.findMessagesByTimes(times);
+
+	      if (messages.length > 0) {
+	        this.messageCache.recallMessages(messages);
+	        im_1.IM.aec.fire(im_api_events_1.ImApiEvents.MESSAGE_RECALLED, messages);
+	      }
+	    };
+	    /**
+	     * 发消息成功  lastOffset=myOffset   = message[0].time
+	     * mark   lastOffset=myOffset     >= message[0].time
+	     * 收到消息  lastOffset= message[0].time
+	     * 删除
+	     * 撤回
+	     */
+
+
+	    History.prototype.expire = function () {
+	      if (!this.messageCache.isEmpty()) {
+	        this.expiredTime = this.messageCache.maxSuccessMessageTime();
+	      }
+	    };
+
+	    History.prototype.updateByServerChange = function () {
+	      return __awaiter(this, void 0, void 0, function () {
+	        var _this = this;
+
+	        return __generator(this, function (_a) {
+	          this.aopUnreadAmountMaxMessage(function () {
+	            return __awaiter(_this, void 0, void 0, function () {
+	              var content, deletedMessageTimes, recalledTimes;
+
+	              var _this = this;
+
+	              return __generator(this, function (_a) {
+	                switch (_a.label) {
+	                  case 0:
+	                    return [4
+	                    /*yield*/
+	                    , this.remoteHistory.sync(this.target.scene, this.target.id, this.expiredTime, this.messageCache.minTime(), this.target.teamId)];
+
+	                  case 1:
+	                    content = _a.sent();
+	                    content.userOffsets.forEach(function (userOffset) {
+	                      _this.markLocalMessagesRead(_this.messageCache.all(), userOffset.userId, userOffset.offset, true);
+	                    });
+	                    deletedMessageTimes = content.deletedMessageTimes;
+
+	                    if (deletedMessageTimes.length > 0) {
+	                      this.doSyncDeletedMessage(g_1.G.u(), deletedMessageTimes);
+	                    }
+
+	                    recalledTimes = content.recalled;
+
+	                    if (recalledTimes.length > 0) {
+	                      this.doSyncRecalledMessage(recalledTimes);
+	                    }
+
+	                    this.expiredTime = 0;
+	                    return [2
+	                    /*return*/
+	                    ];
+	                }
+	              });
+	            });
+	          });
+	          return [2
+	          /*return*/
+	          ];
+	        });
+	      });
+	    };
+
+	    History.prototype.markRead = function (markOption) {
+	      return __awaiter(this, void 0, void 0, function () {
+	        var _this = this;
+
+	        return __generator(this, function (_a) {
+	          this.aopUnreadAmountMaxMessage(function () {
+	            return __awaiter(_this, void 0, void 0, function () {
+	              var markTime, myOffset;
+	              return __generator(this, function (_a) {
+	                switch (_a.label) {
+	                  case 0:
+	                    markTime = this.messageCache.maxSuccessMessageTime();
+	                    myOffset = this.userOffsets.myOffset();
+	                    if (!(markTime > myOffset)) return [3
+	                    /*break*/
+	                    , 2];
+	                    this.userOffsets.markingTime = markTime;
+	                    return [4
+	                    /*yield*/
+	                    , this.remoteHistory.updateServerOffsets(markTime, this.target)];
+
+	                  case 1:
+	                    _a.sent();
+
+	                    if (markTime === this.userOffsets.markingTime) {
+	                      //在你异步操作服务器期间，没有其他新的操作给出新的markingTime
+	                      this.markLocalMessagesRead(this.messageCache.all(), g_1.G.u(), markTime, true);
+	                    }
+
+	                    _a.label = 2;
+
+	                  case 2:
+	                    callback_utils_1.CallbackUtils.onSuccess(markOption);
+	                    return [2
+	                    /*return*/
+	                    ];
+	                }
+	              });
+	            });
+	          });
+	          return [2
+	          /*return*/
+	          ];
+	        });
+	      });
+	    };
+
+	    History.prototype.syncMarkedMessage = function (event) {
+	      var _this = this;
+
+	      this.aopUnreadAmountMaxMessage(function () {
+	        _this.markLocalMessagesRead(_this.messageCache.all(), event.markerId, event.time, true);
+	      });
+	    };
+
+	    History.prototype.onMessageSending = function (message) {
+	      var _this = this;
+
+	      this.aopUnreadAmountMaxMessage(function () {
+	        _this.messageCache.saveMessage(message);
+	      });
+	    };
+
+	    History.prototype.onMessageSendSuccess = function (message) {
+	      var _this = this;
+
+	      this.aopUnreadAmountMaxMessage(function () {
+	        _this.messageCache.correctPosition(message);
+
+	        _this.markLocalMessagesRead(_this.messageCache.all(), g_1.G.u(), message.timestamp, true);
+	      });
+	    };
+
+	    History.prototype.onMessageSendFailed = function (message) {
+	      var maxMessage = this.getMaxMessage();
+
+	      if (maxMessage === message) {
+	        goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.MAX_MESSAGE_CHANGED, message);
+	      }
+	    };
+
+	    History.prototype.onMessageReceived = function (message) {
+	      var _this = this;
+
+	      this.aopUnreadAmountMaxMessage(function () {
+	        _this.messageCache.saveMessage(message);
+
+	        _this.markLocalMessagesRead(_this.messageCache.all(), message.senderId, message.timestamp, true);
+	      });
+	    };
+
+	    History.prototype.aopUnreadAmountMaxMessage = function (functionObj, callbackOptions) {
+	      return __awaiter(this, void 0, void 0, function () {
+	        var decorator, err_1;
+	        return __generator(this, function (_a) {
+	          switch (_a.label) {
+	            case 0:
+	              _a.trys.push([0, 2,, 3]);
+
+	              decorator = new unreadamount_maxmessage_change_detector_1.UnreadAmountMaxMessageChangeDetector(this);
+	              decorator.pre();
+	              return [4
+	              /*yield*/
+	              , functionObj()];
+
+	            case 1:
+	              _a.sent();
+
+	              decorator.post();
+	              return [3
+	              /*break*/
+	              , 3];
+
+	            case 2:
+	              err_1 = _a.sent();
+	              callback_utils_1.CallbackUtils.onFailed(callbackOptions, err_1);
+	              return [3
+	              /*break*/
+	              , 3];
+
+	            case 3:
+	              return [2
+	              /*return*/
+	              ];
+	          }
+	        });
+	      });
+	    };
+
+	    History.prototype.markLocalMessagesRead = function (messages, markerId, offset, fireMessageReadEvent) {
+	      this.userOffsets.updateOffset(markerId, offset);
+
+	      if (this.isOtherUserId(markerId)) {
+	        var markedMessages = this.markMySentRead(messages, offset);
+
+	        if (fireMessageReadEvent && markedMessages.length > 0) {
+	          im_1.IM.aec.fire(im_api_events_1.ImApiEvents.MESSAGE_READ, markedMessages);
+	        }
+	      } else if (markerId === g_1.G.u()) {
+	        this.markOthersSentRead(messages, offset);
+	      } else ;
+	    };
+
+	    History.prototype.markOthersSentRead = function (messages, markTime) {
+	      if (this.target.scene === GoEasy_1.Scene.PRIVATE) {
+	        for (var i = messages.length - 1; i >= 0; i--) {
+	          var message = messages[i];
+
+	          if (message.isOtherSent() && message.timestamp <= markTime) {
+	            if (message.read) {
+	              break;
+	            } else {
+	              message.read = true;
+	            }
+	          }
+	        }
+	      }
+	    };
+
+	    History.prototype.markMySentRead = function (messages, markTime) {
+	      var markedMessages = new Array();
+
+	      if (this.target.scene === GoEasy_1.Scene.PRIVATE) {
+	        for (var i = messages.length - 1; i >= 0; i--) {
+	          var message = messages[i];
+
+	          if (!message.isOtherSent() && message.timestamp <= markTime && message.status === GoEasy_1.MessageStatus.SUCCESS) {
+	            if (message.read) {
+	              break;
+	            } else {
+	              message.read = true;
+	              markedMessages.push(message);
+	            }
+	          }
+	        }
+	      }
+
+	      return markedMessages;
+	    };
+
+	    History.prototype.isOtherUserId = function (userId) {
+	      if (this.target.scene === GoEasy_1.Scene.CS) {
+	        var customerId = this.target.customerId();
+
+	        if (g_1.G.u() === customerId) {
+	          return userId !== g_1.G.u();
+	        } else {
+	          return userId === customerId;
+	        }
+	      } else {
+	        return userId !== g_1.G.u();
+	      }
+	    };
+
+	    History.prototype.unreadAmount = function (accepted) {
+	      var e_1, _a;
+
+	      var unreadAmount = 0;
+	      var myOffset = this.userOffsets.myOffset();
+	      var messages = this.messageCache.all();
+
+	      try {
+	        for (var messages_1 = __values(messages), messages_1_1 = messages_1.next(); !messages_1_1.done; messages_1_1 = messages_1.next()) {
+	          var message = messages_1_1.value;
+
+	          if (message.isOtherSent() && message.recalled === false && message.timestamp > myOffset) {
+	            unreadAmount += 1;
+	          }
+	        }
+	      } catch (e_1_1) {
+	        e_1 = {
+	          error: e_1_1
+	        };
+	      } finally {
+	        try {
+	          if (messages_1_1 && !messages_1_1.done && (_a = messages_1["return"])) _a.call(messages_1);
+	        } finally {
+	          if (e_1) throw e_1.error;
+	        }
+	      }
+
+	      return unreadAmount;
+	    };
+
+	    History.prototype.getMaxMessage = function (accepted) {
+	      return this.messageCache.getMaxMessage();
+	    };
+
+	    History.prototype.getMessageByTime = function (time) {
+	      return this.messageCache.findMessageByTime(time);
+	    };
+
+	    History.prototype.maxTime = function (accepted) {
+	      var lastMessage = this.getMaxMessage();
+
+	      if (Calibrator_1["default"].isDef(lastMessage)) {
+	        return lastMessage.timestamp;
+	      }
+
+	      return 0;
+	    };
+
+	    return History;
+	  }();
+
+	  exports["default"] = History;
+	})(History);
+
+	var staffHistory = {};
+
+	var csMessageType = {};
+
+	(function (exports) {
+
+	  exports.__esModule = true;
+	  exports.CSMessageType = void 0;
+
+	  (function (CSMessageType) {
+	    CSMessageType["ACCEPTED"] = "CS_ACCEPTED";
+	    CSMessageType["ENDED"] = "CS_ENDED";
+	  })(exports.CSMessageType || (exports.CSMessageType = {}));
+	})(csMessageType);
+
+	(function (exports) {
+
+	  var __extends = commonjsGlobal && commonjsGlobal.__extends || function () {
+	    var _extendStatics = function extendStatics(d, b) {
+	      _extendStatics = Object.setPrototypeOf || {
+	        __proto__: []
+	      } instanceof Array && function (d, b) {
+	        d.__proto__ = b;
+	      } || function (d, b) {
+	        for (var p in b) {
+	          if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
+	        }
+	      };
+
+	      return _extendStatics(d, b);
+	    };
+
+	    return function (d, b) {
+	      if (typeof b !== "function" && b !== null) throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+
+	      _extendStatics(d, b);
+
+	      function __() {
+	        this.constructor = d;
+	      }
+
+	      d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	  }();
+
+	  var __awaiter = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
+	    function adopt(value) {
+	      return value instanceof P ? value : new P(function (resolve) {
+	        resolve(value);
+	      });
+	    }
+
+	    return new (P || (P = Promise))(function (resolve, reject) {
+	      function fulfilled(value) {
+	        try {
+	          step(generator.next(value));
+	        } catch (e) {
+	          reject(e);
+	        }
+	      }
+
+	      function rejected(value) {
+	        try {
+	          step(generator["throw"](value));
+	        } catch (e) {
+	          reject(e);
+	        }
+	      }
+
+	      function step(result) {
+	        result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+	      }
+
+	      step((generator = generator.apply(thisArg, _arguments || [])).next());
+	    });
+	  };
+
+	  var __generator = commonjsGlobal && commonjsGlobal.__generator || function (thisArg, body) {
+	    var _ = {
+	      label: 0,
+	      sent: function sent() {
+	        if (t[0] & 1) throw t[1];
+	        return t[1];
+	      },
+	      trys: [],
+	      ops: []
+	    },
+	        f,
+	        y,
+	        t,
+	        g;
+	    return g = {
+	      next: verb(0),
+	      "throw": verb(1),
+	      "return": verb(2)
+	    }, typeof Symbol === "function" && (g[Symbol.iterator] = function () {
+	      return this;
+	    }), g;
+
+	    function verb(n) {
+	      return function (v) {
+	        return step([n, v]);
+	      };
+	    }
+
+	    function step(op) {
+	      if (f) throw new TypeError("Generator is already executing.");
+
+	      while (_) {
+	        try {
+	          if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+	          if (y = 0, t) op = [op[0] & 2, t.value];
+
+	          switch (op[0]) {
+	            case 0:
+	            case 1:
+	              t = op;
+	              break;
+
+	            case 4:
+	              _.label++;
+	              return {
+	                value: op[1],
+	                done: false
+	              };
+
+	            case 5:
+	              _.label++;
+	              y = op[1];
+	              op = [0];
+	              continue;
+
+	            case 7:
+	              op = _.ops.pop();
+
+	              _.trys.pop();
+
+	              continue;
+
+	            default:
+	              if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
+	                _ = 0;
+	                continue;
+	              }
+
+	              if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
+	                _.label = op[1];
+	                break;
+	              }
+
+	              if (op[0] === 6 && _.label < t[1]) {
+	                _.label = t[1];
+	                t = op;
+	                break;
+	              }
+
+	              if (t && _.label < t[2]) {
+	                _.label = t[2];
+
+	                _.ops.push(op);
+
+	                break;
+	              }
+
+	              if (t[2]) _.ops.pop();
+
+	              _.trys.pop();
+
+	              continue;
+	          }
+
+	          op = body.call(thisArg, _);
+	        } catch (e) {
+	          op = [6, e];
+	          y = 0;
+	        } finally {
+	          f = t = 0;
+	        }
+	      }
+
+	      if (op[0] & 5) throw op[1];
+	      return {
+	        value: op[0] ? op[1] : void 0,
+	        done: true
+	      };
+	    }
+	  };
+
+	  exports.__esModule = true;
+	  var HistoryQueryRequest_1 = HistoryQueryRequest;
+	  var History_1 = History;
+	  var callback_utils_1 = callbackUtils;
+	  var Calibrator_1 = Calibrator;
+	  var goeasy_event_center_1 = goeasyEventCenter;
+	  var internal_events_1 = internalEvents;
+	  var g_1 = g;
+	  var cs_message_type_1 = csMessageType;
+
+	  var StaffHistory =
+	  /** @class */
+	  function (_super) {
+	    __extends(StaffHistory, _super);
+
+	    function StaffHistory(target) {
+	      var _this = _super.call(this, target) || this;
+
+	      _this.unread = 0;
+	      _this.markingAmount = 0;
+	      return _this;
+	    }
+
+	    StaffHistory.prototype.loadHistory = function (lastTimestamp, limit) {
+	      return __awaiter(this, void 0, void 0, function () {
+	        return __generator(this, function (_a) {
+	          switch (_a.label) {
+	            case 0:
+	              if (Calibrator_1["default"].isUndef(limit)) {
+	                limit = 10;
+	              } else {
+	                if (limit > 30) {
+	                  limit = 30;
+	                }
+	              }
+
+	              return [4
+	              /*yield*/
+	              , this.loadServerMessages(lastTimestamp, limit)];
+
+	            case 1:
+	              return [2
+	              /*return*/
+	              , _a.sent()];
+	          }
+	        });
+	      });
+	    };
+
+	    StaffHistory.prototype.loadServerMessages = function (lastTimestamp, limit) {
+	      return __awaiter(this, void 0, void 0, function () {
+	        var request, content;
+
+	        var _this = this;
+
+	        return __generator(this, function (_a) {
+	          switch (_a.label) {
+	            case 0:
+	              request = new HistoryQueryRequest_1["default"](this.target.id.toString(), this.target.scene, lastTimestamp, limit, this.target.teamId);
+	              return [4
+	              /*yield*/
+	              , this.remoteHistory.loadServerMessages(this.target, request)];
+
+	            case 1:
+	              content = _a.sent();
+	              content.userOffsets.forEach(function (userOffset) {
+	                _this.userOffsets.updateOffset(userOffset.userId, userOffset.offset);
+	              });
+	              return [2
+	              /*return*/
+	              , content.messages];
+	          }
+	        });
+	      });
+	    };
+
+	    StaffHistory.prototype.deleteMessages = function (options) {
+	      return __awaiter(this, void 0, void 0, function () {
+	        return __generator(this, function (_a) {
+	          callback_utils_1.CallbackUtils.onFailed(options, "Delete CS message is not supported yet");
+	          return [2
+	          /*return*/
+	          ];
+	        });
+	      });
+	    };
+
+	    StaffHistory.prototype.recallMessage = function (options) {
+	      return __awaiter(this, void 0, void 0, function () {
+	        return __generator(this, function (_a) {
+	          callback_utils_1.CallbackUtils.onFailed(options, "Recall CS message is not supported yet");
+	          return [2
+	          /*return*/
+	          ];
+	        });
+	      });
+	    };
+
+	    StaffHistory.prototype.initMaxMessageAndOffsets = function (message, userOffsets) {
+	      var _this = this;
+
+	      var exists = this.existsMessage(message);
+
+	      if (exists) {
+	        return;
+	      }
+
+	      userOffsets.forEach(function (userOffset) {
+	        _this.userOffsets.updateOffset(userOffset.userId, userOffset.offset);
+	      });
+	      this.saveAcceptedMessage(message);
+	    };
+
+	    StaffHistory.prototype.initPendingMaxMessageAndOffsets = function (message, userOffsets) {
+	      var _this = this;
+
+	      userOffsets.forEach(function (userOffset) {
+	        _this.userOffsets.updateOffset(userOffset.userId, userOffset.offset);
+	      });
+	      this.savePendingMessage(message);
+	    };
+
+	    StaffHistory.prototype.savePendingMessage = function (message) {
+	      if (this.pendingMaxMessage && this.pendingMaxMessage.timestamp < message.timestamp) {
+	        this.pendingMaxMessage = message;
+	      } else {
+	        this.pendingMaxMessage = message;
+	      }
+	    };
+
+	    StaffHistory.prototype.saveAcceptedMessage = function (message) {
+	      if (this.acceptedMaxMessage) {
+	        if (this.acceptedMaxMessage.timestamp < message.timestamp) {
+	          this.acceptedMaxMessage = message;
+	        }
+	      } else {
+	        this.acceptedMaxMessage = message;
+	      }
+
+	      if (message.sendByCustomer()) {
+	        var myOffset = this.userOffsets.myOffset();
+
+	        if (myOffset < message.timestamp && message.accepted) {
+	          this.unread += 1;
+	        }
+	      }
+	    };
+
+	    StaffHistory.prototype.onMessageSending = function (message) {
+	      this.saveAcceptedMessage(message);
+	      goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.MAX_MESSAGE_CHANGED, message);
+	    };
+
+	    StaffHistory.prototype.onMessageSendSuccess = function (message) {
+	      this.saveAcceptedMessage(message);
+	      this.userOffsets.updateOffset(message.senderId, message.timestamp);
+
+	      if (this.acceptedMaxMessage === message) {
+	        goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.MAX_MESSAGE_CHANGED, message);
+	      }
+	    };
+
+	    StaffHistory.prototype.onMessageSendFailed = function (message) {
+	      if (this.acceptedMaxMessage === message) {
+	        goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.MAX_MESSAGE_CHANGED, message);
+	      }
+	    };
+
+	    StaffHistory.prototype.onMessageReceived = function (message) {
+	      if (!this.existsMessage(message)) {
+	        //pending
+	        if (!message.accepted || message.senderId !== g_1.G.u() && message.type === cs_message_type_1.CSMessageType.ACCEPTED) {
+	          this.savePendingMessage(message);
+	        } else {
+	          this.saveAcceptedMessage(message);
+	        }
+
+	        this.userOffsets.updateOffset(message.senderId, message.timestamp);
+	        goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.MAX_MESSAGE_CHANGED, message);
+	      }
+	    };
+
+	    StaffHistory.prototype.markRead = function (markOption) {
+	      return __awaiter(this, void 0, void 0, function () {
+	        var markTime;
+	        return __generator(this, function (_a) {
+	          switch (_a.label) {
+	            case 0:
+	              markTime = this.maxAcceptedMessageTime();
+	              if (!this.preMark(markTime)) return [3
+	              /*break*/
+	              , 2];
+	              return [4
+	              /*yield*/
+	              , this.remoteHistory.updateServerOffsets(markTime, this.target)];
+
+	            case 1:
+	              _a.sent();
+
+	              this.postMark(markTime);
+	              _a.label = 2;
+
+	            case 2:
+	              callback_utils_1.CallbackUtils.onSuccess(markOption);
+	              return [2
+	              /*return*/
+	              ];
+	          }
+	        });
+	      });
+	    };
+
+	    StaffHistory.prototype.preMark = function (markTime) {
+	      var myOffset = this.userOffsets.myOffset(); //todo:如果mark时 最后一条消息如果是自己发送的，有可能导致mark了没反应，但应该不会经常出现，观察一下再看
+
+	      if (markTime > this.userOffsets.markingTime && markTime > myOffset) {
+	        this.userOffsets.markingTime = markTime;
+	        this.markingAmount = this.unread;
+	        return true;
+	      }
+
+	      return false;
+	    };
+
+	    StaffHistory.prototype.postMark = function (markTime) {
+	      if (markTime === this.userOffsets.markingTime) {
+	        //确定是同一个请求才处理
+	        this.unread -= this.markingAmount;
+	        this.markingAmount = 0;
+	        this.userOffsets.updateOffset(g_1.G.u(), markTime);
+	        goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.UNREAD_AMOUNT_CHANGED, this.target);
+	      }
+	    };
+
+	    StaffHistory.prototype.syncMarkedMessage = function (event) {// todo 远程同步mark不处理 do nothing
+	    };
+
+	    StaffHistory.prototype.getMaxMessage = function (accepted) {
+	      return accepted ? this.acceptedMaxMessage : this.pendingMaxMessage;
+	    };
+
+	    StaffHistory.prototype.unreadAmount = function (accepted) {
+	      return accepted ? this.unread : 0;
+	    };
+
+	    StaffHistory.prototype.existsMessage = function (message) {
+	      return this.acceptedMaxMessage && this.acceptedMaxMessage.messageId === message.messageId || this.pendingMaxMessage && this.pendingMaxMessage.messageId === message.messageId;
+	    };
+
+	    StaffHistory.prototype.saveOrUpdateMessage = function (message) {
+	      if (message.accepted) {
+	        this.saveAcceptedMessage(message);
+	      } else {
+	        if (this.pendingMaxMessage) {
+	          if (this.pendingMaxMessage.timestamp < message.timestamp) {
+	            this.pendingMaxMessage = message;
+	          }
+	        } else {
+	          this.pendingMaxMessage = message;
+	        }
+	      }
+	    };
+
+	    StaffHistory.prototype.maxAcceptedMessageTime = function () {
+	      return this.acceptedMaxMessage ? this.acceptedMaxMessage.timestamp : 0;
+	    };
+
+	    StaffHistory.prototype.maxTime = function (accepted) {
+	      var maxMessage = this.getMaxMessage(accepted);
+
+	      if (maxMessage) {
+	        return maxMessage.timestamp;
+	      }
+
+	      return 0;
+	    };
+
+	    return StaffHistory;
+	  }(History_1["default"]);
+
+	  exports["default"] = StaffHistory;
+	})(staffHistory);
+
+	var customerHistory = {};
+
+	(function (exports) {
+
+	  var __extends = commonjsGlobal && commonjsGlobal.__extends || function () {
+	    var _extendStatics = function extendStatics(d, b) {
+	      _extendStatics = Object.setPrototypeOf || {
+	        __proto__: []
+	      } instanceof Array && function (d, b) {
+	        d.__proto__ = b;
+	      } || function (d, b) {
+	        for (var p in b) {
+	          if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
+	        }
+	      };
+
+	      return _extendStatics(d, b);
+	    };
+
+	    return function (d, b) {
+	      if (typeof b !== "function" && b !== null) throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+
+	      _extendStatics(d, b);
+
+	      function __() {
+	        this.constructor = d;
+	      }
+
+	      d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	  }();
+
+	  var __awaiter = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
+	    function adopt(value) {
+	      return value instanceof P ? value : new P(function (resolve) {
+	        resolve(value);
+	      });
+	    }
+
+	    return new (P || (P = Promise))(function (resolve, reject) {
+	      function fulfilled(value) {
+	        try {
+	          step(generator.next(value));
+	        } catch (e) {
+	          reject(e);
+	        }
+	      }
+
+	      function rejected(value) {
+	        try {
+	          step(generator["throw"](value));
+	        } catch (e) {
+	          reject(e);
+	        }
+	      }
+
+	      function step(result) {
+	        result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+	      }
+
+	      step((generator = generator.apply(thisArg, _arguments || [])).next());
+	    });
+	  };
+
+	  var __generator = commonjsGlobal && commonjsGlobal.__generator || function (thisArg, body) {
+	    var _ = {
+	      label: 0,
+	      sent: function sent() {
+	        if (t[0] & 1) throw t[1];
+	        return t[1];
+	      },
+	      trys: [],
+	      ops: []
+	    },
+	        f,
+	        y,
+	        t,
+	        g;
+	    return g = {
+	      next: verb(0),
+	      "throw": verb(1),
+	      "return": verb(2)
+	    }, typeof Symbol === "function" && (g[Symbol.iterator] = function () {
+	      return this;
+	    }), g;
+
+	    function verb(n) {
+	      return function (v) {
+	        return step([n, v]);
+	      };
+	    }
+
+	    function step(op) {
+	      if (f) throw new TypeError("Generator is already executing.");
+
+	      while (_) {
+	        try {
+	          if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+	          if (y = 0, t) op = [op[0] & 2, t.value];
+
+	          switch (op[0]) {
+	            case 0:
+	            case 1:
+	              t = op;
+	              break;
+
+	            case 4:
+	              _.label++;
+	              return {
+	                value: op[1],
+	                done: false
+	              };
+
+	            case 5:
+	              _.label++;
+	              y = op[1];
+	              op = [0];
+	              continue;
+
+	            case 7:
+	              op = _.ops.pop();
+
+	              _.trys.pop();
+
+	              continue;
+
+	            default:
+	              if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
+	                _ = 0;
+	                continue;
+	              }
+
+	              if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
+	                _.label = op[1];
+	                break;
+	              }
+
+	              if (op[0] === 6 && _.label < t[1]) {
+	                _.label = t[1];
+	                t = op;
+	                break;
+	              }
+
+	              if (t && _.label < t[2]) {
+	                _.label = t[2];
+
+	                _.ops.push(op);
+
+	                break;
+	              }
+
+	              if (t[2]) _.ops.pop();
+
+	              _.trys.pop();
+
+	              continue;
+	          }
+
+	          op = body.call(thisArg, _);
+	        } catch (e) {
+	          op = [6, e];
+	          y = 0;
+	        } finally {
+	          f = t = 0;
+	        }
+	      }
+
+	      if (op[0] & 5) throw op[1];
+	      return {
+	        value: op[0] ? op[1] : void 0,
+	        done: true
+	      };
+	    }
+	  };
+
+	  exports.__esModule = true;
+	  var History_1 = History;
+	  var callback_utils_1 = callbackUtils;
+
+	  var CustomerHistory =
+	  /** @class */
+	  function (_super) {
+	    __extends(CustomerHistory, _super);
+
+	    function CustomerHistory(target) {
+	      return _super.call(this, target) || this;
+	    }
+
+	    CustomerHistory.prototype.deleteMessages = function (options) {
+	      return __awaiter(this, void 0, void 0, function () {
+	        return __generator(this, function (_a) {
+	          callback_utils_1.CallbackUtils.onFailed(options, "Delete CS message is not supported yet");
+	          return [2
+	          /*return*/
+	          ];
+	        });
+	      });
+	    };
+
+	    CustomerHistory.prototype.recallMessage = function (options) {
+	      return __awaiter(this, void 0, void 0, function () {
+	        return __generator(this, function (_a) {
+	          callback_utils_1.CallbackUtils.onFailed(options, "Recall CS message is not supported yet");
+	          return [2
+	          /*return*/
+	          ];
+	        });
+	      });
+	    };
+
+	    return CustomerHistory;
+	  }(History_1["default"]);
+
+	  exports["default"] = CustomerHistory;
+	})(customerHistory);
+
+	(function (exports) {
+
+	  var __awaiter = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
+	    function adopt(value) {
+	      return value instanceof P ? value : new P(function (resolve) {
+	        resolve(value);
+	      });
+	    }
+
+	    return new (P || (P = Promise))(function (resolve, reject) {
+	      function fulfilled(value) {
+	        try {
+	          step(generator.next(value));
+	        } catch (e) {
+	          reject(e);
+	        }
+	      }
+
+	      function rejected(value) {
+	        try {
+	          step(generator["throw"](value));
+	        } catch (e) {
+	          reject(e);
+	        }
+	      }
+
+	      function step(result) {
+	        result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+	      }
+
+	      step((generator = generator.apply(thisArg, _arguments || [])).next());
+	    });
+	  };
+
+	  var __generator = commonjsGlobal && commonjsGlobal.__generator || function (thisArg, body) {
+	    var _ = {
+	      label: 0,
+	      sent: function sent() {
+	        if (t[0] & 1) throw t[1];
+	        return t[1];
+	      },
+	      trys: [],
+	      ops: []
+	    },
+	        f,
+	        y,
+	        t,
+	        g;
+	    return g = {
+	      next: verb(0),
+	      "throw": verb(1),
+	      "return": verb(2)
+	    }, typeof Symbol === "function" && (g[Symbol.iterator] = function () {
+	      return this;
+	    }), g;
+
+	    function verb(n) {
+	      return function (v) {
+	        return step([n, v]);
+	      };
+	    }
+
+	    function step(op) {
+	      if (f) throw new TypeError("Generator is already executing.");
+
+	      while (_) {
+	        try {
+	          if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+	          if (y = 0, t) op = [op[0] & 2, t.value];
+
+	          switch (op[0]) {
+	            case 0:
+	            case 1:
+	              t = op;
+	              break;
+
+	            case 4:
+	              _.label++;
+	              return {
+	                value: op[1],
+	                done: false
+	              };
+
+	            case 5:
+	              _.label++;
+	              y = op[1];
+	              op = [0];
+	              continue;
+
+	            case 7:
+	              op = _.ops.pop();
+
+	              _.trys.pop();
+
+	              continue;
+
+	            default:
+	              if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
+	                _ = 0;
+	                continue;
+	              }
+
+	              if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
+	                _.label = op[1];
+	                break;
+	              }
+
+	              if (op[0] === 6 && _.label < t[1]) {
+	                _.label = t[1];
+	                t = op;
+	                break;
+	              }
+
+	              if (t && _.label < t[2]) {
+	                _.label = t[2];
+
+	                _.ops.push(op);
+
+	                break;
+	              }
+
+	              if (t[2]) _.ops.pop();
+
+	              _.trys.pop();
+
+	              continue;
+	          }
+
+	          op = body.call(thisArg, _);
+	        } catch (e) {
+	          op = [6, e];
+	          y = 0;
+	        } finally {
+	          f = t = 0;
+	        }
+	      }
+
+	      if (op[0] & 5) throw op[1];
+	      return {
+	        value: op[0] ? op[1] : void 0,
+	        done: true
+	      };
+	    }
+	  };
+
+	  exports.__esModule = true;
+	  var GoEasy_1 = GoEasy$1;
+	  var validator_utils_1 = validatorUtils;
+	  var Calibrator_1 = Calibrator;
+	  var History_1 = History;
+	  var Target_1 = Target$1;
+	  var goeasy_event_center_1 = goeasyEventCenter;
+	  var internal_events_1 = internalEvents;
+	  var MessageDeleter_1 = MessageDeleter;
+	  var MessageRecaller_1 = MessageRecaller;
+	  var RemoteEvents_1 = RemoteEvents;
+	  var g_1 = g;
+	  var callback_utils_1 = callbackUtils;
+	  var staff_history_1 = staffHistory;
+	  var customer_history_1 = customerHistory;
+
+	  var Histories =
+	  /** @class */
+	  function () {
+	    function Histories() {
+	      this.map = new Map();
+	    }
+
+	    Histories.init = function () {
+	      if (!Histories.instance) {
+	        Histories.instance = new Histories();
+	      }
+
+	      return Histories.instance;
+	    };
+
+	    Histories.prototype.initialListeners = function () {
+	      var _this = this;
+
+	      goeasy_event_center_1.GoEasyEventCenter.on(internal_events_1.IM_INTERNAL_EVENTS.MESSAGE_SENDING, function (message) {
+	        return _this.onMessageSending(message);
+	      });
+	      goeasy_event_center_1.GoEasyEventCenter.on(internal_events_1.IM_INTERNAL_EVENTS.MESSAGE_SEND_SUCCESS, function (message) {
+	        return _this.onMessageSendSuccess(message);
+	      });
+	      goeasy_event_center_1.GoEasyEventCenter.on(internal_events_1.IM_INTERNAL_EVENTS.MESSAGE_SEND_FAILED, function (message) {
+	        return _this.onMessageSendFailed(message);
+	      });
+	      goeasy_event_center_1.GoEasyEventCenter.on(internal_events_1.IM_INTERNAL_EVENTS.MESSAGE_RECEIVED, function (message) {
+	        return _this.onMessageReceived(message);
+	      });
+	      goeasy_event_center_1.GoEasyEventCenter.on(internal_events_1.IM_INTERNAL_EVENTS.CS_ACCEPTED, function (message) {
+	        return _this.onCSAccepted(message);
+	      });
+	      goeasy_event_center_1.GoEasyEventCenter.on(internal_events_1.IM_INTERNAL_EVENTS.CS_ENDED, function (message) {
+	        return _this.onCSEnded(message);
+	      });
+	      g_1.G.s().addMessageObserver(RemoteEvents_1.RemoteEvents.IM_MSG_READ, this.onRemoteMarkRead.bind(this));
+	      g_1.G.s().addMessageObserver(RemoteEvents_1.RemoteEvents.IM_MSG_DELETED, this.onRemoteMessageDeleted.bind(this));
+	      g_1.G.s().addMessageObserver(RemoteEvents_1.RemoteEvents.IM_MSG_RECALLED, this.onRemoteMessageRecalled.bind(this));
+	      g_1.G.s().addDisconnectedObserver(this.onDisconnected.bind(this));
+	    };
+
+	    Histories.prototype.loadHistory = function (options, teamId) {
+	      return __awaiter(this, void 0, void 0, function () {
+	        var target, history, messages, err_1;
+	        return __generator(this, function (_a) {
+	          switch (_a.label) {
+	            case 0:
+	              this.validate(options);
+	              target = Target_1.Target.byIMHistoryQuery(options, teamId);
+	              history = this.findOrCreateHistory(target);
+	              _a.label = 1;
+
+	            case 1:
+	              _a.trys.push([1, 3,, 4]);
+
+	              return [4
+	              /*yield*/
+	              , history.loadHistory(options.lastTimestamp, options.limit)];
+
+	            case 2:
+	              messages = _a.sent();
+	              callback_utils_1.CallbackUtils.onSuccess(options, {
+	                code: 200,
+	                content: messages
+	              });
+	              return [3
+	              /*break*/
+	              , 4];
+
+	            case 3:
+	              err_1 = _a.sent();
+	              callback_utils_1.CallbackUtils.onFailed(options, err_1);
+	              return [3
+	              /*break*/
+	              , 4];
+
+	            case 4:
+	              return [2
+	              /*return*/
+	              ];
+	          }
+	        });
+	      });
+	    };
+
+	    Histories.prototype.onMessageSending = function (message) {
+	      var target = Target_1.Target.byIMMessage(message);
+	      var history = this.findOrCreateHistory(target);
+	      history.onMessageSending(message);
+	    };
+
+	    Histories.prototype.onMessageSendSuccess = function (message) {
+	      var target = Target_1.Target.byIMMessage(message);
+	      var history = this.findHistory(target);
+	      history.onMessageSendSuccess(message);
+	    };
+
+	    Histories.prototype.onMessageSendFailed = function (message) {
+	      var target = Target_1.Target.byIMMessage(message);
+	      var history = this.findHistory(target);
+	      history.onMessageSendFailed(message);
+	    };
+
+	    Histories.prototype.onMessageReceived = function (message) {
+	      var target = Target_1.Target.byIMMessage(message);
+	      var history = this.findOrCreateHistory(target);
+	      history.onMessageReceived(message);
+	    };
+
+	    Histories.prototype.privateMarkAsRead = function (markOption) {
+	      var target = Target_1.Target.byScene(GoEasy_1.Scene.PRIVATE, markOption.userId);
+	      this.markAsRead(target, markOption);
+	    };
+
+	    Histories.prototype.groupMarkAsRead = function (markOption) {
+	      var target = Target_1.Target.byScene(GoEasy_1.Scene.GROUP, markOption.groupId);
+	      this.markAsRead(target, markOption);
+	    };
+
+	    Histories.prototype.markMessageAsRead = function (option, teamId) {
+	      var targetId = option.id;
+
+	      if (GoEasy_1.Scene.CS == option.type) {
+	        if (Calibrator_1["default"].isDef(teamId)) {
+	          targetId = option.id;
+	        } else {
+	          targetId = option.id;
+	          teamId = option.id;
+	        }
+	      }
+
+	      var target = Target_1.Target.byScene(option.type, targetId, teamId);
+	      this.markAsRead(target, option);
+	    };
+
+	    Histories.prototype.markAsRead = function (target, markOption) {
+	      return __awaiter(this, void 0, void 0, function () {
+	        var history;
+	        return __generator(this, function (_a) {
+	          switch (_a.label) {
+	            case 0:
+	              this.validate(markOption);
+	              history = this.findHistory(target);
+	              if (!history) return [3
+	              /*break*/
+	              , 2];
+	              return [4
+	              /*yield*/
+	              , history.markRead(markOption)];
+
+	            case 1:
+	              _a.sent();
+
+	              return [3
+	              /*break*/
+	              , 3];
+
+	            case 2:
+	              throw {
+	                code: 400,
+	                content: 'No unread message that could be marked.'
+	              };
+
+	            case 3:
+	              return [2
+	              /*return*/
+	              ];
+	          }
+	        });
+	      });
+	    };
+
+	    Histories.prototype.onRemoteMarkRead = function (event) {
+	      var target = Target_1.Target.byMessageReadRemoteEvent(event);
+	      var history = this.findHistory(target);
+
+	      if (history) {
+	        history.syncMarkedMessage(event);
+	      }
+	    };
+
+	    Histories.prototype.deleteMessage = function (options) {
+	      return __awaiter(this, void 0, void 0, function () {
+	        var message, target, history;
+	        return __generator(this, function (_a) {
+	          switch (_a.label) {
+	            case 0:
+	              MessageDeleter_1["default"].validate(options);
+	              message = options.messages[0];
+	              target = Target_1.Target.byIMMessage(message);
+	              history = this.findHistory(target);
+	              if (!history) return [3
+	              /*break*/
+	              , 2];
+	              return [4
+	              /*yield*/
+	              , history.deleteMessages(options)];
+
+	            case 1:
+	              _a.sent();
+
+	              return [3
+	              /*break*/
+	              , 3];
+
+	            case 2:
+	              throw {
+	                code: 400,
+	                content: 'No message that could be deleted'
+	              };
+
+	            case 3:
+	              return [2
+	              /*return*/
+	              ];
+	          }
+	        });
+	      });
+	    };
+
+	    Histories.prototype.onRemoteMessageDeleted = function (event) {
+	      var target = Target_1.Target.byIMMessageDeletedEvent(event);
+	      var history = this.findHistory(target);
+
+	      if (history) {
+	        history.syncDeletedMessage(event.deleterId, event.times);
+	      }
+	    };
+
+	    Histories.prototype.recallMessage = function (options) {
+	      return __awaiter(this, void 0, void 0, function () {
+	        var message, target, history;
+	        return __generator(this, function (_a) {
+	          switch (_a.label) {
+	            case 0:
+	              MessageRecaller_1["default"].validate(options);
+	              message = options.messages[0];
+	              target = Target_1.Target.byIMMessage(message);
+	              history = this.findHistory(target);
+	              if (!history) return [3
+	              /*break*/
+	              , 2];
+	              return [4
+	              /*yield*/
+	              , history.recallMessage(options)];
+
+	            case 1:
+	              _a.sent();
+
+	              return [3
+	              /*break*/
+	              , 3];
+
+	            case 2:
+	              throw {
+	                code: 400,
+	                content: 'No message that could be recalled'
+	              };
+
+	            case 3:
+	              return [2
+	              /*return*/
+	              ];
+	          }
+	        });
+	      });
+	    };
+
+	    Histories.prototype.onRemoteMessageRecalled = function (event) {
+	      var target = Target_1.Target.byMessageRecalledRemoteEvent(event);
+	      var history = this.findHistory(target);
+
+	      if (history) {
+	        history.syncRecalledMessage(event.times);
+	      }
+	    };
+
+	    Histories.prototype.onDisconnected = function () {
+	      this.map.forEach(function (history, key) {
+	        history.expire();
+	      });
+	    };
+
+	    Histories.prototype.onCSAccepted = function (message) {
+	      this.onMessageReceived(message);
+	    };
+
+	    Histories.prototype.onCSEnded = function (message) {
+	      this.onMessageReceived(message);
+	    };
+
+	    Histories.prototype.findOrCreateHistory = function (target) {
+	      var history = this.findHistory(target);
+
+	      if (history) {
+	        return history;
+	      } else {
+	        if (target.scene === GoEasy_1.Scene.CS) {
+	          if (g_1.G.u() === target.customerId()) {
+	            history = new customer_history_1["default"](target);
+	          } else {
+	            history = new staff_history_1["default"](target);
+	          }
+	        } else {
+	          history = new History_1["default"](target);
+	        }
+
+	        this.map.set(target.toString(), history);
+	        return history;
+	      }
+	    };
+
+	    Histories.get = function (target) {
+	      return Histories.instance.findOrCreateHistory(target);
+	    };
+
+	    Histories.prototype.findHistory = function (target) {
+	      return this.map.get(target.toString());
+	    };
+
+	    Histories.prototype.validate = function (options) {
+	      var hasId = options.hasOwnProperty("id");
+	      var hasUserId = options.hasOwnProperty("userId");
+	      var hasGroupId = options.hasOwnProperty("groupId");
+	      var is = hasUserId && !hasGroupId && !hasId || hasGroupId && !hasUserId && !hasId || hasId && !hasUserId && !hasGroupId;
+
+	      if (!is) {
+	        throw {
+	          code: 400,
+	          content: "only contain userId or groupId or id"
+	        };
+	      }
+
+	      var hasType = options.hasOwnProperty("type");
+
+	      if (hasType && !hasId || hasType && !hasId) {
+	        throw {
+	          code: 400,
+	          content: "id and type is required"
+	        };
+	      }
+
+	      var key;
+
+	      if (hasId) {
+	        key = 'id';
+	        var typeKey = "type";
+	        var type = options[typeKey];
+	        validator_utils_1["default"].validateValIsEmpty(type, typeKey);
+	      } else if (hasUserId) {
+	        key = 'userId';
+	      } else if (hasGroupId) {
+	        key = 'groupId';
+	      }
+
+	      var targetId = options[key];
+	      validator_utils_1["default"].validateId(targetId, key);
+	    };
+
+	    return Histories;
+	  }();
+
+	  exports["default"] = Histories;
+	})(histories);
+
+	Conversation$1.__esModule = true;
+	Conversation$1.Conversation = void 0;
+	var GoEasy_1$7 = GoEasy$1;
+	var histories_1$4 = histories;
+
+	var Conversation =
+	/** @class */
+	function () {
+	  function Conversation(target) {
+	    this.top = false;
+	    this.data = null;
+	    this.dataLoaded = false;
+	    this.target = target;
+	  }
+
+	  Conversation.prototype.toDto = function () {
+	    var scene = this.target.scene;
+	    var targetId = this.target.id;
+	    var conversationDto = new GoEasy_1$7.ConversationDTO();
+
+	    if (scene === GoEasy_1$7.Scene.PRIVATE) {
+	      conversationDto.userId = targetId;
+	    } else if (scene === GoEasy_1$7.Scene.GROUP) {
+	      conversationDto.groupId = targetId;
+	    } else if (scene === GoEasy_1$7.Scene.CS) {
+	      //customer
+	      conversationDto.id = this.target.teamId;
+	    }
+
+	    conversationDto.type = scene;
+	    conversationDto.lastMessage = this.getMaxMessage();
+	    conversationDto.unread = this.getUnreadAmount();
+	    conversationDto.top = this.top;
+	    conversationDto.data = this.data;
+	    return conversationDto;
+	  };
+
+	  Conversation.prototype.getMaxMessage = function () {
+	    return histories_1$4["default"].get(this.target).getMaxMessage();
+	  };
+
+	  Conversation.prototype.getUnreadAmount = function () {
+	    return histories_1$4["default"].get(this.target).unreadAmount();
+	  };
+
+	  Conversation.prototype.maxMessageTime = function () {
+	    return histories_1$4["default"].get(this.target).maxTime();
+	  };
+
+	  return Conversation;
+	}();
+
+	Conversation$1.Conversation = Conversation;
+
+	var CSConversation$1 = {};
+
+	var __extends$a = commonjsGlobal && commonjsGlobal.__extends || function () {
+	  var _extendStatics = function extendStatics(d, b) {
+	    _extendStatics = Object.setPrototypeOf || {
+	      __proto__: []
+	    } instanceof Array && function (d, b) {
+	      d.__proto__ = b;
+	    } || function (d, b) {
+	      for (var p in b) {
+	        if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
+	      }
+	    };
+
+	    return _extendStatics(d, b);
+	  };
+
+	  return function (d, b) {
+	    if (typeof b !== "function" && b !== null) throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+
+	    _extendStatics(d, b);
+
+	    function __() {
+	      this.constructor = d;
+	    }
+
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	  };
+	}();
+
+	CSConversation$1.__esModule = true;
+	CSConversation$1.CSConversation = void 0;
+	var Conversation_1$1 = Conversation$1;
+	var histories_1$3 = histories;
+	var GoEasy_1$6 = GoEasy$1;
+
+	var CSConversation =
+	/** @class */
+	function (_super) {
+	  __extends$a(CSConversation, _super);
+
+	  function CSConversation(target) {
+	    var _this = _super.call(this, target) || this;
+
+	    _this.accepted = false;
+	    return _this;
+	  }
+
+	  CSConversation.prototype.toDto = function () {
+	    var conversationDto = new GoEasy_1$6.ConversationDTO();
+	    var scene = this.target.scene;
+	    var customerId = this.target.id;
+	    var teamId = this.target.teamId;
+	    conversationDto.id = customerId;
+	    conversationDto.teamId = teamId;
+	    conversationDto.type = scene;
+	    conversationDto.lastMessage = this.getMaxMessage();
+	    conversationDto.unread = this.getUnreadAmount();
+	    conversationDto.top = this.top;
+	    conversationDto.data = this.data;
+	    return conversationDto;
+	  };
+
+	  CSConversation.prototype.getMaxMessage = function () {
+	    return histories_1$3["default"].get(this.target).getMaxMessage(this.accepted);
+	  };
+
+	  CSConversation.prototype.getUnreadAmount = function () {
+	    return histories_1$3["default"].get(this.target).unreadAmount(this.accepted);
+	  };
+
+	  CSConversation.prototype.maxMessageTime = function () {
+	    return histories_1$3["default"].get(this.target).maxTime(this.accepted);
+	  };
+
+	  return CSConversation;
+	}(Conversation_1$1.Conversation);
+
+	CSConversation$1.CSConversation = CSConversation;
+
+	var remoteConversations = {};
+
+	var TopConversationRequest = {};
+
+	(function (exports) {
+
+	  exports.__esModule = true;
+
+	  var TopConversationRequest =
+	  /** @class */
+	  function () {
+	    function TopConversationRequest(type, top, targetId, teamId) {
+	      this.type = type;
+	      this.top = top;
+	      this.targetId = targetId;
+	      this.teamId = teamId;
+	    }
+
+	    return TopConversationRequest;
+	  }();
+
+	  exports["default"] = TopConversationRequest;
+	})(TopConversationRequest);
+
+	var RemoveConversationRequest = {};
+
+	(function (exports) {
+
+	  exports.__esModule = true;
+
+	  var RemoveConversationRequest =
+	  /** @class */
+	  function () {
+	    function RemoveConversationRequest(type, targetId, teamId) {
+	      this.type = type;
+	      this.targetId = targetId;
+	      this.teamId = teamId;
+	    }
+
+	    return RemoveConversationRequest;
+	  }();
+
+	  exports["default"] = RemoveConversationRequest;
+	})(RemoveConversationRequest);
+
+	var dataRequest = {};
+
+	(function (exports) {
+
+	  exports.__esModule = true;
+
+	  var DataRequest =
+	  /** @class */
+	  function () {
+	    function DataRequest(type, targetId, teamId) {
+	      this.type = type;
+	      this.targetId = targetId;
+	      this.teamId = teamId;
+	    }
+
+	    return DataRequest;
+	  }();
+
+	  exports["default"] = DataRequest;
+	})(dataRequest);
+
+	(function (exports) {
+
+	  var __awaiter = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
+	    function adopt(value) {
+	      return value instanceof P ? value : new P(function (resolve) {
+	        resolve(value);
+	      });
+	    }
+
+	    return new (P || (P = Promise))(function (resolve, reject) {
+	      function fulfilled(value) {
+	        try {
+	          step(generator.next(value));
+	        } catch (e) {
+	          reject(e);
+	        }
+	      }
+
+	      function rejected(value) {
+	        try {
+	          step(generator["throw"](value));
+	        } catch (e) {
+	          reject(e);
+	        }
+	      }
+
+	      function step(result) {
+	        result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+	      }
+
+	      step((generator = generator.apply(thisArg, _arguments || [])).next());
+	    });
+	  };
+
+	  var __generator = commonjsGlobal && commonjsGlobal.__generator || function (thisArg, body) {
+	    var _ = {
+	      label: 0,
+	      sent: function sent() {
+	        if (t[0] & 1) throw t[1];
+	        return t[1];
+	      },
+	      trys: [],
+	      ops: []
+	    },
+	        f,
+	        y,
+	        t,
+	        g;
+	    return g = {
+	      next: verb(0),
+	      "throw": verb(1),
+	      "return": verb(2)
+	    }, typeof Symbol === "function" && (g[Symbol.iterator] = function () {
+	      return this;
+	    }), g;
+
+	    function verb(n) {
+	      return function (v) {
+	        return step([n, v]);
+	      };
+	    }
+
+	    function step(op) {
+	      if (f) throw new TypeError("Generator is already executing.");
+
+	      while (_) {
+	        try {
+	          if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+	          if (y = 0, t) op = [op[0] & 2, t.value];
+
+	          switch (op[0]) {
+	            case 0:
+	            case 1:
+	              t = op;
+	              break;
+
+	            case 4:
+	              _.label++;
+	              return {
+	                value: op[1],
+	                done: false
+	              };
+
+	            case 5:
+	              _.label++;
+	              y = op[1];
+	              op = [0];
+	              continue;
+
+	            case 7:
+	              op = _.ops.pop();
+
+	              _.trys.pop();
+
+	              continue;
+
+	            default:
+	              if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
+	                _ = 0;
+	                continue;
+	              }
+
+	              if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
+	                _.label = op[1];
+	                break;
+	              }
+
+	              if (op[0] === 6 && _.label < t[1]) {
+	                _.label = t[1];
+	                t = op;
+	                break;
+	              }
+
+	              if (t && _.label < t[2]) {
+	                _.label = t[2];
+
+	                _.ops.push(op);
+
+	                break;
+	              }
+
+	              if (t[2]) _.ops.pop();
+
+	              _.trys.pop();
+
+	              continue;
+	          }
+
+	          op = body.call(thisArg, _);
+	        } catch (e) {
+	          op = [6, e];
+	          y = 0;
+	        } finally {
+	          f = t = 0;
+	        }
+	      }
+
+	      if (op[0] & 5) throw op[1];
+	      return {
+	        value: op[0] ? op[1] : void 0,
+	        done: true
+	      };
+	    }
+	  };
+
+	  exports.__esModule = true;
+	  var TopConversationRequest_1 = TopConversationRequest;
+	  var Rocket_1 = Rocket;
+	  var RocketTypes_1 = RocketTypes;
+	  var Permission_1 = Permission;
+	  var SocketTimeout_1 = SocketTimeout;
+	  var RemoveConversationRequest_1 = RemoveConversationRequest;
+	  var g_1 = g;
+	  var data_request_1 = dataRequest;
+
+	  var RemoteConversations =
+	  /** @class */
+	  function () {
+	    function RemoteConversations() {}
+
+	    RemoteConversations.prototype.top = function (target, top) {
+	      var request = new TopConversationRequest_1["default"](target.scene, top, target.id, target.teamId);
+	      return new Promise(function (resolve, reject) {
+	        var rocket = new Rocket_1["default"]({
+	          name: RocketTypes_1.RocketTypes.topConversation,
+	          params: request,
+	          permission: Permission_1.Permission.WRITE,
+	          singleTimeout: SocketTimeout_1.SocketTimeout.commonRequestSingle,
+	          totalTimeout: SocketTimeout_1.SocketTimeout.commonRequestTotal,
+	          success: function success(res) {
+	            if (res.code === 200) {
+	              resolve(res);
+	            } else {
+	              reject(res);
+	            }
+	          },
+	          fail: function fail(err) {
+	            reject(err);
+	          }
+	        });
+	        g_1.G.s().emit(rocket);
+	      });
+	    };
+
+	    RemoteConversations.prototype.remove = function (target) {
+	      var request = new RemoveConversationRequest_1["default"](target.scene, target.id, target.teamId);
+	      return new Promise(function (resolve, reject) {
+	        var rocket = new Rocket_1["default"]({
+	          name: RocketTypes_1.RocketTypes.removeConversation,
+	          params: request,
+	          permission: Permission_1.Permission.WRITE,
+	          singleTimeout: SocketTimeout_1.SocketTimeout.commonRequestSingle,
+	          totalTimeout: SocketTimeout_1.SocketTimeout.commonRequestTotal,
+	          success: function success(res) {
+	            if (res.code == 200) {
+	              resolve(res);
+	            } else {
+	              reject(res);
+	            }
+	          },
+	          fail: function fail(err) {
+	            reject(err);
+	          }
+	        });
+	        g_1.G.s().emit(rocket);
+	      });
+	    };
+
+	    RemoteConversations.prototype.query = function (rocketType) {
+	      var _this = this;
+
+	      return new Promise(function (resolve, reject) {
+	        var rocket = new Rocket_1["default"]({
+	          name: rocketType,
+	          params: {},
+	          permission: Permission_1.Permission.READ,
+	          singleTimeout: SocketTimeout_1.SocketTimeout.commonQuerySingle,
+	          totalTimeout: SocketTimeout_1.SocketTimeout.commonQueryTotal,
+	          fail: function fail(err) {
+	            reject(err);
+	          },
+	          success: function success(result) {
+	            return __awaiter(_this, void 0, void 0, function () {
+	              return __generator(this, function (_a) {
+	                resolve(result);
+	                return [2
+	                /*return*/
+	                ];
+	              });
+	            });
+	          }
+	        });
+	        g_1.G.s().emit(rocket);
+	      });
+	    };
+
+	    RemoteConversations.prototype.loadData = function (target) {
+	      var request = new data_request_1["default"](target.scene, target.id, target.teamId);
+	      return new Promise(function (resolve, reject) {
+	        var rocket = new Rocket_1["default"]({
+	          name: RocketTypes_1.RocketTypes.imData,
+	          params: request,
+	          permission: Permission_1.Permission.READ,
+	          singleTimeout: SocketTimeout_1.SocketTimeout.commonQuerySingle,
+	          totalTimeout: SocketTimeout_1.SocketTimeout.commonQueryTotal,
+	          success: function success(result) {
+	            var data = JSON.parse(result.content);
+	            resolve(data);
+	          },
+	          fail: function fail(error) {
+	            reject(error);
+	          }
+	        });
+	        g_1.G.s().emit(rocket);
+	      });
+	    };
+
+	    RemoteConversations.instance = new RemoteConversations();
+	    return RemoteConversations;
+	  }();
+
+	  exports["default"] = RemoteConversations;
+	})(remoteConversations);
+
+	var __extends$9 = commonjsGlobal && commonjsGlobal.__extends || function () {
+	  var _extendStatics = function extendStatics(d, b) {
+	    _extendStatics = Object.setPrototypeOf || {
+	      __proto__: []
+	    } instanceof Array && function (d, b) {
+	      d.__proto__ = b;
+	    } || function (d, b) {
+	      for (var p in b) {
+	        if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
+	      }
+	    };
+
+	    return _extendStatics(d, b);
+	  };
+
+	  return function (d, b) {
+	    if (typeof b !== "function" && b !== null) throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+
+	    _extendStatics(d, b);
+
+	    function __() {
+	      this.constructor = d;
+	    }
+
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	  };
+	}();
 
 	var __awaiter$8 = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
 	  function adopt(value) {
@@ -10549,66 +14942,125 @@
 	  }
 	};
 
-	Conversation$1.__esModule = true;
-	Conversation$1.Conversation = void 0;
-	var GoEasy_1$b = GoEasy$1;
-	var ConversationIdUtils_1$2 = ConversationIdUtils;
+	var __values$1 = commonjsGlobal && commonjsGlobal.__values || function (o) {
+	  var s = typeof Symbol === "function" && Symbol.iterator,
+	      m = s && o[s],
+	      i = 0;
+	  if (m) return m.call(o);
+	  if (o && typeof o.length === "number") return {
+	    next: function next() {
+	      if (o && i >= o.length) o = void 0;
+	      return {
+	        value: o && o[i++],
+	        done: !o
+	      };
+	    }
+	  };
+	  throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+	};
 
-	var Conversation =
+	Conversations$1.__esModule = true;
+	Conversations$1.Conversations = void 0;
+	var Conversation_1 = Conversation$1;
+	var callback_utils_1$9 = callbackUtils;
+	var GoEasy_1$5 = GoEasy$1;
+	var remote_abbr_message_builder_1$1 = remoteAbbrMessageBuilder;
+	var RocketTypes_1$7 = RocketTypes;
+	var im_api_events_1$1 = imApiEvents;
+	var sorted_inserter_1 = sortedInserter;
+	var goeasy_event_center_1$b = goeasyEventCenter;
+	var internal_events_1$3 = internalEvents;
+	var Target_1$1 = Target$1;
+	var CSConversation_1$1 = CSConversation$1;
+	var im_1$2 = im;
+	var remote_conversations_1 = remoteConversations;
+	var histories_1$2 = histories;
+	var g_1$5 = g;
+	var cs_message_type_1$1 = csMessageType;
+	var Calibrator_1$8 = Calibrator;
+
+	var Conversations =
 	/** @class */
 	function () {
-	  function Conversation(scene, targetId, userId, dataCache) {
-	    this.top = false;
-	    this.data = {};
-	    this.start = 0;
-	    this.end = 0;
-	    this.scene = scene;
-	    this.targetId = targetId;
-	    this.userId = userId;
-	    this.dataCache = dataCache;
+	  function Conversations() {
+	    var _this = this;
+
+	    this.list = new Array();
+	    this.builder = new remote_abbr_message_builder_1$1.RemoteAbbrMessageBuilder();
+	    this.remoteConversations = remote_conversations_1["default"].instance;
+	    this["synchronized"] = false;
+	    goeasy_event_center_1$b.GoEasyEventCenter.on(internal_events_1$3.IM_INTERNAL_EVENTS.MAX_MESSAGE_CHANGED, function (message) {
+	      return _this.onMaxMessageChanged(message);
+	    });
+	    goeasy_event_center_1$b.GoEasyEventCenter.on(internal_events_1$3.IM_INTERNAL_EVENTS.UNREAD_AMOUNT_CHANGED, function (target) {
+	      return _this.onUnreadMessageChanged(target);
+	    });
 	  }
 
-	  Conversation.prototype.toDto = function (history) {
-	    var conversationDto = new GoEasy_1$b.ConversationDTO();
-	    conversationDto.type = this.scene;
+	  Conversations.prototype.onUnreadMessageChanged = function (target) {
+	    var conversation = this.findConversation(target);
 
-	    if (this.scene === GoEasy_1$b.Scene.PRIVATE) {
-	      conversationDto.userId = this.targetId;
-	    } else if (this.scene === GoEasy_1$b.Scene.GROUP) {
-	      conversationDto.groupId = this.targetId;
-	    } else if (this.scene === GoEasy_1$b.Scene.CS) {
-	      var customerId = ConversationIdUtils_1$2["default"].customerId(this.targetId);
-	      var teamId = ConversationIdUtils_1$2["default"].teamId(this.targetId);
+	    if (conversation) {
+	      if (target.scene === GoEasy_1$5.Scene.CS && target.customerId() !== g_1$5.G.u()) {
+	        var csConversation = conversation;
 
-	      if (history.userId === customerId) {
-	        conversationDto.id = teamId;
+	        if (csConversation.accepted) {
+	          this.fireUpdated();
+	        }
 	      } else {
-	        conversationDto.id = customerId;
-	        conversationDto.teamId = teamId;
+	        this.fireUpdated();
 	      }
 	    }
-
-	    conversationDto.lastMessage = history.messageCache.findMessageByTime(this.end);
-	    conversationDto.unread = history.messageCache.unreadAmount(this.start, this.end);
-	    conversationDto.top = this.top;
-	    conversationDto.data = this.data;
-	    return conversationDto;
 	  };
 
-	  Conversation.prototype.initialData = function () {
-	    return __awaiter$8(this, void 0, void 0, function () {
-	      var _a;
+	  Conversations.prototype.fireUpdated = function () {
+	    var data = this.loadLocalConversations();
+	    var updatedEventName = this.getUpdatedEventName();
+	    im_1$2.IM.aec.fire(updatedEventName, {
+	      unreadTotal: data.content.unreadTotal,
+	      conversations: data.content.conversations
+	    });
+	  };
 
-	      return __generator$8(this, function (_b) {
-	        switch (_b.label) {
+	  Conversations.prototype.getUpdatedEventName = function () {
+	    return im_api_events_1$1.ImApiEvents.CONVERSATIONS_UPDATED;
+	  };
+
+	  Conversations.prototype.latestConversations = function (options) {
+	    return __awaiter$8(this, void 0, void 0, function () {
+	      var data, err_1;
+	      return __generator$8(this, function (_a) {
+	        switch (_a.label) {
 	          case 0:
-	            _a = this;
+	            _a.trys.push([0, 3,, 4]);
+
+	            if (!!this["synchronized"]) return [3
+	            /*break*/
+	            , 2];
 	            return [4
 	            /*yield*/
-	            , this.getData()];
+	            , this.loadServerConversations()];
 
 	          case 1:
-	            _a.data = _b.sent();
+	            _a.sent();
+
+	            _a.label = 2;
+
+	          case 2:
+	            data = this.loadLocalConversations();
+	            callback_utils_1$9.CallbackUtils.onSuccess(options, data);
+	            return [3
+	            /*break*/
+	            , 4];
+
+	          case 3:
+	            err_1 = _a.sent();
+	            callback_utils_1$9.CallbackUtils.onFailed(options, err_1);
+	            return [3
+	            /*break*/
+	            , 4];
+
+	          case 4:
 	            return [2
 	            /*return*/
 	            ];
@@ -10617,320 +15069,394 @@
 	    });
 	  };
 
-	  Conversation.prototype.getData = function () {
-	    return this.dataCache.loadData(this.targetId, this.scene);
+	  Conversations.prototype.loadServerConversations = function () {
+	    return __awaiter$8(this, void 0, void 0, function () {
+	      var rocketType, data;
+	      return __generator$8(this, function (_a) {
+	        switch (_a.label) {
+	          case 0:
+	            rocketType = this.rocketName();
+	            return [4
+	            /*yield*/
+	            , this.remoteConversations.query(rocketType)];
+
+	          case 1:
+	            data = _a.sent();
+	            this.convertAbbrConversation(data.content);
+	            this["synchronized"] = true;
+	            return [2
+	            /*return*/
+	            ];
+	        }
+	      });
+	    });
 	  };
 
-	  Conversation.prototype.getTargetId = function () {
-	    return this.targetId;
+	  Conversations.prototype.rocketName = function () {
+	    return RocketTypes_1$7.RocketTypes.imLastConversations;
 	  };
 
-	  Conversation.prototype.getScene = function () {
-	    return this.scene;
+	  Conversations.prototype.convertAbbrConversation = function (abbrConversations) {
+	    var e_1, _a;
+
+	    var conversations = abbrConversations;
+
+	    try {
+	      for (var conversations_1 = __values$1(conversations), conversations_1_1 = conversations_1.next(); !conversations_1_1.done; conversations_1_1 = conversations_1.next()) {
+	        var abbrConversation = conversations_1_1.value;
+	        var scene = abbrConversation.t;
+	        var top_1 = abbrConversation.top;
+	        var data = abbrConversation.d ? JSON.parse(abbrConversation.d) : {};
+	        var userOffsets = abbrConversation.userOffsets;
+	        abbrConversation.lmsg.t = scene;
+	        var lastMessage = abbrConversation.lmsg;
+	        var message = this.builder.build(lastMessage);
+	        var target = Target_1$1.Target.byIMMessage(message);
+	        var conversation = this.findConversation(target);
+
+	        if (Calibrator_1$8["default"].isUndef(conversation)) {
+	          conversation = this.buildByAbbr(abbrConversation, message);
+	          this.insertOne(conversation);
+	        } else {
+	          conversation.top = top_1;
+	          conversation.data = data;
+	        }
+
+	        histories_1$2["default"].get(target).initMaxMessageAndOffsets(message, userOffsets);
+	        this.correctPosition(conversation);
+	      }
+	    } catch (e_1_1) {
+	      e_1 = {
+	        error: e_1_1
+	      };
+	    } finally {
+	      try {
+	        if (conversations_1_1 && !conversations_1_1.done && (_a = conversations_1["return"])) _a.call(conversations_1);
+	      } finally {
+	        if (e_1) throw e_1.error;
+	      }
+	    }
 	  };
 
-	  Conversation.prototype.getStart = function () {
-	    return this.start;
+	  Conversations.prototype.onMaxMessageChanged = function (message) {
+	    return __awaiter$8(this, void 0, void 0, function () {
+	      var csMessage;
+	      return __generator$8(this, function (_a) {
+	        switch (_a.label) {
+	          case 0:
+	            //对于staff收到的accepted=false的消息, 或者其他staff accepted的消息，不可以更新自己的userConversation，只能更新pendingConversation
+	            if (message.scene() === GoEasy_1$5.Scene.CS) {
+	              csMessage = message;
+
+	              if (g_1$5.G.u() != csMessage.customerId()) {
+	                if (csMessage.accepted === false || csMessage.type === cs_message_type_1$1.CSMessageType.ACCEPTED && csMessage.senderId != g_1$5.G.u()) {
+	                  return [2
+	                  /*return*/
+	                  ];
+	                }
+	              }
+	            }
+
+	            return [4
+	            /*yield*/
+	            , this.saveOrUpdateConversation(message)];
+
+	          case 1:
+	            _a.sent();
+
+	            return [2
+	            /*return*/
+	            ];
+	        }
+	      });
+	    });
 	  };
 
-	  Conversation.prototype.setStart = function (value) {
-	    this.start = value;
+	  Conversations.prototype.saveOrUpdateConversation = function (message) {
+	    return __awaiter$8(this, void 0, void 0, function () {
+	      var status, target, conversation, _a;
+
+	      return __generator$8(this, function (_b) {
+	        switch (_b.label) {
+	          case 0:
+	            status = message.status;
+	            target = Target_1$1.Target.byIMMessage(message);
+	            conversation = this.findConversation(target);
+	            if (!(Calibrator_1$8["default"].isUndef(conversation) && status !== GoEasy_1$5.MessageStatus.FAIL)) return [3
+	            /*break*/
+	            , 2];
+	            conversation = this.buildByMessage(message);
+	            this.insertOne(conversation);
+	            if (!(status === GoEasy_1$5.MessageStatus.SUCCESS)) return [3
+	            /*break*/
+	            , 2];
+	            _a = conversation;
+	            return [4
+	            /*yield*/
+	            , this.remoteConversations.loadData(target)];
+
+	          case 1:
+	            _a.data = _b.sent();
+	            conversation.dataLoaded = true;
+	            _b.label = 2;
+
+	          case 2:
+	            if (status === GoEasy_1$5.MessageStatus.SENDING) {
+	              conversation.data = message.getToData();
+	              conversation.dataLoaded = true;
+	            }
+
+	            if (conversation && conversation.dataLoaded) {
+	              this.correctPosition(conversation);
+	              this.fireUpdated();
+	            }
+
+	            return [2
+	            /*return*/
+	            ];
+	        }
+	      });
+	    });
 	  };
 
-	  Conversation.prototype.getEnd = function () {
-	    return this.end;
-	  };
+	  Conversations.prototype.loadLocalConversations = function () {
+	    var e_2, _a;
 
-	  Conversation.prototype.setEnd = function (value) {
-	    this.end = value;
-	  };
+	    var unreadTotal = 0;
+	    var conversations = new Array();
 
-	  return Conversation;
-	}();
+	    try {
+	      for (var _b = __values$1(this.list), _c = _b.next(); !_c.done; _c = _b.next()) {
+	        var conversation = _c.value;
 
-	Conversation$1.Conversation = Conversation;
+	        if (conversation.dataLoaded && conversation.getMaxMessage()) {
+	          unreadTotal += conversation.getUnreadAmount();
+	          var conversationDTO = conversation.toDto();
+	          conversations.push(conversationDTO);
+	        }
+	      }
+	    } catch (e_2_1) {
+	      e_2 = {
+	        error: e_2_1
+	      };
+	    } finally {
+	      try {
+	        if (_c && !_c.done && (_a = _b["return"])) _a.call(_b);
+	      } finally {
+	        if (e_2) throw e_2.error;
+	      }
+	    }
 
-	var remoteAbbrMessageBuilder = {};
-
-	var PrivateMessage$1 = {};
-
-	var __extends$b = commonjsGlobal && commonjsGlobal.__extends || function () {
-	  var _extendStatics = function extendStatics(d, b) {
-	    _extendStatics = Object.setPrototypeOf || {
-	      __proto__: []
-	    } instanceof Array && function (d, b) {
-	      d.__proto__ = b;
-	    } || function (d, b) {
-	      for (var p in b) {
-	        if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
+	    return {
+	      code: 200,
+	      content: {
+	        unreadTotal: unreadTotal,
+	        conversations: conversations
 	      }
 	    };
-
-	    return _extendStatics(d, b);
 	  };
 
-	  return function (d, b) {
-	    if (typeof b !== "function" && b !== null) throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+	  Conversations.prototype.findConversationIndex = function (target) {
+	    return this.list.findIndex(function (item) {
+	      return target.toString() === item.target.toString();
+	    });
+	  };
 
-	    _extendStatics(d, b);
+	  Conversations.prototype.findConversation = function (target) {
+	    var index = this.findConversationIndex(target);
+	    return this.list[index];
+	  };
 
-	    function __() {
-	      this.constructor = d;
+	  Conversations.prototype.removeLocalConversation = function (conversation) {
+	    var index = this.findConversationIndex(conversation.target);
+	    this.list.splice(index, 1);
+	  };
+
+	  Conversations.prototype.insertOne = function (conversation) {
+	    Conversations.sortedInserter.insert(this.list, conversation);
+
+	    if (this.list.length > Conversations.CONVERSATIONS_MAX_LENGTH) {
+	      this.list = this.list.slice(0, Conversations.CONVERSATIONS_MAX_LENGTH);
 	    }
-
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	  };
-	}();
-
-	PrivateMessage$1.__esModule = true;
-	PrivateMessage$1.PrivateMessage = void 0;
-	var AbstractMessage_1$2 = AbstractMessage$1;
-	var GoEasy_1$a = GoEasy$1;
-
-	var PrivateMessage =
-	/** @class */
-	function (_super) {
-	  __extends$b(PrivateMessage, _super);
-
-	  function PrivateMessage() {
-	    return _super !== null && _super.apply(this, arguments) || this;
-	  }
-
-	  PrivateMessage.prototype.scene = function () {
-	    return GoEasy_1$a.Scene.PRIVATE;
 	  };
 
-	  PrivateMessage.prototype.targetId = function () {
-	    return this.receiverId;
+	  Conversations.prototype.correctPosition = function (conversation) {
+	    this.removeLocalConversation(conversation);
+	    this.insertOne(conversation);
 	  };
 
-	  return PrivateMessage;
-	}(AbstractMessage_1$2.AbstractMessage);
+	  Conversations.prototype.removeConversation = function (message) {
+	    var target = Target_1$1.Target.byIMMessage(message);
+	    var conversation = this.findConversation(target);
 
-	PrivateMessage$1.PrivateMessage = PrivateMessage;
+	    if (conversation) {
+	      this.removeLocalConversation(conversation);
+	      this.fireUpdated();
+	    }
+	  };
 
-	var GroupMessage$1 = {};
+	  Conversations.prototype.top = function (target, top, options) {
+	    return __awaiter$8(this, void 0, void 0, function () {
+	      var conversation, err_2;
+	      return __generator$8(this, function (_a) {
+	        switch (_a.label) {
+	          case 0:
+	            _a.trys.push([0, 2,, 3]);
 
-	var __extends$a = commonjsGlobal && commonjsGlobal.__extends || function () {
-	  var _extendStatics = function extendStatics(d, b) {
-	    _extendStatics = Object.setPrototypeOf || {
-	      __proto__: []
-	    } instanceof Array && function (d, b) {
-	      d.__proto__ = b;
-	    } || function (d, b) {
-	      for (var p in b) {
-	        if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
+	            return [4
+	            /*yield*/
+	            , this.remoteConversations.top(target, top)];
+
+	          case 1:
+	            _a.sent();
+
+	            conversation = this.findConversation(target);
+	            conversation.top = top;
+	            this.correctPosition(conversation);
+	            this.fireUpdated();
+	            callback_utils_1$9.CallbackUtils.onSuccess(options);
+	            return [3
+	            /*break*/
+	            , 3];
+
+	          case 2:
+	            err_2 = _a.sent();
+	            callback_utils_1$9.CallbackUtils.onFailed(options, err_2);
+	            return [3
+	            /*break*/
+	            , 3];
+
+	          case 3:
+	            return [2
+	            /*return*/
+	            ];
+	        }
+	      });
+	    });
+	  };
+
+	  Conversations.prototype.remove = function (target, options) {
+	    return __awaiter$8(this, void 0, void 0, function () {
+	      var conversation, err_3;
+	      return __generator$8(this, function (_a) {
+	        switch (_a.label) {
+	          case 0:
+	            _a.trys.push([0, 2,, 3]);
+
+	            return [4
+	            /*yield*/
+	            , this.remoteConversations.remove(target)];
+
+	          case 1:
+	            _a.sent();
+
+	            conversation = this.findConversation(target);
+	            this.removeLocalConversation(conversation);
+	            this.fireUpdated();
+	            callback_utils_1$9.CallbackUtils.onSuccess(options);
+	            return [3
+	            /*break*/
+	            , 3];
+
+	          case 2:
+	            err_3 = _a.sent();
+	            callback_utils_1$9.CallbackUtils.onFailed(options, err_3);
+	            return [3
+	            /*break*/
+	            , 3];
+
+	          case 3:
+	            return [2
+	            /*return*/
+	            ];
+	        }
+	      });
+	    });
+	  };
+
+	  Conversations.prototype.buildByAbbr = function (abbrConversation, message) {
+	    var conversation;
+	    var target = Target_1$1.Target.byIMMessage(message);
+
+	    if (abbrConversation.t === GoEasy_1$5.Scene.CS) {
+	      var csMessage = message;
+
+	      if (g_1$5.G.u() === csMessage.customerId()) {
+	        conversation = new Conversation_1.Conversation(target);
+	      } else {
+	        conversation = new CSConversation_1$1.CSConversation(target);
+	        conversation.accepted = csMessage.accepted;
 	      }
-	    };
-
-	    return _extendStatics(d, b);
-	  };
-
-	  return function (d, b) {
-	    if (typeof b !== "function" && b !== null) throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-
-	    _extendStatics(d, b);
-
-	    function __() {
-	      this.constructor = d;
-	    }
-
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	  };
-	}();
-
-	GroupMessage$1.__esModule = true;
-	GroupMessage$1.GroupMessage = void 0;
-	var AbstractMessage_1$1 = AbstractMessage$1;
-	var GoEasy_1$9 = GoEasy$1;
-
-	var GroupMessage =
-	/** @class */
-	function (_super) {
-	  __extends$a(GroupMessage, _super);
-
-	  function GroupMessage() {
-	    return _super !== null && _super.apply(this, arguments) || this;
-	  } // readAmount: number;
-	  // readUsers: Array<string>;
-
-
-	  GroupMessage.prototype.scene = function () {
-	    return GoEasy_1$9.Scene.GROUP;
-	  };
-
-	  GroupMessage.prototype.targetId = function () {
-	    return this.groupId;
-	  };
-
-	  return GroupMessage;
-	}(AbstractMessage_1$1.AbstractMessage);
-
-	GroupMessage$1.GroupMessage = GroupMessage;
-
-	var csMessage = {};
-
-	var __extends$9 = commonjsGlobal && commonjsGlobal.__extends || function () {
-	  var _extendStatics = function extendStatics(d, b) {
-	    _extendStatics = Object.setPrototypeOf || {
-	      __proto__: []
-	    } instanceof Array && function (d, b) {
-	      d.__proto__ = b;
-	    } || function (d, b) {
-	      for (var p in b) {
-	        if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
-	      }
-	    };
-
-	    return _extendStatics(d, b);
-	  };
-
-	  return function (d, b) {
-	    if (typeof b !== "function" && b !== null) throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-
-	    _extendStatics(d, b);
-
-	    function __() {
-	      this.constructor = d;
-	    }
-
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	  };
-	}();
-
-	csMessage.__esModule = true;
-	csMessage.CSMessage = void 0;
-	var AbstractMessage_1 = AbstractMessage$1;
-	var GoEasy_1$8 = GoEasy$1;
-
-	var CSMessage =
-	/** @class */
-	function (_super) {
-	  __extends$9(CSMessage, _super);
-
-	  function CSMessage() {
-	    return _super !== null && _super.apply(this, arguments) || this;
-	  }
-
-	  CSMessage.prototype.scene = function () {
-	    return GoEasy_1$8.Scene.CS;
-	  };
-
-	  CSMessage.prototype.targetId = function () {
-	    if (this.to === this.teamId) {
-	      return this.senderId + "#" + this.teamId;
-	    }
-
-	    return this.to + "#" + this.teamId;
-	  };
-
-	  return CSMessage;
-	}(AbstractMessage_1.AbstractMessage);
-
-	csMessage.CSMessage = CSMessage;
-
-	remoteAbbrMessageBuilder.__esModule = true;
-	remoteAbbrMessageBuilder.RemoteAbbrMessageBuilder = void 0;
-	var GoEasy_1$7 = GoEasy$1;
-	var PrivateMessage_1$1 = PrivateMessage$1;
-	var GroupMessage_1$1 = GroupMessage$1;
-	var cs_message_1$1 = csMessage;
-
-	var RemoteAbbrMessageBuilder =
-	/** @class */
-	function () {
-	  function RemoteAbbrMessageBuilder() {}
-
-	  RemoteAbbrMessageBuilder.prototype.build = function (remoteAbbrMessage) {
-	    var message;
-	    var scene = remoteAbbrMessage.t;
-
-	    if (scene === GoEasy_1$7.Scene.PRIVATE) {
-	      message = new PrivateMessage_1$1.PrivateMessage();
-	      message.read = false;
-	      message.receiverId = remoteAbbrMessage.r;
-	    } else if (scene === GoEasy_1$7.Scene.GROUP) {
-	      message = new GroupMessage_1$1.GroupMessage();
-	      message.groupId = remoteAbbrMessage.r;
-	      message.senderData = remoteAbbrMessage.d ? JSON.parse(remoteAbbrMessage.d) : {};
-	    } else if (scene === GoEasy_1$7.Scene.CS) {
-	      message = new cs_message_1$1.CSMessage();
-	      message.read = false;
-	      message.to = remoteAbbrMessage.r;
-	      message.teamId = remoteAbbrMessage.tid;
-	      message.senderData = remoteAbbrMessage.d ? JSON.parse(remoteAbbrMessage.d) : {};
-	    }
-
-	    message.senderId = remoteAbbrMessage.s;
-	    message.messageId = remoteAbbrMessage.i;
-	    message.timestamp = remoteAbbrMessage.ts;
-	    message.type = remoteAbbrMessage.mt;
-	    message.payload = JSON.parse(remoteAbbrMessage.p);
-	    message.recalled = remoteAbbrMessage.rc;
-	    message.status = GoEasy_1$7.MessageStatus.SUCCESS;
-	    return message;
-	  };
-
-	  return RemoteAbbrMessageBuilder;
-	}();
-
-	remoteAbbrMessageBuilder.RemoteAbbrMessageBuilder = RemoteAbbrMessageBuilder;
-
-	var sortedInserter = {};
-
-	sortedInserter.__esModule = true;
-	sortedInserter.SortedInserter = void 0;
-
-	var SortedInserter =
-	/** @class */
-	function () {
-	  function SortedInserter() {}
-
-	  SortedInserter.prototype.insert = function (array, t) {
-	    var index = this.binarySearch(array, t);
-
-	    if (index >= 0) {
-	      // 覆盖
-	      array.splice(index, 1, t);
 	    } else {
-	      // 插入
-	      var newIndex = -index - 1;
-	      array.splice(newIndex, 0, t);
+	      conversation = new Conversation_1.Conversation(target);
 	    }
+
+	    conversation.dataLoaded = true;
+	    conversation.top = abbrConversation.top;
+	    conversation.data = abbrConversation.d ? JSON.parse(abbrConversation.d) : {};
+	    return conversation;
 	  };
 	  /**
-	   * 相等就覆盖
-	   * 大于0往后查询
-	   * 小于0往前查询
+	   * 注意：
+	   *  客服消息：
+	   *      customer端暂时使用conversation
+	   *      staff端使用cs conversation
+	   *  私聊和群聊使用conversation
 	   */
 
 
-	  SortedInserter.prototype.binarySearch = function (array, t) {
-	    var m = 0;
-	    var n = array.length - 1;
+	  Conversations.prototype.buildByMessage = function (message) {
+	    var conversation;
+	    var target = Target_1$1.Target.byIMMessage(message);
 
-	    while (m <= n) {
-	      var k = n + m >> 1;
-	      var cmp = this.compare(t, array[k]);
+	    if (message.scene() === GoEasy_1$5.Scene.CS) {
+	      var csMessage = message;
 
-	      if (cmp > 0) {
-	        // 往后查询
-	        m = k + 1;
-	      } else if (cmp < 0) {
-	        // 往前查询
-	        n = k - 1;
+	      if (g_1$5.G.u() === csMessage.customerId()) {
+	        conversation = new Conversation_1.Conversation(target);
 	      } else {
-	        return k;
+	        conversation = new CSConversation_1$1.CSConversation(target);
+	        conversation.accepted = csMessage.accepted;
 	      }
+	    } else {
+	      conversation = new Conversation_1.Conversation(target);
 	    }
 
-	    return -m - 1;
+	    return conversation;
 	  };
 
-	  return SortedInserter;
+	  Conversations.CONVERSATIONS_MAX_LENGTH = 200;
+	  Conversations.sortedInserter = new (
+	  /** @class */
+	  function (_super) {
+	    __extends$9(class_1, _super);
+
+	    function class_1() {
+	      return _super !== null && _super.apply(this, arguments) || this;
+	    }
+
+	    class_1.prototype.compare = function (a, b) {
+	      var c;
+
+	      if (a.top == b.top) {
+	        var aScore = a.maxMessageTime();
+	        var bScore = b.maxMessageTime();
+	        c = bScore - aScore;
+	      } else {
+	        c = a.top ? -1 : 1;
+	      }
+
+	      return c === 0 ? 0 : c > 0 ? 1 : -1;
+	    };
+
+	    return class_1;
+	  }(sorted_inserter_1.SortedInserter))();
+	  return Conversations;
 	}();
 
-	sortedInserter.SortedInserter = SortedInserter;
+	Conversations$1.Conversations = Conversations;
+
+	var PendingConversations$1 = {};
 
 	var __extends$8 = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
@@ -11103,1231 +15629,334 @@
 	  }
 	};
 
-	Conversations$1.__esModule = true;
-	Conversations$1.Conversations = void 0;
-	var Conversation_1 = Conversation$1;
-	var Rocket_1$7 = Rocket;
-	var Permission_1$7 = Permission;
-	var SocketTimeout_1$7 = SocketTimeout;
-	var Calibrator_1$9 = Calibrator;
-	var callback_utils_1$7 = callbackUtils;
-	var GoEasy_1$6 = GoEasy$1;
-	var remote_abbr_message_builder_1 = remoteAbbrMessageBuilder;
-	var RocketTypes_1$7 = RocketTypes;
+	var __values = commonjsGlobal && commonjsGlobal.__values || function (o) {
+	  var s = typeof Symbol === "function" && Symbol.iterator,
+	      m = s && o[s],
+	      i = 0;
+	  if (m) return m.call(o);
+	  if (o && typeof o.length === "number") return {
+	    next: function next() {
+	      if (o && i >= o.length) o = void 0;
+	      return {
+	        value: o && o[i++],
+	        done: !o
+	      };
+	    }
+	  };
+	  throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+	};
+
+	PendingConversations$1.__esModule = true;
+	PendingConversations$1.PendingConversations = void 0;
+	var Conversations_1 = Conversations$1;
+	var GoEasy_1$4 = GoEasy$1;
+	var RocketTypes_1$6 = RocketTypes;
+	var Target_1 = Target$1;
+	var goeasy_event_center_1$a = goeasyEventCenter;
+	var internal_events_1$2 = internalEvents;
 	var im_api_events_1 = imApiEvents;
-	var sorted_inserter_1 = sortedInserter;
-	var goeasy_event_center_1$9 = goeasyEventCenter;
-	var internal_events_1$1 = internalEvents;
+	var cs_message_type_1 = csMessageType;
+	var histories_1$1 = histories;
+	var CSConversation_1 = CSConversation$1;
+	var g_1$4 = g;
+	var Calibrator_1$7 = Calibrator;
 
-	var Conversations =
+	var PendingConversations =
 	/** @class */
-	function () {
-	  function Conversations(goEasySocket, apiEventCenter, dataCache, userId, histories) {
-	    this.list = new Array();
-	    this.builder = new remote_abbr_message_builder_1.RemoteAbbrMessageBuilder();
-	    this.goEasySocket = goEasySocket;
-	    this.apiEventCenter = apiEventCenter;
-	    this.dataCache = dataCache;
-	    this.userId = userId;
-	    this.histories = histories;
-	  }
-	  /**
-	   * 通知更新会话列表
-	   * todo:每个地方要调用这个代码，要像history里update的地方，做个精准判断，的确需要的时候才update，不能总是频繁的调用
-	   *
-	   */
+	function (_super) {
+	  __extends$8(PendingConversations, _super);
 
+	  function PendingConversations() {
+	    var _this = _super.call(this) || this;
 
-	  Conversations.prototype.onUpdated = function () {
-	    var _this = this;
-
-	    this.loadLocalConversationsAsDtos().then(function (result) {
-	      _this.apiEventCenter.fire(im_api_events_1.ImApiEvents.CONVERSATIONS_UPDATED, {
-	        unreadTotal: result.content.unreadTotal,
-	        conversations: result.content.conversations
-	      });
+	    _this.expired = false;
+	    goeasy_event_center_1$a.GoEasyEventCenter.on(internal_events_1$2.IM_INTERNAL_EVENTS.CS_ONLINE_SUCCESS, function () {
+	      return _this.onCSOnlineSuccess();
 	    });
-	  };
-
-	  Conversations.prototype.onPendingUpdated = function () {
-	    var _this = this;
-
-	    this.loadLocalConversationsAsDtos().then(function (result) {
-	      _this.apiEventCenter.fire(im_api_events_1.ImApiEvents.PENDING_CONVERSATIONS_UPDATED, {
-	        unreadTotal: result.content.unreadTotal,
-	        conversations: result.content.conversations
-	      });
+	    goeasy_event_center_1$a.GoEasyEventCenter.on(internal_events_1$2.IM_INTERNAL_EVENTS.CS_OFFLINE_SUCCESS, function () {
+	      return _this.onCSOfflineSuccess();
 	    });
-	  };
-
-	  Conversations.prototype.latestConversations = function (options) {
-	    var promise = this["synchronized"] ? this.loadLocalConversationsAsDtos() : this.loadServerConversations(); //todo: 找时间模仿rtc，外层也可以catch异步方法
-
-	    promise.then(function (res) {
-	      callback_utils_1$7.CallbackUtils.onSuccess(options, res);
-	    })["catch"](function (e) {
-	      callback_utils_1$7.CallbackUtils.onFailed(options, e);
-	    });
-	  };
-
-	  Conversations.prototype.latestPendingConversations = function (options) {
-	    var promise = this["synchronized"] ? this.loadLocalConversationsAsDtos() : this.loadServerPendingConversations();
-	    promise.then(function (res) {
-	      callback_utils_1$7.CallbackUtils.onSuccess(options, res);
-	    })["catch"](function (e) {
-	      callback_utils_1$7.CallbackUtils.onFailed(options, e);
-	    });
-	  };
-	  /**
-	   * todo ：所有查询考虑一段时间内的调用次数
-	   */
-
-
-	  Conversations.prototype.loadServerConversations = function () {
-	    var _this = this;
-
-	    return new Promise(function (resolve, reject) {
-	      var rocket = new Rocket_1$7["default"]({
-	        name: RocketTypes_1$7.RocketTypes.imLastConversations,
-	        params: {},
-	        permission: Permission_1$7.Permission.READ,
-	        singleTimeout: SocketTimeout_1$7.SocketTimeout.commonQuerySingle,
-	        totalTimeout: SocketTimeout_1$7.SocketTimeout.commonQueryTotal,
-	        fail: function fail(err) {
-	          reject(err);
-	        },
-	        success: function success(result) {
-	          return __awaiter$7(_this, void 0, void 0, function () {
-	            var conversations, i, conversation, scene, top_1, data, targetId, remoteAbbrMessage, message, syncData, localConversation;
-	            return __generator$7(this, function (_a) {
-	              if (result.code === 200) {
-	                conversations = result.content;
-
-	                for (i = 0; i < conversations.length; i++) {
-	                  conversation = conversations[i];
-	                  scene = conversation.t;
-	                  top_1 = conversation.top;
-	                  data = conversation.d ? JSON.parse(conversation.d) : {};
-	                  targetId = void 0;
-
-	                  if (scene === GoEasy_1$6.Scene.PRIVATE) {
-	                    targetId = conversation.uid;
-	                  } else if (scene === GoEasy_1$6.Scene.GROUP) {
-	                    targetId = conversation.g;
-	                  } else if (scene === GoEasy_1$6.Scene.CS) {
-	                    targetId = conversation.id;
-	                  }
-
-	                  this.dataCache.putData(scene, targetId, data);
-	                  remoteAbbrMessage = conversation.lmsg;
-	                  remoteAbbrMessage.t = scene;
-	                  message = this.builder.build(remoteAbbrMessage);
-	                  syncData = {
-	                    message: message,
-	                    userOffsets: conversation.userOffsets
-	                  };
-	                  goeasy_event_center_1$9.GoEasyEventCenter.fire(internal_events_1$1.IM_INTERNAL_EVENTS.LAST_MESSAGE_UPDATE, syncData);
-	                  localConversation = this.findOrCreateConversation(scene, targetId);
-	                  localConversation.top = top_1;
-	                  localConversation.data = data;
-	                  localConversation.start = conversation.start;
-	                  localConversation.end = conversation.end;
-	                  this.correctPosition(localConversation);
-	                }
-
-	                this["synchronized"] = true;
-	                this.loadLocalConversationsAsDtos().then(function (res) {
-	                  resolve(res);
-	                });
-	              } else {
-	                reject(result);
-	              }
-
-	              return [2
-	              /*return*/
-	              ];
-	            });
-	          });
-	        }
-	      });
-
-	      _this.goEasySocket.emit(rocket);
-	    });
-	  };
-
-	  Conversations.prototype.loadServerPendingConversations = function () {
-	    var _this = this;
-
-	    return new Promise(function (resolve, reject) {
-	      var rocket = new Rocket_1$7["default"]({
-	        name: RocketTypes_1$7.RocketTypes.PENDING_CONVERSATION,
-	        params: {},
-	        permission: Permission_1$7.Permission.READ,
-	        singleTimeout: SocketTimeout_1$7.SocketTimeout.commonQuerySingle,
-	        totalTimeout: SocketTimeout_1$7.SocketTimeout.commonQueryTotal,
-	        fail: function fail(err) {
-	          reject(err);
-	        },
-	        success: function success(result) {
-	          return __awaiter$7(_this, void 0, void 0, function () {
-	            var conversations, i, conversation, scene, top_2, data, targetId, remoteAbbrMessage, message, syncData, localConversation;
-	            return __generator$7(this, function (_a) {
-	              if (result.code === 200) {
-	                conversations = result.content;
-
-	                for (i = 0; i < conversations.length; i++) {
-	                  conversation = conversations[i];
-	                  scene = conversation.t;
-	                  top_2 = conversation.top;
-	                  data = conversation.d ? JSON.parse(conversation.d) : {};
-	                  targetId = void 0;
-
-	                  if (scene === GoEasy_1$6.Scene.PRIVATE) {
-	                    targetId = conversation.uid;
-	                  } else if (scene === GoEasy_1$6.Scene.GROUP) {
-	                    targetId = conversation.g;
-	                  } else if (scene === GoEasy_1$6.Scene.CS) {
-	                    targetId = conversation.id;
-	                  }
-
-	                  remoteAbbrMessage = conversation.lmsg;
-	                  remoteAbbrMessage.t = scene;
-	                  message = this.builder.build(remoteAbbrMessage);
-	                  syncData = {
-	                    message: message,
-	                    userOffsets: conversation.userOffsets
-	                  };
-	                  goeasy_event_center_1$9.GoEasyEventCenter.fire(internal_events_1$1.IM_INTERNAL_EVENTS.LAST_MESSAGE_UPDATE, syncData);
-	                  this.dataCache.putData(scene, targetId, data);
-	                  localConversation = this.findOrCreateConversation(scene, targetId);
-	                  localConversation.top = top_2;
-	                  localConversation.data = data;
-	                  localConversation.start = conversation.start;
-	                  localConversation.end = conversation.end;
-	                  this.correctPosition(localConversation);
-	                }
-
-	                this["synchronized"] = true;
-	                this.loadLocalConversationsAsDtos().then(function (res) {
-	                  resolve(res);
-	                });
-	              } else {
-	                reject(result);
-	              }
-
-	              return [2
-	              /*return*/
-	              ];
-	            });
-	          });
-	        }
-	      });
-
-	      _this.goEasySocket.emit(rocket);
-	    });
-	  };
-
-	  Conversations.prototype.loadLocalConversationsAsDtos = function () {
-	    var _this = this;
-
-	    return new Promise(function (resolve, reject) {
-	      var conversations = new Array();
-	      var size = _this.list.length;
-
-	      for (var i = 0; i < size; i++) {
-	        var conversation = _this.list[i];
-	        var targetId = conversation.getTargetId();
-	        var scene = conversation.getScene();
-
-	        var history_1 = _this.histories.findHistory(scene, targetId);
-
-	        var conversationDTO = conversation.toDto(history_1);
-	        conversations.push(conversationDTO);
-	      }
-
-	      resolve({
-	        code: 200,
-	        content: {
-	          unreadTotal: _this.getUnreadTotal(),
-	          conversations: conversations
-	        }
-	      });
-	    });
-	  };
-	  /***
-	   * 新创建的conversation必须同步插入，否则会造成conversation的重复
-	   *
-	   *
-	   * @param scene
-	   * @param targetId
-	   */
-
-
-	  Conversations.prototype.findOrCreateConversation = function (scene, targetId) {
-	    var conversation = this.findConversation(scene, targetId);
-
-	    if (Calibrator_1$9["default"].isUndef(conversation)) {
-	      conversation = new Conversation_1.Conversation(scene, targetId, this.userId, this.dataCache);
-	      this.insertOne(conversation);
-	    }
-
-	    return conversation;
-	  };
-
-	  Conversations.prototype.findConversationIndex = function (scene, targetId) {
-	    return this.list.findIndex(function (item) {
-	      return scene === GoEasy_1$6.Scene.GROUP && targetId === item.targetId || scene === GoEasy_1$6.Scene.PRIVATE && targetId === item.targetId || scene === GoEasy_1$6.Scene.CS && targetId === item.targetId;
-	    });
-	  };
-
-	  Conversations.prototype.findConversation = function (scene, targetId) {
-	    var index = this.findConversationIndex(scene, targetId);
-	    return this.list[index];
-	  };
-
-	  Conversations.prototype.removeLocalConversation = function (conversation) {
-	    var targetId = conversation.getTargetId();
-	    var scene = conversation.getScene();
-	    var index = this.findConversationIndex(scene, targetId);
-	    this.list.splice(index, 1);
-	  };
-
-	  Conversations.prototype.topLocalConversation = function (conversation, top) {
-	    conversation.top = top;
-	    this.correctPosition(conversation);
-	    this.onUpdated();
-	  };
-
-	  Conversations.prototype.getUnreadTotal = function () {
-	    var _this = this;
-
-	    var total = 0;
-	    this.list.forEach(function (conversation) {
-	      var targetId = conversation.getTargetId();
-	      var scene = conversation.getScene();
-
-	      var history = _this.histories.findHistory(scene, targetId);
-
-	      total += history.messageCache.unreadAmount(conversation.start, conversation.end);
-	    });
-	    return total;
-	  };
-
-	  Conversations.prototype.insertOne = function (conversation) {
-	    Conversations.sortedInserter.insert(this.list, conversation);
-
-	    if (this.list.length > Conversations.CONVERSATIONS_MAX_LENGTH) {
-	      this.list = this.list.slice(0, Conversations.CONVERSATIONS_MAX_LENGTH);
-	    }
-	  };
-
-	  Conversations.prototype.correctPosition = function (conversation) {
-	    this.removeLocalConversation(conversation);
-	    this.insertOne(conversation);
-	  };
-
-	  Conversations.CONVERSATIONS_MAX_LENGTH = 200;
-	  Conversations.sortedInserter = new (
-	  /** @class */
-	  function (_super) {
-	    __extends$8(class_1, _super);
-
-	    function class_1() {
-	      return _super !== null && _super.apply(this, arguments) || this;
-	    }
-
-	    class_1.prototype.compare = function (a, b) {
-	      var c;
-
-	      if (a.top == b.top) {
-	        var aScore = a.getEnd();
-	        var bScore = b.getEnd();
-	        c = bScore - aScore;
-	      } else {
-	        c = a.top ? -1 : 1;
-	      }
-
-	      return c === 0 ? 0 : c > 0 ? 1 : -1;
-	    };
-
-	    return class_1;
-	  }(sorted_inserter_1.SortedInserter))();
-	  return Conversations;
-	}();
-
-	Conversations$1.Conversations = Conversations;
-
-	var Target$1 = {};
-
-	Target$1.__esModule = true;
-	Target$1.Target = void 0;
-	var GoEasy_1$5 = GoEasy$1;
-	var Calibrator_1$8 = Calibrator;
-	var ConversationIdUtils_1$1 = ConversationIdUtils;
-	var im_1$1 = im;
-
-	var Target =
-	/** @class */
-	function () {
-	  function Target(scene, id) {
-	    this.scene = scene;
-	    this.id = id.toString();
+	    g_1$4.G.s().addDisconnectedObserver(_this.onDisconnected.bind(_this));
+	    g_1$4.G.s().addConnectedObserver(_this.onConnected.bind(_this));
+	    return _this;
 	  }
 
-	  Target.byScene = function (scene, targetId) {
-	    return new Target(scene, targetId);
-	  };
+	  PendingConversations.prototype.onMaxMessageChanged = function (message) {
+	    return __awaiter$7(this, void 0, void 0, function () {
+	      var csMessage;
+	      return __generator$7(this, function (_a) {
+	        switch (_a.label) {
+	          case 0:
+	            if (!(message.scene() === GoEasy_1$4.Scene.CS)) return [3
+	            /*break*/
+	            , 3];
+	            csMessage = message;
+	            if (!(csMessage.customerId() != g_1$4.G.u())) return [3
+	            /*break*/
+	            , 3];
+	            if (!(csMessage.accepted === false || csMessage.type === cs_message_type_1.CSMessageType.ACCEPTED)) return [3
+	            /*break*/
+	            , 3];
+	            if (!(cs_message_type_1.CSMessageType.ACCEPTED === message.type)) return [3
+	            /*break*/
+	            , 1];
+	            this.removeConversation(message);
+	            return [3
+	            /*break*/
+	            , 3];
 
-	  Target.byIds = function (userId, groupId) {
-	    var scene = GoEasy_1$5.Scene.PRIVATE;
-	    var targetId = userId;
+	          case 1:
+	            return [4
+	            /*yield*/
+	            , this.saveOrUpdateConversation(message)];
 
-	    if (Calibrator_1$8["default"].isDef(groupId)) {
-	      scene = GoEasy_1$5.Scene.GROUP;
-	      targetId = groupId;
-	    }
+	          case 2:
+	            _a.sent();
 
-	    return Target.byScene(scene, targetId);
-	  };
+	            _a.label = 3;
 
-	  Target.byIMMessage = function (message) {
-	    var targetId;
-	    var scene = message.scene();
-
-	    if (scene === GoEasy_1$5.Scene.PRIVATE) {
-	      var senderId = message.senderId;
-	      var receiverId = message.targetId();
-	      targetId = im_1$1.IM.userId === senderId ? receiverId : senderId;
-	    } else if (scene === GoEasy_1$5.Scene.GROUP) {
-	      targetId = message.targetId();
-	    } else if (scene === GoEasy_1$5.Scene.CS) {
-	      targetId = message.targetId();
-	    } else {
-	      throw {
-	        code: 400,
-	        content: "scene ".concat(scene, " not exists")
-	      };
-	    }
-
-	    return new Target(scene, targetId);
-	  };
-
-	  Target.byMessageReadRemoteEvent = function (event) {
-	    var scene = event.scene;
-	    var receiverId = event.targetId;
-	    var markerId = event.markerId;
-	    var targetId;
-
-	    if (scene === GoEasy_1$5.Scene.PRIVATE) {
-	      targetId = im_1$1.IM.userId === markerId ? receiverId : markerId;
-	    } else if (scene === GoEasy_1$5.Scene.GROUP) {
-	      targetId = receiverId;
-	    } else if (scene === GoEasy_1$5.Scene.CS) {
-	      targetId = receiverId;
-	    }
-
-	    return new Target(scene, targetId);
-	  };
-
-	  Target.byIMMessageDeletedEvent = function (event) {
-	    var scene = event.scene;
-	    var deleterId = event.deleterId;
-
-	    if (scene === GoEasy_1$5.Scene.PRIVATE) {
-	      var targetId = im_1$1.IM.userId === deleterId ? event.targetId : deleterId;
-	      return new Target(scene, targetId);
-	    } else if (scene === GoEasy_1$5.Scene.GROUP) {
-	      return new Target(scene, event.targetId);
-	    }
-	  };
-
-	  Target.byMessageRecalledRemoteEvent = function (event) {
-	    var scene = event.scene;
-	    var targetId = ConversationIdUtils_1$1["default"].targetId(scene, event.conversationId);
-	    return new Target(scene, targetId);
-	  };
-
-	  return Target;
-	}();
-
-	Target$1.Target = Target;
-
-	var ConversationRemover = {};
-
-	var RemoveConversationRequest = {};
-
-	(function (exports) {
-
-	  exports.__esModule = true;
-
-	  var RemoveConversationRequest =
-	  /** @class */
-	  function () {
-	    function RemoveConversationRequest(type, targetId) {
-	      this.type = type;
-	      this.targetId = targetId;
-	    }
-
-	    return RemoveConversationRequest;
-	  }();
-
-	  exports["default"] = RemoveConversationRequest;
-	})(RemoveConversationRequest);
-
-	(function (exports) {
-
-	  var __awaiter = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
-	    function adopt(value) {
-	      return value instanceof P ? value : new P(function (resolve) {
-	        resolve(value);
+	          case 3:
+	            return [2
+	            /*return*/
+	            ];
+	        }
 	      });
-	    }
-
-	    return new (P || (P = Promise))(function (resolve, reject) {
-	      function fulfilled(value) {
-	        try {
-	          step(generator.next(value));
-	        } catch (e) {
-	          reject(e);
-	        }
-	      }
-
-	      function rejected(value) {
-	        try {
-	          step(generator["throw"](value));
-	        } catch (e) {
-	          reject(e);
-	        }
-	      }
-
-	      function step(result) {
-	        result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
-	      }
-
-	      step((generator = generator.apply(thisArg, _arguments || [])).next());
 	    });
 	  };
 
-	  var __generator = commonjsGlobal && commonjsGlobal.__generator || function (thisArg, body) {
-	    var _ = {
-	      label: 0,
-	      sent: function sent() {
-	        if (t[0] & 1) throw t[1];
-	        return t[1];
-	      },
-	      trys: [],
-	      ops: []
-	    },
-	        f,
-	        y,
-	        t,
-	        g;
-	    return g = {
-	      next: verb(0),
-	      "throw": verb(1),
-	      "return": verb(2)
-	    }, typeof Symbol === "function" && (g[Symbol.iterator] = function () {
-	      return this;
-	    }), g;
-
-	    function verb(n) {
-	      return function (v) {
-	        return step([n, v]);
-	      };
-	    }
-
-	    function step(op) {
-	      if (f) throw new TypeError("Generator is already executing.");
-
-	      while (_) {
-	        try {
-	          if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-	          if (y = 0, t) op = [op[0] & 2, t.value];
-
-	          switch (op[0]) {
-	            case 0:
-	            case 1:
-	              t = op;
-	              break;
-
-	            case 4:
-	              _.label++;
-	              return {
-	                value: op[1],
-	                done: false
-	              };
-
-	            case 5:
-	              _.label++;
-	              y = op[1];
-	              op = [0];
-	              continue;
-
-	            case 7:
-	              op = _.ops.pop();
-
-	              _.trys.pop();
-
-	              continue;
-
-	            default:
-	              if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
-	                _ = 0;
-	                continue;
-	              }
-
-	              if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
-	                _.label = op[1];
-	                break;
-	              }
-
-	              if (op[0] === 6 && _.label < t[1]) {
-	                _.label = t[1];
-	                t = op;
-	                break;
-	              }
-
-	              if (t && _.label < t[2]) {
-	                _.label = t[2];
-
-	                _.ops.push(op);
-
-	                break;
-	              }
-
-	              if (t[2]) _.ops.pop();
-
-	              _.trys.pop();
-
-	              continue;
-	          }
-
-	          op = body.call(thisArg, _);
-	        } catch (e) {
-	          op = [6, e];
-	          y = 0;
-	        } finally {
-	          f = t = 0;
-	        }
-	      }
-
-	      if (op[0] & 5) throw op[1];
-	      return {
-	        value: op[0] ? op[1] : void 0,
-	        done: true
-	      };
-	    }
+	  PendingConversations.prototype.onUnreadMessageChanged = function (target) {// pending message没有unread amount 所以do nothing
 	  };
 
-	  exports.__esModule = true;
-	  var GoEasy_1 = GoEasy$1;
-	  var callback_utils_1 = callbackUtils;
-	  var RocketTypes_1 = RocketTypes;
-	  var Rocket_1 = Rocket;
-	  var Permission_1 = Permission;
-	  var SocketTimeout_1 = SocketTimeout;
-	  var RemoveConversationRequest_1 = RemoveConversationRequest;
-	  var Calibrator_1 = Calibrator;
-	  var validator_utils_1 = validatorUtils;
+	  PendingConversations.prototype.onCSOnlineSuccess = function () {
+	    return __awaiter$7(this, void 0, void 0, function () {
+	      return __generator$7(this, function (_a) {
+	        switch (_a.label) {
+	          case 0:
+	            return [4
+	            /*yield*/
+	            , this.loadServerConversations()];
 
-	  var ConversationRemover =
-	  /** @class */
-	  function () {
-	    function ConversationRemover(conversations, goEasySocket) {
-	      this.conversations = conversations;
-	      this.goEasySocket = goEasySocket;
-	    }
+	          case 1:
+	            _a.sent();
 
-	    ConversationRemover.prototype.remove = function (target, options) {
-	      return __awaiter(this, void 0, void 0, function () {
-	        var err_1;
-	        return __generator(this, function (_a) {
-	          switch (_a.label) {
-	            case 0:
-	              _a.trys.push([0, 2,, 3]);
-
-	              return [4
-	              /*yield*/
-	              , this.removeServerConversation(target.scene, target.id)];
-
-	            case 1:
-	              _a.sent();
-	              this.removeLocalConversation(target);
-	              callback_utils_1.CallbackUtils.onSuccess(options);
-	              return [3
-	              /*break*/
-	              , 3];
-
-	            case 2:
-	              err_1 = _a.sent();
-	              callback_utils_1.CallbackUtils.onFailed(options, err_1);
-	              return [3
-	              /*break*/
-	              , 3];
-
-	            case 3:
-	              return [2
-	              /*return*/
-	              ];
-	          }
-	        });
-	      });
-	    };
-
-	    ConversationRemover.prototype.removeLocalConversation = function (target) {
-	      var scene = target.scene;
-	      var targetId = target.id;
-	      var conversation = this.conversations.findConversation(scene, targetId);
-
-	      if (Calibrator_1["default"].isDef(conversation)) {
-	        this.conversations.removeLocalConversation(conversation);
-	        this.conversations.onUpdated();
-	      }
-	    };
-
-	    ConversationRemover.prototype.removeServerConversation = function (scene, targetId) {
-	      var _this = this;
-
-	      var request = new RemoveConversationRequest_1["default"](scene, targetId);
-	      return new Promise(function (resolve, reject) {
-	        var rocket = new Rocket_1["default"]({
-	          name: RocketTypes_1.RocketTypes.removeConversation,
-	          params: request,
-	          permission: Permission_1.Permission.WRITE,
-	          singleTimeout: SocketTimeout_1.SocketTimeout.commonRequestSingle,
-	          totalTimeout: SocketTimeout_1.SocketTimeout.commonRequestTotal,
-	          success: function success(res) {
-	            if (res.code == 200) {
-	              resolve(res);
-	            } else {
-	              reject(res);
-	            }
-	          },
-	          fail: function fail(err) {
-	            reject(err);
-	          }
-	        });
-
-	        _this.goEasySocket.emit(rocket);
-	      });
-	    };
-
-	    ConversationRemover.prototype.validate = function (scene, options) {
-	      var key = scene === GoEasy_1.Scene.PRIVATE ? 'userId' : 'groupId';
-	      var targetId = options[key];
-	      validator_utils_1["default"].validateId(targetId, key);
-	      options[key] = options[key].toString();
-	      var conversation = this.conversations.findConversation(scene, targetId.toString());
-
-	      if (Calibrator_1["default"].isUndef(conversation)) {
-	        throw {
-	          code: 400,
-	          content: 'Failed to remove conversation: conversation doesn not exists'
-	        };
-	      }
-	    };
-
-	    return ConversationRemover;
-	  }();
-
-	  exports["default"] = ConversationRemover;
-	})(ConversationRemover);
-
-	var ConversationTopper = {};
-
-	var TopConversationRequest = {};
-
-	(function (exports) {
-
-	  exports.__esModule = true;
-
-	  var TopConversationRequest =
-	  /** @class */
-	  function () {
-	    function TopConversationRequest(type, top, targetId) {
-	      this.type = type;
-	      this.top = top;
-	      this.targetId = targetId;
-	    }
-
-	    return TopConversationRequest;
-	  }();
-
-	  exports["default"] = TopConversationRequest;
-	})(TopConversationRequest);
-
-	(function (exports) {
-
-	  var __awaiter = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
-	    function adopt(value) {
-	      return value instanceof P ? value : new P(function (resolve) {
-	        resolve(value);
-	      });
-	    }
-
-	    return new (P || (P = Promise))(function (resolve, reject) {
-	      function fulfilled(value) {
-	        try {
-	          step(generator.next(value));
-	        } catch (e) {
-	          reject(e);
+	            this.fireUpdated();
+	            return [2
+	            /*return*/
+	            ];
 	        }
-	      }
-
-	      function rejected(value) {
-	        try {
-	          step(generator["throw"](value));
-	        } catch (e) {
-	          reject(e);
-	        }
-	      }
-
-	      function step(result) {
-	        result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
-	      }
-
-	      step((generator = generator.apply(thisArg, _arguments || [])).next());
+	      });
 	    });
 	  };
 
-	  var __generator = commonjsGlobal && commonjsGlobal.__generator || function (thisArg, body) {
-	    var _ = {
-	      label: 0,
-	      sent: function sent() {
-	        if (t[0] & 1) throw t[1];
-	        return t[1];
-	      },
-	      trys: [],
-	      ops: []
-	    },
-	        f,
-	        y,
-	        t,
-	        g;
-	    return g = {
-	      next: verb(0),
-	      "throw": verb(1),
-	      "return": verb(2)
-	    }, typeof Symbol === "function" && (g[Symbol.iterator] = function () {
-	      return this;
-	    }), g;
-
-	    function verb(n) {
-	      return function (v) {
-	        return step([n, v]);
-	      };
-	    }
-
-	    function step(op) {
-	      if (f) throw new TypeError("Generator is already executing.");
-
-	      while (_) {
-	        try {
-	          if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-	          if (y = 0, t) op = [op[0] & 2, t.value];
-
-	          switch (op[0]) {
-	            case 0:
-	            case 1:
-	              t = op;
-	              break;
-
-	            case 4:
-	              _.label++;
-	              return {
-	                value: op[1],
-	                done: false
-	              };
-
-	            case 5:
-	              _.label++;
-	              y = op[1];
-	              op = [0];
-	              continue;
-
-	            case 7:
-	              op = _.ops.pop();
-
-	              _.trys.pop();
-
-	              continue;
-
-	            default:
-	              if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
-	                _ = 0;
-	                continue;
-	              }
-
-	              if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
-	                _.label = op[1];
-	                break;
-	              }
-
-	              if (op[0] === 6 && _.label < t[1]) {
-	                _.label = t[1];
-	                t = op;
-	                break;
-	              }
-
-	              if (t && _.label < t[2]) {
-	                _.label = t[2];
-
-	                _.ops.push(op);
-
-	                break;
-	              }
-
-	              if (t[2]) _.ops.pop();
-
-	              _.trys.pop();
-
-	              continue;
-	          }
-
-	          op = body.call(thisArg, _);
-	        } catch (e) {
-	          op = [6, e];
-	          y = 0;
-	        } finally {
-	          f = t = 0;
-	        }
-	      }
-
-	      if (op[0] & 5) throw op[1];
-	      return {
-	        value: op[0] ? op[1] : void 0,
-	        done: true
-	      };
-	    }
+	  PendingConversations.prototype.onCSOfflineSuccess = function () {
+	    this.list = [];
+	    this.fireUpdated();
 	  };
 
-	  exports.__esModule = true;
-	  var GoEasy_1 = GoEasy$1;
-	  var callback_utils_1 = callbackUtils;
-	  var Calibrator_1 = Calibrator;
-	  var RocketTypes_1 = RocketTypes;
-	  var Rocket_1 = Rocket;
-	  var Permission_1 = Permission;
-	  var SocketTimeout_1 = SocketTimeout;
-	  var TopConversationRequest_1 = TopConversationRequest;
-	  var validator_utils_1 = validatorUtils;
+	  PendingConversations.prototype.getUpdatedEventName = function () {
+	    return im_api_events_1.ImApiEvents.PENDING_CONVERSATIONS_UPDATED;
+	  };
 
-	  var ConversationTopper =
-	  /** @class */
-	  function () {
-	    function ConversationTopper(conversations, goEasySocket) {
-	      this.conversations = conversations;
-	      this.goEasySocket = goEasySocket;
-	    }
+	  PendingConversations.prototype.rocketName = function () {
+	    return RocketTypes_1$6.RocketTypes.PENDING_CONVERSATION;
+	  };
 
-	    ConversationTopper.prototype.top = function (target, top, options) {
-	      return __awaiter(this, void 0, void 0, function () {
-	        var err_1;
-	        return __generator(this, function (_a) {
-	          switch (_a.label) {
-	            case 0:
-	              _a.trys.push([0, 2,, 3]);
+	  PendingConversations.prototype.convertAbbrConversation = function (abbrConversations) {
+	    return __awaiter$7(this, void 0, void 0, function () {
+	      var conversations, conversations_1, conversations_1_1, abbrConversation, customerData, lastMessage, userOffsets, data, message, target, conversation, staffHistory;
 
-	              return [4
-	              /*yield*/
-	              , this.topServerConversation(target, top)];
+	      var e_1, _a;
 
-	            case 1:
-	              _a.sent();
-	              this.topLocalConversation(target, top);
-	              callback_utils_1.CallbackUtils.onSuccess(options);
-	              return [3
-	              /*break*/
-	              , 3];
+	      return __generator$7(this, function (_b) {
+	        conversations = abbrConversations;
 
-	            case 2:
-	              err_1 = _a.sent();
-	              callback_utils_1.CallbackUtils.onFailed(options, err_1);
-	              return [3
-	              /*break*/
-	              , 3];
+	        try {
+	          for (conversations_1 = __values(conversations), conversations_1_1 = conversations_1.next(); !conversations_1_1.done; conversations_1_1 = conversations_1.next()) {
+	            abbrConversation = conversations_1_1.value;
+	            abbrConversation.lastMessage.t = GoEasy_1$4.Scene.CS;
+	            customerData = abbrConversation.customerData;
+	            lastMessage = abbrConversation.lastMessage;
+	            userOffsets = abbrConversation.userOffsets;
+	            data = customerData ? JSON.parse(customerData) : {};
+	            message = this.builder.build(lastMessage);
+	            target = Target_1.Target.byIMMessage(message);
+	            conversation = this.findConversation(target);
 
-	            case 3:
-	              return [2
-	              /*return*/
-	              ];
-	          }
-	        });
-	      });
-	    };
-
-	    ConversationTopper.prototype.topLocalConversation = function (target, top) {
-	      var scene = target.scene;
-	      var targetId = target.id;
-	      var conversation = this.conversations.findConversation(scene, targetId);
-
-	      if (Calibrator_1["default"].isDef(conversation)) {
-	        this.conversations.topLocalConversation(conversation, top);
-	      }
-	    };
-
-	    ConversationTopper.prototype.topServerConversation = function (target, top) {
-	      var _this = this;
-
-	      var request = new TopConversationRequest_1["default"](target.scene, top, target.id);
-	      return new Promise(function (resolve, reject) {
-	        var rocket = new Rocket_1["default"]({
-	          name: RocketTypes_1.RocketTypes.topConversation,
-	          params: request,
-	          permission: Permission_1.Permission.WRITE,
-	          singleTimeout: SocketTimeout_1.SocketTimeout.commonRequestSingle,
-	          totalTimeout: SocketTimeout_1.SocketTimeout.commonRequestTotal,
-	          success: function success(res) {
-	            if (res.code === 200) {
-	              resolve(res);
-	            } else {
-	              reject(res);
+	            if (Calibrator_1$7["default"].isUndef(conversation)) {
+	              conversation = new CSConversation_1.CSConversation(target);
+	              conversation.accepted = message.accepted;
+	              conversation.dataLoaded = true;
+	              this.insertOne(conversation);
 	            }
-	          },
-	          fail: function fail(err) {
-	            reject(err);
+
+	            conversation.top = false;
+	            conversation.data = data;
+	            staffHistory = histories_1$1["default"].get(target);
+	            staffHistory.initPendingMaxMessageAndOffsets(message, userOffsets);
+	            this.correctPosition(conversation);
 	          }
-	        });
-
-	        _this.goEasySocket.emit(rocket);
-	      });
-	    };
-
-	    ConversationTopper.prototype.validate = function (scene, options) {
-	      var key = scene === GoEasy_1.Scene.PRIVATE ? 'userId' : 'groupId';
-	      var targetId = options[key];
-	      validator_utils_1["default"].validateId(targetId, key);
-	      options[key] = options[key].toString();
-	      var top = options["top"];
-
-	      if (!Calibrator_1["default"].isBoolean(top)) {
-	        throw {
-	          code: 400,
-	          content: 'Failed to top conversation: top requires boolean'
-	        };
-	      }
-
-	      var conversation = this.conversations.findConversation(scene, targetId.toString());
-
-	      if (Calibrator_1["default"].isUndef(conversation)) {
-	        throw {
-	          code: 400,
-	          content: 'Failed to top conversation: conversation does not exists'
-	        };
-	      } else {
-	        if (conversation.top === top) {
-	          throw {
-	            code: 400,
-	            content: 'Failed to top conversation: no change'
+	        } catch (e_1_1) {
+	          e_1 = {
+	            error: e_1_1
 	          };
+	        } finally {
+	          try {
+	            if (conversations_1_1 && !conversations_1_1.done && (_a = conversations_1["return"])) _a.call(conversations_1);
+	          } finally {
+	            if (e_1) throw e_1.error;
+	          }
 	        }
-	      }
-	    };
 
-	    return ConversationTopper;
-	  }();
+	        return [2
+	        /*return*/
+	        ];
+	      });
+	    });
+	  };
 
-	  exports["default"] = ConversationTopper;
-	})(ConversationTopper);
+	  PendingConversations.prototype.onDisconnected = function () {
+	    this.expired = true;
+	  };
+
+	  PendingConversations.prototype.onConnected = function () {
+	    return __awaiter$7(this, void 0, void 0, function () {
+	      return __generator$7(this, function (_a) {
+	        switch (_a.label) {
+	          case 0:
+	            if (!this.expired) return [3
+	            /*break*/
+	            , 2];
+	            this.expired = false;
+	            this.list = [];
+	            return [4
+	            /*yield*/
+	            , this.loadServerConversations()];
+
+	          case 1:
+	            _a.sent();
+
+	            this.fireUpdated();
+	            _a.label = 2;
+
+	          case 2:
+	            return [2
+	            /*return*/
+	            ];
+	        }
+	      });
+	    });
+	  };
+
+	  return PendingConversations;
+	}(Conversations_1.Conversations);
+
+	PendingConversations$1.PendingConversations = PendingConversations;
 
 	(function (exports) {
 
 	  exports.__esModule = true;
 	  var Conversations_1 = Conversations$1;
-	  var goeasy_event_center_1 = goeasyEventCenter;
-	  var internal_events_1 = internalEvents;
 	  var Target_1 = Target$1;
 	  var GoEasy_1 = GoEasy$1;
-	  var ConversationRemover_1 = ConversationRemover;
-	  var ConversationTopper_1 = ConversationTopper;
-	  var MessageType_1 = MessageType;
-	  var ConversationIdUtils_1 = ConversationIdUtils;
 	  var Calibrator_1 = Calibrator;
-	  var im_1 = im;
+	  var PendingConversations_1 = PendingConversations$1;
+	  var validator_utils_1 = validatorUtils;
 
 	  var ConversationList =
 	  /** @class */
 	  function () {
-	    function ConversationList(goEasySocket, apiEventCenter, dataCache, userId, histories) {
-	      var _this = this;
-
-	      this.userId = userId;
-	      this.goEasySocket = goEasySocket;
-	      this.conversations = new Conversations_1.Conversations(goEasySocket, apiEventCenter, dataCache, userId, histories);
-	      this.pendingConversations = new Conversations_1.Conversations(goEasySocket, apiEventCenter, dataCache, userId, histories);
-	      this.topper = new ConversationTopper_1["default"](this.conversations, goEasySocket);
-	      this.remover = new ConversationRemover_1["default"](this.conversations, goEasySocket);
-	      goeasy_event_center_1.GoEasyEventCenter.on(internal_events_1.IM_INTERNAL_EVENTS.UNREAD_MESSAGE_CHANGED, function () {
-	        return _this.onUnreadMessageChanged();
-	      });
-	      goeasy_event_center_1.GoEasyEventCenter.on(internal_events_1.IM_INTERNAL_EVENTS.MAX_MESSAGE_CHANGED, function (target) {
-	        return _this.onMaxMessageChanged(target);
-	      });
-	      goeasy_event_center_1.GoEasyEventCenter.on(internal_events_1.IM_INTERNAL_EVENTS.CONVERSATION_UPDATE, function (message) {
-	        return _this.onConversationUpdate(message);
-	      });
-	      goeasy_event_center_1.GoEasyEventCenter.on(internal_events_1.IM_INTERNAL_EVENTS.PENDING_CONVERSATION_UPDATE, function (message) {
-	        return _this.onPendingConversationUpdated(message);
-	      });
+	    function ConversationList() {
+	      this.conversations = new Conversations_1.Conversations();
+	      this.pendingConversations = new PendingConversations_1.PendingConversations();
 	    }
-
-	    ConversationList.prototype.onConversationUpdate = function (message) {
-	      var _this = this;
-
-	      var target = Target_1.Target.byIMMessage(message);
-	      var targetId = target.id;
-	      var scene = target.scene;
-	      var conversation = this.conversations.findConversation(scene, targetId);
-
-	      if (!conversation) {
-	        conversation = this.conversations.findOrCreateConversation(scene, targetId);
-	        conversation.start = message.timestamp;
-	      }
-
-	      conversation.end = message.timestamp;
-	      this.conversations.correctPosition(conversation);
-	      conversation.initialData().then(function () {
-	        _this.conversations.onUpdated();
-	      });
-	    };
-
-	    ConversationList.prototype.onPendingConversationUpdated = function (message) {
-	      var _this = this;
-
-	      var target = Target_1.Target.byIMMessage(message);
-	      var targetId = target.id;
-	      var scene = target.scene;
-
-	      if (message.type === MessageType_1.MessageType.ACCEPTED) {
-	        if (scene === GoEasy_1.Scene.CS) {
-	          var customerId = ConversationIdUtils_1["default"].customerId(targetId);
-	          ConversationIdUtils_1["default"].teamId(targetId);
-	          var isCustomer = customerId === this.userId;
-
-	          if (isCustomer) {
-	            this.onConversationUpdate(message);
-	          } else {
-	            if (message.senderId === this.userId) {
-	              this.onConversationUpdate(message);
-	            }
-
-	            var pendingConversation = this.pendingConversations.findConversation(scene, targetId);
-
-	            if (pendingConversation) {
-	              this.pendingConversations.removeLocalConversation(pendingConversation);
-	              this.pendingConversations.onPendingUpdated();
-	            }
-	          }
-	        }
-	      } else {
-	        var conversation = this.pendingConversations.findConversation(scene, targetId);
-
-	        if (!conversation) {
-	          conversation = this.pendingConversations.findOrCreateConversation(scene, targetId);
-	          conversation.start = message.timestamp;
-	        }
-
-	        conversation.end = message.timestamp;
-	        this.pendingConversations.correctPosition(conversation);
-	        conversation.initialData().then(function () {
-	          _this.pendingConversations.onPendingUpdated();
-	        });
-	      }
-	    };
 
 	    ConversationList.prototype.latestConversations = function (options) {
 	      this.conversations.latestConversations(options);
 	    };
 
 	    ConversationList.prototype.latestPendingConversations = function (options) {
-	      this.pendingConversations.latestPendingConversations(options);
+	      this.pendingConversations.latestConversations(options);
 	    };
 
 	    ConversationList.prototype.topPrivateConversation = function (options) {
-	      this.topper.validate(GoEasy_1.Scene.PRIVATE, options);
+	      this.validateTop(GoEasy_1.Scene.PRIVATE, options);
 	      var target = Target_1.Target.byScene(GoEasy_1.Scene.PRIVATE, options.userId);
 	      var top = options.top;
-	      this.topper.top(target, top, options);
+	      this.conversations.top(target, top, options);
 	    };
 
 	    ConversationList.prototype.topGroupConversation = function (options) {
-	      this.topper.validate(GoEasy_1.Scene.GROUP, options);
+	      this.validateTop(GoEasy_1.Scene.GROUP, options);
 	      var target = Target_1.Target.byScene(GoEasy_1.Scene.GROUP, options.groupId);
 	      var top = options.top;
-	      this.topper.top(target, top, options);
-	    };
-
-	    ConversationList.prototype.removePrivateConversation = function (options) {
-	      this.remover.validate(GoEasy_1.Scene.PRIVATE, options);
-	      var target = Target_1.Target.byScene(GoEasy_1.Scene.PRIVATE, options.userId);
-	      this.remover.remove(target, options);
-	    };
-
-	    ConversationList.prototype.removeGroupConversation = function (options) {
-	      this.remover.validate(GoEasy_1.Scene.GROUP, options);
-	      var target = Target_1.Target.byScene(GoEasy_1.Scene.GROUP, options.groupId);
-	      this.remover.remove(target, options);
-	    };
-
-	    ConversationList.prototype.onUnreadMessageChanged = function () {
-	      this.conversations.onUpdated();
-	    };
-
-	    ConversationList.prototype.onMaxMessageChanged = function (target) {
-	      var conversation = this.conversations.findConversation(target.scene, target.id);
-	      this.conversations.correctPosition(conversation);
-	      this.conversations.onUpdated();
+	      this.conversations.top(target, top, options);
 	    };
 
 	    ConversationList.prototype.topConversation = function (options) {
-	      var conversation = this.validateConversation(options);
-	      var target = Target_1.Target.byScene(conversation.scene, conversation.targetId);
+	      var conversation = this.validateConversation(options, true);
 	      var top = !conversation.top;
-	      this.topper.top(target, top, options);
+	      var target = conversation.target;
+	      this.conversations.top(target, top, options);
+	    };
+
+	    ConversationList.prototype.removePrivateConversation = function (options) {
+	      this.validateRemove(GoEasy_1.Scene.PRIVATE, options);
+	      var target = Target_1.Target.byScene(GoEasy_1.Scene.PRIVATE, options.userId);
+	      this.conversations.remove(target, options);
+	    };
+
+	    ConversationList.prototype.removeGroupConversation = function (options) {
+	      this.validateRemove(GoEasy_1.Scene.GROUP, options);
+	      var target = Target_1.Target.byScene(GoEasy_1.Scene.GROUP, options.groupId);
+	      this.conversations.remove(target, options);
 	    };
 
 	    ConversationList.prototype.removeConversation = function (options) {
-	      var conversation = this.validateConversation(options);
-	      var target = Target_1.Target.byScene(conversation.scene, conversation.targetId);
-	      this.remover.remove(target, options);
+	      var conversation = this.validateConversation(options, false);
+	      this.conversations.remove(conversation.target, options);
 	    }; // todo 后续优化
 
 
-	    ConversationList.prototype.validateConversation = function (options) {
-	      var conversation;
-	      var conversationDto = options["conversation"];
-
-	      if (Calibrator_1["default"].isEmpty(conversationDto)) {
-	        throw {
-	          code: 400,
-	          content: 'conversation is required'
-	        };
-	      }
+	    ConversationList.prototype.validateConversation = function (options, isTop) {
+	      var conversationDto = options.conversation;
 
 	      if (conversationDto instanceof GoEasy_1.ConversationDTO) {
 	        var scene = conversationDto.type;
+	        var target = void 0;
 
 	        if (scene === GoEasy_1.Scene.PRIVATE) {
-	          conversation = this.conversations.findConversation(scene, conversationDto.userId);
+	          target = new Target_1.Target(scene, conversationDto.userId);
 	        } else if (scene === GoEasy_1.Scene.GROUP) {
-	          conversation = this.conversations.findConversation(scene, conversationDto.groupId);
+	          target = new Target_1.Target(scene, conversationDto.groupId);
 	        } else if (scene === GoEasy_1.Scene.CS) {
-	          var teamId = conversationDto.teamId;
-	          var targetId = void 0;
+	          var message = conversationDto.lastMessage;
+	          var csMessage = message;
+	          var accepted = csMessage.accepted;
 
-	          if (Calibrator_1["default"].isUndef(teamId)) {
-	            targetId = im_1.IM.userId + "#" + conversationDto.id;
-	          } else {
-	            targetId = conversationDto.id + "#" + conversationDto.teamId;
+	          if (accepted === false) {
+	            if (isTop) {
+	              throw {
+	                code: 400,
+	                content: "pending conversation cannot be topped"
+	              };
+	            } else {
+	              throw {
+	                code: 400,
+	                content: "pending conversation cannot be removed"
+	              };
+	            }
 	          }
 
-	          conversation = this.conversations.findConversation(scene, targetId);
-	        } else {
-	          throw {
-	            code: 400,
-	            content: "type ".concat(scene, " is incorrect")
-	          };
+	          var teamId = conversationDto.teamId;
+
+	          if (Calibrator_1["default"].isUndef(teamId)) {
+	            target = new Target_1.Target(scene, conversationDto.id, conversationDto.id);
+	          } else {
+	            target = new Target_1.Target(scene, conversationDto.id, teamId);
+	          }
 	        }
+
+	        var conversation = this.conversations.findConversation(target);
 
 	        if (!conversation) {
 	          throw {
@@ -12343,6 +15972,54 @@
 	        code: 400,
 	        content: 'conversation is incorrect'
 	      };
+	    };
+
+	    ConversationList.prototype.validateTop = function (scene, options) {
+	      var key = scene === GoEasy_1.Scene.PRIVATE ? 'userId' : 'groupId';
+	      var targetId = options[key];
+	      validator_utils_1["default"].validateId(targetId, key);
+	      options[key] = options[key].toString();
+	      var top = options["top"];
+
+	      if (!Calibrator_1["default"].isBoolean(top)) {
+	        throw {
+	          code: 400,
+	          content: 'top requires boolean'
+	        };
+	      }
+
+	      var target = new Target_1.Target(scene, targetId);
+	      var conversation = this.conversations.findConversation(target);
+
+	      if (Calibrator_1["default"].isUndef(conversation)) {
+	        throw {
+	          code: 400,
+	          content: 'conversation does not exists'
+	        };
+	      } else {
+	        if (conversation.top === top) {
+	          throw {
+	            code: 400,
+	            content: 'Failed to top conversation: no change'
+	          };
+	        }
+	      }
+	    };
+
+	    ConversationList.prototype.validateRemove = function (scene, options) {
+	      var key = scene === GoEasy_1.Scene.PRIVATE ? 'userId' : 'groupId';
+	      var targetId = options[key];
+	      validator_utils_1["default"].validateId(targetId, key);
+	      options[key] = options[key].toString();
+	      var target = new Target_1.Target(scene, targetId.toString());
+	      var conversation = this.conversations.findConversation(target);
+
+	      if (Calibrator_1["default"].isUndef(conversation)) {
+	        throw {
+	          code: 400,
+	          content: 'Failed to remove conversation: conversation doesn\'t exists'
+	        };
+	      }
 	    };
 
 	    return ConversationList;
@@ -12362,8 +16039,12 @@
 	  var RemoteEvents_1 = RemoteEvents;
 	  var GNS_1 = GNS$1;
 	  var Calibrator_1 = Calibrator;
-	  var im_1 = im;
 	  var GoEasy_1 = GoEasy$1;
+	  var g_1 = g;
+	  var im_api_events_1 = imApiEvents;
+	  var histories_1 = histories;
+	  var Target_1 = Target$1;
+	  var im_1 = im;
 
 	  var IMReceiver =
 	  /** @class */
@@ -12400,21 +16081,34 @@
 	      }())());
 	    }
 
-	    IMReceiver.prototype.initialGoEasySocket = function (goEasySocket) {
-	      this.goEasySocket = goEasySocket;
-	      goEasySocket.addMessageObserver(RemoteEvents_1.RemoteEvents.imMessage, this.onMessageReceived.bind(this));
+	    IMReceiver.prototype.initialGoEasySocket = function () {
+	      g_1.G.s().addMessageObserver(RemoteEvents_1.RemoteEvents.imMessage, this.onMessageReceived.bind(this));
 	    };
 
 	    IMReceiver.prototype.onMessageReceived = function (message) {
 	      console.log('IMReceiver -> onMessageReceived:', message);
 	      var receivedMessage = this.builder.build(message);
 	      this.sendAck(receivedMessage);
-	      this.createNotification(message);
-	      goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.MESSAGE_RECEIVED, receivedMessage);
+	      var target = Target_1.Target.byIMMessage(receivedMessage);
+	      var history = histories_1["default"].get(target);
+
+	      if (!history.existsMessage(receivedMessage)) {
+	        this.createNotification(message);
+	        goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.MESSAGE_RECEIVED, receivedMessage);
+	        var scene = target.scene;
+
+	        if (scene === GoEasy_1.Scene.PRIVATE) {
+	          im_1.IM.aec.fire(im_api_events_1.ImApiEvents.PRIVATE_MESSAGE_RECEIVED, receivedMessage);
+	        } else if (scene === GoEasy_1.Scene.GROUP) {
+	          im_1.IM.aec.fire(im_api_events_1.ImApiEvents.GROUP_MESSAGE_RECEIVED, receivedMessage);
+	        } else if (scene === GoEasy_1.Scene.CS) {
+	          im_1.IM.aec.fire(im_api_events_1.ImApiEvents.CS_MESSAGE_RECEIVED, receivedMessage);
+	        }
+	      }
 	    };
 
 	    IMReceiver.prototype.sendAck = function (message) {
-	      this.goEasySocket.sendAck('imAck', {
+	      g_1.G.s().sendAck('imAck', {
 	        "publishGuid": message.messageId
 	      });
 	    };
@@ -12422,7 +16116,7 @@
 	    IMReceiver.prototype.createNotification = function (message) {
 	      var supportGNS = GNS_1.GNS.instance.supportNotification();
 
-	      if (!Calibrator_1["default"].isObject(message.nt) || message.s === im_1.IM.userId || !supportGNS) {
+	      if (!Calibrator_1["default"].isObject(message.nt) || message.s === g_1.G.u() || !supportGNS) {
 	        return;
 	      }
 
@@ -12458,13 +16152,12 @@
 	  var validator_utils_1 = validatorUtils;
 	  var RocketTypes_1 = RocketTypes;
 	  var callback_utils_1 = callbackUtils;
+	  var g_1 = g;
 
 	  var GroupMessageSubscriber =
 	  /** @class */
 	  function () {
-	    function GroupMessageSubscriber(goEasySocket) {
-	      this.goEasySocket = goEasySocket;
-	    }
+	    function GroupMessageSubscriber() {}
 
 	    GroupMessageSubscriber.prototype.subscribe = function (options) {
 	      validator_utils_1["default"].validateIdArray(options.groupIds, 'groupIds');
@@ -12491,7 +16184,7 @@
 	          });
 	        }
 	      });
-	      this.goEasySocket.emit(rocket);
+	      g_1.G.s().emit(rocket);
 	    };
 
 	    GroupMessageSubscriber.prototype.unsubscribe = function (options) {
@@ -12518,7 +16211,7 @@
 	          });
 	        }
 	      });
-	      this.goEasySocket.emit(rocket);
+	      g_1.G.s().emit(rocket);
 	    };
 
 	    return GroupMessageSubscriber;
@@ -12540,14 +16233,14 @@
 	  var im_api_events_1 = imApiEvents;
 	  var validator_utils_1 = validatorUtils;
 	  var callback_utils_1 = callbackUtils;
+	  var g_1 = g;
+	  var im_1 = im;
 
 	  var GroupPresenceSubscribe =
 	  /** @class */
 	  function () {
-	    function GroupPresenceSubscribe(goEasySocket, apiEventCenter) {
-	      this.goEasySocket = goEasySocket;
-	      this.apiEventCenter = apiEventCenter;
-	      this.goEasySocket.addMessageObserver(RemoteEvents_1.RemoteEvents.groupPresence, this.newMessageReceived.bind(this));
+	    function GroupPresenceSubscribe() {
+	      g_1.G.s().addMessageObserver(RemoteEvents_1.RemoteEvents.groupPresence, this.newMessageReceived.bind(this));
 	    }
 
 	    GroupPresenceSubscribe.prototype.presence = function (options) {
@@ -12608,12 +16301,10 @@
 	        success: success,
 	        fail: fail
 	      });
-	      this.goEasySocket.emit(rocket);
+	      g_1.G.s().emit(rocket);
 	    };
 
 	    GroupPresenceSubscribe.prototype.newMessageReceived = function (message) {
-	      var _this = this;
-
 	      var content = null;
 
 	      if (message.c) {
@@ -12630,8 +16321,7 @@
 	          id: item.userId,
 	          data: data
 	        };
-
-	        _this.apiEventCenter.fire(im_api_events_1.ImApiEvents.GROUP_PRESENCE, event);
+	        im_1.IM.aec.fire(im_api_events_1.ImApiEvents.GROUP_PRESENCE, event);
 	      });
 	    };
 
@@ -12652,13 +16342,12 @@
 	  var RocketTypes_1 = RocketTypes;
 	  var validator_utils_1 = validatorUtils;
 	  var callback_utils_1 = callbackUtils;
+	  var g_1 = g;
 
 	  var GroupOnlineCount =
 	  /** @class */
 	  function () {
-	    function GroupOnlineCount(goEasySocket) {
-	      this.goEasySocket = goEasySocket;
-	    }
+	    function GroupOnlineCount() {}
 
 	    GroupOnlineCount.prototype.get = function (options) {
 	      validator_utils_1["default"].validateId(options.groupId, 'groupId');
@@ -12685,7 +16374,7 @@
 	          }
 	        }
 	      });
-	      this.goEasySocket.emit(rocket);
+	      g_1.G.s().emit(rocket);
 	    };
 
 	    return GroupOnlineCount;
@@ -12705,13 +16394,12 @@
 	  var RocketTypes_1 = RocketTypes;
 	  var validator_utils_1 = validatorUtils;
 	  var callback_utils_1 = callbackUtils;
+	  var g_1 = g;
 
 	  var GroupHereNow =
 	  /** @class */
 	  function () {
-	    function GroupHereNow(goEasySocket) {
-	      this.goEasySocket = goEasySocket;
-	    }
+	    function GroupHereNow() {}
 
 	    GroupHereNow.prototype.hereNow = function (options) {
 	      validator_utils_1["default"].validateId(options.groupId, 'groupId');
@@ -12746,7 +16434,7 @@
 	          }
 	        }
 	      });
-	      this.goEasySocket.emit(rocket);
+	      g_1.G.s().emit(rocket);
 	    };
 
 	    return GroupHereNow;
@@ -12768,14 +16456,14 @@
 	  var RemoteEvents_1 = RemoteEvents;
 	  var im_api_events_1 = imApiEvents;
 	  var callback_utils_1 = callbackUtils;
+	  var g_1 = g;
+	  var im_1 = im;
 
 	  var UserPresenceSubscriber =
 	  /** @class */
 	  function () {
-	    function UserPresenceSubscriber(goEasySocket, apiEventCenter) {
-	      this.goEasySocket = goEasySocket;
-	      this.apiEventCenter = apiEventCenter;
-	      this.goEasySocket.addMessageObserver(RemoteEvents_1.RemoteEvents.userPresence, this.newMessageReceived.bind(this));
+	    function UserPresenceSubscriber() {
+	      g_1.G.s().addMessageObserver(RemoteEvents_1.RemoteEvents.userPresence, this.newMessageReceived.bind(this));
 	    }
 
 	    UserPresenceSubscriber.prototype.presence = function (options) {
@@ -12836,12 +16524,10 @@
 	        success: success,
 	        fail: fail
 	      });
-	      this.goEasySocket.emit(rocket);
+	      g_1.G.s().emit(rocket);
 	    };
 
 	    UserPresenceSubscriber.prototype.newMessageReceived = function (message) {
-	      var _this = this;
-
 	      var events = [];
 
 	      if (message.c) {
@@ -12856,8 +16542,7 @@
 	          id: item.userId,
 	          data: data
 	        };
-
-	        _this.apiEventCenter.fire(im_api_events_1.ImApiEvents.USER_PRESENCE, event);
+	        im_1.IM.aec.fire(im_api_events_1.ImApiEvents.USER_PRESENCE, event);
 	      });
 	    };
 
@@ -12878,13 +16563,12 @@
 	  var RocketTypes_1 = RocketTypes;
 	  var validator_utils_1 = validatorUtils;
 	  var callback_utils_1 = callbackUtils;
+	  var g_1 = g;
 
 	  var UserHereNow =
 	  /** @class */
 	  function () {
-	    function UserHereNow(goEasySocket) {
-	      this.goEasySocket = goEasySocket;
-	    }
+	    function UserHereNow() {}
 
 	    UserHereNow.prototype.hereNow = function (options) {
 	      var userIds = options.userIds;
@@ -12915,7 +16599,7 @@
 	          }
 	        }
 	      });
-	      this.goEasySocket.emit(rocket);
+	      g_1.G.s().emit(rocket);
 	    };
 
 	    return UserHereNow;
@@ -12932,7 +16616,7 @@
 
 	Str$1.__esModule = true;
 	Str$1.str = void 0;
-	var Calibrator_1$7 = Calibrator;
+	var Calibrator_1$6 = Calibrator;
 
 	var Str =
 	/** @class */
@@ -12940,7 +16624,7 @@
 	  function Str() {}
 
 	  Str.prototype.fileExtension = function (str, type) {
-	    if (!Calibrator_1$7["default"].isString(str)) return;
+	    if (!Calibrator_1$6["default"].isString(str)) return;
 
 	    try {
 	      var strArr = str.split(type);
@@ -13478,7 +17162,7 @@
 	TextPayloadBuilder$1.TextPayloadBuilder = void 0;
 	var AbstractPayloadBuilder_1$1 = AbstractPayloadBuilder$1;
 	var TextMessagePayload_1 = TextMessagePayload$1;
-	var Calibrator_1$6 = Calibrator;
+	var Calibrator_1$5 = Calibrator;
 
 	var TextPayloadBuilder =
 	/** @class */
@@ -13501,14 +17185,14 @@
 	  };
 
 	  TextPayloadBuilder.prototype.validate = function (createOptions) {
-	    if (Calibrator_1$6["default"].isEmpty(createOptions.text)) {
+	    if (Calibrator_1$5["default"].isEmpty(createOptions.text)) {
 	      throw {
 	        code: 400,
 	        content: "text is empty"
 	      };
 	    }
 
-	    if (Calibrator_1$6["default"].isString(createOptions.text)) {
+	    if (Calibrator_1$5["default"].isString(createOptions.text)) {
 	      if (createOptions.text.trim() === '') {
 	        throw {
 	          code: 400,
@@ -14571,7 +18255,7 @@
 	CustomPayloadBuilder$1.CustomPayloadBuilder = void 0;
 	var AbstractPayloadBuilder_1 = AbstractPayloadBuilder$1;
 	var CustomMessagePayload_1 = CustomMessagePayload;
-	var Calibrator_1$5 = Calibrator;
+	var Calibrator_1$4 = Calibrator;
 
 	var CustomPayloadBuilder =
 	/** @class */
@@ -14597,19 +18281,19 @@
 	    var type = createOptions.type;
 	    var payload = createOptions.payload;
 
-	    if (Calibrator_1$5["default"].isEmpty(type)) {
+	    if (Calibrator_1$4["default"].isEmpty(type)) {
 	      throw Error('type is empty.');
 	    }
 
-	    if (!Calibrator_1$5["default"].isString(type)) {
+	    if (!Calibrator_1$4["default"].isString(type)) {
 	      throw Error('type require a string');
 	    }
 
-	    if (Calibrator_1$5["default"].isEmpty(payload)) {
+	    if (Calibrator_1$4["default"].isEmpty(payload)) {
 	      throw Error('payload is empty.');
 	    }
 
-	    if (!Calibrator_1$5["default"].isPlainObject(payload) && !Calibrator_1$5["default"].isStringOrNumber(payload)) {
+	    if (!Calibrator_1$4["default"].isPlainObject(payload) && !Calibrator_1$4["default"].isStringOrNumber(payload)) {
 	      throw Error('payload require object | string | number.');
 	    }
 	  };
@@ -14656,23 +18340,24 @@
 	var CustomPayloadBuilder_1 = CustomPayloadBuilder$1;
 	var LocalIMMessageBuildOptions_1 = LocalIMMessageBuildOptions$1;
 	var UUID_1 = UUID;
-	var Calibrator_1$4 = Calibrator;
-	var GoEasy_1$4 = GoEasy$1;
+	var Calibrator_1$3 = Calibrator;
+	var GoEasy_1$3 = GoEasy$1;
 	var GroupMessage_1 = GroupMessage$1;
 	var PrivateMessage_1 = PrivateMessage$1;
-	var validator_utils_1$4 = validatorUtils;
+	var validator_utils_1$5 = validatorUtils;
 	var cs_message_1 = csMessage;
-	var callback_utils_1$6 = callbackUtils;
+	var callback_utils_1$8 = callbackUtils;
+	var g_1$3 = g;
 
 	var IMMessageBuilder =
 	/** @class */
 	function () {
-	  function IMMessageBuilder(userId, userData) {
+	  function IMMessageBuilder() {
 	    var _a;
 
 	    this.framework = framework_detector_1.FrameworkDetector.currentFramework();
-	    this.userId = userId;
-	    this.userData = userData;
+	    this.userId = g_1$3.G.u();
+	    this.userData = g_1$3.G.ud();
 	    this.payloadBuilders = (_a = {}, _a[framework_detector_1.Framework.UNIAPP] = {
 	      image: new UniAppImagePayloadBuilder_1["default"](),
 	      file: new UniAppFilePayloadBuilder_1["default"](),
@@ -14709,9 +18394,9 @@
 
 	    var message = this.build(buildOptions);
 	    buildOptions.complete.then(function () {
-	      callback_utils_1$6.CallbackUtils.onSuccess(createOptions, message);
+	      callback_utils_1$8.CallbackUtils.onSuccess(createOptions, message);
 	    })["catch"](function (e) {
-	      callback_utils_1$6.CallbackUtils.onFailed(createOptions, e);
+	      callback_utils_1$8.CallbackUtils.onFailed(createOptions, e);
 	    });
 	    return message;
 	  };
@@ -14725,17 +18410,16 @@
 	    this.validate(createOptions);
 	    var message;
 
-	    if (scene === GoEasy_1$4.Scene.GROUP) {
+	    if (scene === GoEasy_1$3.Scene.GROUP) {
 	      message = new GroupMessage_1.GroupMessage();
 	      message.groupId = to.id.toString();
 	      message.senderData = this.userData;
-	    } else if (scene === GoEasy_1$4.Scene.PRIVATE) {
+	    } else if (scene === GoEasy_1$3.Scene.PRIVATE) {
 	      message = new PrivateMessage_1.PrivateMessage();
 	      message.read = false;
 	      message.receiverId = to.id.toString();
-	    } else if (scene === GoEasy_1$4.Scene.CS) {
+	    } else if (scene === GoEasy_1$3.Scene.CS) {
 	      message = new cs_message_1.CSMessage();
-	      message.read = false;
 	      message.to = to.id.toString();
 	      message.teamId = to.id.toString();
 	      message.senderData = this.userData;
@@ -14747,7 +18431,7 @@
 	    message.timestamp = Date.now();
 	    message.type = type;
 	    message.recalled = false;
-	    message.status = GoEasy_1$4.MessageStatus.NEW;
+	    message.status = GoEasy_1$3.MessageStatus.NEW;
 	    message.buildOptions = buildOptions;
 	    return message;
 	  };
@@ -14759,23 +18443,23 @@
 	      throw new Error("message require property to.");
 	    }
 
-	    if (!Calibrator_1$4["default"].isObject(to)) {
+	    if (!Calibrator_1$3["default"].isObject(to)) {
 	      throw new Error("TypeError: to requires an object.");
 	    }
 
-	    if (!Calibrator_1$4["default"].isObject(to.data)) {
+	    if (!Calibrator_1$3["default"].isObject(to.data)) {
 	      throw new Error("TypeError: to.data requires an object.");
 	    }
 
-	    if (!to.type || to.type !== GoEasy_1$4.Scene.GROUP && to.type !== GoEasy_1$4.Scene.PRIVATE && to.type !== GoEasy_1$4.Scene.CS) {
+	    if (!to.type || to.type !== GoEasy_1$3.Scene.GROUP && to.type !== GoEasy_1$3.Scene.PRIVATE && to.type !== GoEasy_1$3.Scene.CS) {
 	      throw new Error("message require property to.type");
 	    }
 
-	    if (Calibrator_1$4["default"].isEmpty(to.id)) {
+	    if (Calibrator_1$3["default"].isEmpty(to.id)) {
 	      throw new Error("message require property to.id");
 	    }
 
-	    if (!Calibrator_1$4["default"].isStringOrNumber(to.id)) {
+	    if (!Calibrator_1$3["default"].isStringOrNumber(to.id)) {
 	      throw new Error("to.id should be a string or number.");
 	    }
 
@@ -14784,7 +18468,7 @@
 	    }
 
 	    if (createOptions.notification) {
-	      validator_utils_1$4["default"].validateNotification(createOptions.notification);
+	      validator_utils_1$5["default"].validateNotification(createOptions.notification);
 	    }
 	  };
 
@@ -14793,3464 +18477,10 @@
 
 	IMMessageBuilder$1.IMMessageBuilder = IMMessageBuilder;
 
-	var histories = {};
-
-	var History = {};
-
-	var MessageCache = {};
-
-	var HistoryQueryRequest = {};
-
-	(function (exports) {
-
-	  exports.__esModule = true;
-
-	  var HistoryQueryRequest =
-	  /** @class */
-	  function () {
-	    function HistoryQueryRequest(id, scene, lastTimestamp, limit) {
-	      this.id = id;
-	      this.scene = scene;
-	      this.lastTimestamp = lastTimestamp;
-	      this.limit = limit;
-	    }
-
-	    return HistoryQueryRequest;
-	  }();
-
-	  exports["default"] = HistoryQueryRequest;
-	})(HistoryQueryRequest);
-
-	(function (exports) {
-
-	  var __extends = commonjsGlobal && commonjsGlobal.__extends || function () {
-	    var _extendStatics = function extendStatics(d, b) {
-	      _extendStatics = Object.setPrototypeOf || {
-	        __proto__: []
-	      } instanceof Array && function (d, b) {
-	        d.__proto__ = b;
-	      } || function (d, b) {
-	        for (var p in b) {
-	          if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
-	        }
-	      };
-
-	      return _extendStatics(d, b);
-	    };
-
-	    return function (d, b) {
-	      if (typeof b !== "function" && b !== null) throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-
-	      _extendStatics(d, b);
-
-	      function __() {
-	        this.constructor = d;
-	      }
-
-	      d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	    };
-	  }();
-
-	  var __awaiter = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
-	    function adopt(value) {
-	      return value instanceof P ? value : new P(function (resolve) {
-	        resolve(value);
-	      });
-	    }
-
-	    return new (P || (P = Promise))(function (resolve, reject) {
-	      function fulfilled(value) {
-	        try {
-	          step(generator.next(value));
-	        } catch (e) {
-	          reject(e);
-	        }
-	      }
-
-	      function rejected(value) {
-	        try {
-	          step(generator["throw"](value));
-	        } catch (e) {
-	          reject(e);
-	        }
-	      }
-
-	      function step(result) {
-	        result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
-	      }
-
-	      step((generator = generator.apply(thisArg, _arguments || [])).next());
-	    });
-	  };
-
-	  var __generator = commonjsGlobal && commonjsGlobal.__generator || function (thisArg, body) {
-	    var _ = {
-	      label: 0,
-	      sent: function sent() {
-	        if (t[0] & 1) throw t[1];
-	        return t[1];
-	      },
-	      trys: [],
-	      ops: []
-	    },
-	        f,
-	        y,
-	        t,
-	        g;
-	    return g = {
-	      next: verb(0),
-	      "throw": verb(1),
-	      "return": verb(2)
-	    }, typeof Symbol === "function" && (g[Symbol.iterator] = function () {
-	      return this;
-	    }), g;
-
-	    function verb(n) {
-	      return function (v) {
-	        return step([n, v]);
-	      };
-	    }
-
-	    function step(op) {
-	      if (f) throw new TypeError("Generator is already executing.");
-
-	      while (_) {
-	        try {
-	          if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-	          if (y = 0, t) op = [op[0] & 2, t.value];
-
-	          switch (op[0]) {
-	            case 0:
-	            case 1:
-	              t = op;
-	              break;
-
-	            case 4:
-	              _.label++;
-	              return {
-	                value: op[1],
-	                done: false
-	              };
-
-	            case 5:
-	              _.label++;
-	              y = op[1];
-	              op = [0];
-	              continue;
-
-	            case 7:
-	              op = _.ops.pop();
-
-	              _.trys.pop();
-
-	              continue;
-
-	            default:
-	              if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
-	                _ = 0;
-	                continue;
-	              }
-
-	              if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
-	                _.label = op[1];
-	                break;
-	              }
-
-	              if (op[0] === 6 && _.label < t[1]) {
-	                _.label = t[1];
-	                t = op;
-	                break;
-	              }
-
-	              if (t && _.label < t[2]) {
-	                _.label = t[2];
-
-	                _.ops.push(op);
-
-	                break;
-	              }
-
-	              if (t[2]) _.ops.pop();
-
-	              _.trys.pop();
-
-	              continue;
-	          }
-
-	          op = body.call(thisArg, _);
-	        } catch (e) {
-	          op = [6, e];
-	          y = 0;
-	        } finally {
-	          f = t = 0;
-	        }
-	      }
-
-	      if (op[0] & 5) throw op[1];
-	      return {
-	        value: op[0] ? op[1] : void 0,
-	        done: true
-	      };
-	    }
-	  };
-
-	  var __values = commonjsGlobal && commonjsGlobal.__values || function (o) {
-	    var s = typeof Symbol === "function" && Symbol.iterator,
-	        m = s && o[s],
-	        i = 0;
-	    if (m) return m.call(o);
-	    if (o && typeof o.length === "number") return {
-	      next: function next() {
-	        if (o && i >= o.length) o = void 0;
-	        return {
-	          value: o && o[i++],
-	          done: !o
-	        };
-	      }
-	    };
-	    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
-	  };
-
-	  exports.__esModule = true;
-	  var Rocket_1 = Rocket;
-	  var Permission_1 = Permission;
-	  var SocketTimeout_1 = SocketTimeout;
-	  var GoEasy_1 = GoEasy$1;
-	  var remote_abbr_message_builder_1 = remoteAbbrMessageBuilder;
-	  var HistoryQueryRequest_1 = HistoryQueryRequest;
-	  var RocketTypes_1 = RocketTypes;
-	  var callback_utils_1 = callbackUtils;
-	  var Calibrator_1 = Calibrator;
-	  var sorted_inserter_1 = sortedInserter;
-	  var ConversationIdUtils_1 = ConversationIdUtils;
-
-	  var MessageCache =
-	  /** @class */
-	  function () {
-	    function MessageCache(target, userOffsetService, userId, goEasySocket) {
-	      this.builder = new remote_abbr_message_builder_1.RemoteAbbrMessageBuilder();
-	      this.messages = new Array();
-	      this.allLoaded = false; //是否已加载服务端的所有消息，如果已全部加载，就不要再向服务端发送请求
-
-	      this.target = target;
-	      this.userOffsetService = userOffsetService;
-	      this.userId = userId;
-	      this.goEasySocket = goEasySocket;
-	    }
-
-	    MessageCache.prototype.sliceOverlengthMessages = function () {
-	      //确保不超过最大消息，防止内存溢出，尤其是发送消息
-	      if (this.messages.length > MessageCache.CACHE_MAX_LENGTH) {
-	        this.messages = this.messages.slice(-MessageCache.CACHE_MAX_LENGTH);
-
-	        if (this.allLoaded === true) {
-	          this.allLoaded = false;
-	        }
-	      }
-	    };
-
-	    MessageCache.prototype.unreadAmount = function (start, end) {
-	      var e_1, _a;
-
-	      var unreadAmount = 0;
-	      var myOffset = this.userOffsetService.myOffset();
-
-	      try {
-	        for (var _b = __values(this.messages), _c = _b.next(); !_c.done; _c = _b.next()) {
-	          var message = _c.value;
-	          var scene = message.scene();
-
-	          if (GoEasy_1.Scene.PRIVATE === scene || GoEasy_1.Scene.GROUP === scene) {
-	            if (message.senderId !== this.userId && message.timestamp > myOffset && !message.recalled) {
-	              unreadAmount += 1;
-	            }
-	          } else if (GoEasy_1.Scene.CS === scene) {
-	            var customerId = ConversationIdUtils_1["default"].customerId(this.target.id);
-	            var isCustomer = customerId === this.userId;
-
-	            if (isCustomer) {
-	              if (message.senderId !== customerId && message.timestamp > myOffset && !message.recalled && message.timestamp <= end) {
-	                unreadAmount += 1;
-	              }
-	            } else {
-	              if (message.senderId === customerId && message.timestamp > myOffset && !message.recalled && start < message.timestamp && message.timestamp <= end) {
-	                unreadAmount += 1;
-	              }
-	            }
-	          }
-	        }
-	      } catch (e_1_1) {
-	        e_1 = {
-	          error: e_1_1
-	        };
-	      } finally {
-	        try {
-	          if (_c && !_c.done && (_a = _b["return"])) _a.call(_b);
-	        } finally {
-	          if (e_1) throw e_1.error;
-	        }
-	      }
-
-	      return unreadAmount;
-	    };
-
-	    MessageCache.prototype.maxTime = function () {
-	      var lastMessage = this.getMaxMessage();
-
-	      if (Calibrator_1["default"].isDef(lastMessage)) {
-	        return lastMessage.timestamp;
-	      }
-
-	      return 0;
-	    };
-
-	    MessageCache.prototype.getMaxMessage = function () {
-	      return this.messages[this.messages.length - 1];
-	    };
-
-	    MessageCache.prototype.loadHistory = function (queryOptions) {
-	      return __awaiter(this, void 0, void 0, function () {
-	        var limit, lastTimestamp, messages, newLimit, newLastTimestamp, remoteHistoryOptions, serverMessages, error_1;
-	        return __generator(this, function (_a) {
-	          switch (_a.label) {
-	            case 0:
-	              limit = queryOptions.limit;
-	              lastTimestamp = queryOptions.lastTimestamp;
-	              messages = this.loadLocalMessages(limit, lastTimestamp);
-	              if (!(this.allLoaded === false && messages.length !== limit)) return [3
-	              /*break*/
-	              , 4];
-	              newLimit = limit - messages.length;
-	              newLastTimestamp = messages[0] ? messages[0].timestamp : lastTimestamp;
-	              remoteHistoryOptions = {
-	                id: this.target.id.toString(),
-	                type: this.target.scene,
-	                lastTimestamp: newLastTimestamp,
-	                limit: newLimit
-	              };
-	              _a.label = 1;
-
-	            case 1:
-	              _a.trys.push([1, 3,, 4]);
-
-	              return [4
-	              /*yield*/
-	              , this.loadServerMessages(remoteHistoryOptions)];
-
-	            case 2:
-	              serverMessages = _a.sent();
-	              messages = serverMessages.concat(messages);
-	              return [3
-	              /*break*/
-	              , 4];
-
-	            case 3:
-	              error_1 = _a.sent();
-	              callback_utils_1.CallbackUtils.onFailed(queryOptions, error_1);
-	              return [3
-	              /*break*/
-	              , 4];
-
-	            case 4:
-	              callback_utils_1.CallbackUtils.onSuccess(queryOptions, {
-	                code: 200,
-	                content: messages
-	              });
-	              return [2
-	              /*return*/
-	              ];
-	          }
-	        });
-	      });
-	    };
-
-	    MessageCache.prototype.loadLocalMessages = function (limit, lastTimestamp) {
-	      var localMessages = [];
-	      var totalSize = this.messages.length;
-
-	      if (lastTimestamp) {
-	        if (totalSize > 0) {
-	          var minTimestamp = this.messages[0].timestamp;
-	          var maxTimestamp = this.messages[totalSize - 1].timestamp; // 大于等于最小，小于等于最大
-
-	          var between = lastTimestamp >= minTimestamp && lastTimestamp <= maxTimestamp;
-
-	          if (between) {
-	            for (var i = totalSize - 1; i >= 0; i--) {
-	              var message = this.messages[i];
-
-	              if (message.timestamp < lastTimestamp) {
-	                if (localMessages.length < limit) {
-	                  localMessages.unshift(message);
-	                } else {
-	                  break;
-	                }
-	              }
-	            }
-	          }
-	        }
-	      } else {
-	        localMessages = this.messages.slice(-limit);
-	      }
-
-	      return localMessages;
-	    };
-
-	    MessageCache.prototype.loadServerMessages = function (queryOptions) {
-	      var _this = this;
-
-	      var request = new HistoryQueryRequest_1["default"](queryOptions.id, queryOptions.type, queryOptions.lastTimestamp, queryOptions.limit);
-	      return new Promise(function (resolve, reject) {
-	        var rocket = new Rocket_1["default"]({
-	          name: RocketTypes_1.RocketTypes.IM_HISTORY,
-	          params: request,
-	          permission: Permission_1.Permission.READ,
-	          singleTimeout: SocketTimeout_1.SocketTimeout.commonQuerySingle,
-	          totalTimeout: SocketTimeout_1.SocketTimeout.commonQueryTotal,
-	          fail: function fail(ack) {
-	            reject({
-	              code: ack.code || 408,
-	              content: ack.content || 'Failed to query message'
-	            });
-	          },
-	          success: function success(res) {
-	            if (res.code === 200) {
-	              var content = res.content;
-	              var messages = content.messages;
-
-	              _this.userOffsetService.updateUserOffsets(content.userOffsets);
-
-	              var serverMessages = _this.convertServerMessages(messages);
-
-	              if (_this.messages.length < MessageCache.CACHE_MAX_LENGTH) {
-	                _this.cacheServerMessages(queryOptions, serverMessages);
-
-	                if (messages.length < queryOptions.limit) {
-	                  _this.allLoaded = true;
-	                }
-	              }
-
-	              resolve(serverMessages);
-	            } else {
-	              reject(res);
-	            }
-	          }
-	        });
-
-	        _this.goEasySocket.emit(rocket);
-	      });
-	    };
-	    /**
-	     * 缓存条件：
-	     *  1.options.lastTimestamp为空
-	     *  2.本地的第一条消息的时间等于传入的options.lastTimestamp
-	     * 如果本地已经有消息，但是options.lastTimestamp不等于第一条消息，就丢掉
-	     */
-
-
-	    MessageCache.prototype.cacheServerMessages = function (options, serverMessages) {
-	      var firstMessage = this.messages[0];
-	      var totalSize = this.messages.length;
-
-	      if (!options.lastTimestamp || totalSize > 0 && firstMessage.timestamp === options.lastTimestamp) {
-	        this.messages = serverMessages.concat(this.messages);
-	      }
-	    };
-
-	    MessageCache.prototype.findMessageByTime = function (time) {
-	      return this.messages.find(function (message) {
-	        return time === message.timestamp;
-	      });
-	    };
-
-	    MessageCache.prototype.findMessagesByTimes = function (times) {
-	      var _this = this;
-
-	      var messages = [];
-	      times.forEach(function (time) {
-	        var message = _this.findMessageByTime(time);
-
-	        if (Calibrator_1["default"].isDef(message)) {
-	          messages.push(message);
-	        }
-	      });
-	      return messages;
-	    };
-
-	    MessageCache.prototype.existsMessage = function (messageId) {
-	      return this.findMessageIndexById(messageId) > -1;
-	    };
-
-	    MessageCache.prototype.findMessageIndexById = function (messageId) {
-	      return this.messages.findIndex(function (message) {
-	        return messageId === message.messageId;
-	      });
-	    };
-
-	    MessageCache.prototype.deleteMessage = function (messageId) {
-	      var index = this.findMessageIndexById(messageId); //服务端按照指令成功删除最关键，本地与服务端不一致，可以忽略
-
-	      if (index >= 0) {
-	        this.messages.splice(index, 1);
-	      }
-	    };
-
-	    MessageCache.prototype.recallMessages = function (messages) {
-	      var _this = this;
-
-	      messages.forEach(function (message) {
-	        var localMessage = _this.findMessageByTime(message.timestamp);
-
-	        if (Calibrator_1["default"].isDef(localMessage)) {
-	          localMessage.recalled = true;
-	        }
-
-	        message.recalled = true;
-	      });
-	    };
-
-	    MessageCache.prototype.isEmpty = function () {
-	      return this.messages.length === 0;
-	    };
-
-	    MessageCache.prototype.deleteMessages = function (messages) {
-	      var _this = this;
-
-	      messages.forEach(function (message) {
-	        _this.deleteMessage(message.messageId);
-	      });
-	    };
-
-	    MessageCache.prototype.convertServerMessages = function (serverMessages) {
-	      var _this = this;
-
-	      var messages = [];
-	      serverMessages.forEach(function (remoteAbbrMessage) {
-	        if (_this.target.scene === GoEasy_1.Scene.PRIVATE) {
-	          remoteAbbrMessage.t = GoEasy_1.Scene.PRIVATE;
-	          remoteAbbrMessage.r = remoteAbbrMessage.s === _this.userId ? _this.target.id : _this.userId;
-	        } else if (_this.target.scene === GoEasy_1.Scene.GROUP) {
-	          remoteAbbrMessage.t = GoEasy_1.Scene.GROUP;
-	          remoteAbbrMessage.r = _this.target.id;
-	        } else if (_this.target.scene === GoEasy_1.Scene.CS) {
-	          remoteAbbrMessage.t = GoEasy_1.Scene.CS;
-	          var customerId = ConversationIdUtils_1["default"].customerId(_this.target.id);
-	          var teamId = ConversationIdUtils_1["default"].teamId(_this.target.id);
-
-	          if (customerId === _this.userId) {
-	            remoteAbbrMessage.r = teamId;
-	          } else {
-	            remoteAbbrMessage.r = customerId;
-	          }
-	        }
-
-	        var message = _this.builder.build(remoteAbbrMessage);
-
-	        if (!_this.existsMessage(message.messageId)) {
-	          var scene = message.scene();
-
-	          if (scene === GoEasy_1.Scene.PRIVATE) {
-	            var privateMessage = message;
-	            privateMessage.read = _this.userOffsetService.isRead(privateMessage);
-	          } else if (scene === GoEasy_1.Scene.CS) {
-	            var csMessage = message;
-	            csMessage.read = _this.userOffsetService.isRead(message);
-	          }
-
-	          messages.push(message);
-	        }
-	      });
-	      return messages;
-	    }; //别人发的消息，其实永远不需要渲染，但是如果属性错误，就怪怪的，所以还是维护
-
-
-	    MessageCache.prototype.markOthersSentRead = function (markTime) {
-	      if (this.target.scene === GoEasy_1.Scene.PRIVATE) {
-	        for (var i = this.messages.length - 1; i >= 0; i--) {
-	          var message = this.messages[i];
-	          var privateMessage = message;
-
-	          if (privateMessage.senderId !== this.userId && privateMessage.timestamp <= markTime) {
-	            if (privateMessage.read) {
-	              break;
-	            } else {
-	              privateMessage.read = true;
-	            }
-	          }
-	        }
-	      } else if (this.target.scene === GoEasy_1.Scene.CS) {
-	        var customerId = ConversationIdUtils_1["default"].customerId(this.target.id);
-	        var isCustomer = customerId === this.userId;
-
-	        for (var i = this.messages.length - 1; i >= 0; i--) {
-	          var message = this.messages[i];
-	          var csMessage = message;
-
-	          if (isCustomer) {
-	            if (csMessage.senderId !== this.userId && csMessage.timestamp <= markTime && message.status === GoEasy_1.MessageStatus.SUCCESS) {
-	              if (csMessage.read) {
-	                break;
-	              } else {
-	                csMessage.read = true;
-	              }
-	            }
-	          } else {
-	            if (csMessage.senderId === customerId && csMessage.timestamp <= markTime && message.status === GoEasy_1.MessageStatus.SUCCESS) {
-	              if (csMessage.read) {
-	                break;
-	              } else {
-	                csMessage.read = true;
-	              }
-	            }
-	          }
-	        }
-	      }
-	    };
-
-	    MessageCache.prototype.markMySentRead = function (markTime) {
-	      var readMessages = new Array();
-
-	      for (var i = this.messages.length - 1; i >= 0; i--) {
-	        var message = this.messages[i];
-	        var privateMessage = message;
-
-	        if (privateMessage.senderId === this.userId && message.timestamp <= markTime && message.status === GoEasy_1.MessageStatus.SUCCESS) {
-	          if (privateMessage.read) {
-	            break;
-	          } else {
-	            privateMessage.read = true;
-	            readMessages.push(privateMessage);
-	          }
-	        }
-	      }
-
-	      return readMessages;
-	    };
-	    /**
-	     * @param markTime
-	     */
-
-
-	    MessageCache.prototype.markMySentCSMessageRead = function (markTime) {
-	      var readMessages = new Array();
-	      ConversationIdUtils_1["default"].teamId(this.target.id);
-	      var customerId = ConversationIdUtils_1["default"].customerId(this.target.id);
-	      var isCustomer = this.userId === customerId;
-
-	      for (var i = this.messages.length - 1; i >= 0; i--) {
-	        var message = this.messages[i];
-	        var csMessage = message;
-
-	        if (isCustomer) {
-	          if (csMessage.senderId === this.userId && message.timestamp <= markTime && message.status === GoEasy_1.MessageStatus.SUCCESS) {
-	            if (csMessage.read) {
-	              break;
-	            } else {
-	              csMessage.read = true;
-	              readMessages.push(csMessage);
-	            }
-	          }
-	        } else {
-	          // todo 其他客服发送的消息也会被统计进来
-	          if (csMessage.senderId !== customerId && message.timestamp <= markTime && message.status === GoEasy_1.MessageStatus.SUCCESS) {
-	            if (csMessage.read) {
-	              break;
-	            } else {
-	              csMessage.read = true;
-	              readMessages.push(csMessage);
-	            }
-	          }
-	        }
-	      }
-
-	      return readMessages;
-	    };
-
-	    MessageCache.prototype.saveMessage = function (message) {
-	      MessageCache.sortedInserter.insert(this.messages, message);
-	      this.sliceOverlengthMessages();
-	    };
-
-	    MessageCache.prototype.maxSuccessMessageTime = function () {
-	      for (var i = this.messages.length - 1; i >= 0; i--) {
-	        if (this.messages[i].status === GoEasy_1.MessageStatus.SUCCESS) {
-	          return this.messages[i].timestamp;
-	        }
-	      }
-
-	      return 0;
-	    };
-
-	    MessageCache.prototype.minTime = function () {
-	      if (this.isEmpty()) {
-	        return 0;
-	      }
-
-	      return this.messages[0].timestamp;
-	    };
-
-	    MessageCache.prototype.correctPosition = function (message) {
-	      this.deleteMessage(message.messageId);
-	      this.saveMessage(message);
-	    };
-
-	    MessageCache.CACHE_MAX_LENGTH = 200;
-	    MessageCache.sortedInserter = new (
-	    /** @class */
-	    function (_super) {
-	      __extends(class_1, _super);
-
-	      function class_1() {
-	        return _super !== null && _super.apply(this, arguments) || this;
-	      }
-
-	      class_1.prototype.compare = function (a, b) {
-	        var c = a.timestamp - b.timestamp;
-	        return c > 0 ? 1 : c === 0 ? 0 : -1;
-	      };
-
-	      return class_1;
-	    }(sorted_inserter_1.SortedInserter))();
-	    return MessageCache;
-	  }();
-
-	  exports["default"] = MessageCache;
-	})(MessageCache);
-
-	var userOffsetService = {};
-
-	var ReadMessageMarkRequest$1 = {};
-
-	ReadMessageMarkRequest$1.__esModule = true;
-	ReadMessageMarkRequest$1.ReadMessageMarkRequest = void 0;
-
-	var ReadMessageMarkRequest =
-	/** @class */
-	function () {
-	  function ReadMessageMarkRequest(id, scene, lastTimestamp) {
-	    this.id = id;
-	    this.scene = scene;
-	    this.lastTimestamp = lastTimestamp;
-	  }
-
-	  return ReadMessageMarkRequest;
-	}();
-
-	ReadMessageMarkRequest$1.ReadMessageMarkRequest = ReadMessageMarkRequest;
-
-	var UserOffsets$1 = {};
-
-	UserOffsets$1.__esModule = true;
-	UserOffsets$1.UserOffsets = void 0;
-	var Calibrator_1$3 = Calibrator;
-
-	var UserOffsets =
-	/** @class */
-	function () {
-	  function UserOffsets(userId) {
-	    this.offsetMap = new Map(); // 对于私聊保存的是userId与friendId的userOffset,群聊则是保存群所有人的userOffSet
-
-	    this.markingTime = 0; // 用于mark异步请求(是否多次mark)
-
-	    this.userId = userId;
-	  }
-
-	  UserOffsets.prototype.updateOffset = function (userId, offset) {
-	    var oldOffset = this.offsetMap.get(userId);
-
-	    if (Calibrator_1$3["default"].isDef(oldOffset)) {
-	      if (offset > oldOffset) {
-	        this.offsetMap.set(userId, offset);
-	        return true;
-	      }
-	    } else {
-	      this.offsetMap.set(userId, offset);
-	      return true;
-	    }
-
-	    return false;
-	  };
-
-	  UserOffsets.prototype.updateUserOffsets = function (userOffsets) {
-	    var _this = this;
-
-	    userOffsets.forEach(function (userOffset) {
-	      var userId = userOffset.userId;
-	      var offset = userOffset.offset;
-
-	      _this.updateOffset(userId, offset);
-	    });
-	  };
-
-	  UserOffsets.prototype.updateMyOffset = function (offset) {
-	    return this.updateOffset(this.userId, offset);
-	  };
-
-	  UserOffsets.prototype.myOffset = function () {
-	    return this.getOffset(this.userId);
-	  };
-
-	  UserOffsets.prototype.getOffset = function (userId) {
-	    var offset = this.offsetMap.get(userId);
-
-	    if (offset) {
-	      return offset;
-	    }
-
-	    return 0;
-	  };
-
-	  return UserOffsets;
-	}();
-
-	UserOffsets$1.UserOffsets = UserOffsets;
-
-	(function (exports) {
-
-	  var __awaiter = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
-	    function adopt(value) {
-	      return value instanceof P ? value : new P(function (resolve) {
-	        resolve(value);
-	      });
-	    }
-
-	    return new (P || (P = Promise))(function (resolve, reject) {
-	      function fulfilled(value) {
-	        try {
-	          step(generator.next(value));
-	        } catch (e) {
-	          reject(e);
-	        }
-	      }
-
-	      function rejected(value) {
-	        try {
-	          step(generator["throw"](value));
-	        } catch (e) {
-	          reject(e);
-	        }
-	      }
-
-	      function step(result) {
-	        result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
-	      }
-
-	      step((generator = generator.apply(thisArg, _arguments || [])).next());
-	    });
-	  };
-
-	  var __generator = commonjsGlobal && commonjsGlobal.__generator || function (thisArg, body) {
-	    var _ = {
-	      label: 0,
-	      sent: function sent() {
-	        if (t[0] & 1) throw t[1];
-	        return t[1];
-	      },
-	      trys: [],
-	      ops: []
-	    },
-	        f,
-	        y,
-	        t,
-	        g;
-	    return g = {
-	      next: verb(0),
-	      "throw": verb(1),
-	      "return": verb(2)
-	    }, typeof Symbol === "function" && (g[Symbol.iterator] = function () {
-	      return this;
-	    }), g;
-
-	    function verb(n) {
-	      return function (v) {
-	        return step([n, v]);
-	      };
-	    }
-
-	    function step(op) {
-	      if (f) throw new TypeError("Generator is already executing.");
-
-	      while (_) {
-	        try {
-	          if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-	          if (y = 0, t) op = [op[0] & 2, t.value];
-
-	          switch (op[0]) {
-	            case 0:
-	            case 1:
-	              t = op;
-	              break;
-
-	            case 4:
-	              _.label++;
-	              return {
-	                value: op[1],
-	                done: false
-	              };
-
-	            case 5:
-	              _.label++;
-	              y = op[1];
-	              op = [0];
-	              continue;
-
-	            case 7:
-	              op = _.ops.pop();
-
-	              _.trys.pop();
-
-	              continue;
-
-	            default:
-	              if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
-	                _ = 0;
-	                continue;
-	              }
-
-	              if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
-	                _.label = op[1];
-	                break;
-	              }
-
-	              if (op[0] === 6 && _.label < t[1]) {
-	                _.label = t[1];
-	                t = op;
-	                break;
-	              }
-
-	              if (t && _.label < t[2]) {
-	                _.label = t[2];
-
-	                _.ops.push(op);
-
-	                break;
-	              }
-
-	              if (t[2]) _.ops.pop();
-
-	              _.trys.pop();
-
-	              continue;
-	          }
-
-	          op = body.call(thisArg, _);
-	        } catch (e) {
-	          op = [6, e];
-	          y = 0;
-	        } finally {
-	          f = t = 0;
-	        }
-	      }
-
-	      if (op[0] & 5) throw op[1];
-	      return {
-	        value: op[0] ? op[1] : void 0,
-	        done: true
-	      };
-	    }
-	  };
-
-	  exports.__esModule = true;
-	  var Rocket_1 = Rocket;
-	  var Permission_1 = Permission;
-	  var SocketTimeout_1 = SocketTimeout;
-	  var GoEasy_1 = GoEasy$1;
-	  var ReadMessageMarkRequest_1 = ReadMessageMarkRequest$1;
-	  var RocketTypes_1 = RocketTypes;
-	  var UserOffsets_1 = UserOffsets$1;
-	  var ConversationIdUtils_1 = ConversationIdUtils;
-
-	  var UserOffsetService =
-	  /** @class */
-	  function () {
-	    function UserOffsetService(target, userId, goEasySocket) {
-	      this.target = target;
-	      this.userId = userId;
-	      this.goEasySocket = goEasySocket;
-	      this.userOffsets = new UserOffsets_1.UserOffsets(userId);
-	    }
-
-	    UserOffsetService.prototype.isRead = function (message) {
-	      var time = message.timestamp;
-	      var scene = message.scene();
-	      var senderId = message.senderId;
-	      var receiverId = message.targetId();
-
-	      if (scene === GoEasy_1.Scene.PRIVATE) {
-	        if (senderId === this.userId) {
-	          // 自己发送的消息应该查询好友的offset,查看好友是否已读该条消息
-	          return this.userOffsets.getOffset(receiverId) >= time;
-	        } else {
-	          // 好友发送的消息应该查询自己的offset,查看自己是否已读该条消息
-	          return this.userOffsets.myOffset() >= time;
-	        }
-	      } else if (scene === GoEasy_1.Scene.CS) {
-	        var customerId = ConversationIdUtils_1["default"].customerId(this.target.id);
-	        var isCustomer = customerId === this.userId;
-
-	        if (isCustomer) {
-	          if (senderId === this.userId) {
-	            return this.teamMaxOffset() >= time;
-	          } else {
-	            return this.userOffsets.myOffset() >= time;
-	          }
-	        } else {
-	          if (senderId === this.userId) {
-	            return this.userOffsets.getOffset(customerId) >= time;
-	          } else {
-	            if (senderId === customerId) {
-	              return this.userOffsets.myOffset() >= time;
-	            } else {
-	              return this.userOffsets.getOffset(customerId) >= time;
-	            }
-	          }
-	        }
-	      }
-	    };
-
-	    UserOffsetService.prototype.manualMark = function (markTime) {
-	      return __awaiter(this, void 0, void 0, function () {
-	        var myOffset;
-	        return __generator(this, function (_a) {
-	          switch (_a.label) {
-	            case 0:
-	              this.userOffsets.markingTime = markTime;
-	              myOffset = this.userOffsets.myOffset();
-	              if (!(markTime > myOffset)) return [3
-	              /*break*/
-	              , 2];
-	              return [4
-	              /*yield*/
-	              , this.updateServerOffsets(markTime)];
-
-	            case 1:
-	              _a.sent();
-
-	              if (markTime === this.userOffsets.markingTime) {
-	                //在你异步操作服务器期间，没有其他新的操作给出新的markingTime
-	                this.userOffsets.updateMyOffset(markTime);
-	                return [2
-	                /*return*/
-	                , true];
-	              }
-
-	              _a.label = 2;
-
-	            case 2:
-	              return [2
-	              /*return*/
-	              , false];
-	          }
-	        });
-	      });
-	    };
-
-	    UserOffsetService.prototype.updateMyOffset = function (markTime) {
-	      return this.userOffsets.updateMyOffset(markTime);
-	    };
-
-	    UserOffsetService.prototype.updateOffset = function (userId, timestamp) {
-	      return this.userOffsets.updateOffset(userId, timestamp);
-	    };
-
-	    UserOffsetService.prototype.updateServerOffsets = function (markTime) {
-	      return __awaiter(this, void 0, void 0, function () {
-	        var request;
-
-	        var _this = this;
-
-	        return __generator(this, function (_a) {
-	          request = new ReadMessageMarkRequest_1.ReadMessageMarkRequest(this.target.id, this.target.scene, markTime);
-	          return [2
-	          /*return*/
-	          , new Promise(function (resolve, reject) {
-	            var rocket = new Rocket_1["default"]({
-	              name: RocketTypes_1.RocketTypes.MARK_AS_READ,
-	              params: request,
-	              permission: Permission_1.Permission.WRITE,
-	              singleTimeout: SocketTimeout_1.SocketTimeout.commonRequestSingle,
-	              totalTimeout: SocketTimeout_1.SocketTimeout.commonRequestTotal,
-	              success: function success(res) {
-	                if (res.code === 200) {
-	                  resolve(res);
-	                } else {
-	                  reject(res);
-	                }
-	              },
-	              fail: function fail(err) {
-	                reject(err);
-	              }
-	            });
-
-	            _this.goEasySocket.emit(rocket);
-	          })];
-	        });
-	      });
-	    };
-
-	    UserOffsetService.prototype.updateUserOffsets = function (userOffsets) {
-	      this.userOffsets.updateUserOffsets(userOffsets);
-	    };
-
-	    UserOffsetService.prototype.myOffset = function () {
-	      return this.userOffsets.myOffset();
-	    };
-
-	    UserOffsetService.prototype.teamMaxOffset = function () {
-	      var _this = this;
-
-	      var maxOffset = 0;
-	      this.userOffsets.offsetMap.forEach(function (offset, userId) {
-	        if (userId !== _this.userId) {
-	          if (maxOffset < offset) {
-	            maxOffset = offset;
-	          }
-	        }
-	      });
-	      return maxOffset;
-	    };
-
-	    return UserOffsetService;
-	  }();
-
-	  exports["default"] = UserOffsetService;
-	})(userOffsetService);
-
-	var MessageDeleter = {};
-
-	var DeleteMessageRequest$1 = {};
-
-	DeleteMessageRequest$1.__esModule = true;
-	DeleteMessageRequest$1.DeleteMessageRequest = void 0;
-	var GoEasy_1$3 = GoEasy$1;
-	var Target_1$1 = Target$1;
-
-	var DeleteMessageRequest =
-	/** @class */
-	function () {
-	  function DeleteMessageRequest(messages) {
-	    var _this = this;
-
-	    this.times = new Array();
-	    var message = messages[0];
-	    var target = Target_1$1.Target.byIMMessage(message);
-	    this.scene = target.scene;
-	    this.targetId = target.id;
-	    messages.forEach(function (message) {
-	      if (message.status === GoEasy_1$3.MessageStatus.SUCCESS) {
-	        //未成功的消息，不要发到服务端
-	        _this.times.push(message.timestamp);
-	      }
-	    }); // 升序排列
-
-	    this.times.sort(function (x, y) {
-	      return x < y ? -1 : x == y ? 0 : 1;
-	    });
-	  }
-
-	  return DeleteMessageRequest;
-	}();
-
-	DeleteMessageRequest$1.DeleteMessageRequest = DeleteMessageRequest;
-
-	(function (exports) {
-
-	  exports.__esModule = true;
-	  var AbstractMessage_1 = AbstractMessage$1;
-	  var Calibrator_1 = Calibrator;
-	  var GoEasy_1 = GoEasy$1;
-	  var DeleteMessageRequest_1 = DeleteMessageRequest$1;
-	  var Rocket_1 = Rocket;
-	  var Permission_1 = Permission;
-	  var SocketTimeout_1 = SocketTimeout;
-	  var RocketTypes_1 = RocketTypes;
-	  var Target_1 = Target$1;
-
-	  var MessageDeleter =
-	  /** @class */
-	  function () {
-	    function MessageDeleter() {}
-
-	    MessageDeleter.deleteServerMessages = function (messages, goEasySocket) {
-	      var request = new DeleteMessageRequest_1.DeleteMessageRequest(messages);
-
-	      if (request.times.length < 0) {
-	        return Promise.resolve();
-	      }
-
-	      return new Promise(function (resolve, reject) {
-	        var rocket = new Rocket_1["default"]({
-	          name: RocketTypes_1.RocketTypes.IM_DELETE_MESSAGE,
-	          params: request,
-	          permission: Permission_1.Permission.WRITE,
-	          singleTimeout: SocketTimeout_1.SocketTimeout.commonQuerySingle,
-	          totalTimeout: SocketTimeout_1.SocketTimeout.commonQueryTotal,
-	          success: function success(res) {
-	            if (res.code === 200) {
-	              resolve(res);
-	            } else {
-	              reject(res);
-	            }
-	          },
-	          fail: function fail(err) {
-	            reject(err);
-	          }
-	        });
-	        goEasySocket.emit(rocket);
-	      });
-	    };
-
-	    MessageDeleter.validate = function (options) {
-	      if (!Calibrator_1["default"].isArray(options.messages) || Calibrator_1["default"].isEmpty(options.messages)) {
-	        throw {
-	          code: 400,
-	          content: "messages requires non empty array"
-	        };
-	      }
-
-	      var messages = options.messages;
-
-	      if (messages.length > 50) {
-	        throw {
-	          code: 400,
-	          content: "a maximum of 50 messages can be deleted at a time"
-	        };
-	      }
-
-	      var firstTarget = Target_1.Target.byIMMessage(messages[0]);
-
-	      for (var i = 0; i < messages.length; i++) {
-	        var message = messages[i];
-
-	        if (!(message instanceof AbstractMessage_1.AbstractMessage)) {
-	          throw {
-	            code: 400,
-	            content: "message[" + i + "] is not a correct message"
-	          };
-	        }
-
-	        if (message.status === GoEasy_1.MessageStatus.SENDING) {
-	          throw {
-	            code: 400,
-	            content: "message[" + i + "] is '" + message.status + "' and cannot be deleted"
-	          };
-	        }
-
-	        if (i > 0) {
-	          var target = Target_1.Target.byIMMessage(message);
-
-	          if (target.scene !== firstTarget.scene || target.id !== firstTarget.id) {
-	            throw {
-	              code: 400,
-	              content: "each message must be from the same friend or group"
-	            };
-	          }
-	        }
-	      }
-	    };
-
-	    return MessageDeleter;
-	  }();
-
-	  exports["default"] = MessageDeleter;
-	})(MessageDeleter);
-
-	var changeSynchronizer = {};
-
-	var HistoryChangeQueryRequest = {};
-
-	(function (exports) {
-
-	  exports.__esModule = true;
-
-	  var HistoryChangeQueryRequest =
-	  /** @class */
-	  function () {
-	    function HistoryChangeQueryRequest(scene, id, after, min) {
-	      this.scene = scene;
-	      this.id = id;
-	      this.after = after;
-	      this.min = min;
-	    }
-
-	    return HistoryChangeQueryRequest;
-	  }();
-
-	  exports["default"] = HistoryChangeQueryRequest;
-	})(HistoryChangeQueryRequest);
-
-	var MessageReadRemoteEvent = {};
-
-	MessageReadRemoteEvent.__esModule = true;
-	MessageReadRemoteEvent.ReadMessageMarkedRemoteEvent = void 0;
-
-	var ReadMessageMarkedRemoteEvent =
-	/** @class */
-	function () {
-	  function ReadMessageMarkedRemoteEvent(scene, markerId, targetId, time) {
-	    this.scene = scene;
-	    this.markerId = markerId;
-	    this.targetId = targetId;
-	    this.time = time;
-	  }
-
-	  return ReadMessageMarkedRemoteEvent;
-	}();
-
-	MessageReadRemoteEvent.ReadMessageMarkedRemoteEvent = ReadMessageMarkedRemoteEvent;
-
-	var MessageDeletedRemoteEvent$1 = {};
-
-	MessageDeletedRemoteEvent$1.__esModule = true;
-	MessageDeletedRemoteEvent$1.MessageDeletedRemoteEvent = void 0;
-
-	var MessageDeletedRemoteEvent =
-	/** @class */
-	function () {
-	  function MessageDeletedRemoteEvent(scene, deleterId, targetId, times) {
-	    this.scene = scene;
-	    this.deleterId = deleterId;
-	    this.targetId = targetId;
-	    this.times = times;
-	  }
-
-	  return MessageDeletedRemoteEvent;
-	}();
-
-	MessageDeletedRemoteEvent$1.MessageDeletedRemoteEvent = MessageDeletedRemoteEvent;
-
-	var MessageRecalledRemoteEvent$1 = {};
-
-	MessageRecalledRemoteEvent$1.__esModule = true;
-	MessageRecalledRemoteEvent$1.MessageRecalledRemoteEvent = void 0;
-
-	var MessageRecalledRemoteEvent =
-	/** @class */
-	function () {
-	  function MessageRecalledRemoteEvent(scene, conversationId, times) {
-	    this.scene = scene;
-	    this.conversationId = conversationId;
-	    this.times = times;
-	  }
-
-	  return MessageRecalledRemoteEvent;
-	}();
-
-	MessageRecalledRemoteEvent$1.MessageRecalledRemoteEvent = MessageRecalledRemoteEvent;
-
-	changeSynchronizer.__esModule = true;
-	changeSynchronizer.ChangeSynchronizer = void 0;
-	var HistoryChangeQueryRequest_1 = HistoryChangeQueryRequest;
-	var Rocket_1$6 = Rocket;
-	var RocketTypes_1$6 = RocketTypes;
-	var Permission_1$6 = Permission;
-	var SocketTimeout_1$6 = SocketTimeout;
-	var MessageReadRemoteEvent_1 = MessageReadRemoteEvent;
-	var goeasy_event_center_1$8 = goeasyEventCenter;
-	var internal_events_1 = internalEvents;
-	var MessageDeletedRemoteEvent_1 = MessageDeletedRemoteEvent$1;
-	var MessageRecalledRemoteEvent_1 = MessageRecalledRemoteEvent$1;
-	var ConversationIdUtils_1 = ConversationIdUtils;
-
-	var ChangeSynchronizer =
-	/** @class */
-	function () {
-	  function ChangeSynchronizer() {}
-
-	  ChangeSynchronizer.sync = function (scene, targetId, after, min, userId, goEasySocket) {
-	    var request = new HistoryChangeQueryRequest_1["default"](scene, targetId, after, min);
-	    return new Promise(function (resolve, reject) {
-	      var rocket = new Rocket_1$6["default"]({
-	        name: RocketTypes_1$6.RocketTypes.IM_HISTORY_CHANGE,
-	        params: request,
-	        permission: Permission_1$6.Permission.READ,
-	        singleTimeout: SocketTimeout_1$6.SocketTimeout.commonQuerySingle,
-	        totalTimeout: SocketTimeout_1$6.SocketTimeout.commonQueryTotal,
-	        fail: function fail(err) {
-	          reject(err);
-	        },
-	        success: function success(res) {
-	          if (res.code === 200) {
-	            var content = res.content;
-	            var userOffsets = content.userOffsets;
-	            userOffsets.forEach(function (userOffset) {
-	              var userId = userOffset.userId;
-	              var offset = userOffset.offset;
-	              var event = new MessageReadRemoteEvent_1.ReadMessageMarkedRemoteEvent(scene, userId, targetId, offset);
-	              goeasy_event_center_1$8.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.REMOTE_MESSAGE_READ, event);
-	            });
-	            var deletedMessageTimes = content.deletedMessageTimes;
-
-	            if (deletedMessageTimes.length > 0) {
-	              var event_1 = new MessageDeletedRemoteEvent_1.MessageDeletedRemoteEvent(scene, userId, targetId, deletedMessageTimes);
-	              goeasy_event_center_1$8.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.REMOTE_MESSAGE_DELETED, event_1);
-	            }
-
-	            var recalledTimes = content.recalled;
-
-	            if (recalledTimes.length > 0) {
-	              var conversationId = ConversationIdUtils_1["default"].conversationId(scene, userId, targetId);
-	              var event_2 = new MessageRecalledRemoteEvent_1.MessageRecalledRemoteEvent(scene, conversationId, content.recalled);
-	              goeasy_event_center_1$8.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.REMOTE_MESSAGE_RECALLED, event_2);
-	            }
-
-	            resolve(res);
-	          } else {
-	            reject(res);
-	          }
-	        }
-	      });
-	      goEasySocket.emit(rocket);
-	    });
-	  };
-
-	  return ChangeSynchronizer;
-	}();
-
-	changeSynchronizer.ChangeSynchronizer = ChangeSynchronizer;
-
-	var MessageRecaller = {};
-
-	var RecallMessageRequest$1 = {};
-
-	RecallMessageRequest$1.__esModule = true;
-	RecallMessageRequest$1.RecallMessageRequest = void 0;
-	var Target_1 = Target$1;
-
-	var RecallMessageRequest =
-	/** @class */
-	function () {
-	  function RecallMessageRequest(messages) {
-	    var _this = this;
-
-	    this.times = new Array();
-	    var message = messages[0];
-	    var target = Target_1.Target.byIMMessage(message);
-	    this.scene = target.scene;
-	    this.targetId = target.id;
-	    messages.forEach(function (message) {
-	      _this.times.push(message.timestamp);
-	    }); // 升序排列
-
-	    this.times.sort(function (x, y) {
-	      return x < y ? -1 : x == y ? 0 : 1;
-	    });
-	  }
-
-	  return RecallMessageRequest;
-	}();
-
-	RecallMessageRequest$1.RecallMessageRequest = RecallMessageRequest;
-
-	(function (exports) {
-
-	  exports.__esModule = true;
-	  var GoEasy_1 = GoEasy$1;
-	  var RecallMessageRequest_1 = RecallMessageRequest$1;
-	  var Rocket_1 = Rocket;
-	  var Permission_1 = Permission;
-	  var SocketTimeout_1 = SocketTimeout;
-	  var AbstractMessage_1 = AbstractMessage$1;
-	  var Calibrator_1 = Calibrator;
-	  var RocketTypes_1 = RocketTypes;
-	  var Target_1 = Target$1;
-	  /**
-	   * todo MessageRecaller名称并不专业需要优化
-	   */
-
-	  var MessageRecaller =
-	  /** @class */
-	  function () {
-	    function MessageRecaller() {}
-
-	    MessageRecaller.recallServerMessages = function (messages, goEasySocket) {
-	      var request = new RecallMessageRequest_1.RecallMessageRequest(messages);
-
-	      if (request.times.length === 0) {
-	        return Promise.resolve();
-	      }
-
-	      return new Promise(function (resolve, reject) {
-	        var rocket = new Rocket_1["default"]({
-	          name: RocketTypes_1.RocketTypes.IM_RECALL_MESSAGE,
-	          params: request,
-	          permission: Permission_1.Permission.WRITE,
-	          singleTimeout: SocketTimeout_1.SocketTimeout.commonRequestSingle,
-	          totalTimeout: SocketTimeout_1.SocketTimeout.commonRequestTotal,
-	          fail: function fail(err) {
-	            reject(err);
-	          },
-	          success: function success(res) {
-	            if (res.code === 200) {
-	              resolve(res);
-	            } else {
-	              reject(res);
-	            }
-	          }
-	        });
-	        goEasySocket.emit(rocket);
-	      });
-	    };
-	    /**
-	     * 同一种会话的消息才能撤回，以传入的第一条消息作为会话标准
-	     * @param options
-	     */
-
-
-	    MessageRecaller.validate = function (options, userId) {
-	      var messages = options.messages;
-
-	      if (!Calibrator_1["default"].isArray(messages) || Calibrator_1["default"].isEmpty(messages)) {
-	        throw {
-	          code: 400,
-	          content: "messages requires non empty array"
-	        };
-	      }
-
-	      if (messages.length > 50) {
-	        throw {
-	          code: 400,
-	          content: "a maximum of 50 messages can be recalled at a time"
-	        };
-	      }
-
-	      var firstTarget;
-
-	      for (var i = 0; i < messages.length; i++) {
-	        var message = messages[i];
-
-	        if (!(message instanceof AbstractMessage_1.AbstractMessage)) {
-	          throw {
-	            code: 400,
-	            content: "message[" + i + "] is an illegal message object"
-	          };
-	        }
-
-	        if (message.status !== GoEasy_1.MessageStatus.SUCCESS) {
-	          throw {
-	            code: 400,
-	            content: "message[" + i + "] is '" + message.status + "' and cannot be recalled"
-	          };
-	        }
-
-	        if (message.recalled) {
-	          throw {
-	            code: 400,
-	            content: "message[" + i + "] has been recalled"
-	          };
-	        }
-
-	        if (message.senderId !== userId) {
-	          throw {
-	            code: 400,
-	            content: "it is not allowed to recall messages sent by others"
-	          };
-	        }
-
-	        if (i > 0) {
-	          var target = Target_1.Target.byIMMessage(message);
-
-	          if (target.scene !== firstTarget.scene || target.id !== firstTarget.id) {
-	            throw {
-	              code: 400,
-	              content: "each message must be from the same friend or group"
-	            };
-	          }
-	        } else {
-	          firstTarget = Target_1.Target.byIMMessage(message);
-	        }
-	      }
-	    };
-
-	    return MessageRecaller;
-	  }();
-
-	  exports["default"] = MessageRecaller;
-	})(MessageRecaller);
-
-	(function (exports) {
-
-	  var __awaiter = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
-	    function adopt(value) {
-	      return value instanceof P ? value : new P(function (resolve) {
-	        resolve(value);
-	      });
-	    }
-
-	    return new (P || (P = Promise))(function (resolve, reject) {
-	      function fulfilled(value) {
-	        try {
-	          step(generator.next(value));
-	        } catch (e) {
-	          reject(e);
-	        }
-	      }
-
-	      function rejected(value) {
-	        try {
-	          step(generator["throw"](value));
-	        } catch (e) {
-	          reject(e);
-	        }
-	      }
-
-	      function step(result) {
-	        result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
-	      }
-
-	      step((generator = generator.apply(thisArg, _arguments || [])).next());
-	    });
-	  };
-
-	  var __generator = commonjsGlobal && commonjsGlobal.__generator || function (thisArg, body) {
-	    var _ = {
-	      label: 0,
-	      sent: function sent() {
-	        if (t[0] & 1) throw t[1];
-	        return t[1];
-	      },
-	      trys: [],
-	      ops: []
-	    },
-	        f,
-	        y,
-	        t,
-	        g;
-	    return g = {
-	      next: verb(0),
-	      "throw": verb(1),
-	      "return": verb(2)
-	    }, typeof Symbol === "function" && (g[Symbol.iterator] = function () {
-	      return this;
-	    }), g;
-
-	    function verb(n) {
-	      return function (v) {
-	        return step([n, v]);
-	      };
-	    }
-
-	    function step(op) {
-	      if (f) throw new TypeError("Generator is already executing.");
-
-	      while (_) {
-	        try {
-	          if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-	          if (y = 0, t) op = [op[0] & 2, t.value];
-
-	          switch (op[0]) {
-	            case 0:
-	            case 1:
-	              t = op;
-	              break;
-
-	            case 4:
-	              _.label++;
-	              return {
-	                value: op[1],
-	                done: false
-	              };
-
-	            case 5:
-	              _.label++;
-	              y = op[1];
-	              op = [0];
-	              continue;
-
-	            case 7:
-	              op = _.ops.pop();
-
-	              _.trys.pop();
-
-	              continue;
-
-	            default:
-	              if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
-	                _ = 0;
-	                continue;
-	              }
-
-	              if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
-	                _.label = op[1];
-	                break;
-	              }
-
-	              if (op[0] === 6 && _.label < t[1]) {
-	                _.label = t[1];
-	                t = op;
-	                break;
-	              }
-
-	              if (t && _.label < t[2]) {
-	                _.label = t[2];
-
-	                _.ops.push(op);
-
-	                break;
-	              }
-
-	              if (t[2]) _.ops.pop();
-
-	              _.trys.pop();
-
-	              continue;
-	          }
-
-	          op = body.call(thisArg, _);
-	        } catch (e) {
-	          op = [6, e];
-	          y = 0;
-	        } finally {
-	          f = t = 0;
-	        }
-	      }
-
-	      if (op[0] & 5) throw op[1];
-	      return {
-	        value: op[0] ? op[1] : void 0,
-	        done: true
-	      };
-	    }
-	  };
-
-	  exports.__esModule = true;
-	  var GoEasy_1 = GoEasy$1;
-	  var callback_utils_1 = callbackUtils;
-	  var im_api_events_1 = imApiEvents;
-	  var goeasy_event_center_1 = goeasyEventCenter;
-	  var internal_events_1 = internalEvents;
-	  var MessageCache_1 = MessageCache;
-	  var user_offset_service_1 = userOffsetService;
-	  var MessageDeleter_1 = MessageDeleter;
-	  var change_synchronizer_1 = changeSynchronizer;
-	  var MessageRecaller_1 = MessageRecaller;
-	  var ConversationIdUtils_1 = ConversationIdUtils;
-
-	  var History =
-	  /** @class */
-	  function () {
-	    function History(target, apiEventCenter, userId, goEasySocket) {
-	      this.expiredTime = 0;
-	      this.target = target;
-	      this.apiEventCenter = apiEventCenter;
-	      this.userId = userId;
-	      this.goEasySocket = goEasySocket;
-	      this.userOffsetService = new user_offset_service_1["default"](target, userId, goEasySocket);
-	      this.messageCache = new MessageCache_1["default"](target, this.userOffsetService, userId, goEasySocket);
-	    }
-	    /**
-	     * todo 该方法插入可能会出现消息顺序问题，conversation的查询，新消息的接收，history的查询，三者的异步操作可能导致消息列表顺序混乱,后面线上出现问题再优化
-	     *
-	     * 需要确认
-	     * @param message
-	     * @param userOffsets
-	     */
-
-
-	    History.prototype.initMaxMessageAndOffsets = function (message, userOffsets) {
-	      if (!this.messageCache.existsMessage(message.messageId)) {
-	        this.userOffsetService.updateUserOffsets(userOffsets);
-
-	        if (this.target.scene === GoEasy_1.Scene.PRIVATE) {
-	          var privateMessage = message;
-	          privateMessage.read = this.userOffsetService.isRead(privateMessage);
-	        } else if (this.target.scene === GoEasy_1.Scene.CS) {
-	          var csMessage = message;
-	          csMessage.read = this.userOffsetService.isRead(message);
-	        }
-
-	        this.messageCache.saveMessage(message);
-	      }
-	    };
-
-	    History.prototype.loadHistory = function (queryOptions) {
-	      return __awaiter(this, void 0, void 0, function () {
-	        var err_1;
-	        return __generator(this, function (_a) {
-	          switch (_a.label) {
-	            case 0:
-	              if (!(this.expiredTime > 0 && !this.messageCache.isEmpty())) return [3
-	              /*break*/
-	              , 4];
-	              _a.label = 1;
-
-	            case 1:
-	              _a.trys.push([1, 3,, 4]);
-
-	              return [4
-	              /*yield*/
-	              , this.updateByServerChange()];
-
-	            case 2:
-	              _a.sent();
-
-	              return [3
-	              /*break*/
-	              , 4];
-
-	            case 3:
-	              err_1 = _a.sent();
-	              callback_utils_1.CallbackUtils.onFailed(queryOptions, err_1);
-	              return [3
-	              /*break*/
-	              , 4];
-
-	            case 4:
-	              return [4
-	              /*yield*/
-	              , this.messageCache.loadHistory(queryOptions)];
-
-	            case 5:
-	              _a.sent();
-
-	              return [2
-	              /*return*/
-	              ];
-	          }
-	        });
-	      });
-	    };
-
-	    History.prototype.saveMessage = function (message) {
-	      this.messageCache.saveMessage(message);
-	    };
-
-	    History.prototype.deleteMessages = function (options) {
-	      return __awaiter(this, void 0, void 0, function () {
-	        var maxMessage, messages;
-	        return __generator(this, function (_a) {
-	          switch (_a.label) {
-	            case 0:
-	              maxMessage = this.messageCache.getMaxMessage();
-	              messages = options.messages;
-	              return [4
-	              /*yield*/
-	              , MessageDeleter_1["default"].deleteServerMessages(messages, this.goEasySocket)];
-
-	            case 1:
-	              _a.sent();
-
-	              this.messageCache.deleteMessages(messages);
-	              callback_utils_1.CallbackUtils.onSuccess(options);
-
-	              if (messages.includes(maxMessage)) {
-	                goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.MAX_MESSAGE_CHANGED, this.target);
-	              }
-
-	              return [2
-	              /*return*/
-	              ];
-	          }
-	        });
-	      });
-	    };
-
-	    History.prototype.syncDeletedMessage = function (deleterId, times) {
-	      if (deleterId === this.userId) {
-	        var maxMessage = this.messageCache.getMaxMessage();
-	        var messages = this.messageCache.findMessagesByTimes(times);
-	        this.messageCache.deleteMessages(messages);
-	        this.apiEventCenter.fire(im_api_events_1.ImApiEvents.MESSAGE_DELETED, messages); //todo:评估是否必要
-
-	        if (messages.includes(maxMessage)) {
-	          goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.MAX_MESSAGE_CHANGED, this.target);
-	        }
-	      }
-	    };
-
-	    History.prototype.recallMessage = function (options) {
-	      return __awaiter(this, void 0, void 0, function () {
-	        var maxMessage, messages;
-	        return __generator(this, function (_a) {
-	          switch (_a.label) {
-	            case 0:
-	              maxMessage = this.messageCache.getMaxMessage();
-	              messages = options.messages;
-	              return [4
-	              /*yield*/
-	              , MessageRecaller_1["default"].recallServerMessages(messages, this.goEasySocket)];
-
-	            case 1:
-	              _a.sent();
-
-	              this.messageCache.recallMessages(messages);
-	              callback_utils_1.CallbackUtils.onSuccess(options);
-
-	              if (messages.includes(maxMessage)) {
-	                goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.MAX_MESSAGE_CHANGED, this.target);
-	              }
-
-	              return [2
-	              /*return*/
-	              ];
-	          }
-	        });
-	      });
-	    };
-
-	    History.prototype.syncRecalledMessage = function (times) {
-	      var maxMessage = this.messageCache.getMaxMessage();
-	      var messages = this.messageCache.findMessagesByTimes(times);
-
-	      if (messages.length > 0) {
-	        this.messageCache.recallMessages(messages);
-	        this.apiEventCenter.fire(im_api_events_1.ImApiEvents.MESSAGE_RECALLED, messages);
-
-	        if (this.existsUnreadMessage(messages)) {
-	          goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.UNREAD_MESSAGE_CHANGED);
-	        } else if (messages.includes(maxMessage)) {
-	          goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.MAX_MESSAGE_CHANGED, this.target);
-	        }
-	      }
-	    };
-
-	    History.prototype.existsUnreadMessage = function (messages) {
-	      var myOffSet = this.userOffsetService.myOffset();
-
-	      for (var i = 0; i < messages.length; i++) {
-	        var message = messages[i];
-
-	        if (myOffSet < message.timestamp) {
-	          return true;
-	        }
-	      }
-
-	      return false;
-	    };
-	    /**
-	     * 发消息成功  lastOffset=myOffset   = message[0].time
-	     * mark   lastOffset=myOffset     >= message[0].time
-	     * 收到消息  lastOffset= message[0].time
-	     * 删除
-	     * 撤回
-	     */
-
-
-	    History.prototype.expire = function () {
-	      if (!this.messageCache.isEmpty()) {
-	        this.expiredTime = this.messageCache.maxSuccessMessageTime();
-	      }
-	    };
-
-	    History.prototype.updateByServerChange = function () {
-	      return __awaiter(this, void 0, void 0, function () {
-	        var scene, targetId;
-	        return __generator(this, function (_a) {
-	          switch (_a.label) {
-	            case 0:
-	              scene = this.target.scene;
-	              targetId = this.target.id;
-	              return [4
-	              /*yield*/
-	              , change_synchronizer_1.ChangeSynchronizer.sync(scene, targetId, this.expiredTime, this.messageCache.minTime(), this.userId, this.goEasySocket)];
-
-	            case 1:
-	              _a.sent();
-
-	              this.expiredTime = 0;
-	              return [2
-	              /*return*/
-	              ];
-	          }
-	        });
-	      });
-	    };
-
-	    History.prototype.markRead = function (markOption) {
-	      return __awaiter(this, void 0, void 0, function () {
-	        var markTime, success, e_1;
-	        return __generator(this, function (_a) {
-	          switch (_a.label) {
-	            case 0:
-	              if (this.messageCache.isEmpty()) {
-	                callback_utils_1.CallbackUtils.onSuccess(markOption);
-	                return [2
-	                /*return*/
-	                ];
-	              }
-
-	              markTime = this.messageCache.maxSuccessMessageTime();
-	              success = false;
-	              _a.label = 1;
-
-	            case 1:
-	              _a.trys.push([1, 3,, 4]);
-
-	              return [4
-	              /*yield*/
-	              , this.userOffsetService.manualMark(markTime)];
-
-	            case 2:
-	              success = _a.sent();
-	              return [3
-	              /*break*/
-	              , 4];
-
-	            case 3:
-	              e_1 = _a.sent();
-	              callback_utils_1.CallbackUtils.onFailed(markOption, e_1);
-	              return [2
-	              /*return*/
-	              ];
-
-	            case 4:
-	              if (success) {
-	                //别人发的消息，其实永远不需要渲染，但是如果属性错误，就怪怪的，所以还是维护
-	                this.messageCache.markOthersSentRead(markTime); //只要是自己mark，未读消息就有变化
-
-	                goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.UNREAD_MESSAGE_CHANGED);
-	              } //todo:对于conversation的更新，有可能会导致回调回来太晚。
-
-
-	              callback_utils_1.CallbackUtils.onSuccess(markOption);
-	              return [2
-	              /*return*/
-	              ];
-	          }
-	        });
-	      });
-	    };
-
-	    History.prototype.markByRemoteEvent = function (markedRemoteEvent) {
-	      var markTime = markedRemoteEvent.time;
-	      var markerId = markedRemoteEvent.markerId;
-
-	      if (markerId === this.userId) {
-	        //多端同步未读消息数
-	        this.synchronizeUnreadAmountByOtherDevices(markTime);
-	      } else {
-	        //将自己发送的消息，标记为已读
-	        this.markMySentMessagesRead(markTime, markerId);
-	      }
-	    };
-
-	    History.prototype.synchronizeUnreadAmountByOtherDevices = function (markTime) {
-	      var success = this.userOffsetService.updateMyOffset(markTime);
-
-	      if (success) {
-	        //别人发的消息，其实永远不需要渲染，但是如果属性错误，就怪怪的，所以还是维护
-	        this.messageCache.markOthersSentRead(markTime); //只要是自己mark，未读消息就有变化
-
-	        goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.UNREAD_MESSAGE_CHANGED);
-	      }
-	    };
-
-	    History.prototype.markMySentMessagesRead = function (markTime, markerId) {
-	      if (this.target.scene === GoEasy_1.Scene.PRIVATE) {
-	        this.userOffsetService.updateOffset(this.target.id, markTime);
-	        var readMessages = this.messageCache.markMySentRead(markTime);
-
-	        if (readMessages.length > 0) {
-	          this.apiEventCenter.fire(im_api_events_1.ImApiEvents.MESSAGE_READ, readMessages);
-	        }
-
-	        if (markTime === this.messageCache.maxSuccessMessageTime()) {
-	          goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.MAX_MESSAGE_CHANGED, this.target);
-	        }
-	      } else if (this.target.scene === GoEasy_1.Scene.CS) {
-	        var teamId = ConversationIdUtils_1["default"].teamId(this.target.id);
-	        var customerId = ConversationIdUtils_1["default"].customerId(this.target.id);
-	        var isCustomer = this.userId === customerId;
-
-	        if (isCustomer) {
-	          this.userOffsetService.updateOffset(teamId, markTime);
-	        } else {
-	          this.userOffsetService.updateOffset(customerId, markTime);
-	        }
-
-	        var readMessages = this.messageCache.markMySentCSMessageRead(markTime);
-
-	        if (readMessages.length > 0) {
-	          this.apiEventCenter.fire(im_api_events_1.ImApiEvents.MESSAGE_READ, readMessages);
-	        }
-
-	        if (markTime === this.messageCache.maxSuccessMessageTime()) {
-	          goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.MAX_MESSAGE_CHANGED, this.target);
-	        }
-	      }
-	    };
-
-	    History.prototype.onMessageSendSuccess = function (message) {
-	      //todo:或许需要把其他人发送消息的read进行修改, 类似于一个本地mark, 因为服务器端已经做了mark, 但通常这个方法，调用前，用户肯定有mark行为
-	      if (this.target.scene === GoEasy_1.Scene.PRIVATE) {
-	        var privateMessage = message;
-
-	        if (!privateMessage.read) {
-	          privateMessage.read = this.userOffsetService.isRead(privateMessage);
-
-	          if (privateMessage.read) {
-	            this.apiEventCenter.fire(im_api_events_1.ImApiEvents.MESSAGE_READ, [privateMessage]);
-	          }
-	        }
-
-	        this.messageCache.correctPosition(message);
-	        this.userOffsetService.updateMyOffset(message.timestamp);
-	      } else if (this.target.scene === GoEasy_1.Scene.CS) {
-	        var csMessage = message;
-
-	        if (!csMessage.read) {
-	          csMessage.read = this.userOffsetService.isRead(csMessage);
-
-	          if (csMessage.read) {
-	            this.apiEventCenter.fire(im_api_events_1.ImApiEvents.MESSAGE_READ, [csMessage]);
-	          }
-	        }
-
-	        this.messageCache.correctPosition(message);
-	        this.userOffsetService.updateMyOffset(message.timestamp);
-	      }
-	    };
-
-	    History.prototype.onMessageReceived = function (message) {
-	      if (!this.messageCache.existsMessage(message.messageId)) {
-	        this.saveMessage(message);
-	        var scene = this.target.scene;
-	        var targetId = this.target.id;
-	        var messageTime = message.timestamp;
-
-	        if (scene === GoEasy_1.Scene.PRIVATE) {
-	          if (message.senderId == this.userId) {
-	            var success = this.userOffsetService.updateMyOffset(messageTime);
-
-	            if (success) {
-	              //别人发的消息，其实永远不需要渲染，但是如果属性错误，就怪怪的，所以还是维护
-	              this.messageCache.markOthersSentRead(messageTime);
-	            }
-	          } else {
-	            this.userOffsetService.updateOffset(targetId, messageTime);
-	            var readMessages = this.messageCache.markMySentRead(messageTime);
-
-	            if (readMessages.length > 0) {
-	              this.apiEventCenter.fire(im_api_events_1.ImApiEvents.MESSAGE_READ, readMessages);
-	            }
-	          }
-	        } else if (scene === GoEasy_1.Scene.GROUP) {
-	          if (message.senderId == this.userId) {
-	            this.userOffsetService.updateMyOffset(messageTime);
-	          }
-	        } else if (scene === GoEasy_1.Scene.CS) {
-	          if (message.senderId === this.userId) {
-	            var success = this.userOffsetService.updateMyOffset(messageTime);
-
-	            if (success) {
-	              this.messageCache.markOthersSentRead(messageTime);
-	            }
-	          } else {
-	            var customerId = ConversationIdUtils_1["default"].customerId(targetId);
-	            var isCustomer = this.userId === customerId;
-
-	            if (isCustomer) {
-	              this.userOffsetService.updateOffset(message.senderId, messageTime);
-	            } else {
-	              if (message.senderId === customerId) {
-	                this.userOffsetService.updateOffset(customerId, messageTime);
-	              } else {
-	                // todo 客服给客服发送的消息需要保存其他客服的offset吗？
-	                this.userOffsetService.updateMyOffset(messageTime);
-	              }
-	            }
-
-	            var readMessages = this.messageCache.markMySentCSMessageRead(messageTime);
-
-	            if (readMessages.length > 0) {
-	              this.apiEventCenter.fire(im_api_events_1.ImApiEvents.MESSAGE_READ, readMessages);
-	            }
-	          }
-	        }
-
-	        if (scene === GoEasy_1.Scene.PRIVATE) {
-	          this.apiEventCenter.fire(im_api_events_1.ImApiEvents.PRIVATE_MESSAGE_RECEIVED, message);
-	        } else if (scene === GoEasy_1.Scene.GROUP) {
-	          this.apiEventCenter.fire(im_api_events_1.ImApiEvents.GROUP_MESSAGE_RECEIVED, message);
-	        } else if (scene === GoEasy_1.Scene.CS) {
-	          this.apiEventCenter.fire(im_api_events_1.ImApiEvents.CS_MESSAGE_RECEIVED, message);
-	        }
-
-	        return true;
-	      }
-
-	      return false;
-	    };
-
-	    return History;
-	  }();
-
-	  exports["default"] = History;
-	})(History);
-
-	(function (exports) {
-
-	  var __awaiter = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
-	    function adopt(value) {
-	      return value instanceof P ? value : new P(function (resolve) {
-	        resolve(value);
-	      });
-	    }
-
-	    return new (P || (P = Promise))(function (resolve, reject) {
-	      function fulfilled(value) {
-	        try {
-	          step(generator.next(value));
-	        } catch (e) {
-	          reject(e);
-	        }
-	      }
-
-	      function rejected(value) {
-	        try {
-	          step(generator["throw"](value));
-	        } catch (e) {
-	          reject(e);
-	        }
-	      }
-
-	      function step(result) {
-	        result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
-	      }
-
-	      step((generator = generator.apply(thisArg, _arguments || [])).next());
-	    });
-	  };
-
-	  var __generator = commonjsGlobal && commonjsGlobal.__generator || function (thisArg, body) {
-	    var _ = {
-	      label: 0,
-	      sent: function sent() {
-	        if (t[0] & 1) throw t[1];
-	        return t[1];
-	      },
-	      trys: [],
-	      ops: []
-	    },
-	        f,
-	        y,
-	        t,
-	        g;
-	    return g = {
-	      next: verb(0),
-	      "throw": verb(1),
-	      "return": verb(2)
-	    }, typeof Symbol === "function" && (g[Symbol.iterator] = function () {
-	      return this;
-	    }), g;
-
-	    function verb(n) {
-	      return function (v) {
-	        return step([n, v]);
-	      };
-	    }
-
-	    function step(op) {
-	      if (f) throw new TypeError("Generator is already executing.");
-
-	      while (_) {
-	        try {
-	          if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-	          if (y = 0, t) op = [op[0] & 2, t.value];
-
-	          switch (op[0]) {
-	            case 0:
-	            case 1:
-	              t = op;
-	              break;
-
-	            case 4:
-	              _.label++;
-	              return {
-	                value: op[1],
-	                done: false
-	              };
-
-	            case 5:
-	              _.label++;
-	              y = op[1];
-	              op = [0];
-	              continue;
-
-	            case 7:
-	              op = _.ops.pop();
-
-	              _.trys.pop();
-
-	              continue;
-
-	            default:
-	              if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
-	                _ = 0;
-	                continue;
-	              }
-
-	              if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
-	                _.label = op[1];
-	                break;
-	              }
-
-	              if (op[0] === 6 && _.label < t[1]) {
-	                _.label = t[1];
-	                t = op;
-	                break;
-	              }
-
-	              if (t && _.label < t[2]) {
-	                _.label = t[2];
-
-	                _.ops.push(op);
-
-	                break;
-	              }
-
-	              if (t[2]) _.ops.pop();
-
-	              _.trys.pop();
-
-	              continue;
-	          }
-
-	          op = body.call(thisArg, _);
-	        } catch (e) {
-	          op = [6, e];
-	          y = 0;
-	        } finally {
-	          f = t = 0;
-	        }
-	      }
-
-	      if (op[0] & 5) throw op[1];
-	      return {
-	        value: op[0] ? op[1] : void 0,
-	        done: true
-	      };
-	    }
-	  };
-
-	  exports.__esModule = true;
-	  var GoEasy_1 = GoEasy$1;
-	  var validator_utils_1 = validatorUtils;
-	  var Calibrator_1 = Calibrator;
-	  var History_1 = History;
-	  var Target_1 = Target$1;
-	  var goeasy_event_center_1 = goeasyEventCenter;
-	  var internal_events_1 = internalEvents;
-	  var MessageDeleter_1 = MessageDeleter;
-	  var MessageRecaller_1 = MessageRecaller;
-	  var RemoteEvents_1 = RemoteEvents;
-	  var MessageType_1 = MessageType;
-
-	  var Histories =
-	  /** @class */
-	  function () {
-	    function Histories(goEasySocket, apiEventCenter, userId) {
-	      var _this = this;
-
-	      this.map = new Map();
-	      this.userId = userId;
-	      this.goEasySocket = goEasySocket;
-	      this.apiEventCenter = apiEventCenter;
-	      goeasy_event_center_1.GoEasyEventCenter.on(internal_events_1.IM_INTERNAL_EVENTS.MESSAGE_SENDING, function (message) {
-	        return _this.onMessageSending(message);
-	      });
-	      goeasy_event_center_1.GoEasyEventCenter.on(internal_events_1.IM_INTERNAL_EVENTS.MESSAGE_SEND_SUCCESS, function (message) {
-	        return _this.onMessageSendSuccess(message);
-	      });
-	      goeasy_event_center_1.GoEasyEventCenter.on(internal_events_1.IM_INTERNAL_EVENTS.MESSAGE_RECEIVED, function (message) {
-	        return _this.onMessageReceived(message);
-	      });
-	      goeasy_event_center_1.GoEasyEventCenter.on(internal_events_1.IM_INTERNAL_EVENTS.PENDING_MESSAGE_RECEIVED, function (message) {
-	        return _this.onPendingMessageReceived(message);
-	      });
-	      this.goEasySocket.addMessageObserver(RemoteEvents_1.RemoteEvents.IM_MSG_READ, this.onRemoteMarkRead.bind(this));
-	      goeasy_event_center_1.GoEasyEventCenter.on(internal_events_1.IM_INTERNAL_EVENTS.REMOTE_MESSAGE_READ, function (event) {
-	        return _this.onRemoteMarkRead(event);
-	      });
-	      this.goEasySocket.addMessageObserver(RemoteEvents_1.RemoteEvents.IM_MSG_DELETED, this.onRemoteMessageDeleted.bind(this));
-	      goeasy_event_center_1.GoEasyEventCenter.on(internal_events_1.IM_INTERNAL_EVENTS.REMOTE_MESSAGE_DELETED, function (event) {
-	        return _this.onRemoteMessageDeleted(event);
-	      });
-	      this.goEasySocket.addMessageObserver(RemoteEvents_1.RemoteEvents.IM_MSG_RECALLED, this.onRemoteMessageRecalled.bind(this));
-	      goeasy_event_center_1.GoEasyEventCenter.on(internal_events_1.IM_INTERNAL_EVENTS.REMOTE_MESSAGE_RECALLED, function (messages) {
-	        return _this.onRemoteMessageRecalled(messages);
-	      });
-	      this.goEasySocket.addDisconnectedObserver(this.onDisconnected.bind(this));
-	      goeasy_event_center_1.GoEasyEventCenter.on(internal_events_1.IM_INTERNAL_EVENTS.LAST_MESSAGE_UPDATE, function (data) {
-	        return _this.onConversationQuery(data);
-	      });
-	    }
-
-	    Histories.prototype.loadHistory = function (options, teamId) {
-	      this.validate(options);
-
-	      if (Calibrator_1["default"].isUndef(options.limit)) {
-	        options.limit = 10;
-	      }
-
-	      if (options.limit > 30) {
-	        options.limit = 30;
-	      }
-
-	      if (GoEasy_1.Scene.CS == options.type) {
-	        if (Calibrator_1["default"].isDef(teamId)) {
-	          //cs staff calls this function
-	          options.id = options.id + "#" + teamId;
-	        } else {
-	          //customer calls this function
-	          options.id = this.userId + "#" + options.id;
-	        }
-	      }
-
-	      var scene = options.type;
-	      var targetId = options.id;
-
-	      if (options.userId) {
-	        scene = GoEasy_1.Scene.PRIVATE;
-	        targetId = options.userId;
-	      } else if (options.groupId) {
-	        scene = GoEasy_1.Scene.GROUP;
-	        targetId = options.groupId;
-	      }
-
-	      var history = this.findOrCreateHistory(scene, targetId);
-
-	      try {
-	        history.loadHistory(options);
-	      } catch (err) {
-	        console.error("Failed to load history:", err);
-	      }
-	    };
-
-	    Histories.prototype.onMessageSending = function (message) {
-	      var target = Target_1.Target.byIMMessage(message);
-	      target.scene;
-	      target.id;
-	      var history = this.findOrCreateHistory(target.scene, target.id);
-	      history.saveMessage(message);
-	      goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.CONVERSATION_UPDATE, message);
-	    };
-
-	    Histories.prototype.onMessageSendSuccess = function (message) {
-	      var target = Target_1.Target.byIMMessage(message);
-	      var history = this.findHistory(target.scene, target.id);
-	      history.onMessageSendSuccess(message);
-	      goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.CONVERSATION_UPDATE, message);
-	    };
-
-	    Histories.prototype.onMessageReceived = function (message) {
-	      var target = Target_1.Target.byIMMessage(message);
-	      var history = this.findOrCreateHistory(target.scene, target.id);
-	      var success = history.onMessageReceived(message);
-
-	      if (success) {
-	        if (message.type === MessageType_1.MessageType.ACCEPTED) {
-	          goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.PENDING_CONVERSATION_UPDATE, message);
-	        } else {
-	          goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.CONVERSATION_UPDATE, message);
-	        }
-	      }
-	    };
-
-	    Histories.prototype.onPendingMessageReceived = function (message) {
-	      var target = Target_1.Target.byIMMessage(message);
-	      var history = this.findOrCreateHistory(target.scene, target.id);
-	      var success = history.onMessageReceived(message);
-
-	      if (success) {
-	        goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.PENDING_CONVERSATION_UPDATE, message);
-	      }
-	    };
-
-	    Histories.prototype.privateMarkAsRead = function (markOption) {
-	      var target = Target_1.Target.byScene(GoEasy_1.Scene.PRIVATE, markOption.userId);
-	      this.markAsRead(target, markOption);
-	    };
-
-	    Histories.prototype.groupMarkAsRead = function (markOption) {
-	      var target = Target_1.Target.byScene(GoEasy_1.Scene.GROUP, markOption.groupId);
-	      this.markAsRead(target, markOption);
-	    };
-
-	    Histories.prototype.markMessageAsRead = function (option, teamId) {
-	      if (GoEasy_1.Scene.CS == option.type) {
-	        validator_utils_1["default"].validateId(option.id, "id");
-
-	        if (Calibrator_1["default"].isDef(teamId)) {
-	          //cs staff calls this function
-	          option.id = option.id + "#" + teamId;
-	        } else {
-	          //customer calls this function
-	          option.id = this.userId + "#" + option.id;
-	        }
-	      }
-
-	      var target = Target_1.Target.byScene(option.type, option.id);
-	      this.markAsRead(target, option);
-	    };
-
-	    Histories.prototype.markAsRead = function (target, markOption) {
-	      return __awaiter(this, void 0, void 0, function () {
-	        var history;
-	        return __generator(this, function (_a) {
-	          switch (_a.label) {
-	            case 0:
-	              this.validate(markOption);
-	              history = this.findHistory(target.scene, target.id.toString());
-	              if (!history) return [3
-	              /*break*/
-	              , 2];
-	              return [4
-	              /*yield*/
-	              , history.markRead(markOption)];
-
-	            case 1:
-	              _a.sent();
-
-	              return [3
-	              /*break*/
-	              , 3];
-
-	            case 2:
-	              throw {
-	                code: 400,
-	                content: 'No unread message that could be marked.'
-	              };
-
-	            case 3:
-	              return [2
-	              /*return*/
-	              ];
-	          }
-	        });
-	      });
-	    };
-
-	    Histories.prototype.onRemoteMarkRead = function (event) {
-	      var target = Target_1.Target.byMessageReadRemoteEvent(event);
-	      var history = this.findHistory(target.scene, target.id.toString());
-
-	      if (history) {
-	        history.markByRemoteEvent(event);
-	      }
-	    };
-
-	    Histories.prototype.deleteMessage = function (options) {
-	      return __awaiter(this, void 0, void 0, function () {
-	        var message, target, history;
-	        return __generator(this, function (_a) {
-	          switch (_a.label) {
-	            case 0:
-	              MessageDeleter_1["default"].validate(options);
-	              message = options.messages[0];
-	              target = Target_1.Target.byIMMessage(message);
-	              history = this.findHistory(target.scene, target.id);
-	              if (!history) return [3
-	              /*break*/
-	              , 2];
-	              return [4
-	              /*yield*/
-	              , history.deleteMessages(options)];
-
-	            case 1:
-	              _a.sent();
-
-	              return [3
-	              /*break*/
-	              , 3];
-
-	            case 2:
-	              throw {
-	                code: 400,
-	                content: 'No message that could be deleted'
-	              };
-
-	            case 3:
-	              return [2
-	              /*return*/
-	              ];
-	          }
-	        });
-	      });
-	    };
-
-	    Histories.prototype.onRemoteMessageDeleted = function (event) {
-	      var target = Target_1.Target.byIMMessageDeletedEvent(event);
-	      var history = this.findHistory(target.scene, target.id);
-
-	      if (history) {
-	        history.syncDeletedMessage(event.deleterId, event.times);
-	      }
-	    };
-
-	    Histories.prototype.recallMessage = function (options) {
-	      return __awaiter(this, void 0, void 0, function () {
-	        var message, target, history;
-	        return __generator(this, function (_a) {
-	          switch (_a.label) {
-	            case 0:
-	              MessageRecaller_1["default"].validate(options, this.userId);
-	              message = options.messages[0];
-	              target = Target_1.Target.byIMMessage(message);
-	              history = this.findHistory(target.scene, target.id);
-	              if (!history) return [3
-	              /*break*/
-	              , 2];
-	              return [4
-	              /*yield*/
-	              , history.recallMessage(options)];
-
-	            case 1:
-	              _a.sent();
-
-	              return [3
-	              /*break*/
-	              , 3];
-
-	            case 2:
-	              throw {
-	                code: 400,
-	                content: 'No message that could be recalled'
-	              };
-
-	            case 3:
-	              return [2
-	              /*return*/
-	              ];
-	          }
-	        });
-	      });
-	    };
-
-	    Histories.prototype.onRemoteMessageRecalled = function (event) {
-	      var target = Target_1.Target.byMessageRecalledRemoteEvent(event);
-	      var history = this.findHistory(target.scene, target.id);
-
-	      if (history) {
-	        history.syncRecalledMessage(event.times);
-	      }
-	    };
-
-	    Histories.prototype.onConversationQuery = function (data) {
-	      var message = data.message;
-	      var userOffsets = data.userOffsets;
-	      var target = Target_1.Target.byIMMessage(message);
-	      var history = this.findOrCreateHistory(target.scene, target.id);
-	      history.initMaxMessageAndOffsets(message, userOffsets);
-	    };
-
-	    Histories.prototype.onDisconnected = function () {
-	      this.map.forEach(function (history, id) {
-	        history.expire();
-	      });
-	    };
-
-	    Histories.prototype.findOrCreateHistory = function (scene, targetId) {
-	      var history = this.findHistory(scene, targetId);
-
-	      if (history) {
-	        return history;
-	      } else {
-	        var target = Target_1.Target.byScene(scene, targetId);
-	        history = new History_1["default"](target, this.apiEventCenter, this.userId, this.goEasySocket);
-	        var id = this.historyId(scene, targetId);
-	        this.map.set(id, history);
-	        return history;
-	      }
-	    };
-
-	    Histories.prototype.historyId = function (scene, targetId) {
-	      return scene + "#" + targetId;
-	    };
-
-	    Histories.prototype.findHistory = function (scene, targetId) {
-	      var id = this.historyId(scene, targetId);
-	      return this.map.get(id);
-	    };
-
-	    Histories.prototype.validate = function (options) {
-	      var hasId = options.hasOwnProperty("id");
-	      var hasUserId = options.hasOwnProperty("userId");
-	      var hasGroupId = options.hasOwnProperty("groupId");
-	      var is = hasUserId && !hasGroupId && !hasId || hasGroupId && !hasUserId && !hasId || hasId && !hasUserId && !hasGroupId;
-
-	      if (!is) {
-	        throw {
-	          code: 400,
-	          content: "only contain userId or groupId or id"
-	        };
-	      }
-
-	      var hasType = options.hasOwnProperty("type");
-
-	      if (hasType && !hasId || hasType && !hasId) {
-	        throw {
-	          code: 400,
-	          content: "id and type is required"
-	        };
-	      }
-
-	      var key;
-
-	      if (hasId) {
-	        key = 'id';
-	        var typeKey = "type";
-	        var type = options[typeKey];
-	        validator_utils_1["default"].validateValIsEmpty(type, typeKey);
-	      } else if (hasUserId) {
-	        key = 'userId';
-	      } else if (hasGroupId) {
-	        key = 'groupId';
-	      }
-
-	      var targetId = options[key];
-	      validator_utils_1["default"].validateId(targetId, key);
-	    };
-
-	    return Histories;
-	  }();
-
-	  exports["default"] = Histories;
-	})(histories);
-
-	var teams = {};
-
-	var team = {};
-
-	var csOnlineRequest = {};
-
-	csOnlineRequest.__esModule = true;
-	csOnlineRequest.CSOnlineRequest = void 0;
-
-	var CSOnlineRequest =
-	/** @class */
-	function () {
-	  function CSOnlineRequest(teamId, teamData, staffData) {
-	    this.teamId = teamId;
-	    this.teamData = JSON.stringify(teamData);
-	    this.staffData = JSON.stringify(staffData);
-	  }
-
-	  return CSOnlineRequest;
-	}();
-
-	csOnlineRequest.CSOnlineRequest = CSOnlineRequest;
-
-	var csIsOnlineRequest = {};
-
-	csIsOnlineRequest.__esModule = true;
-	csIsOnlineRequest.CSIsOnlineRequest = void 0;
-
-	var CSIsOnlineRequest =
-	/** @class */
-	function () {
-	  function CSIsOnlineRequest(teamId) {
-	    this.teamIds = [teamId];
-	  }
-
-	  return CSIsOnlineRequest;
-	}();
-
-	csIsOnlineRequest.CSIsOnlineRequest = CSIsOnlineRequest;
-
-	var csOfflineRequest = {};
-
-	csOfflineRequest.__esModule = true;
-	csOfflineRequest.CSOfflineRequest = void 0;
-
-	var CSOfflineRequest =
-	/** @class */
-	function () {
-	  function CSOfflineRequest(teamId) {
-	    this.teamId = teamId;
-	  }
-
-	  return CSOfflineRequest;
-	}();
-
-	csOfflineRequest.CSOfflineRequest = CSOfflineRequest;
-
-	var currentConversation = {};
-
-	var csStatusQueryRequest = {};
-
-	csStatusQueryRequest.__esModule = true;
-	csStatusQueryRequest.CSStatusQueryRequest = void 0;
-
-	var CSStatusQueryRequest =
-	/** @class */
-	function () {
-	  function CSStatusQueryRequest(teamId, customerId) {
-	    this.teamId = teamId;
-	    this.customerId = customerId;
-	  }
-
-	  return CSStatusQueryRequest;
-	}();
-
-	csStatusQueryRequest.CSStatusQueryRequest = CSStatusQueryRequest;
-
-	var csAcceptRequest = {};
-
-	csAcceptRequest.__esModule = true;
-	csAcceptRequest.CSAcceptRequest = void 0;
-
-	var CSAcceptRequest =
-	/** @class */
-	function () {
-	  function CSAcceptRequest(customerId, teamId) {
-	    this.customerId = customerId;
-	    this.teamId = teamId;
-	  }
-
-	  return CSAcceptRequest;
-	}();
-
-	csAcceptRequest.CSAcceptRequest = CSAcceptRequest;
-
-	currentConversation.__esModule = true;
-	currentConversation.CurrentConversation = void 0;
-	var Rocket_1$5 = Rocket;
-	var RocketTypes_1$5 = RocketTypes;
-	var Permission_1$5 = Permission;
-	var SocketTimeout_1$5 = SocketTimeout;
-	var cs_status_query_request_1 = csStatusQueryRequest;
-	var cs_accept_request_1 = csAcceptRequest;
-
-	var CurrentConversation =
-	/** @class */
-	function () {
-	  function CurrentConversation(goEasySocket) {
-	    this.goEasySocket = goEasySocket;
-	  }
-
-	  CurrentConversation.prototype.accept = function (customerId, teamId) {
-	    var _this = this;
-
-	    return new Promise(function (resolve, reject) {
-	      var request = new cs_accept_request_1.CSAcceptRequest(customerId, teamId);
-	      var rocket = new Rocket_1$5["default"]({
-	        name: RocketTypes_1$5.RocketTypes.CS_ACCEPT_CONVERSATION,
-	        params: request,
-	        unique: true,
-	        permission: Permission_1$5.Permission.WRITE,
-	        singleTimeout: SocketTimeout_1$5.SocketTimeout.commonRequestSingle,
-	        totalTimeout: SocketTimeout_1$5.SocketTimeout.commonRequestTotal,
-	        fail: function fail(err) {
-	          reject(err);
-	        },
-	        success: function success(res) {
-	          if (res.code == 200) {
-	            resolve(res);
-	          } else {
-	            reject(res);
-	          }
-	        }
-	      });
-
-	      _this.goEasySocket.emit(rocket);
-	    });
-	  };
-
-	  CurrentConversation.prototype.end = function (customerId, teamId) {
-	    var _this = this;
-
-	    var request = new cs_accept_request_1.CSAcceptRequest(customerId, teamId);
-	    return new Promise(function (resolve, reject) {
-	      var rocket = new Rocket_1$5["default"]({
-	        name: RocketTypes_1$5.RocketTypes.CS_END_CONVERSATION,
-	        params: request,
-	        unique: true,
-	        permission: Permission_1$5.Permission.WRITE,
-	        singleTimeout: SocketTimeout_1$5.SocketTimeout.commonRequestSingle,
-	        totalTimeout: SocketTimeout_1$5.SocketTimeout.commonRequestTotal,
-	        fail: function fail(err) {
-	          reject(err);
-	        },
-	        success: function success(res) {
-	          if (res.code == 200) {
-	            resolve(res);
-	          } else {
-	            reject(res);
-	          }
-	        }
-	      });
-
-	      _this.goEasySocket.emit(rocket);
-	    });
-	  };
-
-	  CurrentConversation.prototype.queryCustomerStatus = function (teamId, options) {
-	    var _this = this;
-
-	    var request = new cs_status_query_request_1.CSStatusQueryRequest(teamId, options.id);
-	    return new Promise(function (resolve, reject) {
-	      var rocket = new Rocket_1$5["default"]({
-	        name: RocketTypes_1$5.RocketTypes.CS_QUERY_CONVERSATION,
-	        params: request,
-	        unique: true,
-	        permission: Permission_1$5.Permission.READ,
-	        singleTimeout: SocketTimeout_1$5.SocketTimeout.commonQuerySingle,
-	        totalTimeout: SocketTimeout_1$5.SocketTimeout.commonQueryTotal,
-	        fail: function fail(err) {
-	          reject(err);
-	        },
-	        success: function success(res) {
-	          if (res.code == 200) {
-	            var content = res.content;
-
-	            if (content.staff) {
-	              content.staff.data = JSON.parse(content.staff.data);
-	            }
-
-	            resolve(res);
-	          } else {
-	            reject(res);
-	          }
-	        }
-	      });
-
-	      _this.goEasySocket.emit(rocket);
-	    });
-	  };
-
-	  return CurrentConversation;
-	}();
-
-	currentConversation.CurrentConversation = CurrentConversation;
-
-	var __awaiter$6 = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
-	  function adopt(value) {
-	    return value instanceof P ? value : new P(function (resolve) {
-	      resolve(value);
-	    });
-	  }
-
-	  return new (P || (P = Promise))(function (resolve, reject) {
-	    function fulfilled(value) {
-	      try {
-	        step(generator.next(value));
-	      } catch (e) {
-	        reject(e);
-	      }
-	    }
-
-	    function rejected(value) {
-	      try {
-	        step(generator["throw"](value));
-	      } catch (e) {
-	        reject(e);
-	      }
-	    }
-
-	    function step(result) {
-	      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
-	    }
-
-	    step((generator = generator.apply(thisArg, _arguments || [])).next());
-	  });
-	};
-
-	var __generator$6 = commonjsGlobal && commonjsGlobal.__generator || function (thisArg, body) {
-	  var _ = {
-	    label: 0,
-	    sent: function sent() {
-	      if (t[0] & 1) throw t[1];
-	      return t[1];
-	    },
-	    trys: [],
-	    ops: []
-	  },
-	      f,
-	      y,
-	      t,
-	      g;
-	  return g = {
-	    next: verb(0),
-	    "throw": verb(1),
-	    "return": verb(2)
-	  }, typeof Symbol === "function" && (g[Symbol.iterator] = function () {
-	    return this;
-	  }), g;
-
-	  function verb(n) {
-	    return function (v) {
-	      return step([n, v]);
-	    };
-	  }
-
-	  function step(op) {
-	    if (f) throw new TypeError("Generator is already executing.");
-
-	    while (_) {
-	      try {
-	        if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-	        if (y = 0, t) op = [op[0] & 2, t.value];
-
-	        switch (op[0]) {
-	          case 0:
-	          case 1:
-	            t = op;
-	            break;
-
-	          case 4:
-	            _.label++;
-	            return {
-	              value: op[1],
-	              done: false
-	            };
-
-	          case 5:
-	            _.label++;
-	            y = op[1];
-	            op = [0];
-	            continue;
-
-	          case 7:
-	            op = _.ops.pop();
-
-	            _.trys.pop();
-
-	            continue;
-
-	          default:
-	            if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
-	              _ = 0;
-	              continue;
-	            }
-
-	            if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
-	              _.label = op[1];
-	              break;
-	            }
-
-	            if (op[0] === 6 && _.label < t[1]) {
-	              _.label = t[1];
-	              t = op;
-	              break;
-	            }
-
-	            if (t && _.label < t[2]) {
-	              _.label = t[2];
-
-	              _.ops.push(op);
-
-	              break;
-	            }
-
-	            if (t[2]) _.ops.pop();
-
-	            _.trys.pop();
-
-	            continue;
-	        }
-
-	        op = body.call(thisArg, _);
-	      } catch (e) {
-	        op = [6, e];
-	        y = 0;
-	      } finally {
-	        f = t = 0;
-	      }
-	    }
-
-	    if (op[0] & 5) throw op[1];
-	    return {
-	      value: op[0] ? op[1] : void 0,
-	      done: true
-	    };
-	  }
-	};
-
-	team.__esModule = true;
-	team.Team = void 0;
-	var GoEasy_1$2 = GoEasy$1;
-	var Rocket_1$4 = Rocket;
-	var RocketTypes_1$4 = RocketTypes;
-	var Permission_1$4 = Permission;
-	var SocketTimeout_1$4 = SocketTimeout;
-	var cs_online_request_1 = csOnlineRequest;
-	var cs_is_online_request_1 = csIsOnlineRequest;
-	var cs_offline_request_1 = csOfflineRequest;
-	var current_conversation_1 = currentConversation;
-	var validator_utils_1$3 = validatorUtils;
-	var callback_utils_1$5 = callbackUtils;
-	var im_1 = im;
-	var Calibrator_1$2 = Calibrator;
-
-	var Team =
-	/** @class */
-	function () {
-	  function Team(teamId, goEasySocket) {
-	    this.teamId = teamId;
-	    this.goEasySocket = goEasySocket;
-	    this.currentConversation = new current_conversation_1.CurrentConversation(goEasySocket);
-	  }
-
-	  Team.prototype["catch"] = function (functionObj, callbackOptions) {
-	    return __awaiter$6(this, void 0, void 0, function () {
-	      var data, err_1;
-	      return __generator$6(this, function (_a) {
-	        switch (_a.label) {
-	          case 0:
-	            _a.trys.push([0, 2,, 3]);
-
-	            validator_utils_1$3["default"].validateCallbackOptions(callbackOptions);
-	            return [4
-	            /*yield*/
-	            , functionObj()];
-
-	          case 1:
-	            data = _a.sent();
-	            callback_utils_1$5.CallbackUtils.onSuccess(callbackOptions, data);
-	            return [3
-	            /*break*/
-	            , 3];
-
-	          case 2:
-	            err_1 = _a.sent();
-	            callback_utils_1$5.CallbackUtils.onFailed(callbackOptions, err_1);
-	            return [3
-	            /*break*/
-	            , 3];
-
-	          case 3:
-	            return [2
-	            /*return*/
-	            ];
-	        }
-	      });
-	    });
-	  };
-
-	  Team.prototype.isOnline = function (option) {
-	    var _this = this;
-
-	    this["catch"](function () {
-	      return _this.staffIsOnline();
-	    }, option);
-	  };
-
-	  Team.prototype.staffIsOnline = function () {
-	    var _this = this;
-
-	    var request = new cs_is_online_request_1.CSIsOnlineRequest(this.teamId);
-	    return new Promise(function (resolve, reject) {
-	      var rocket = new Rocket_1$4["default"]({
-	        name: RocketTypes_1$4.RocketTypes.CS_IS_ONLINE,
-	        params: request,
-	        permission: Permission_1$4.Permission.READ,
-	        singleTimeout: SocketTimeout_1$4.SocketTimeout.commonQuerySingle,
-	        totalTimeout: SocketTimeout_1$4.SocketTimeout.commonQueryTotal,
-	        fail: function fail(err) {
-	          reject(err);
-	        },
-	        success: function success(res) {
-	          if (res.code == 200) {
-	            var content = res.content;
-
-	            if (content) {
-	              res.content = content[0].online;
-	              resolve(res);
-	            } else {
-	              resolve(res);
-	            }
-	          } else {
-	            reject(res);
-	          }
-	        }
-	      });
-
-	      _this.goEasySocket.emit(rocket);
-	    });
-	  };
-
-	  Team.prototype.online = function (option) {
-	    var _this = this;
-
-	    this["catch"](function () {
-	      if (!Calibrator_1$2["default"].isObject(option.staffData) || !Calibrator_1$2["default"].isObject(option.teamData)) {
-	        throw {
-	          code: 400,
-	          content: "staffData and teamData require an object"
-	        };
-	      }
-
-	      return _this.staffOnline(option);
-	    }, option);
-	  };
-
-	  Team.prototype.staffOnline = function (options) {
-	    var _this = this;
-
-	    var request = new cs_online_request_1.CSOnlineRequest(this.teamId, options.teamData, options.staffData);
-	    return new Promise(function (resolve, reject) {
-	      var rocket = new Rocket_1$4["default"]({
-	        name: RocketTypes_1$4.RocketTypes.CS_ONLINE,
-	        params: request,
-	        permission: Permission_1$4.Permission.WRITE,
-	        singleTimeout: SocketTimeout_1$4.SocketTimeout.commonRequestSingle,
-	        totalTimeout: SocketTimeout_1$4.SocketTimeout.commonRequestTotal,
-	        fail: function fail(err) {
-	          reject(err);
-	        },
-	        success: function success(res) {
-	          if (res.code == 200) {
-	            resolve(res);
-	          } else {
-	            reject(res);
-	          }
-	        }
-	      });
-
-	      _this.goEasySocket.emit(rocket);
-	    });
-	  };
-
-	  Team.prototype.offline = function (option) {
-	    var _this = this;
-
-	    this["catch"](function () {
-	      return _this.staffOffline(option);
-	    }, option);
-	  };
-
-	  Team.prototype.staffOffline = function (option) {
-	    var _this = this;
-
-	    var request = new cs_offline_request_1.CSOfflineRequest(this.teamId);
-	    return new Promise(function (resolve, reject) {
-	      var rocket = new Rocket_1$4["default"]({
-	        name: RocketTypes_1$4.RocketTypes.CS_OFFLINE,
-	        params: request,
-	        permission: Permission_1$4.Permission.WRITE,
-	        singleTimeout: SocketTimeout_1$4.SocketTimeout.commonRequestSingle,
-	        totalTimeout: SocketTimeout_1$4.SocketTimeout.commonRequestTotal,
-	        fail: function fail(err) {
-	          reject(err);
-	        },
-	        success: function success(res) {
-	          if (res.code == 200) {
-	            resolve(res);
-	          } else {
-	            reject(res);
-	          }
-	        }
-	      });
-
-	      _this.goEasySocket.emit(rocket);
-	    });
-	  };
-
-	  Team.prototype.customerStatus = function (options) {
-	    var _this = this;
-
-	    this["catch"](function () {
-	      validator_utils_1$3["default"].validateId(options.id, "id");
-	      return _this.currentConversation.queryCustomerStatus(_this.teamId, options);
-	    }, options);
-	  };
-
-	  Team.prototype.accept = function (options) {
-	    var _this = this;
-
-	    this["catch"](function () {
-	      validator_utils_1$3["default"].validateId(options.id, "id");
-	      return _this.currentConversation.accept(options.id, _this.teamId);
-	    }, options);
-	  };
-
-	  Team.prototype.end = function (options) {
-	    var _this = this;
-
-	    this["catch"](function () {
-	      validator_utils_1$3["default"].validateId(options.id, "id");
-	      return _this.currentConversation.end(options.id, _this.teamId);
-	    }, options);
-	  };
-
-	  Team.prototype.history = function (options) {
-	    im_1.IM.instance.history(options, this.teamId);
-	  };
-
-	  Team.prototype.markMessageAsRead = function (options) {
-	    im_1.IM.instance.markMessageAsRead(options, this.teamId);
-	  };
-
-	  Team.prototype.createTextMessage = function (createOptions) {
-	    var imMessage = im_1.IM.instance.createTextMessage(createOptions);
-	    this.setTeamId(imMessage);
-	    return imMessage;
-	  };
-
-	  Team.prototype.createImageMessage = function (createOptions) {
-	    var imMessage = im_1.IM.instance.createImageMessage(createOptions);
-	    this.setTeamId(imMessage);
-	    return imMessage;
-	  };
-
-	  Team.prototype.createFileMessage = function (createOptions) {
-	    var imMessage = im_1.IM.instance.createFileMessage(createOptions);
-	    this.setTeamId(imMessage);
-	    return imMessage;
-	  };
-
-	  Team.prototype.createAudioMessage = function (createOptions) {
-	    var imMessage = im_1.IM.instance.createAudioMessage(createOptions);
-	    this.setTeamId(imMessage);
-	    return imMessage;
-	  };
-
-	  Team.prototype.createVideoMessage = function (createOptions) {
-	    var imMessage = im_1.IM.instance.createVideoMessage(createOptions);
-	    this.setTeamId(imMessage);
-	    return imMessage;
-	  };
-
-	  Team.prototype.createCustomMessage = function (createOptions) {
-	    var imMessage = im_1.IM.instance.createCustomMessage(createOptions);
-	    this.setTeamId(imMessage);
-	    return imMessage;
-	  };
-
-	  Team.prototype.setTeamId = function (imMessage) {
-	    if (imMessage.scene() === GoEasy_1$2.Scene.CS) {
-	      var csMessage = imMessage;
-	      csMessage.teamId = this.teamId;
-	    }
-	  };
-
-	  return Team;
-	}();
-
-	team.Team = Team;
-
-	teams.__esModule = true;
-	teams.Teams = void 0;
-	var team_1 = team;
-	var validator_utils_1$2 = validatorUtils;
-
-	var Teams =
-	/** @class */
-	function () {
-	  function Teams(goEasySocket) {
-	    this.teams = new Map();
-	    this.goEasySocket = goEasySocket;
-	  }
-
-	  Teams.prototype.findOrCreate = function (teamId) {
-	    validator_utils_1$2["default"].validateId(teamId, "teamId");
-	    var team = this.teams.get(teamId);
-
-	    if (!team) {
-	      team = new team_1.Team(teamId.toString(), this.goEasySocket);
-	      this.teams.set(teamId.toString(), team);
-	    }
-
-	    return team;
-	  };
-
-	  return Teams;
-	}();
-
-	teams.Teams = Teams;
-
-	var IMPendingMessageReceiver = {};
-
-	(function (exports) {
-
-	  exports.__esModule = true;
-	  var internal_events_1 = internalEvents;
-	  var goeasy_event_center_1 = goeasyEventCenter;
-	  var remote_abbr_message_builder_1 = remoteAbbrMessageBuilder;
-	  var RemoteEvents_1 = RemoteEvents;
-	  var GNS_1 = GNS$1;
-	  var Calibrator_1 = Calibrator;
-	  var im_1 = im;
-	  var GoEasy_1 = GoEasy$1;
-
-	  var IMPendingMessageReceiver =
-	  /** @class */
-	  function () {
-	    function IMPendingMessageReceiver() {
-	      this.builder = new remote_abbr_message_builder_1.RemoteAbbrMessageBuilder();
-	      GNS_1.GNS.instance.addAssembler(new (
-	      /** @class */
-	      function () {
-	        function class_1() {}
-
-	        class_1.prototype.assemble = function (oldPayload) {
-	          var newPayload = {
-	            // im fields
-	            messageId: oldPayload.id,
-	            timestamp: oldPayload.tm,
-	            type: oldPayload.t,
-	            senderId: oldPayload.sid,
-	            toType: oldPayload.tt
-	          };
-
-	          if (oldPayload.tt === GoEasy_1.Scene.GROUP) {
-	            newPayload.groupId = oldPayload.gid;
-	          }
-
-	          return newPayload;
-	        };
-
-	        class_1.prototype.support = function (oldPayload) {
-	          return !!oldPayload.sid;
-	        };
-
-	        return class_1;
-	      }())());
-	    }
-
-	    IMPendingMessageReceiver.prototype.initialGoEasySocket = function (goEasySocket) {
-	      this.goEasySocket = goEasySocket;
-	      goEasySocket.addMessageObserver(RemoteEvents_1.RemoteEvents.PENDING_MESSAGE, this.onMessageReceived.bind(this));
-	    };
-
-	    IMPendingMessageReceiver.prototype.onMessageReceived = function (message) {
-	      console.log('IMPendingMessageReceiver -> onMessageReceived:', message);
-	      var receivedMessage = this.builder.build(message);
-	      this.sendAck(receivedMessage);
-	      this.createNotification(message);
-	      goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.PENDING_MESSAGE_RECEIVED, receivedMessage);
-	    };
-
-	    IMPendingMessageReceiver.prototype.sendAck = function (message) {
-	      this.goEasySocket.sendAck('imAck', {
-	        "publishGuid": message.messageId
-	      });
-	    };
-
-	    IMPendingMessageReceiver.prototype.createNotification = function (message) {
-	      var supportGNS = GNS_1.GNS.instance.supportNotification();
-
-	      if (!Calibrator_1["default"].isObject(message.nt) || message.s === im_1.IM.userId || !supportGNS) {
-	        return;
-	      }
-
-	      var data = {
-	        id: message.i,
-	        tm: message.ts,
-	        t: message.mt,
-	        sid: message.s,
-	        tt: message.t
-	      };
-
-	      if (data.tt === GoEasy_1.Scene.GROUP) {
-	        data.gid = message.r;
-	      }
-
-	      GNS_1.GNS.instance.createLocalNotification(message.nt.t, message.nt.c, data);
-	    };
-
-	    return IMPendingMessageReceiver;
-	  }();
-
-	  exports["default"] = IMPendingMessageReceiver;
-	})(IMPendingMessageReceiver);
-
 	im.__esModule = true;
 	im.IM = void 0;
 	var api_event_center_1$1 = apiEventCenter;
 	var GoEasyUploader_1 = GoEasyUploader$1;
-	var DataCache_1 = DataCache;
 	var IMMessageSender_1 = IMMessageSender;
 	var conversation_list_1 = conversationList;
 	var IMReceiver_1 = IMReceiver;
@@ -18260,62 +18490,48 @@
 	var GroupHereNow_1 = GroupHereNow;
 	var UserPresenceSubscriber_1 = UserPresenceSubscriber;
 	var UserHereNow_1 = UserHereNow;
-	var Calibrator_1$1 = Calibrator;
+	var Calibrator_1$2 = Calibrator;
 	var ModuleTypes_1 = ModuleTypes;
-	var validator_utils_1$1 = validatorUtils;
-	var callback_utils_1$4 = callbackUtils;
+	var validator_utils_1$4 = validatorUtils;
+	var callback_utils_1$7 = callbackUtils;
 	var IMMessageBuilder_1 = IMMessageBuilder$1;
 	var MessageType_1 = MessageType;
 	var histories_1 = histories;
-	var teams_1 = teams;
-	var IMPendingMessageReceiver_1 = IMPendingMessageReceiver;
+	var g_1$2 = g;
 
 	var IM =
 	/** @class */
 	function () {
 	  function IM(options) {
-	    this.apiEventCenter = new api_event_center_1$1.ApiEventCenter();
 	    this._iMReceiver = new IMReceiver_1["default"]();
-	    this.imPendingReceiver = new IMPendingMessageReceiver_1["default"]();
 	    this.options = options;
+	    IM.aec = new api_event_center_1$1.ApiEventCenter();
+	    this._userHereNow = new UserHereNow_1["default"]();
+	    this.goEasyUploader = new GoEasyUploader_1.GoEasyUploader();
+	    this._groupHereNow = new GroupHereNow_1["default"]();
+	    this._groupOnlineCount = new GroupOnlineCount_1["default"]();
+	    this.groupMessageSubscriber = new GroupMessageSubscriber_1["default"]();
 	  }
 
 	  IM.init = function (options) {
 	    IM.instance = new IM(options);
 	  };
 
-	  IM.prototype.initialBeforeConnect = function (user) {
-	    IM.userId = user.id ? user.id.toString() : user.id;
-	    IM.userData = user.data;
-	  };
+	  IM.prototype.afterConnect = function () {
+	    this._iMReceiver.initialGoEasySocket();
 
-	  IM.prototype.initialGoEasySocket = function (goEasySocket) {
-	    this._goEasySocket = goEasySocket;
-	    this.goEasyUploader = new GoEasyUploader_1.GoEasyUploader(goEasySocket);
-	    this._userHereNow = new UserHereNow_1["default"](goEasySocket);
-	    this._groupHereNow = new GroupHereNow_1["default"](goEasySocket);
-	    this._groupOnlineCount = new GroupOnlineCount_1["default"](goEasySocket);
-	    this._dataCache = new DataCache_1["default"]({
-	      id: IM.userId,
-	      data: IM.userData
-	    }, goEasySocket);
-	    this.messageBuilder = new IMMessageBuilder_1.IMMessageBuilder(IM.userId, IM.userData);
-	    this.messageSender = new IMMessageSender_1["default"](goEasySocket, this._dataCache);
-
-	    this._iMReceiver.initialGoEasySocket(goEasySocket);
-
-	    this.imPendingReceiver.initialGoEasySocket(goEasySocket);
-	    this.groupMessageSubscriber = new GroupMessageSubscriber_1["default"](goEasySocket);
-	    this.histories = new histories_1["default"](this._goEasySocket, this.apiEventCenter, IM.userId);
-	    this.conversations = new conversation_list_1["default"](goEasySocket, this.apiEventCenter, this._dataCache, IM.userId, this.histories);
-	    this._groupPresenceSubscriber = new GroupPresenceSubscriber_1["default"](goEasySocket, this.apiEventCenter);
-	    this._userPresenceSubscriber = new UserPresenceSubscriber_1["default"](goEasySocket, this.apiEventCenter);
-	    this.teams = new teams_1.Teams(this._goEasySocket);
+	    this.messageBuilder = new IMMessageBuilder_1.IMMessageBuilder();
+	    this.messageSender = new IMMessageSender_1["default"]();
+	    this.histories = histories_1["default"].init();
+	    this.histories.initialListeners();
+	    this.conversations = new conversation_list_1["default"]();
+	    this._groupPresenceSubscriber = new GroupPresenceSubscriber_1["default"]();
+	    this._userPresenceSubscriber = new UserPresenceSubscriber_1["default"]();
 	  }; // todo: 函数名
 
 
 	  IM.prototype.validateModules = function () {
-	    if (Calibrator_1$1["default"].isUndef(IM.userId)) {
+	    if (Calibrator_1$2["default"].isUndef(g_1$2.G.s())) {
 	      throw Error('Please call connect() first.');
 	    }
 
@@ -18327,20 +18543,20 @@
 	  IM.prototype["catch"] = function (functionObj, callbackOptions) {
 	    try {
 	      this.validateModules();
-	      validator_utils_1$1["default"].validateCallbackOptions(callbackOptions);
+	      validator_utils_1$4["default"].validateCallbackOptions(callbackOptions);
 	      functionObj();
 	    } catch (err) {
-	      callback_utils_1$4.CallbackUtils.onFailed(callbackOptions, err);
+	      callback_utils_1$7.CallbackUtils.onFailed(callbackOptions, err);
 	    }
 	  }; // ----------- External API ----------
 
 
 	  IM.prototype.on = function (event, callBack) {
-	    this.apiEventCenter.on(event, callBack);
+	    IM.aec.on(event, callBack);
 	  };
 
 	  IM.prototype.off = function (event, callBack) {
-	    this.apiEventCenter.off(event, callBack);
+	    IM.aec.off(event, callBack);
 	  };
 
 	  IM.prototype.createTextMessage = function (createOptions) {
@@ -18536,11 +18752,6 @@
 	    this["catch"](function () {
 	      return _this._groupOnlineCount.get(options);
 	    }, options);
-	  }; //CS related
-
-
-	  IM.prototype.csTeam = function (teamId) {
-	    return this.teams.findOrCreate(teamId);
 	  };
 
 	  IM.prototype.latestPendingConversations = function (options) {
@@ -18715,7 +18926,7 @@
 
 	dialRequest.__esModule = true;
 	dialRequest.DialRequest = void 0;
-	var GoEasy_1$1 = GoEasy$1;
+	var GoEasy_1$2 = GoEasy$1;
 
 	var DialRequest =
 	/** @class */
@@ -18737,11 +18948,11 @@
 	  }
 
 	  DialRequest.buildPrivateRequest = function (mediaType, invitees, notification, callId) {
-	    return new DialRequest(GoEasy_1$1.Scene.PRIVATE.toString(), mediaType, invitees, notification, callId);
+	    return new DialRequest(GoEasy_1$2.Scene.PRIVATE.toString(), mediaType, invitees, notification, callId);
 	  };
 
 	  DialRequest.buildGroupRequest = function (mediaType, groupId, groupData, invitees, notification, callId) {
-	    var request = new DialRequest(GoEasy_1$1.Scene.GROUP.toString(), mediaType, invitees, notification, callId);
+	    var request = new DialRequest(GoEasy_1$2.Scene.GROUP.toString(), mediaType, invitees, notification, callId);
 	    request.groupId = groupId;
 	    request.groupData = JSON.stringify(groupData);
 	    return request;
@@ -18774,6 +18985,392 @@
 	    RTCInternalEvents[RTCInternalEvents["RECEIVED_RTC_REMOTE_FLOW"] = 11] = "RECEIVED_RTC_REMOTE_FLOW";
 	  })(exports.RTCInternalEvents || (exports.RTCInternalEvents = {}));
 	})(rtcInternalEvents);
+
+	var __awaiter$6 = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
+	  function adopt(value) {
+	    return value instanceof P ? value : new P(function (resolve) {
+	      resolve(value);
+	    });
+	  }
+
+	  return new (P || (P = Promise))(function (resolve, reject) {
+	    function fulfilled(value) {
+	      try {
+	        step(generator.next(value));
+	      } catch (e) {
+	        reject(e);
+	      }
+	    }
+
+	    function rejected(value) {
+	      try {
+	        step(generator["throw"](value));
+	      } catch (e) {
+	        reject(e);
+	      }
+	    }
+
+	    function step(result) {
+	      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+	    }
+
+	    step((generator = generator.apply(thisArg, _arguments || [])).next());
+	  });
+	};
+
+	var __generator$6 = commonjsGlobal && commonjsGlobal.__generator || function (thisArg, body) {
+	  var _ = {
+	    label: 0,
+	    sent: function sent() {
+	      if (t[0] & 1) throw t[1];
+	      return t[1];
+	    },
+	    trys: [],
+	    ops: []
+	  },
+	      f,
+	      y,
+	      t,
+	      g;
+	  return g = {
+	    next: verb(0),
+	    "throw": verb(1),
+	    "return": verb(2)
+	  }, typeof Symbol === "function" && (g[Symbol.iterator] = function () {
+	    return this;
+	  }), g;
+
+	  function verb(n) {
+	    return function (v) {
+	      return step([n, v]);
+	    };
+	  }
+
+	  function step(op) {
+	    if (f) throw new TypeError("Generator is already executing.");
+
+	    while (_) {
+	      try {
+	        if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+	        if (y = 0, t) op = [op[0] & 2, t.value];
+
+	        switch (op[0]) {
+	          case 0:
+	          case 1:
+	            t = op;
+	            break;
+
+	          case 4:
+	            _.label++;
+	            return {
+	              value: op[1],
+	              done: false
+	            };
+
+	          case 5:
+	            _.label++;
+	            y = op[1];
+	            op = [0];
+	            continue;
+
+	          case 7:
+	            op = _.ops.pop();
+
+	            _.trys.pop();
+
+	            continue;
+
+	          default:
+	            if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
+	              _ = 0;
+	              continue;
+	            }
+
+	            if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
+	              _.label = op[1];
+	              break;
+	            }
+
+	            if (op[0] === 6 && _.label < t[1]) {
+	              _.label = t[1];
+	              t = op;
+	              break;
+	            }
+
+	            if (t && _.label < t[2]) {
+	              _.label = t[2];
+
+	              _.ops.push(op);
+
+	              break;
+	            }
+
+	            if (t[2]) _.ops.pop();
+
+	            _.trys.pop();
+
+	            continue;
+	        }
+
+	        op = body.call(thisArg, _);
+	      } catch (e) {
+	        op = [6, e];
+	        y = 0;
+	      } finally {
+	        f = t = 0;
+	      }
+	    }
+
+	    if (op[0] & 5) throw op[1];
+	    return {
+	      value: op[0] ? op[1] : void 0,
+	      done: true
+	    };
+	  }
+	};
+
+	dialer.__esModule = true;
+	dialer.Dialer = void 0;
+	var call_1$7 = call;
+	var Rocket_1$5 = Rocket;
+	var Permission_1$5 = Permission;
+	var SocketTimeout_1$5 = SocketTimeout;
+	var rtc_user_1$2 = rtcUser;
+	var dial_request_1 = dialRequest;
+	var GoEasy_1$1 = GoEasy$1;
+	var media_type_1$1 = mediaType;
+	var goeasy_event_center_1$9 = goeasyEventCenter;
+	var rtc_internal_events_1$7 = rtcInternalEvents;
+	var callback_utils_1$6 = callbackUtils;
+	var RocketTypes_1$5 = RocketTypes;
+	var Calibrator_1$1 = Calibrator;
+	var validator_utils_1$3 = validatorUtils;
+	var rtc_1$1 = rtc;
+
+	var Dialer =
+	/** @class */
+	function () {
+	  function Dialer(socket, cloudRTC) {
+	    this.socket = socket;
+	    this.cloudRTC = cloudRTC;
+	  }
+
+	  Dialer.prototype.dial = function (callOptions) {
+	    return __awaiter$6(this, void 0, void 0, function () {
+	      var invitees, currentUserId, cloudRTCToken, call;
+	      return __generator$6(this, function (_a) {
+	        switch (_a.label) {
+	          case 0:
+	            this.validate(callOptions);
+	            invitees = new Array();
+
+	            if (callOptions.to.users) {
+	              callOptions.to.users.forEach(function (user) {
+	                invitees.push(new rtc_user_1$2.RTCUser(user.id, user.data, false, false, false));
+	              });
+	            } else {
+	              invitees.push(new rtc_user_1$2.RTCUser(callOptions.to.id, callOptions.to.data, false, false, false));
+	            }
+
+	            currentUserId = rtc_1$1.RTC.userId;
+	            return [4
+	            /*yield*/
+	            , this.askNewToken()];
+
+	          case 1:
+	            cloudRTCToken = _a.sent();
+	            cloudRTCToken.video = false;
+	            cloudRTCToken.voice = false;
+	            this.cloudRTC.createEngine(currentUserId);
+	            return [4
+	            /*yield*/
+	            , this.cloudRTC.join(cloudRTCToken)];
+
+	          case 2:
+	            _a.sent();
+
+	            call = call_1$7.Call.buildDialingCall(cloudRTCToken.callId, callOptions.mediaType, callOptions.to.type, invitees, currentUserId, this.socket.userData);
+	            console.info("init call: " + JSON.stringify(call));
+	            return [4
+	            /*yield*/
+	            , this.sendDialRequest(callOptions, call.id)];
+
+	          case 3:
+	            _a.sent();
+
+	            callback_utils_1$6.CallbackUtils.onSuccess(callOptions);
+	            return [2
+	            /*return*/
+	            ];
+	        }
+	      });
+	    });
+	  };
+
+	  Dialer.prototype.askNewToken = function () {
+	    return __awaiter$6(this, void 0, void 0, function () {
+	      var _this = this;
+
+	      return __generator$6(this, function (_a) {
+	        return [2
+	        /*return*/
+	        , new Promise(function (resolve, reject) {
+	          var rocket = new Rocket_1$5["default"]({
+	            name: RocketTypes_1$5.RocketTypes.RTC_ASK_NEW_TOKEN,
+	            params: {},
+	            permission: Permission_1$5.Permission.WRITE,
+	            singleTimeout: SocketTimeout_1$5.SocketTimeout.commonRequestSingle,
+	            totalTimeout: SocketTimeout_1$5.SocketTimeout.commonRequestTotal,
+	            success: function success(res) {
+	              resolve(JSON.parse(res.content));
+	            },
+	            fail: function fail(err) {
+	              reject({
+	                code: 400,
+	                content: err.content
+	              });
+	            }
+	          });
+
+	          _this.socket.emit(rocket);
+	        })];
+	      });
+	    });
+	  };
+	  /****
+	   *  to
+	   *      to.type 只能是group或者private
+	   *      to.id 字符串或者数字, 不能包含自己
+	   *      to.data  空，字符串或者对象
+	   *      users，要么为空， 要么是数组，并且每个对象里都应该包含id和data，并且每个id和data都按照上边的规则来
+	   *  mediaType，必填，必须是，voice或者video， 枚举验证？
+	   *  notification：可以为空，若不为空，必须有title和body，并且长度要与之前的匹配
+	   *
+	   */
+
+
+	  Dialer.prototype.validate = function (callOptions) {
+	    if (call_1$7.Call.current != null) {
+	      throw {
+	        code: 400,
+	        content: 'The current call has not been end.'
+	      };
+	    }
+
+	    validator_utils_1$3["default"].validateId(callOptions.to.id, "to.id");
+
+	    if (callOptions.to.type == GoEasy_1$1.Scene.PRIVATE) {
+	      if (callOptions.to.id === rtc_1$1.RTC.userId) {
+	        throw {
+	          code: 400,
+	          content: 'to.id should not be current caller id.'
+	        };
+	      }
+	    } else if (callOptions.to.type == GoEasy_1$1.Scene.GROUP) {
+	      if (!Calibrator_1$1["default"].isArray(callOptions.to.users) || Calibrator_1$1["default"].isEmpty(callOptions.to.users)) {
+	        throw {
+	          code: 400,
+	          content: 'to.users must be an non-empty array.'
+	        };
+	      }
+
+	      callOptions.to.users.forEach(function (user) {
+	        validator_utils_1$3["default"].validateId(user.id, "to.users.id");
+	      });
+	    } else {
+	      throw {
+	        code: 400,
+	        content: "to.type must be 'private' or 'group."
+	      };
+	    }
+
+	    if (Calibrator_1$1["default"].isEmpty(callOptions.mediaType) || callOptions.mediaType !== media_type_1$1.MediaType.VOICE && callOptions.mediaType !== media_type_1$1.MediaType.VIDEO) {
+	      throw {
+	        code: 400,
+	        content: 'media type is invalid.'
+	      };
+	    }
+
+	    validator_utils_1$3["default"].validateNotification(callOptions.notification);
+	  };
+	  /**
+	   *
+	   * todo: 这里到底应该传callOption还是call
+	   * 按理说，callOption帮助创建好了call对象，就不应该传的太深，call应该来接替这个工作，但是call里边没有notification
+	   *
+	   *
+	   * @param callOptions
+	   * @param callId
+	   */
+
+
+	  Dialer.prototype.sendDialRequest = function (callOptions, callId) {
+	    var _this = this;
+
+	    var request;
+	    var invitees;
+
+	    if (callOptions.to.type === GoEasy_1$1.Scene.GROUP) {
+	      invitees = callOptions.to.users;
+	      request = dial_request_1.DialRequest.buildGroupRequest(callOptions.mediaType.toString(), callOptions.to.id, callOptions.to.data, invitees, callOptions.notification, callId);
+	    } else {
+	      invitees = new Array();
+	      invitees.push({
+	        id: callOptions.to.id,
+	        data: callOptions.to.data
+	      });
+	      request = dial_request_1.DialRequest.buildPrivateRequest(callOptions.mediaType.toString(), invitees, callOptions.notification, callId);
+	    }
+
+	    return new Promise(function (resolve, reject) {
+	      var rocket = new Rocket_1$5["default"]({
+	        name: RocketTypes_1$5.RocketTypes.RTC_DIAL,
+	        params: request,
+	        permission: Permission_1$5.Permission.WRITE,
+	        singleTimeout: SocketTimeout_1$5.SocketTimeout.commonRequestSingle,
+	        totalTimeout: SocketTimeout_1$5.SocketTimeout.commonRequestTotal,
+	        success: function success() {
+	          resolve();
+	        },
+	        fail: function fail(err) {
+	          //todo：确认是具体的拨打失败事件，还是通用的通话结束事件
+	          goeasy_event_center_1$9.GoEasyEventCenter.fire(rtc_internal_events_1$7.RTCInternalEvents.CLIENT_DIAL_FAILED);
+	          reject({
+	            code: 400,
+	            content: err.content
+	          });
+	        }
+	      });
+
+	      _this.socket.emit(rocket);
+	    });
+	  };
+
+	  return Dialer;
+	}();
+
+	dialer.Dialer = Dialer;
+
+	var ringer = {};
+
+	var endReason = {};
+
+	(function (exports) {
+
+	  exports.__esModule = true;
+	  exports.EndReason = void 0;
+
+	  (function (EndReason) {
+	    EndReason["USER_BUSY"] = "USER_BUSY";
+	    EndReason["USER_TIMEOUT"] = "USER_TIMEOUT";
+	    EndReason["USER_REJECTED"] = "USER_REJECTED";
+	    EndReason["USER_HANGUP"] = "USER_HANGUP";
+	    EndReason["LOCAL_TIMEOUT"] = "LOCAL_TIMEOUT";
+	    EndReason["OTHER_DEVICE_HANDLED"] = "OTHER_DEVICE_HANDLED";
+	    EndReason["NO_USER_ACCEPT"] = "NO_USER_ACCEPT";
+	    EndReason["USER_CANCEL"] = "USER_CANCEL";
+	  })(exports.EndReason || (exports.EndReason = {}));
+	})(endReason);
 
 	var __awaiter$5 = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
 	  function adopt(value) {
@@ -18918,248 +19515,281 @@
 	  }
 	};
 
-	dialer.__esModule = true;
-	dialer.Dialer = void 0;
-	var call_1$7 = call;
-	var Rocket_1$3 = Rocket;
-	var Permission_1$3 = Permission;
-	var SocketTimeout_1$3 = SocketTimeout;
-	var rtc_user_1$2 = rtcUser;
-	var dial_request_1 = dialRequest;
-	var GoEasy_1 = GoEasy$1;
-	var media_type_1$1 = mediaType;
-	var goeasy_event_center_1$7 = goeasyEventCenter;
-	var rtc_internal_events_1$7 = rtcInternalEvents;
-	var callback_utils_1$3 = callbackUtils;
-	var RocketTypes_1$3 = RocketTypes;
-	var Calibrator_1 = Calibrator;
-	var validator_utils_1 = validatorUtils;
-	var rtc_1$1 = rtc;
+	ringer.__esModule = true;
+	ringer.Ringer = void 0;
+	var RemoteEvents_1$3 = RemoteEvents;
+	var call_1$6 = call;
+	var goeasy_event_center_1$8 = goeasyEventCenter;
+	var rtc_internal_events_1$6 = rtcInternalEvents;
+	var rtc_user_1$1 = rtcUser;
+	var rtc_api_events_1$2 = rtcApiEvents;
+	var GNS_1 = GNS$1;
+	var rtc_1 = rtc;
+	var end_reason_1$1 = endReason;
+	var rtc_call_status_1$2 = rtcCallStatus;
 
-	var Dialer =
+	var Ringer =
 	/** @class */
 	function () {
-	  function Dialer(socket, cloudRTC) {
-	    this.socket = socket;
-	    this.cloudRTC = cloudRTC;
+	  function Ringer(apiEventCenter) {
+	    this.apiEventCenter = apiEventCenter;
+	    GNS_1.GNS.instance.addAssembler(new (
+	    /** @class */
+	    function () {
+	      function class_1() {}
+
+	      class_1.prototype.assemble = function (oldPayload) {
+	        return {
+	          callId: oldPayload.callId,
+	          type: oldPayload.type,
+	          mediaType: oldPayload.mediaType,
+	          inviterId: oldPayload.inviterId,
+	          toId: oldPayload.toId
+	        };
+	      };
+
+	      class_1.prototype.support = function (oldPayload) {
+	        return !!oldPayload.callId;
+	      };
+
+	      return class_1;
+	    }())());
 	  }
 
-	  Dialer.prototype.dial = function (callOptions) {
-	    return __awaiter$5(this, void 0, void 0, function () {
-	      var invitees, currentUserId, cloudRTCToken, call;
-	      return __generator$5(this, function (_a) {
-	        switch (_a.label) {
-	          case 0:
-	            this.validate(callOptions);
-	            invitees = new Array();
-
-	            if (callOptions.to.users) {
-	              callOptions.to.users.forEach(function (user) {
-	                invitees.push(new rtc_user_1$2.RTCUser(user.id, user.data, false, false, false));
-	              });
-	            } else {
-	              invitees.push(new rtc_user_1$2.RTCUser(callOptions.to.id, callOptions.to.data, false, false, false));
-	            }
-
-	            currentUserId = rtc_1$1.RTC.userId;
-	            return [4
-	            /*yield*/
-	            , this.askNewToken()];
-
-	          case 1:
-	            cloudRTCToken = _a.sent();
-	            cloudRTCToken.video = false;
-	            cloudRTCToken.voice = false;
-	            this.cloudRTC.createEngine(currentUserId);
-	            return [4
-	            /*yield*/
-	            , this.cloudRTC.join(cloudRTCToken)];
-
-	          case 2:
-	            _a.sent();
-
-	            call = call_1$7.Call.buildDialingCall(cloudRTCToken.callId, callOptions.mediaType, callOptions.to.type, invitees, currentUserId, this.socket.userData);
-	            console.info("init call: " + JSON.stringify(call));
-	            return [4
-	            /*yield*/
-	            , this.sendDialRequest(callOptions, call.id)];
-
-	          case 3:
-	            _a.sent();
-
-	            callback_utils_1$3.CallbackUtils.onSuccess(callOptions);
-	            return [2
-	            /*return*/
-	            ];
-	        }
-	      });
-	    });
-	  };
-
-	  Dialer.prototype.askNewToken = function () {
-	    return __awaiter$5(this, void 0, void 0, function () {
-	      var _this = this;
-
-	      return __generator$5(this, function (_a) {
-	        return [2
-	        /*return*/
-	        , new Promise(function (resolve, reject) {
-	          var rocket = new Rocket_1$3["default"]({
-	            name: RocketTypes_1$3.RocketTypes.RTC_ASK_NEW_TOKEN,
-	            params: {},
-	            permission: Permission_1$3.Permission.WRITE,
-	            singleTimeout: SocketTimeout_1$3.SocketTimeout.commonRequestSingle,
-	            totalTimeout: SocketTimeout_1$3.SocketTimeout.commonRequestTotal,
-	            success: function success(res) {
-	              resolve(JSON.parse(res.content));
-	            },
-	            fail: function fail(err) {
-	              reject({
-	                code: 400,
-	                content: err.content
-	              });
-	            }
-	          });
-
-	          _this.socket.emit(rocket);
-	        })];
-	      });
-	    });
-	  };
-	  /****
-	   *  to
-	   *      to.type 只能是group或者private
-	   *      to.id 字符串或者数字, 不能包含自己
-	   *      to.data  空，字符串或者对象
-	   *      users，要么为空， 要么是数组，并且每个对象里都应该包含id和data，并且每个id和data都按照上边的规则来
-	   *  mediaType，必填，必须是，voice或者video， 枚举验证？
-	   *  notification：可以为空，若不为空，必须有title和body，并且长度要与之前的匹配
-	   *
-	   */
-
-
-	  Dialer.prototype.validate = function (callOptions) {
-	    if (call_1$7.Call.current != null) {
-	      throw {
-	        code: 400,
-	        content: 'The current call has not been end.'
-	      };
-	    }
-
-	    validator_utils_1["default"].validateId(callOptions.to.id, "to.id");
-
-	    if (callOptions.to.type == GoEasy_1.Scene.PRIVATE) {
-	      if (callOptions.to.id === rtc_1$1.RTC.userId) {
-	        throw {
-	          code: 400,
-	          content: 'to.id should not be current caller id.'
-	        };
-	      }
-	    } else if (callOptions.to.type == GoEasy_1.Scene.GROUP) {
-	      if (!Calibrator_1["default"].isArray(callOptions.to.users) || Calibrator_1["default"].isEmpty(callOptions.to.users)) {
-	        throw {
-	          code: 400,
-	          content: 'to.users must be an non-empty array.'
-	        };
-	      }
-
-	      callOptions.to.users.forEach(function (user) {
-	        validator_utils_1["default"].validateId(user.id, "to.users.id");
-	      });
-	    } else {
-	      throw {
-	        code: 400,
-	        content: "to.type must be 'private' or 'group."
-	      };
-	    }
-
-	    if (Calibrator_1["default"].isEmpty(callOptions.mediaType) || callOptions.mediaType !== media_type_1$1.MediaType.VOICE && callOptions.mediaType !== media_type_1$1.MediaType.VIDEO) {
-	      throw {
-	        code: 400,
-	        content: 'media type is invalid.'
-	      };
-	    }
-
-	    validator_utils_1["default"].validateNotification(callOptions.notification);
-	  };
-	  /**
-	   *
-	   * todo: 这里到底应该传callOption还是call
-	   * 按理说，callOption帮助创建好了call对象，就不应该传的太深，call应该来接替这个工作，但是call里边没有notification
-	   *
-	   *
-	   * @param callOptions
-	   * @param callId
-	   */
-
-
-	  Dialer.prototype.sendDialRequest = function (callOptions, callId) {
+	  Ringer.prototype.initialSocket = function (socket, cloudRTC) {
 	    var _this = this;
 
-	    var request;
-	    var invitees;
-
-	    if (callOptions.to.type === GoEasy_1.Scene.GROUP) {
-	      invitees = callOptions.to.users;
-	      request = dial_request_1.DialRequest.buildGroupRequest(callOptions.mediaType.toString(), callOptions.to.id, callOptions.to.data, invitees, callOptions.notification, callId);
-	    } else {
-	      invitees = new Array();
-	      invitees.push({
-	        id: callOptions.to.id,
-	        data: callOptions.to.data
-	      });
-	      request = dial_request_1.DialRequest.buildPrivateRequest(callOptions.mediaType.toString(), invitees, callOptions.notification, callId);
-	    }
-
-	    return new Promise(function (resolve, reject) {
-	      var rocket = new Rocket_1$3["default"]({
-	        name: RocketTypes_1$3.RocketTypes.RTC_DIAL,
-	        params: request,
-	        permission: Permission_1$3.Permission.WRITE,
-	        singleTimeout: SocketTimeout_1$3.SocketTimeout.commonRequestSingle,
-	        totalTimeout: SocketTimeout_1$3.SocketTimeout.commonRequestTotal,
-	        success: function success() {
-	          resolve();
-	        },
-	        fail: function fail(err) {
-	          //todo：确认是具体的拨打失败事件，还是通用的通话结束事件
-	          goeasy_event_center_1$7.GoEasyEventCenter.fire(rtc_internal_events_1$7.RTCInternalEvents.CLIENT_DIAL_FAILED);
-	          reject({
-	            code: 400,
-	            content: err.content
-	          });
-	        }
-	      });
-
-	      _this.socket.emit(rocket);
+	    this.socket = socket;
+	    this.cloudRTC = cloudRTC;
+	    this.socket.addMessageObserver(RemoteEvents_1$3.RemoteEvents.RTC_RING_EVENT, this.onRing.bind(this));
+	    this.socket.addMessageObserver(RemoteEvents_1$3.RemoteEvents.RTC_CANCEL_RING, function (ringOtherEndEvent) {
+	      return _this.onCancelRing(ringOtherEndEvent);
 	    });
 	  };
 
-	  return Dialer;
+	  Ringer.prototype.onCancelRing = function (cancelRingEvent) {
+	    return __awaiter$5(this, void 0, void 0, function () {
+	      var result;
+	      return __generator$5(this, function (_a) {
+	        result = {
+	          action: end_reason_1$1.EndReason.OTHER_DEVICE_HANDLED
+	        };
+	        console.info("通话在其他端处理: " + JSON.stringify(cancelRingEvent));
+
+	        if (cancelRingEvent.callId === call_1$6.Call.current.id && cancelRingEvent.userId === rtc_1.RTC.userId && call_1$6.Call.current.status === rtc_call_status_1$2.RTCCallStatus.ringing) {
+	          this.apiEventCenter.fire(rtc_api_events_1$2.RTCApiEvents.CALL_ENDED, result);
+	          call_1$6.Call.current = null;
+	          this.cloudRTC.destroy();
+	        } else {
+	          console.info("CancelRingEvent 数据不匹配 cancelRingEvent: " + JSON.stringify(cancelRingEvent) + ", currentCall: " + JSON.stringify(call_1$6.Call.current));
+	        }
+
+	        return [2
+	        /*return*/
+	        ];
+	      });
+	    });
+	  };
+
+	  Ringer.prototype.onRing = function (ringEvent) {
+	    if (call_1$6.Call.current != null) {
+	      goeasy_event_center_1$8.GoEasyEventCenter.fire(rtc_internal_events_1$6.RTCInternalEvents.CLIENT_BUSY, ringEvent.callId);
+	    } else {
+	      this.cloudRTC.createEngine(rtc_1.RTC.userId);
+	      var inviter_1 = null;
+	      var invitees_1 = new Array();
+	      ringEvent.users.forEach(function (user) {
+	        if (user.invitation) {
+	          inviter_1 = new rtc_user_1$1.RTCUser(user.id, JSON.parse(user.data), false, false, false);
+	        } else {
+	          invitees_1.push(new rtc_user_1$1.RTCUser(user.id, JSON.parse(user.data), false, false, false));
+	        }
+	      }); //todo: 把token传递给接听域
+
+	      var call = call_1$6.Call.buildRingCall(ringEvent.callId, ringEvent.mediaType, ringEvent.type, inviter_1, invitees_1);
+	      this.createNotification(call, ringEvent);
+	      this.apiEventCenter.fire(rtc_api_events_1$2.RTCApiEvents.RING, {
+	        id: call.inviter.id,
+	        data: call.inviter.data
+	      });
+	    }
+	  };
+
+	  Ringer.prototype.createNotification = function (call, ringEvent) {
+	    var supportGNS = GNS_1.GNS.instance.supportNotification();
+
+	    if (ringEvent.notification && supportGNS) {
+	      var notificationData = {
+	        callId: call.id,
+	        type: call.type,
+	        mediaType: call.mediaType,
+	        inviterId: call.inviter.id,
+	        toId: ringEvent.toId
+	      };
+	      var notification = ringEvent.notification;
+	      GNS_1.GNS.instance.createLocalNotification(notification.title, notification.body, notificationData);
+	    }
+	  };
+
+	  return Ringer;
 	}();
 
-	dialer.Dialer = Dialer;
+	ringer.Ringer = Ringer;
 
-	var ringer = {};
+	var aliRtc = {};
 
-	var endReason = {};
+	var cloudRtc = {};
 
-	(function (exports) {
+	cloudRtc.__esModule = true;
+	cloudRtc.CloudRTC = void 0;
 
-	  exports.__esModule = true;
-	  exports.EndReason = void 0;
+	var CloudRTC =
+	/** @class */
+	function () {
+	  function CloudRTC(goEasySocket) {
+	    this.goEasySocket = goEasySocket;
+	  }
 
-	  (function (EndReason) {
-	    EndReason["USER_BUSY"] = "USER_BUSY";
-	    EndReason["USER_TIMEOUT"] = "USER_TIMEOUT";
-	    EndReason["USER_REJECTED"] = "USER_REJECTED";
-	    EndReason["USER_HANGUP"] = "USER_HANGUP";
-	    EndReason["LOCAL_TIMEOUT"] = "LOCAL_TIMEOUT";
-	    EndReason["OTHER_DEVICE_HANDLED"] = "OTHER_DEVICE_HANDLED";
-	    EndReason["NO_USER_ACCEPT"] = "NO_USER_ACCEPT";
-	    EndReason["USER_CANCEL"] = "USER_CANCEL";
-	  })(exports.EndReason || (exports.EndReason = {}));
-	})(endReason);
+	  return CloudRTC;
+	}();
+
+	cloudRtc.CloudRTC = CloudRTC;
+
+	var __extends = commonjsGlobal && commonjsGlobal.__extends || function () {
+	  var _extendStatics = function extendStatics(d, b) {
+	    _extendStatics = Object.setPrototypeOf || {
+	      __proto__: []
+	    } instanceof Array && function (d, b) {
+	      d.__proto__ = b;
+	    } || function (d, b) {
+	      for (var p in b) {
+	        if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
+	      }
+	    };
+
+	    return _extendStatics(d, b);
+	  };
+
+	  return function (d, b) {
+	    if (typeof b !== "function" && b !== null) throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+
+	    _extendStatics(d, b);
+
+	    function __() {
+	      this.constructor = d;
+	    }
+
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	  };
+	}();
+
+	aliRtc.__esModule = true;
+	aliRtc.AliRTC = void 0;
+	var cloud_rtc_1 = cloudRtc;
+	var goeasy_event_center_1$7 = goeasyEventCenter;
+	var rtc_internal_events_1$5 = rtcInternalEvents;
+	var media_type_1 = mediaType;
+	var call_1$5 = call;
+
+	var AliRTC =
+	/** @class */
+	function (_super) {
+	  __extends(AliRTC, _super);
+
+	  function AliRTC(socket) {
+	    var _this = _super.call(this, socket) || this;
+
+	    _this.rtcClientPlugin = uni.requireNativePlugin('RTCClientPlugin');
+
+	    if (!_this.rtcClientPlugin) {
+	      //todo: 待文档完成后补充真实的连接
+	      throw 'Please configure GoEasy RTC native plugin first: http://www.goeasy.io';
+	    }
+
+	    var connectionLost = function connectionLost(result) {
+	      goeasy_event_center_1$7.GoEasyEventCenter.fire(rtc_internal_events_1$5.RTCInternalEvents.RTC_DISCONNECT, call_1$5.Call.current.id);
+	    };
+
+	    plus.globalEvent.addEventListener('connectionLost', connectionLost);
+
+	    var connectionRecovery = function connectionRecovery(result) {
+	      goeasy_event_center_1$7.GoEasyEventCenter.fire(rtc_internal_events_1$5.RTCInternalEvents.RTC_RECONNECT, call_1$5.Call.current.id);
+	    };
+
+	    plus.globalEvent.addEventListener('connectionRecovery', connectionRecovery);
+	    plus.globalEvent.removeEventListener('receivedRemoteFlow'); //监听拉流信息
+
+	    var receivedRemoteFlow = function receivedRemoteFlow(receivedRemoteFlowResult) {
+	      goeasy_event_center_1$7.GoEasyEventCenter.fire(rtc_internal_events_1$5.RTCInternalEvents.RECEIVED_RTC_REMOTE_FLOW, receivedRemoteFlowResult);
+	    };
+
+	    plus.globalEvent.addEventListener('receivedRemoteFlow', receivedRemoteFlow);
+	    return _this;
+	  }
+
+	  AliRTC.prototype.destroy = function () {
+	    this.rtcClientPlugin.destroyEngine();
+	  };
+
+	  AliRTC.prototype.createEngine = function (userId) {
+	    this.rtcClientPlugin.createEngine({
+	      userId: userId
+	    });
+	  };
+
+	  AliRTC.prototype.join = function (cloudRTCToken) {
+	    var self = this;
+	    cloudRTCToken.voice = false;
+	    return new Promise(function (resolve, reject) {
+	      self.rtcClientPlugin.joinChannel(cloudRTCToken, function () {
+	        console.log('user{' + cloudRTCToken.userId + '}join channel{' + cloudRTCToken.callId + '} successful.');
+	        resolve();
+	      }, function (errorCode) {
+	        console.log('user{' + cloudRTCToken.userId + '}join channel{' + cloudRTCToken.callId + '} failed: ' + errorCode);
+	        goeasy_event_center_1$7.GoEasyEventCenter.fire(rtc_internal_events_1$5.RTCInternalEvents.CLIENT_JOIN_CHANNEL_FAILED);
+	        reject({
+	          code: 400,
+	          content: 'Failed to join Channel, error code:' + errorCode
+	        });
+	      });
+	    });
+	  };
+
+	  AliRTC.prototype.push = function (mediaType) {
+	    if (mediaType === media_type_1.MediaType.VIDEO) {
+	      this.rtcClientPlugin.callVideo(); // this.rtcClientPlugin.callVoice();
+	    }
+	  };
+
+	  AliRTC.prototype.switchViewLevel = function (userId) {
+	    this.rtcClientPlugin.switchLevel({
+	      userId: userId
+	    });
+	  };
+
+	  return AliRTC;
+	}(cloud_rtc_1.CloudRTC);
+
+	aliRtc.AliRTC = AliRTC;
+
+	var acceptor = {};
+
+	var acceptRequest = {};
+
+	acceptRequest.__esModule = true;
+	acceptRequest.AcceptRequest = void 0;
+
+	var AcceptRequest =
+	/** @class */
+	function () {
+	  function AcceptRequest(callId) {
+	    this.callId = callId;
+	  }
+
+	  return AcceptRequest;
+	}();
+
+	acceptRequest.AcceptRequest = AcceptRequest;
 
 	var __awaiter$4 = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
 	  function adopt(value) {
@@ -19304,281 +19934,151 @@
 	  }
 	};
 
-	ringer.__esModule = true;
-	ringer.Ringer = void 0;
-	var RemoteEvents_1$3 = RemoteEvents;
-	var call_1$6 = call;
+	acceptor.__esModule = true;
+	acceptor.Acceptor = void 0;
+	var call_1$4 = call;
+	var rtc_call_status_1$1 = rtcCallStatus;
+	var callback_utils_1$5 = callbackUtils;
+	var Rocket_1$4 = Rocket;
+	var Permission_1$4 = Permission;
+	var SocketTimeout_1$4 = SocketTimeout;
 	var goeasy_event_center_1$6 = goeasyEventCenter;
-	var rtc_internal_events_1$6 = rtcInternalEvents;
-	var rtc_user_1$1 = rtcUser;
-	var rtc_api_events_1$2 = rtcApiEvents;
-	var GNS_1 = GNS$1;
-	var rtc_1 = rtc;
-	var end_reason_1$1 = endReason;
-	var rtc_call_status_1$2 = rtcCallStatus;
+	var rtc_internal_events_1$4 = rtcInternalEvents;
+	var accept_request_1 = acceptRequest;
+	var RocketTypes_1$4 = RocketTypes;
 
-	var Ringer =
+	var Acceptor =
 	/** @class */
 	function () {
-	  function Ringer(apiEventCenter) {
-	    this.apiEventCenter = apiEventCenter;
-	    GNS_1.GNS.instance.addAssembler(new (
-	    /** @class */
-	    function () {
-	      function class_1() {}
-
-	      class_1.prototype.assemble = function (oldPayload) {
-	        return {
-	          callId: oldPayload.callId,
-	          type: oldPayload.type,
-	          mediaType: oldPayload.mediaType,
-	          inviterId: oldPayload.inviterId,
-	          toId: oldPayload.toId
-	        };
-	      };
-
-	      class_1.prototype.support = function (oldPayload) {
-	        return !!oldPayload.callId;
-	      };
-
-	      return class_1;
-	    }())());
-	  }
-
-	  Ringer.prototype.initialSocket = function (socket, cloudRTC) {
+	  function Acceptor(socket, cloudRTC, apiEventCenter, cloudRTCToken) {
 	    var _this = this;
 
 	    this.socket = socket;
 	    this.cloudRTC = cloudRTC;
-	    this.socket.addMessageObserver(RemoteEvents_1$3.RemoteEvents.RTC_RING_EVENT, this.onRing.bind(this));
-	    this.socket.addMessageObserver(RemoteEvents_1$3.RemoteEvents.RTC_CANCEL_RING, function (ringOtherEndEvent) {
-	      return _this.onCancelRing(ringOtherEndEvent);
+	    this.apiEventCenter = apiEventCenter;
+	    this.acceptToken = cloudRTCToken;
+	    goeasy_event_center_1$6.GoEasyEventCenter.on(rtc_internal_events_1$4.RTCInternalEvents.RECEIVED_RTC_REMOTE_FLOW, function (result) {
+	      return _this.sendAcceptRequest();
 	    });
-	  };
+	  }
 
-	  Ringer.prototype.onCancelRing = function (cancelRingEvent) {
+	  Acceptor.prototype.accept = function (callOptions) {
 	    return __awaiter$4(this, void 0, void 0, function () {
-	      var result;
+	      var call, acceptToken;
 	      return __generator$4(this, function (_a) {
-	        result = {
-	          action: end_reason_1$1.EndReason.OTHER_DEVICE_HANDLED
-	        };
-	        console.info("通话在其他端处理: " + JSON.stringify(cancelRingEvent));
+	        switch (_a.label) {
+	          case 0:
+	            call = call_1$4.Call.current;
+	            this.acceptCallback = callOptions;
+	            if (!(call && call.status == rtc_call_status_1$1.RTCCallStatus.ringing)) return [3
+	            /*break*/
+	            , 2];
+	            acceptToken = this.acceptToken;
+	            acceptToken.voice = true;
+	            acceptToken.video = call.isVideo();
+	            console.info("cloudRTCToken: " + JSON.stringify(acceptToken));
+	            return [4
+	            /*yield*/
+	            , this.cloudRTC.join(acceptToken)];
 
-	        if (cancelRingEvent.callId === call_1$6.Call.current.id && cancelRingEvent.userId === rtc_1.RTC.userId && call_1$6.Call.current.status === rtc_call_status_1$2.RTCCallStatus.ringing) {
-	          this.apiEventCenter.fire(rtc_api_events_1$2.RTCApiEvents.CALL_ENDED, result);
-	          call_1$6.Call.current = null;
-	          this.cloudRTC.destroy();
-	        } else {
-	          console.info("CancelRingEvent 数据不匹配 cancelRingEvent: " + JSON.stringify(cancelRingEvent) + ", currentCall: " + JSON.stringify(call_1$6.Call.current));
+	          case 1:
+	            _a.sent();
+
+	            return [3
+	            /*break*/
+	            , 3];
+
+	          case 2:
+	            throw 'No incoming call to accept';
+
+	          case 3:
+	            return [2
+	            /*return*/
+	            ];
 	        }
-
-	        return [2
-	        /*return*/
-	        ];
 	      });
 	    });
 	  };
 
-	  Ringer.prototype.onRing = function (ringEvent) {
-	    if (call_1$6.Call.current != null) {
-	      goeasy_event_center_1$6.GoEasyEventCenter.fire(rtc_internal_events_1$6.RTCInternalEvents.CLIENT_BUSY, ringEvent.callId);
-	    } else {
-	      this.cloudRTC.createEngine(rtc_1.RTC.userId);
-	      var inviter_1 = null;
-	      var invitees_1 = new Array();
-	      ringEvent.users.forEach(function (user) {
-	        if (user.invitation) {
-	          inviter_1 = new rtc_user_1$1.RTCUser(user.id, JSON.parse(user.data), false, false, false);
-	        } else {
-	          invitees_1.push(new rtc_user_1$1.RTCUser(user.id, JSON.parse(user.data), false, false, false));
+	  Acceptor.prototype.sendAcceptRequest = function () {
+	    var _this = this;
+
+	    var currentCall = call_1$4.Call.current; //todo:
+	    // 1.要不要检查channel？因为不加入channel的话，是收不到这个事件的，这个事件的channel一定是一致的，
+	    // 2. 要不要检查用户？ 有没有可能收到channel以外的流？应该不可能
+	    // 3. 要不要检查状态？ 要，只有地第一次变化才算接听，其他的只能算有人加入 USER_ACCEPTED
+
+	    if (currentCall.status === rtc_call_status_1$1.RTCCallStatus.ringing) {
+	      var request = new accept_request_1.AcceptRequest(currentCall.id);
+	      var rocket = new Rocket_1$4["default"]({
+	        name: RocketTypes_1$4.RocketTypes.RTC_ACCEPT,
+	        params: request,
+	        permission: Permission_1$4.Permission.WRITE,
+	        singleTimeout: SocketTimeout_1$4.SocketTimeout.commonRequestSingle,
+	        totalTimeout: SocketTimeout_1$4.SocketTimeout.commonRequestTotal,
+	        success: function success() {
+	          currentCall.status = rtc_call_status_1$1.RTCCallStatus.in_progress;
+	          var mine = currentCall.mine();
+	          mine.accepted = true;
+	          mine.video = true;
+	          mine.voice = currentCall.isVideo();
+
+	          if (_this.acceptCallback) {
+	            callback_utils_1$5.CallbackUtils.onSuccess(_this.acceptCallback);
+	          }
+	        },
+	        fail: function fail(err) {
+	          goeasy_event_center_1$6.GoEasyEventCenter.fire(rtc_internal_events_1$4.RTCInternalEvents.CLIENT_ACCEPT_FAILED); //todo: end域该怎么处理？
+
+	          if (_this.acceptCallback) {
+	            callback_utils_1$5.CallbackUtils.onFailed(_this.acceptCallback, err);
+	          }
 	        }
-	      }); //todo: 把token传递给接听域
-
-	      var call = call_1$6.Call.buildRingCall(ringEvent.callId, ringEvent.mediaType, ringEvent.type, inviter_1, invitees_1);
-	      this.createNotification(call, ringEvent);
-	      this.apiEventCenter.fire(rtc_api_events_1$2.RTCApiEvents.RING, {
-	        id: call.inviter.id,
-	        data: call.inviter.data
 	      });
+	      this.socket.emit(rocket);
 	    }
 	  };
 
-	  Ringer.prototype.createNotification = function (call, ringEvent) {
-	    var supportGNS = GNS_1.GNS.instance.supportNotification();
-
-	    if (ringEvent.notification && supportGNS) {
-	      var notificationData = {
-	        callId: call.id,
-	        type: call.type,
-	        mediaType: call.mediaType,
-	        inviterId: call.inviter.id,
-	        toId: ringEvent.toId
-	      };
-	      var notification = ringEvent.notification;
-	      GNS_1.GNS.instance.createLocalNotification(notification.title, notification.body, notificationData);
-	    }
-	  };
-
-	  return Ringer;
+	  return Acceptor;
 	}();
 
-	ringer.Ringer = Ringer;
+	acceptor.Acceptor = Acceptor;
 
-	var aliRtc = {};
+	var ender = {};
 
-	var cloudRtc = {};
+	var endRequest = {};
 
-	cloudRtc.__esModule = true;
-	cloudRtc.CloudRTC = void 0;
+	endRequest.__esModule = true;
+	endRequest.EndRequest = void 0;
 
-	var CloudRTC =
+	var EndRequest =
 	/** @class */
 	function () {
-	  function CloudRTC(goEasySocket) {
-	    this.goEasySocket = goEasySocket;
-	  }
-
-	  return CloudRTC;
-	}();
-
-	cloudRtc.CloudRTC = CloudRTC;
-
-	var __extends = commonjsGlobal && commonjsGlobal.__extends || function () {
-	  var _extendStatics = function extendStatics(d, b) {
-	    _extendStatics = Object.setPrototypeOf || {
-	      __proto__: []
-	    } instanceof Array && function (d, b) {
-	      d.__proto__ = b;
-	    } || function (d, b) {
-	      for (var p in b) {
-	        if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
-	      }
-	    };
-
-	    return _extendStatics(d, b);
-	  };
-
-	  return function (d, b) {
-	    if (typeof b !== "function" && b !== null) throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-
-	    _extendStatics(d, b);
-
-	    function __() {
-	      this.constructor = d;
-	    }
-
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	  };
-	}();
-
-	aliRtc.__esModule = true;
-	aliRtc.AliRTC = void 0;
-	var cloud_rtc_1 = cloudRtc;
-	var goeasy_event_center_1$5 = goeasyEventCenter;
-	var rtc_internal_events_1$5 = rtcInternalEvents;
-	var media_type_1 = mediaType;
-	var call_1$5 = call;
-
-	var AliRTC =
-	/** @class */
-	function (_super) {
-	  __extends(AliRTC, _super);
-
-	  function AliRTC(socket) {
-	    var _this = _super.call(this, socket) || this;
-
-	    _this.rtcClientPlugin = uni.requireNativePlugin('RTCClientPlugin');
-
-	    if (!_this.rtcClientPlugin) {
-	      //todo: 待文档完成后补充真实的连接
-	      throw 'Please configure GoEasy RTC native plugin first: http://www.goeasy.io';
-	    }
-
-	    var connectionLost = function connectionLost(result) {
-	      goeasy_event_center_1$5.GoEasyEventCenter.fire(rtc_internal_events_1$5.RTCInternalEvents.RTC_DISCONNECT, call_1$5.Call.current.id);
-	    };
-
-	    plus.globalEvent.addEventListener('connectionLost', connectionLost);
-
-	    var connectionRecovery = function connectionRecovery(result) {
-	      goeasy_event_center_1$5.GoEasyEventCenter.fire(rtc_internal_events_1$5.RTCInternalEvents.RTC_RECONNECT, call_1$5.Call.current.id);
-	    };
-
-	    plus.globalEvent.addEventListener('connectionRecovery', connectionRecovery);
-	    plus.globalEvent.removeEventListener('receivedRemoteFlow'); //监听拉流信息
-
-	    var receivedRemoteFlow = function receivedRemoteFlow(receivedRemoteFlowResult) {
-	      goeasy_event_center_1$5.GoEasyEventCenter.fire(rtc_internal_events_1$5.RTCInternalEvents.RECEIVED_RTC_REMOTE_FLOW, receivedRemoteFlowResult);
-	    };
-
-	    plus.globalEvent.addEventListener('receivedRemoteFlow', receivedRemoteFlow);
-	    return _this;
-	  }
-
-	  AliRTC.prototype.destroy = function () {
-	    this.rtcClientPlugin.destroyEngine();
-	  };
-
-	  AliRTC.prototype.createEngine = function (userId) {
-	    this.rtcClientPlugin.createEngine({
-	      userId: userId
-	    });
-	  };
-
-	  AliRTC.prototype.join = function (cloudRTCToken) {
-	    var self = this;
-	    cloudRTCToken.voice = false;
-	    return new Promise(function (resolve, reject) {
-	      self.rtcClientPlugin.joinChannel(cloudRTCToken, function () {
-	        console.log('user{' + cloudRTCToken.userId + '}join channel{' + cloudRTCToken.callId + '} successful.');
-	        resolve();
-	      }, function (errorCode) {
-	        console.log('user{' + cloudRTCToken.userId + '}join channel{' + cloudRTCToken.callId + '} failed: ' + errorCode);
-	        goeasy_event_center_1$5.GoEasyEventCenter.fire(rtc_internal_events_1$5.RTCInternalEvents.CLIENT_JOIN_CHANNEL_FAILED);
-	        reject({
-	          code: 400,
-	          content: 'Failed to join Channel, error code:' + errorCode
-	        });
-	      });
-	    });
-	  };
-
-	  AliRTC.prototype.push = function (mediaType) {
-	    if (mediaType === media_type_1.MediaType.VIDEO) {
-	      this.rtcClientPlugin.callVideo(); // this.rtcClientPlugin.callVoice();
-	    }
-	  };
-
-	  AliRTC.prototype.switchViewLevel = function (userId) {
-	    this.rtcClientPlugin.switchLevel({
-	      userId: userId
-	    });
-	  };
-
-	  return AliRTC;
-	}(cloud_rtc_1.CloudRTC);
-
-	aliRtc.AliRTC = AliRTC;
-
-	var acceptor = {};
-
-	var acceptRequest = {};
-
-	acceptRequest.__esModule = true;
-	acceptRequest.AcceptRequest = void 0;
-
-	var AcceptRequest =
-	/** @class */
-	function () {
-	  function AcceptRequest(callId) {
+	  function EndRequest(callId) {
 	    this.callId = callId;
 	  }
 
-	  return AcceptRequest;
+	  return EndRequest;
 	}();
 
-	acceptRequest.AcceptRequest = AcceptRequest;
+	endRequest.EndRequest = EndRequest;
+
+	var reason = {};
+
+	reason.__esModule = true;
+	reason.Reason = void 0;
+
+	var Reason =
+	/** @class */
+	function () {
+	  function Reason(reason) {
+	    this.reason = reason;
+	  }
+
+	  return Reason;
+	}();
+
+	reason.Reason = Reason;
 
 	var __awaiter$3 = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
 	  function adopt(value) {
@@ -19723,62 +20223,339 @@
 	  }
 	};
 
-	acceptor.__esModule = true;
-	acceptor.Acceptor = void 0;
-	var call_1$4 = call;
-	var rtc_call_status_1$1 = rtcCallStatus;
-	var callback_utils_1$2 = callbackUtils;
-	var Rocket_1$2 = Rocket;
-	var Permission_1$2 = Permission;
-	var SocketTimeout_1$2 = SocketTimeout;
-	var goeasy_event_center_1$4 = goeasyEventCenter;
-	var rtc_internal_events_1$4 = rtcInternalEvents;
-	var accept_request_1 = acceptRequest;
-	var RocketTypes_1$2 = RocketTypes;
+	ender.__esModule = true;
+	ender.Ender = void 0;
+	var goeasy_event_center_1$5 = goeasyEventCenter;
+	var rtc_internal_events_1$3 = rtcInternalEvents;
+	var call_1$3 = call;
+	var callback_utils_1$4 = callbackUtils;
+	var Rocket_1$3 = Rocket;
+	var Permission_1$3 = Permission;
+	var SocketTimeout_1$3 = SocketTimeout;
+	var end_request_1 = endRequest;
+	var RemoteEvents_1$2 = RemoteEvents;
+	var rtc_api_events_1$1 = rtcApiEvents;
+	var RocketTypes_1$3 = RocketTypes;
+	var end_reason_1 = endReason;
+	var reason_1$1 = reason;
 
-	var Acceptor =
+	var Ender =
 	/** @class */
 	function () {
-	  function Acceptor(socket, cloudRTC, apiEventCenter, cloudRTCToken) {
+	  function Ender(socket, apiEventCenter, cloudRTC) {
 	    var _this = this;
 
-	    this.socket = socket;
-	    this.cloudRTC = cloudRTC;
 	    this.apiEventCenter = apiEventCenter;
-	    this.acceptToken = cloudRTCToken;
-	    goeasy_event_center_1$4.GoEasyEventCenter.on(rtc_internal_events_1$4.RTCInternalEvents.RECEIVED_RTC_REMOTE_FLOW, function (result) {
-	      return _this.sendAcceptRequest();
+	    this.cloudRTC = cloudRTC;
+	    this.goEasySocket = socket;
+	    goeasy_event_center_1$5.GoEasyEventCenter.on(rtc_internal_events_1$3.RTCInternalEvents.CLIENT_BUSY, function (callId) {
+	      return _this.onBusy(callId);
 	    });
-	  }
+	    goeasy_event_center_1$5.GoEasyEventCenter.on(rtc_internal_events_1$3.RTCInternalEvents.RTC_TIMEOUT, function (callId) {
+	      return _this.onRTCTimeout(callId);
+	    });
+	    goeasy_event_center_1$5.GoEasyEventCenter.on(rtc_internal_events_1$3.RTCInternalEvents.GOEASY_TIMEOUT, function (callId) {
+	      return _this.onGoEasyTimeout(callId);
+	    });
+	    goeasy_event_center_1$5.GoEasyEventCenter.on(rtc_internal_events_1$3.RTCInternalEvents.CLIENT_DIAL_FAILED, function () {
+	      return _this.onDialFailed();
+	    });
+	    goeasy_event_center_1$5.GoEasyEventCenter.on(rtc_internal_events_1$3.RTCInternalEvents.CLIENT_ACCEPT_FAILED, function () {
+	      return _this.onAcceptFailed();
+	    });
+	    socket.addMessageObserver(RemoteEvents_1$2.RemoteEvents.RTC_CALL_END, this.callEnd.bind(this)); //todo: 不需要监听客goeasy网络断开嘛？ 之前说了如果没信号了，看他自己愿不愿意等，我们不管他
+	  } //todo: 是否应该在cloudRTC域？
 
-	  Acceptor.prototype.accept = function (callOptions) {
+
+	  Ender.prototype.onDialFailed = function () {
 	    return __awaiter$3(this, void 0, void 0, function () {
-	      var call, acceptToken;
+	      var _this = this;
+
 	      return __generator$3(this, function (_a) {
 	        switch (_a.label) {
 	          case 0:
-	            call = call_1$4.Call.current;
-	            this.acceptCallback = callOptions;
-	            if (!(call && call.status == rtc_call_status_1$1.RTCCallStatus.ringing)) return [3
-	            /*break*/
-	            , 2];
-	            acceptToken = this.acceptToken;
-	            acceptToken.voice = true;
-	            acceptToken.video = call.isVideo();
-	            console.info("cloudRTCToken: " + JSON.stringify(acceptToken));
 	            return [4
 	            /*yield*/
-	            , this.cloudRTC.join(acceptToken)];
+	            , this.endCatch(function () {
+	              return __awaiter$3(_this, void 0, void 0, function () {
+	                return __generator$3(this, function (_a) {
+	                  call_1$3.Call.current = null;
+	                  this.cloudRTC.destroy();
+	                  return [2
+	                  /*return*/
+	                  ];
+	                });
+	              });
+	            }, null)];
 
 	          case 1:
 	            _a.sent();
 
+	            return [2
+	            /*return*/
+	            ];
+	        }
+	      });
+	    });
+	  }; //todo: 要发消息吗？
+
+
+	  Ender.prototype.onAcceptFailed = function () {
+	    return __awaiter$3(this, void 0, void 0, function () {
+	      var _this = this;
+
+	      return __generator$3(this, function (_a) {
+	        switch (_a.label) {
+	          case 0:
+	            return [4
+	            /*yield*/
+	            , this.endCatch(function () {
+	              return __awaiter$3(_this, void 0, void 0, function () {
+	                var callId;
+	                return __generator$3(this, function (_a) {
+	                  switch (_a.label) {
+	                    case 0:
+	                      callId = call_1$3.Call.current.id;
+	                      console.info("Call: " + callId + "接通失败");
+	                      call_1$3.Call.current = null; //todo:上一行代码出问题，这里是不会执行的 ，如果给goeasy说失败了，怎么办？
+
+	                      this.cloudRTC.destroy();
+	                      return [4
+	                      /*yield*/
+	                      , this.sendUserEndRequest(callId, RocketTypes_1$3.RocketTypes.RTC_ACCEPT_FAILED)];
+
+	                    case 1:
+	                      _a.sent();
+
+	                      return [2
+	                      /*return*/
+	                      ];
+	                  }
+	                });
+	              });
+	            }, null)];
+
+	          case 1:
+	            _a.sent();
+
+	            return [2
+	            /*return*/
+	            ];
+	        }
+	      });
+	    });
+	  };
+
+	  Ender.prototype.onBusy = function (callId) {
+	    return __awaiter$3(this, void 0, void 0, function () {
+	      return __generator$3(this, function (_a) {
+	        switch (_a.label) {
+	          case 0:
+	            console.info("Call: " + callId + " 占线");
+	            return [4
+	            /*yield*/
+	            , this.sendUserEndRequest(callId, RocketTypes_1$3.RocketTypes.RTC_CLIENT_BUSY)];
+
+	          case 1:
+	            _a.sent();
+
+	            return [2
+	            /*return*/
+	            ];
+	        }
+	      });
+	    });
+	  }; //todo： 我们有用户离开的api吗？
+
+
+	  Ender.prototype.onRTCTimeout = function (callId) {
+	    return __awaiter$3(this, void 0, void 0, function () {
+	      var result;
+
+	      var _this = this;
+
+	      return __generator$3(this, function (_a) {
+	        switch (_a.label) {
+	          case 0:
+	            result = {
+	              action: end_reason_1.EndReason.LOCAL_TIMEOUT
+	            };
+	            return [4
+	            /*yield*/
+	            , this.endCatch(function () {
+	              return __awaiter$3(_this, void 0, void 0, function () {
+	                return __generator$3(this, function (_a) {
+	                  switch (_a.label) {
+	                    case 0:
+	                      console.info("Call: " + callId + " rtc 断开");
+	                      call_1$3.Call.current = null;
+	                      this.cloudRTC.destroy();
+	                      this.apiEventCenter.fire(rtc_api_events_1$1.RTCApiEvents.CALL_ENDED, result);
+	                      return [4
+	                      /*yield*/
+	                      , this.sendUserEndRequest(callId, RocketTypes_1$3.RocketTypes.RTC_TIMEOUT)];
+
+	                    case 1:
+	                      _a.sent();
+
+	                      return [2
+	                      /*return*/
+	                      ];
+	                  }
+	                });
+	              });
+	            }, result)];
+
+	          case 1:
+	            _a.sent();
+
+	            return [2
+	            /*return*/
+	            ];
+	        }
+	      });
+	    });
+	  };
+
+	  Ender.prototype.onGoEasyTimeout = function (callId) {
+	    return __awaiter$3(this, void 0, void 0, function () {
+	      var result;
+
+	      var _this = this;
+
+	      return __generator$3(this, function (_a) {
+	        switch (_a.label) {
+	          case 0:
+	            result = {
+	              action: end_reason_1.EndReason.LOCAL_TIMEOUT
+	            };
+	            return [4
+	            /*yield*/
+	            , this.endCatch(function () {
+	              return __awaiter$3(_this, void 0, void 0, function () {
+	                return __generator$3(this, function (_a) {
+	                  console.info("Call: " + callId + " goEasy 断开");
+	                  call_1$3.Call.current = null;
+	                  this.cloudRTC.destroy();
+	                  this.apiEventCenter.fire(rtc_api_events_1$1.RTCApiEvents.CALL_ENDED, result);
+	                  return [2
+	                  /*return*/
+	                  ];
+	                });
+	              });
+	            }, result)];
+
+	          case 1:
+	            _a.sent();
+
+	            return [2
+	            /*return*/
+	            ];
+	        }
+	      });
+	    });
+	  }; //todo： 服务端结束，通话结束的api如何定义？
+
+
+	  Ender.prototype.callEnd = function (callEndEvent) {
+	    var _this = this;
+
+	    console.info("Call end event: " + JSON.stringify(callEndEvent));
+	    var call = call_1$3.Call.current;
+
+	    if (call === null) {
+	      return;
+	    }
+
+	    var userId = callEndEvent.userId;
+	    var reason = new reason_1$1.Reason(callEndEvent.endType);
+	    var rtcUser = call.findUser(userId);
+
+	    if (rtcUser) {
+	      reason.user = {
+	        id: rtcUser.id,
+	        data: rtcUser.data
+	      };
+	    }
+
+	    this.endCatch(function () {
+	      return __awaiter$3(_this, void 0, void 0, function () {
+	        return __generator$3(this, function (_a) {
+	          call_1$3.Call.current = null;
+	          this.cloudRTC.destroy();
+	          console.info("callEnd Call: " + JSON.stringify(reason));
+	          this.apiEventCenter.fire(rtc_api_events_1$1.RTCApiEvents.CALL_ENDED, reason);
+	          return [2
+	          /*return*/
+	          ];
+	        });
+	      });
+	    }, reason);
+	  };
+	  /**
+	   *
+	   * 结束通话目标
+	   * 1. 停止推拉流
+	   * 2. rtc的状态回到待机状态
+	   * 3. 清除有可能执行的定时任务或者可能触发的事件
+	   * 4. 要触发通话结束的事件
+	   *
+	   *
+	   *
+	   * @param callOptions
+	   */
+	  // destroy(){
+	  //     this.cloudRTC.destory();
+	  //
+	  //     Call.current = null;
+	  //
+	  //     清除有可能执行的定时任务或者可能触发的事件
+	  //
+	  //
+	  // }
+
+
+	  Ender.prototype.end = function (callOptions) {
+	    return __awaiter$3(this, void 0, void 0, function () {
+	      var action, callId, err_1;
+	      return __generator$3(this, function (_a) {
+	        switch (_a.label) {
+	          case 0:
+	            _a.trys.push([0, 2,, 3]); //todo: 如果没有电话不能接听
+
+
+	            if (call_1$3.Call.current === null) {
+	              console.info("当前通话为空, 不能结束.");
+	              return [2
+	              /*return*/
+	              ];
+	            }
+
+	            action = RocketTypes_1$3.RocketTypes.RTC_MANUAL_END;
+	            callId = call_1$3.Call.current.id;
+	            call_1$3.Call.current = null;
+	            this.cloudRTC.destroy();
+	            return [4
+	            /*yield*/
+	            , this.sendUserEndRequest(callId, action)];
+
+	          case 1:
+	            _a.sent();
+
+	            callback_utils_1$4.CallbackUtils.onSuccess(callOptions);
 	            return [3
 	            /*break*/
 	            , 3];
 
 	          case 2:
-	            throw 'No incoming call to accept';
+	            err_1 = _a.sent();
+	            console.info("End failed: " + JSON.stringify(err_1));
+	            call_1$3.Call.current = null;
+	            this.cloudRTC.destroy();
+	            callback_utils_1$4.CallbackUtils.onSuccess(callOptions);
+	            return [3
+	            /*break*/
+	            , 3];
 
 	          case 3:
 	            return [2
@@ -19789,85 +20566,98 @@
 	    });
 	  };
 
-	  Acceptor.prototype.sendAcceptRequest = function () {
+	  Ender.prototype.sendUserEndRequest = function (callId, action) {
 	    var _this = this;
 
-	    var currentCall = call_1$4.Call.current; //todo:
-	    // 1.要不要检查channel？因为不加入channel的话，是收不到这个事件的，这个事件的channel一定是一致的，
-	    // 2. 要不要检查用户？ 有没有可能收到channel以外的流？应该不可能
-	    // 3. 要不要检查状态？ 要，只有地第一次变化才算接听，其他的只能算有人加入 USER_ACCEPTED
-
-	    if (currentCall.status === rtc_call_status_1$1.RTCCallStatus.ringing) {
-	      var request = new accept_request_1.AcceptRequest(currentCall.id);
-	      var rocket = new Rocket_1$2["default"]({
-	        name: RocketTypes_1$2.RocketTypes.RTC_ACCEPT,
+	    var request = new end_request_1.EndRequest(callId);
+	    console.info("sendUserEndRequest: " + JSON.stringify(request));
+	    return new Promise(function (resolve, reject) {
+	      var rocket = new Rocket_1$3["default"]({
+	        name: action,
 	        params: request,
-	        permission: Permission_1$2.Permission.WRITE,
-	        singleTimeout: SocketTimeout_1$2.SocketTimeout.commonRequestSingle,
-	        totalTimeout: SocketTimeout_1$2.SocketTimeout.commonRequestTotal,
+	        permission: Permission_1$3.Permission.WRITE,
+	        singleTimeout: SocketTimeout_1$3.SocketTimeout.commonRequestSingle,
+	        totalTimeout: SocketTimeout_1$3.SocketTimeout.commonRequestTotal,
 	        success: function success() {
-	          currentCall.status = rtc_call_status_1$1.RTCCallStatus.in_progress;
-	          var mine = currentCall.mine();
-	          mine.accepted = true;
-	          mine.video = true;
-	          mine.voice = currentCall.isVideo();
-
-	          if (_this.acceptCallback) {
-	            callback_utils_1$2.CallbackUtils.onSuccess(_this.acceptCallback);
-	          }
+	          resolve();
 	        },
 	        fail: function fail(err) {
-	          goeasy_event_center_1$4.GoEasyEventCenter.fire(rtc_internal_events_1$4.RTCInternalEvents.CLIENT_ACCEPT_FAILED); //todo: end域该怎么处理？
-
-	          if (_this.acceptCallback) {
-	            callback_utils_1$2.CallbackUtils.onFailed(_this.acceptCallback, err);
-	          }
+	          reject({
+	            code: 400,
+	            content: err.content
+	          });
 	        }
 	      });
-	      this.socket.emit(rocket);
-	    }
+
+	      _this.goEasySocket.emit(rocket);
+	    });
 	  };
 
-	  return Acceptor;
+	  Ender.prototype.endCatch = function (functionObj, result) {
+	    return __awaiter$3(this, void 0, void 0, function () {
+	      var err_2;
+	      return __generator$3(this, function (_a) {
+	        switch (_a.label) {
+	          case 0:
+	            _a.trys.push([0, 2,, 3]);
+
+	            return [4
+	            /*yield*/
+	            , functionObj()];
+
+	          case 1:
+	            _a.sent();
+
+	            return [3
+	            /*break*/
+	            , 3];
+
+	          case 2:
+	            err_2 = _a.sent();
+	            console.info("End failed: " + JSON.stringify(err_2));
+	            call_1$3.Call.current = null;
+	            this.cloudRTC.destroy();
+
+	            if (result != null) {
+	              this.apiEventCenter.fire(rtc_api_events_1$1.RTCApiEvents.CALL_ENDED, result);
+	            }
+
+	            return [3
+	            /*break*/
+	            , 3];
+
+	          case 3:
+	            return [2
+	            /*return*/
+	            ];
+	        }
+	      });
+	    });
+	  };
+
+	  return Ender;
 	}();
 
-	acceptor.Acceptor = Acceptor;
+	ender.Ender = Ender;
 
-	var ender = {};
+	var rtcStabilizer = {};
 
-	var endRequest = {};
+	var findCallRequest = {};
 
-	endRequest.__esModule = true;
-	endRequest.EndRequest = void 0;
+	findCallRequest.__esModule = true;
+	findCallRequest.FindCallRequest = void 0;
 
-	var EndRequest =
+	var FindCallRequest =
 	/** @class */
 	function () {
-	  function EndRequest(callId) {
+	  function FindCallRequest(callId) {
 	    this.callId = callId;
 	  }
 
-	  return EndRequest;
+	  return FindCallRequest;
 	}();
 
-	endRequest.EndRequest = EndRequest;
-
-	var reason = {};
-
-	reason.__esModule = true;
-	reason.Reason = void 0;
-
-	var Reason =
-	/** @class */
-	function () {
-	  function Reason(reason) {
-	    this.reason = reason;
-	  }
-
-	  return Reason;
-	}();
-
-	reason.Reason = Reason;
+	findCallRequest.FindCallRequest = FindCallRequest;
 
 	var __awaiter$2 = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
 	  function adopt(value) {
@@ -20012,252 +20802,229 @@
 	  }
 	};
 
-	ender.__esModule = true;
-	ender.Ender = void 0;
-	var goeasy_event_center_1$3 = goeasyEventCenter;
-	var rtc_internal_events_1$3 = rtcInternalEvents;
-	var call_1$3 = call;
-	var callback_utils_1$1 = callbackUtils;
-	var Rocket_1$1 = Rocket;
-	var Permission_1$1 = Permission;
-	var SocketTimeout_1$1 = SocketTimeout;
-	var end_request_1 = endRequest;
-	var RemoteEvents_1$2 = RemoteEvents;
-	var rtc_api_events_1$1 = rtcApiEvents;
-	var RocketTypes_1$1 = RocketTypes;
-	var end_reason_1 = endReason;
-	var reason_1$1 = reason;
+	rtcStabilizer.__esModule = true;
+	rtcStabilizer.RTCStabilizer = void 0;
+	var call_1$2 = call;
+	var goeasy_event_center_1$4 = goeasyEventCenter;
+	var rtc_internal_events_1$2 = rtcInternalEvents;
+	var find_call_request_1 = findCallRequest;
+	var Rocket_1$2 = Rocket;
+	var RocketTypes_1$2 = RocketTypes;
+	var Permission_1$2 = Permission;
+	var SocketTimeout_1$2 = SocketTimeout;
+	var rtc_user_1 = rtcUser;
 
-	var Ender =
+	var RTCStabilizer =
 	/** @class */
 	function () {
-	  function Ender(socket, apiEventCenter, cloudRTC) {
+	  function RTCStabilizer(goEasySocket) {
 	    var _this = this;
 
-	    this.apiEventCenter = apiEventCenter;
+	    this.goEasyDisconnectTimer = null;
+	    this.rtcDisconnectTimer = null;
+	    this.goEasySocket = goEasySocket;
+	    this.goEasySocket.addDisconnectedObserver(this.onGoEasyDisconnected.bind(this));
+	    this.goEasySocket.addConnectedObserver(this.onGoEasyReconnected.bind(this));
+	    goeasy_event_center_1$4.GoEasyEventCenter.on(rtc_internal_events_1$2.RTCInternalEvents.RTC_DISCONNECT, function (callId) {
+	      return _this.onRTCDisconnect();
+	    });
+	    goeasy_event_center_1$4.GoEasyEventCenter.on(rtc_internal_events_1$2.RTCInternalEvents.RTC_RECONNECT, function (callId) {
+	      return _this.onRTCReconnect();
+	    });
+	  }
+
+	  RTCStabilizer.prototype.onRTCDisconnect = function () {
+	    var self = this;
+
+	    if (self.rtcDisconnectTimer === null) {
+	      console.log("RTC 网络断开");
+	      self.rtcDisconnectTimer = setTimeout(function () {
+	        clearTimeout(self.goEasyDisconnectTimer);
+	        self.goEasyDisconnectTimer = null;
+	        goeasy_event_center_1$4.GoEasyEventCenter.fire(rtc_internal_events_1$2.RTCInternalEvents.RTC_TIMEOUT, call_1$2.Call.current.id);
+	      }, 20 * 1000);
+	    }
+	  };
+
+	  RTCStabilizer.prototype.onRTCReconnect = function () {
+	    var self = this;
+
+	    if (self.rtcDisconnectTimer !== null) {
+	      console.log("RTC 重连成功: ");
+	      clearTimeout(self.rtcDisconnectTimer);
+	      self.rtcDisconnectTimer = null;
+	    }
+	  };
+
+	  RTCStabilizer.prototype.onGoEasyDisconnected = function () {
+	    console.info("GoEasy 断开连接");
+	    var self = this;
+
+	    if (call_1$2.Call.current != null && self.goEasyDisconnectTimer === null) {
+	      self.goEasyDisconnectTimer = setTimeout(function () {
+	        clearTimeout(self.goEasyDisconnectTimer);
+	        self.goEasyDisconnectTimer = null;
+	        goeasy_event_center_1$4.GoEasyEventCenter.fire(rtc_internal_events_1$2.RTCInternalEvents.GOEASY_TIMEOUT, call_1$2.Call.current.id);
+	      }, 20 * 1000);
+	    }
+	  };
+
+	  RTCStabilizer.prototype.onGoEasyReconnected = function () {
+	    return __awaiter$2(this, void 0, void 0, function () {
+	      var self, callData, inviter_1, invitees_1, call_2;
+	      return __generator$2(this, function (_a) {
+	        switch (_a.label) {
+	          case 0:
+	            console.info("GoEasy 重连成功");
+	            self = this;
+	            if (!(call_1$2.Call.current != null && self.goEasyDisconnectTimer !== null)) return [3
+	            /*break*/
+	            , 2];
+	            clearTimeout(self.goEasyDisconnectTimer);
+	            self.goEasyDisconnectTimer = null;
+	            return [4
+	            /*yield*/
+	            , this.sendFindCallDataRequest(call_1$2.Call.current.id)];
+
+	          case 1:
+	            callData = _a.sent();
+	            console.info("sendFindCallDataRequest result: " + JSON.stringify(callData));
+	            inviter_1 = null;
+	            invitees_1 = new Array();
+	            call_2 = call_1$2.Call.current;
+	            callData.users.forEach(function (user) {
+	              var rtcUser = call_2.findUser(user.id);
+
+	              if (user.invitation) {
+	                inviter_1 = new rtc_user_1.RTCUser(user.id, JSON.parse(user.data), rtcUser.video, rtcUser.voice, rtcUser.accepted);
+	              } else {
+	                invitees_1.push(new rtc_user_1.RTCUser(user.id, JSON.parse(user.data), rtcUser.video, rtcUser.voice, rtcUser.accepted));
+	              }
+	            });
+	            call_2.inviter = inviter_1;
+	            call_2.invitees = invitees_1;
+	            console.info("Current call: " + JSON.stringify(call_2));
+	            _a.label = 2;
+
+	          case 2:
+	            return [2
+	            /*return*/
+	            ];
+	        }
+	      });
+	    });
+	  };
+
+	  RTCStabilizer.prototype.sendFindCallDataRequest = function (callId) {
+	    return __awaiter$2(this, void 0, void 0, function () {
+	      var _this = this;
+
+	      return __generator$2(this, function (_a) {
+	        return [2
+	        /*return*/
+	        , new Promise(function (resolve, reject) {
+	          var request = new find_call_request_1.FindCallRequest(callId);
+	          var rocket = new Rocket_1$2["default"]({
+	            name: RocketTypes_1$2.RocketTypes.RTC_CALL_DATA,
+	            params: request,
+	            permission: Permission_1$2.Permission.WRITE,
+	            singleTimeout: SocketTimeout_1$2.SocketTimeout.commonRequestSingle,
+	            totalTimeout: SocketTimeout_1$2.SocketTimeout.commonRequestTotal,
+	            success: function success(res) {
+	              resolve(res.content);
+	            },
+	            fail: function fail(err) {
+	              reject({
+	                code: 400,
+	                content: err.content
+	              });
+	            }
+	          });
+
+	          _this.goEasySocket.emit(rocket);
+	        })];
+	      });
+	    });
+	  };
+
+	  return RTCStabilizer;
+	}();
+
+	rtcStabilizer.RTCStabilizer = RTCStabilizer;
+
+	var callService = {};
+
+	callService.__esModule = true;
+	callService.CallService = void 0;
+	var call_1$1 = call;
+	var rtc_api_events_1 = rtcApiEvents;
+	var rtc_call_status_1 = rtcCallStatus;
+	var goeasy_event_center_1$3 = goeasyEventCenter;
+	var rtc_internal_events_1$1 = rtcInternalEvents;
+	var RemoteEvents_1$1 = RemoteEvents;
+	var reason_1 = reason;
+
+	var CallService =
+	/** @class */
+	function () {
+	  function CallService(socket, cloudRTC, apiEventCenter) {
+	    var _this = this;
+
+	    this.socket = socket;
 	    this.cloudRTC = cloudRTC;
-	    this.goEasySocket = socket;
-	    goeasy_event_center_1$3.GoEasyEventCenter.on(rtc_internal_events_1$3.RTCInternalEvents.CLIENT_BUSY, function (callId) {
-	      return _this.onBusy(callId);
+	    this.apiEventCenter = apiEventCenter;
+	    goeasy_event_center_1$3.GoEasyEventCenter.on(rtc_internal_events_1$1.RTCInternalEvents.RECEIVED_RTC_REMOTE_FLOW, function (result) {
+	      return _this.onReceivedRTCRemoteFlow(result);
 	    });
-	    goeasy_event_center_1$3.GoEasyEventCenter.on(rtc_internal_events_1$3.RTCInternalEvents.RTC_TIMEOUT, function (callId) {
-	      return _this.onRTCTimeout(callId);
-	    });
-	    goeasy_event_center_1$3.GoEasyEventCenter.on(rtc_internal_events_1$3.RTCInternalEvents.GOEASY_TIMEOUT, function (callId) {
-	      return _this.onGoEasyTimeout(callId);
-	    });
-	    goeasy_event_center_1$3.GoEasyEventCenter.on(rtc_internal_events_1$3.RTCInternalEvents.CLIENT_DIAL_FAILED, function () {
-	      return _this.onDialFailed();
-	    });
-	    goeasy_event_center_1$3.GoEasyEventCenter.on(rtc_internal_events_1$3.RTCInternalEvents.CLIENT_ACCEPT_FAILED, function () {
-	      return _this.onAcceptFailed();
-	    });
-	    socket.addMessageObserver(RemoteEvents_1$2.RemoteEvents.RTC_CALL_END, this.callEnd.bind(this)); //todo: 不需要监听客goeasy网络断开嘛？ 之前说了如果没信号了，看他自己愿不愿意等，我们不管他
-	  } //todo: 是否应该在cloudRTC域？
+	    socket.addMessageObserver(RemoteEvents_1$1.RemoteEvents.RTC_REMOTE_USER_LEFT, this.remoteUserLeft.bind(this));
+	  }
 
-
-	  Ender.prototype.onDialFailed = function () {
-	    return __awaiter$2(this, void 0, void 0, function () {
-	      var _this = this;
-
-	      return __generator$2(this, function (_a) {
-	        switch (_a.label) {
-	          case 0:
-	            return [4
-	            /*yield*/
-	            , this.endCatch(function () {
-	              return __awaiter$2(_this, void 0, void 0, function () {
-	                return __generator$2(this, function (_a) {
-	                  call_1$3.Call.current = null;
-	                  this.cloudRTC.destroy();
-	                  return [2
-	                  /*return*/
-	                  ];
-	                });
-	              });
-	            }, null)];
-
-	          case 1:
-	            _a.sent();
-
-	            return [2
-	            /*return*/
-	            ];
-	        }
-	      });
-	    });
-	  }; //todo: 要发消息吗？
-
-
-	  Ender.prototype.onAcceptFailed = function () {
-	    return __awaiter$2(this, void 0, void 0, function () {
-	      var _this = this;
-
-	      return __generator$2(this, function (_a) {
-	        switch (_a.label) {
-	          case 0:
-	            return [4
-	            /*yield*/
-	            , this.endCatch(function () {
-	              return __awaiter$2(_this, void 0, void 0, function () {
-	                var callId;
-	                return __generator$2(this, function (_a) {
-	                  switch (_a.label) {
-	                    case 0:
-	                      callId = call_1$3.Call.current.id;
-	                      console.info("Call: " + callId + "接通失败");
-	                      call_1$3.Call.current = null; //todo:上一行代码出问题，这里是不会执行的 ，如果给goeasy说失败了，怎么办？
-
-	                      this.cloudRTC.destroy();
-	                      return [4
-	                      /*yield*/
-	                      , this.sendUserEndRequest(callId, RocketTypes_1$1.RocketTypes.RTC_ACCEPT_FAILED)];
-
-	                    case 1:
-	                      _a.sent();
-
-	                      return [2
-	                      /*return*/
-	                      ];
-	                  }
-	                });
-	              });
-	            }, null)];
-
-	          case 1:
-	            _a.sent();
-
-	            return [2
-	            /*return*/
-	            ];
-	        }
-	      });
-	    });
-	  };
-
-	  Ender.prototype.onBusy = function (callId) {
-	    return __awaiter$2(this, void 0, void 0, function () {
-	      return __generator$2(this, function (_a) {
-	        switch (_a.label) {
-	          case 0:
-	            console.info("Call: " + callId + " 占线");
-	            return [4
-	            /*yield*/
-	            , this.sendUserEndRequest(callId, RocketTypes_1$1.RocketTypes.RTC_CLIENT_BUSY)];
-
-	          case 1:
-	            _a.sent();
-
-	            return [2
-	            /*return*/
-	            ];
-	        }
-	      });
-	    });
-	  }; //todo： 我们有用户离开的api吗？
-
-
-	  Ender.prototype.onRTCTimeout = function (callId) {
-	    return __awaiter$2(this, void 0, void 0, function () {
-	      var result;
-
-	      var _this = this;
-
-	      return __generator$2(this, function (_a) {
-	        switch (_a.label) {
-	          case 0:
-	            result = {
-	              action: end_reason_1.EndReason.LOCAL_TIMEOUT
-	            };
-	            return [4
-	            /*yield*/
-	            , this.endCatch(function () {
-	              return __awaiter$2(_this, void 0, void 0, function () {
-	                return __generator$2(this, function (_a) {
-	                  switch (_a.label) {
-	                    case 0:
-	                      console.info("Call: " + callId + " rtc 断开");
-	                      call_1$3.Call.current = null;
-	                      this.cloudRTC.destroy();
-	                      this.apiEventCenter.fire(rtc_api_events_1$1.RTCApiEvents.CALL_ENDED, result);
-	                      return [4
-	                      /*yield*/
-	                      , this.sendUserEndRequest(callId, RocketTypes_1$1.RocketTypes.RTC_TIMEOUT)];
-
-	                    case 1:
-	                      _a.sent();
-
-	                      return [2
-	                      /*return*/
-	                      ];
-	                  }
-	                });
-	              });
-	            }, result)];
-
-	          case 1:
-	            _a.sent();
-
-	            return [2
-	            /*return*/
-	            ];
-	        }
-	      });
-	    });
-	  };
-
-	  Ender.prototype.onGoEasyTimeout = function (callId) {
-	    return __awaiter$2(this, void 0, void 0, function () {
-	      var result;
-
-	      var _this = this;
-
-	      return __generator$2(this, function (_a) {
-	        switch (_a.label) {
-	          case 0:
-	            result = {
-	              action: end_reason_1.EndReason.LOCAL_TIMEOUT
-	            };
-	            return [4
-	            /*yield*/
-	            , this.endCatch(function () {
-	              return __awaiter$2(_this, void 0, void 0, function () {
-	                return __generator$2(this, function (_a) {
-	                  console.info("Call: " + callId + " goEasy 断开");
-	                  call_1$3.Call.current = null;
-	                  this.cloudRTC.destroy();
-	                  this.apiEventCenter.fire(rtc_api_events_1$1.RTCApiEvents.CALL_ENDED, result);
-	                  return [2
-	                  /*return*/
-	                  ];
-	                });
-	              });
-	            }, result)];
-
-	          case 1:
-	            _a.sent();
-
-	            return [2
-	            /*return*/
-	            ];
-	        }
-	      });
-	    });
-	  }; //todo： 服务端结束，通话结束的api如何定义？
-
-
-	  Ender.prototype.callEnd = function (callEndEvent) {
-	    var _this = this;
-
-	    console.info("Call end event: " + JSON.stringify(callEndEvent));
-	    var call = call_1$3.Call.current;
+	  CallService.prototype.onReceivedRTCRemoteFlow = function (result) {
+	    var call = call_1$1.Call.current;
 
 	    if (call === null) {
 	      return;
 	    }
 
-	    var userId = callEndEvent.userId;
-	    var reason = new reason_1$1.Reason(callEndEvent.endType);
+	    console.log('收到用户{' + JSON.stringify(result) + '}流信息. call: ' + JSON.stringify(call_1$1.Call.current));
+	    this.inviterPush();
+	    this.otherUserAccepted(result);
+	    goeasy_event_center_1$3.GoEasyEventCenter.fire(rtc_internal_events_1$1.RTCInternalEvents.CALL_ACCEPTED);
+	  };
+
+	  CallService.prototype.otherUserAccepted = function (result) {
+	    var call = call_1$1.Call.current;
+	    var user = call.otherUsers().find(function (user) {
+	      return user.id === result.userId;
+	    });
+	    user.video = result.video;
+	    user.voice = result.voice;
+	    user.accepted = true;
+	    this.apiEventCenter.fire(rtc_api_events_1.RTCApiEvents.USER_ACCEPTED, {
+	      id: user.id,
+	      data: user.data
+	    });
+	  };
+
+	  CallService.prototype.inviterPush = function () {
+	    var call = call_1$1.Call.current; //拨打方
+
+	    if (call.mine().id === call_1$1.Call.current.inviter.id && call_1$1.Call.current.status === rtc_call_status_1.RTCCallStatus.dialing) {
+	      this.cloudRTC.push(call_1$1.Call.current.mediaType);
+	      call_1$1.Call.current.status = rtc_call_status_1.RTCCallStatus.in_progress;
+	    }
+	  }; //todo： 我们有远程用户离开的api吗？
+
+
+	  CallService.prototype.remoteUserLeft = function (userQuitedEvent) {
+	    var call = call_1$1.Call.current;
+
+	    if (call === null) {
+	      return;
+	    }
+
+	    var reason = new reason_1.Reason(userQuitedEvent.userQuiteType);
+	    var userId = userQuitedEvent.userId;
 	    var rtcUser = call.findUser(userId);
 
 	    if (rtcUser) {
@@ -20267,186 +21034,15 @@
 	      };
 	    }
 
-	    this.endCatch(function () {
-	      return __awaiter$2(_this, void 0, void 0, function () {
-	        return __generator$2(this, function (_a) {
-	          call_1$3.Call.current = null;
-	          this.cloudRTC.destroy();
-	          console.info("callEnd Call: " + JSON.stringify(reason));
-	          this.apiEventCenter.fire(rtc_api_events_1$1.RTCApiEvents.CALL_ENDED, reason);
-	          return [2
-	          /*return*/
-	          ];
-	        });
-	      });
-	    }, reason);
-	  };
-	  /**
-	   *
-	   * 结束通话目标
-	   * 1. 停止推拉流
-	   * 2. rtc的状态回到待机状态
-	   * 3. 清除有可能执行的定时任务或者可能触发的事件
-	   * 4. 要触发通话结束的事件
-	   *
-	   *
-	   *
-	   * @param callOptions
-	   */
-	  // destroy(){
-	  //     this.cloudRTC.destory();
-	  //
-	  //     Call.current = null;
-	  //
-	  //     清除有可能执行的定时任务或者可能触发的事件
-	  //
-	  //
-	  // }
-
-
-	  Ender.prototype.end = function (callOptions) {
-	    return __awaiter$2(this, void 0, void 0, function () {
-	      var action, callId, err_1;
-	      return __generator$2(this, function (_a) {
-	        switch (_a.label) {
-	          case 0:
-	            _a.trys.push([0, 2,, 3]); //todo: 如果没有电话不能接听
-
-
-	            if (call_1$3.Call.current === null) {
-	              console.info("当前通话为空, 不能结束.");
-	              return [2
-	              /*return*/
-	              ];
-	            }
-
-	            action = RocketTypes_1$1.RocketTypes.RTC_MANUAL_END;
-	            callId = call_1$3.Call.current.id;
-	            call_1$3.Call.current = null;
-	            this.cloudRTC.destroy();
-	            return [4
-	            /*yield*/
-	            , this.sendUserEndRequest(callId, action)];
-
-	          case 1:
-	            _a.sent();
-
-	            callback_utils_1$1.CallbackUtils.onSuccess(callOptions);
-	            return [3
-	            /*break*/
-	            , 3];
-
-	          case 2:
-	            err_1 = _a.sent();
-	            console.info("End failed: " + JSON.stringify(err_1));
-	            call_1$3.Call.current = null;
-	            this.cloudRTC.destroy();
-	            callback_utils_1$1.CallbackUtils.onSuccess(callOptions);
-	            return [3
-	            /*break*/
-	            , 3];
-
-	          case 3:
-	            return [2
-	            /*return*/
-	            ];
-	        }
-	      });
-	    });
+	    call.removeUser(userId);
+	    console.info("userLeft Call: " + JSON.stringify(reason));
+	    this.apiEventCenter.fire(rtc_api_events_1.RTCApiEvents.USER_QUITED, reason);
 	  };
 
-	  Ender.prototype.sendUserEndRequest = function (callId, action) {
-	    var _this = this;
-
-	    var request = new end_request_1.EndRequest(callId);
-	    console.info("sendUserEndRequest: " + JSON.stringify(request));
-	    return new Promise(function (resolve, reject) {
-	      var rocket = new Rocket_1$1["default"]({
-	        name: action,
-	        params: request,
-	        permission: Permission_1$1.Permission.WRITE,
-	        singleTimeout: SocketTimeout_1$1.SocketTimeout.commonRequestSingle,
-	        totalTimeout: SocketTimeout_1$1.SocketTimeout.commonRequestTotal,
-	        success: function success() {
-	          resolve();
-	        },
-	        fail: function fail(err) {
-	          reject({
-	            code: 400,
-	            content: err.content
-	          });
-	        }
-	      });
-
-	      _this.goEasySocket.emit(rocket);
-	    });
-	  };
-
-	  Ender.prototype.endCatch = function (functionObj, result) {
-	    return __awaiter$2(this, void 0, void 0, function () {
-	      var err_2;
-	      return __generator$2(this, function (_a) {
-	        switch (_a.label) {
-	          case 0:
-	            _a.trys.push([0, 2,, 3]);
-
-	            return [4
-	            /*yield*/
-	            , functionObj()];
-
-	          case 1:
-	            _a.sent();
-
-	            return [3
-	            /*break*/
-	            , 3];
-
-	          case 2:
-	            err_2 = _a.sent();
-	            console.info("End failed: " + JSON.stringify(err_2));
-	            call_1$3.Call.current = null;
-	            this.cloudRTC.destroy();
-
-	            if (result != null) {
-	              this.apiEventCenter.fire(rtc_api_events_1$1.RTCApiEvents.CALL_ENDED, result);
-	            }
-
-	            return [3
-	            /*break*/
-	            , 3];
-
-	          case 3:
-	            return [2
-	            /*return*/
-	            ];
-	        }
-	      });
-	    });
-	  };
-
-	  return Ender;
+	  return CallService;
 	}();
 
-	ender.Ender = Ender;
-
-	var rtcStabilizer = {};
-
-	var findCallRequest = {};
-
-	findCallRequest.__esModule = true;
-	findCallRequest.FindCallRequest = void 0;
-
-	var FindCallRequest =
-	/** @class */
-	function () {
-	  function FindCallRequest(callId) {
-	    this.callId = callId;
-	  }
-
-	  return FindCallRequest;
-	}();
-
-	findCallRequest.FindCallRequest = FindCallRequest;
+	callService.CallService = CallService;
 
 	var __awaiter$1 = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
 	  function adopt(value) {
@@ -20591,111 +21187,107 @@
 	  }
 	};
 
-	rtcStabilizer.__esModule = true;
-	rtcStabilizer.RTCStabilizer = void 0;
-	var call_1$2 = call;
+	rtc.__esModule = true;
+	rtc.RTC = void 0;
+	var api_event_center_1 = apiEventCenter;
+	var call_1 = call;
+	var dialer_1 = dialer;
+	var callback_utils_1$3 = callbackUtils;
+	var ringer_1 = ringer;
+	var ali_rtc_1 = aliRtc;
+	var acceptor_1 = acceptor;
+	var ender_1 = ender;
+	var platform_detector_1 = platformDetector;
+	var RemoteEvents_1 = RemoteEvents;
 	var goeasy_event_center_1$2 = goeasyEventCenter;
-	var rtc_internal_events_1$2 = rtcInternalEvents;
-	var find_call_request_1 = findCallRequest;
-	var Rocket_1 = Rocket;
-	var RocketTypes_1 = RocketTypes;
-	var Permission_1 = Permission;
-	var SocketTimeout_1 = SocketTimeout;
-	var rtc_user_1 = rtcUser;
+	var rtc_internal_events_1 = rtcInternalEvents;
+	var rtc_stabilizer_1 = rtcStabilizer;
+	var call_service_1 = callService;
+	/****
+	 *  to
+	 *      to.type 只能是group或者private
+	 *      to.id 字符串或者数字, 不能包含自己
+	 *      to.data  空，字符串或者对象
+	 *      users，要么为空， 要么是数组，并且每个对象里都应该包含id和data，并且每个id和data都按照上边的规则来
+	 *  mediaType，必填，必须是，voice或者video， 枚举验证？
+	 *  notification：可以为空，若不为空，必须有title和body，并且长度要与之前的匹配
+	 *
+	 */
 
-	var RTCStabilizer =
+	var RTC =
 	/** @class */
 	function () {
-	  function RTCStabilizer(goEasySocket) {
-	    var _this = this;
-
-	    this.goEasyDisconnectTimer = null;
-	    this.rtcDisconnectTimer = null;
-	    this.goEasySocket = goEasySocket;
-	    this.goEasySocket.addDisconnectedObserver(this.onGoEasyDisconnected.bind(this));
-	    this.goEasySocket.addConnectedObserver(this.onGoEasyReconnected.bind(this));
-	    goeasy_event_center_1$2.GoEasyEventCenter.on(rtc_internal_events_1$2.RTCInternalEvents.RTC_DISCONNECT, function (callId) {
-	      return _this.onRTCDisconnect();
-	    });
-	    goeasy_event_center_1$2.GoEasyEventCenter.on(rtc_internal_events_1$2.RTCInternalEvents.RTC_RECONNECT, function (callId) {
-	      return _this.onRTCReconnect();
-	    });
+	  function RTC() {
+	    this.apiEventCenter = new api_event_center_1.ApiEventCenter();
+	    this.ringer = new ringer_1.Ringer(this.apiEventCenter);
 	  }
 
-	  RTCStabilizer.prototype.onRTCDisconnect = function () {
-	    var self = this;
+	  RTC.init = function () {
+	    RTC.instance = new RTC();
+	  };
 
-	    if (self.rtcDisconnectTimer === null) {
-	      console.log("RTC 网络断开");
-	      self.rtcDisconnectTimer = setTimeout(function () {
-	        clearTimeout(self.goEasyDisconnectTimer);
-	        self.goEasyDisconnectTimer = null;
-	        goeasy_event_center_1$2.GoEasyEventCenter.fire(rtc_internal_events_1$2.RTCInternalEvents.RTC_TIMEOUT, call_1$2.Call.current.id);
-	      }, 20 * 1000);
+	  RTC.prototype.initialGoEasySocket = function (socket) {
+	    var _this = this;
+
+	    RTC.userId = String(socket.userId);
+	    this.socket = socket;
+	    this.socket.addMessageObserver(RemoteEvents_1.RemoteEvents.RTC_RING_EVENT, this.onRing.bind(this));
+	    goeasy_event_center_1$2.GoEasyEventCenter.on(rtc_internal_events_1.RTCInternalEvents.CALL_ENDED, function () {
+	      return _this.onCallEnded();
+	    }); //todo：是不是不要也可以，反正每次ring的时候都会覆盖旧的？
+	  };
+
+	  RTC.prototype.confirmInitial = function () {
+	    if (!this.cloudRTC) {
+	      if (![platform_detector_1.Platform.APP_ANDROID, platform_detector_1.Platform.APP_IOS].includes(platform_detector_1.PlatformDetector.currentPlatform())) {
+	        throw 'GoEasy RTC currently only supports APPs developed by uni-app';
+	      }
+
+	      this.cloudRTC = new ali_rtc_1.AliRTC(this.socket);
+	      this.ringer.initialSocket(this.socket, this.cloudRTC);
+	      this.dialer = new dialer_1.Dialer(this.socket, this.cloudRTC);
+	      this.ender = new ender_1.Ender(this.socket, this.apiEventCenter, this.cloudRTC);
+	      this.stabilizer = new rtc_stabilizer_1.RTCStabilizer(this.socket);
+	      this.callService = new call_service_1.CallService(this.socket, this.cloudRTC, this.apiEventCenter);
 	    }
 	  };
 
-	  RTCStabilizer.prototype.onRTCReconnect = function () {
-	    var self = this;
-
-	    if (self.rtcDisconnectTimer !== null) {
-	      console.log("RTC 重连成功: ");
-	      clearTimeout(self.rtcDisconnectTimer);
-	      self.rtcDisconnectTimer = null;
-	    }
+	  RTC.prototype.onRing = function (ringEvent) {
+	    this.acceptor = new acceptor_1.Acceptor(this.socket, this.cloudRTC, this.apiEventCenter, ringEvent.token);
 	  };
 
-	  RTCStabilizer.prototype.onGoEasyDisconnected = function () {
-	    console.info("GoEasy 断开连接");
-	    var self = this;
-
-	    if (call_1$2.Call.current != null && self.goEasyDisconnectTimer === null) {
-	      self.goEasyDisconnectTimer = setTimeout(function () {
-	        clearTimeout(self.goEasyDisconnectTimer);
-	        self.goEasyDisconnectTimer = null;
-	        goeasy_event_center_1$2.GoEasyEventCenter.fire(rtc_internal_events_1$2.RTCInternalEvents.GOEASY_TIMEOUT, call_1$2.Call.current.id);
-	      }, 20 * 1000);
-	    }
+	  RTC.prototype.onCallEnded = function () {
+	    this.acceptor = null;
 	  };
 
-	  RTCStabilizer.prototype.onGoEasyReconnected = function () {
+	  RTC.prototype["catch"] = function (functionObj, callbackOptions) {
 	    return __awaiter$1(this, void 0, void 0, function () {
-	      var self, callData, inviter_1, invitees_1, call_2;
+	      var err_1;
 	      return __generator$1(this, function (_a) {
 	        switch (_a.label) {
 	          case 0:
-	            console.info("GoEasy 重连成功");
-	            self = this;
-	            if (!(call_1$2.Call.current != null && self.goEasyDisconnectTimer !== null)) return [3
-	            /*break*/
-	            , 2];
-	            clearTimeout(self.goEasyDisconnectTimer);
-	            self.goEasyDisconnectTimer = null;
+	            _a.trys.push([0, 2,, 3]);
+
+	            this.confirmInitial();
 	            return [4
 	            /*yield*/
-	            , this.sendFindCallDataRequest(call_1$2.Call.current.id)];
+	            , functionObj()];
 
 	          case 1:
-	            callData = _a.sent();
-	            console.info("sendFindCallDataRequest result: " + JSON.stringify(callData));
-	            inviter_1 = null;
-	            invitees_1 = new Array();
-	            call_2 = call_1$2.Call.current;
-	            callData.users.forEach(function (user) {
-	              var rtcUser = call_2.findUser(user.id);
+	            _a.sent();
 
-	              if (user.invitation) {
-	                inviter_1 = new rtc_user_1.RTCUser(user.id, JSON.parse(user.data), rtcUser.video, rtcUser.voice, rtcUser.accepted);
-	              } else {
-	                invitees_1.push(new rtc_user_1.RTCUser(user.id, JSON.parse(user.data), rtcUser.video, rtcUser.voice, rtcUser.accepted));
-	              }
-	            });
-	            call_2.inviter = inviter_1;
-	            call_2.invitees = invitees_1;
-	            console.info("Current call: " + JSON.stringify(call_2));
-	            _a.label = 2;
+	            return [3
+	            /*break*/
+	            , 3];
 
 	          case 2:
+	            err_1 = _a.sent();
+	            callback_utils_1$3.CallbackUtils.onFailed(callbackOptions, err_1);
+	            return [3
+	            /*break*/
+	            , 3];
+
+	          case 3:
 	            return [2
 	            /*return*/
 	            ];
@@ -20704,134 +21296,483 @@
 	    });
 	  };
 
-	  RTCStabilizer.prototype.sendFindCallDataRequest = function (callId) {
-	    return __awaiter$1(this, void 0, void 0, function () {
-	      var _this = this;
-
-	      return __generator$1(this, function (_a) {
-	        return [2
-	        /*return*/
-	        , new Promise(function (resolve, reject) {
-	          var request = new find_call_request_1.FindCallRequest(callId);
-	          var rocket = new Rocket_1["default"]({
-	            name: RocketTypes_1.RocketTypes.RTC_CALL_DATA,
-	            params: request,
-	            permission: Permission_1.Permission.WRITE,
-	            singleTimeout: SocketTimeout_1.SocketTimeout.commonRequestSingle,
-	            totalTimeout: SocketTimeout_1.SocketTimeout.commonRequestTotal,
-	            success: function success(res) {
-	              resolve(res.content);
-	            },
-	            fail: function fail(err) {
-	              reject({
-	                code: 400,
-	                content: err.content
-	              });
-	            }
-	          });
-
-	          _this.goEasySocket.emit(rocket);
-	        })];
-	      });
-	    });
-	  };
-
-	  return RTCStabilizer;
-	}();
-
-	rtcStabilizer.RTCStabilizer = RTCStabilizer;
-
-	var callService = {};
-
-	callService.__esModule = true;
-	callService.CallService = void 0;
-	var call_1$1 = call;
-	var rtc_api_events_1 = rtcApiEvents;
-	var rtc_call_status_1 = rtcCallStatus;
-	var goeasy_event_center_1$1 = goeasyEventCenter;
-	var rtc_internal_events_1$1 = rtcInternalEvents;
-	var RemoteEvents_1$1 = RemoteEvents;
-	var reason_1 = reason;
-
-	var CallService =
-	/** @class */
-	function () {
-	  function CallService(socket, cloudRTC, apiEventCenter) {
+	  RTC.prototype.call = function (callOptions) {
 	    var _this = this;
 
-	    this.socket = socket;
-	    this.cloudRTC = cloudRTC;
-	    this.apiEventCenter = apiEventCenter;
-	    goeasy_event_center_1$1.GoEasyEventCenter.on(rtc_internal_events_1$1.RTCInternalEvents.RECEIVED_RTC_REMOTE_FLOW, function (result) {
-	      return _this.onReceivedRTCRemoteFlow(result);
-	    });
-	    socket.addMessageObserver(RemoteEvents_1$1.RemoteEvents.RTC_REMOTE_USER_LEFT, this.remoteUserLeft.bind(this));
+	    this["catch"](function () {
+	      return __awaiter$1(_this, void 0, void 0, function () {
+	        return __generator$1(this, function (_a) {
+	          switch (_a.label) {
+	            case 0:
+	              return [4
+	              /*yield*/
+	              , this.dialer.dial(callOptions)];
+
+	            case 1:
+	              _a.sent();
+
+	              return [2
+	              /*return*/
+	              ];
+	          }
+	        });
+	      });
+	    }, callOptions);
+	  };
+
+	  RTC.prototype.currentCall = function () {
+	    this.confirmInitial();
+	    return call_1.Call.current;
+	  };
+
+	  RTC.prototype.accept = function (callbackOptions) {
+	    var _this = this;
+
+	    this["catch"](function () {
+	      return __awaiter$1(_this, void 0, void 0, function () {
+	        return __generator$1(this, function (_a) {
+	          switch (_a.label) {
+	            case 0:
+	              return [4
+	              /*yield*/
+	              , this.acceptor.accept(callbackOptions)];
+
+	            case 1:
+	              _a.sent();
+
+	              return [2
+	              /*return*/
+	              ];
+	          }
+	        });
+	      });
+	    }, callbackOptions);
+	  };
+
+	  RTC.prototype.end = function (callbackOptions) {
+	    var _this = this;
+
+	    this["catch"](function () {
+	      return __awaiter$1(_this, void 0, void 0, function () {
+	        return __generator$1(this, function (_a) {
+	          switch (_a.label) {
+	            case 0:
+	              return [4
+	              /*yield*/
+	              , this.ender.end(callbackOptions)];
+
+	            case 1:
+	              _a.sent();
+
+	              return [2
+	              /*return*/
+	              ];
+	          }
+	        });
+	      });
+	    }, callbackOptions);
+	  };
+
+	  RTC.prototype.on = function (event, callback) {
+	    this.confirmInitial();
+	    this.apiEventCenter.on(event, callback);
+	  };
+
+	  RTC.prototype.switchViewLevel = function (userId) {
+	    this.cloudRTC.switchViewLevel(userId);
+	  };
+
+	  return RTC;
+	}();
+
+	rtc.RTC = RTC;
+
+	var cs = {};
+
+	var team = {};
+
+	var conversationHandler = {};
+
+	var csStatusQueryRequest = {};
+
+	csStatusQueryRequest.__esModule = true;
+	csStatusQueryRequest.CSStatusQueryRequest = void 0;
+
+	var CSStatusQueryRequest =
+	/** @class */
+	function () {
+	  function CSStatusQueryRequest(customerId, teamId) {
+	    this.customerId = customerId;
+	    this.teamId = teamId;
 	  }
 
-	  CallService.prototype.onReceivedRTCRemoteFlow = function (result) {
-	    var call = call_1$1.Call.current;
+	  return CSStatusQueryRequest;
+	}();
 
-	    if (call === null) {
-	      return;
+	csStatusQueryRequest.CSStatusQueryRequest = CSStatusQueryRequest;
+
+	var csAcceptRequest = {};
+
+	csAcceptRequest.__esModule = true;
+	csAcceptRequest.CSAcceptRequest = void 0;
+
+	var CSAcceptRequest =
+	/** @class */
+	function () {
+	  function CSAcceptRequest(customerId, teamId) {
+	    this.customerId = customerId;
+	    this.teamId = teamId;
+	  }
+
+	  return CSAcceptRequest;
+	}();
+
+	csAcceptRequest.CSAcceptRequest = CSAcceptRequest;
+
+	conversationHandler.__esModule = true;
+	conversationHandler.ConversationHandler = void 0;
+	var cs_status_query_request_1 = csStatusQueryRequest;
+	var cs_accept_request_1 = csAcceptRequest;
+	var validator_utils_1$2 = validatorUtils;
+	var Rocket_1$1 = Rocket;
+	var RocketTypes_1$1 = RocketTypes;
+	var Permission_1$1 = Permission;
+	var SocketTimeout_1$1 = SocketTimeout;
+	var callback_utils_1$2 = callbackUtils;
+	var g_1$1 = g;
+	var goeasy_event_center_1$1 = goeasyEventCenter;
+	var internal_events_1$1 = internalEvents;
+	var remote_abbr_message_builder_1 = remoteAbbrMessageBuilder;
+
+	var ConversationHandler =
+	/** @class */
+	function () {
+	  function ConversationHandler() {
+	    this.builder = new remote_abbr_message_builder_1.RemoteAbbrMessageBuilder();
+	  }
+
+	  ConversationHandler.getInstance = function () {
+	    if (!ConversationHandler.instance) {
+	      ConversationHandler.instance = new ConversationHandler();
 	    }
 
-	    console.log('收到用户{' + JSON.stringify(result) + '}流信息. call: ' + JSON.stringify(call_1$1.Call.current));
-	    this.inviterPush();
-	    this.otherUserAccepted(result);
-	    goeasy_event_center_1$1.GoEasyEventCenter.fire(rtc_internal_events_1$1.RTCInternalEvents.CALL_ACCEPTED);
+	    return ConversationHandler.instance;
 	  };
 
-	  CallService.prototype.otherUserAccepted = function (result) {
-	    var call = call_1$1.Call.current;
-	    var user = call.otherUsers().find(function (user) {
-	      return user.id === result.userId;
+	  ConversationHandler.prototype.accept = function (teamId, options) {
+	    var _this = this;
+
+	    this.validate(options);
+	    var id = options.id;
+	    var customerId = id.toString();
+	    var request = new cs_accept_request_1.CSAcceptRequest(customerId, teamId);
+	    var rocket = new Rocket_1$1["default"]({
+	      name: RocketTypes_1$1.RocketTypes.CS_ACCEPT,
+	      params: request,
+	      permission: Permission_1$1.Permission.WRITE,
+	      singleTimeout: SocketTimeout_1$1.SocketTimeout.commonRequestSingle,
+	      totalTimeout: SocketTimeout_1$1.SocketTimeout.commonRequestTotal,
+	      fail: function fail(err) {
+	        callback_utils_1$2.CallbackUtils.onFailed(options, err);
+	      },
+	      success: function success(res) {
+	        var acceptedMessage = _this.builder.build(res.content.message);
+
+	        goeasy_event_center_1$1.GoEasyEventCenter.fire(internal_events_1$1.IM_INTERNAL_EVENTS.CS_ACCEPTED, acceptedMessage);
+	        callback_utils_1$2.CallbackUtils.onSuccess(options, {
+	          message: acceptedMessage,
+	          customerStatus: res.content.customerStatus
+	        });
+	      }
 	    });
-	    user.video = result.video;
-	    user.voice = result.voice;
-	    user.accepted = true;
-	    this.apiEventCenter.fire(rtc_api_events_1.RTCApiEvents.USER_ACCEPTED, {
-	      id: user.id,
-	      data: user.data
-	    });
+	    g_1$1.G.s().emit(rocket);
 	  };
 
-	  CallService.prototype.inviterPush = function () {
-	    var call = call_1$1.Call.current; //拨打方
+	  ConversationHandler.prototype.end = function (teamId, options) {
+	    var _this = this;
 
-	    if (call.mine().id === call_1$1.Call.current.inviter.id && call_1$1.Call.current.status === rtc_call_status_1.RTCCallStatus.dialing) {
-	      this.cloudRTC.push(call_1$1.Call.current.mediaType);
-	      call_1$1.Call.current.status = rtc_call_status_1.RTCCallStatus.in_progress;
+	    this.validate(options);
+	    var customerId = options.id.toString();
+	    var request = new cs_accept_request_1.CSAcceptRequest(customerId, teamId);
+	    var rocket = new Rocket_1$1["default"]({
+	      name: RocketTypes_1$1.RocketTypes.CS_END,
+	      params: request,
+	      permission: Permission_1$1.Permission.WRITE,
+	      singleTimeout: SocketTimeout_1$1.SocketTimeout.commonRequestSingle,
+	      totalTimeout: SocketTimeout_1$1.SocketTimeout.commonRequestTotal,
+	      fail: function fail(err) {
+	        callback_utils_1$2.CallbackUtils.onFailed(options, err);
+	      },
+	      success: function success(res) {
+	        var endedMessage = _this.builder.build(res.content.message);
+
+	        goeasy_event_center_1$1.GoEasyEventCenter.fire(internal_events_1$1.IM_INTERNAL_EVENTS.CS_ENDED, endedMessage);
+	        callback_utils_1$2.CallbackUtils.onSuccess(options, {
+	          message: endedMessage,
+	          customerStatus: res.content.customerStatus
+	        });
+	      }
+	    });
+	    g_1$1.G.s().emit(rocket);
+	  };
+
+	  ConversationHandler.prototype.queryCustomerStatus = function (teamId, options) {
+	    this.validate(options);
+	    var id = options.id;
+	    var customerId = id.toString();
+	    var request = new cs_status_query_request_1.CSStatusQueryRequest(customerId, teamId);
+	    var rocket = new Rocket_1$1["default"]({
+	      name: RocketTypes_1$1.RocketTypes.CS_CUSTOMER_STATUS,
+	      params: request,
+	      permission: Permission_1$1.Permission.READ,
+	      singleTimeout: SocketTimeout_1$1.SocketTimeout.commonQuerySingle,
+	      totalTimeout: SocketTimeout_1$1.SocketTimeout.commonQueryTotal,
+	      fail: function fail(err) {
+	        callback_utils_1$2.CallbackUtils.onFailed(options, err);
+	      },
+	      success: function success(res) {
+	        //todo: 理论上还应该有user, team两个id/data，暂时没有，视情况要不要补充？
+	        var content = res.content;
+
+	        if (content.staff) {
+	          content.staff.data = JSON.parse(content.staff.data);
+	        }
+
+	        callback_utils_1$2.CallbackUtils.onSuccess(options, res);
+	      }
+	    });
+	    g_1$1.G.s().emit(rocket);
+	  };
+
+	  ConversationHandler.prototype.validate = function (options) {
+	    var key = "id";
+	    var customerId = options[key];
+	    validator_utils_1$2["default"].validateId(customerId, key);
+	  };
+
+	  return ConversationHandler;
+	}();
+
+	conversationHandler.ConversationHandler = ConversationHandler;
+
+	var staffStatus = {};
+
+	var csIsOnlineRequest = {};
+
+	csIsOnlineRequest.__esModule = true;
+	csIsOnlineRequest.CSIsOnlineRequest = void 0;
+
+	var CSIsOnlineRequest =
+	/** @class */
+	function () {
+	  function CSIsOnlineRequest(teamId) {
+	    this.teamId = teamId;
+	  }
+
+	  return CSIsOnlineRequest;
+	}();
+
+	csIsOnlineRequest.CSIsOnlineRequest = CSIsOnlineRequest;
+
+	var csOnlineRequest = {};
+
+	csOnlineRequest.__esModule = true;
+	csOnlineRequest.CSOnlineRequest = void 0;
+
+	var CSOnlineRequest =
+	/** @class */
+	function () {
+	  function CSOnlineRequest(teamId, teamData, staffData) {
+	    this.teamId = teamId;
+	    this.teamData = JSON.stringify(teamData);
+	    this.staffData = JSON.stringify(staffData);
+	  }
+
+	  return CSOnlineRequest;
+	}();
+
+	csOnlineRequest.CSOnlineRequest = CSOnlineRequest;
+
+	var csOfflineRequest = {};
+
+	csOfflineRequest.__esModule = true;
+	csOfflineRequest.CSOfflineRequest = void 0;
+
+	var CSOfflineRequest =
+	/** @class */
+	function () {
+	  function CSOfflineRequest(teamId) {
+	    this.teamId = teamId;
+	  }
+
+	  return CSOfflineRequest;
+	}();
+
+	csOfflineRequest.CSOfflineRequest = CSOfflineRequest;
+
+	staffStatus.__esModule = true;
+	staffStatus.StaffStatus = void 0;
+	var cs_is_online_request_1 = csIsOnlineRequest;
+	var Rocket_1 = Rocket;
+	var RocketTypes_1 = RocketTypes;
+	var Permission_1 = Permission;
+	var SocketTimeout_1 = SocketTimeout;
+	var Calibrator_1 = Calibrator;
+	var cs_online_request_1 = csOnlineRequest;
+	var cs_offline_request_1 = csOfflineRequest;
+	var goeasy_event_center_1 = goeasyEventCenter;
+	var internal_events_1 = internalEvents;
+	var callback_utils_1$1 = callbackUtils;
+	var g_1 = g;
+
+	var StaffStatus =
+	/** @class */
+	function () {
+	  function StaffStatus() {}
+
+	  StaffStatus.getInstance = function () {
+	    if (!StaffStatus.instance) {
+	      StaffStatus.instance = new StaffStatus();
 	    }
-	  }; //todo： 我们有远程用户离开的api吗？
 
+	    return StaffStatus.instance;
+	  };
 
-	  CallService.prototype.remoteUserLeft = function (userQuitedEvent) {
-	    var call = call_1$1.Call.current;
+	  StaffStatus.prototype.isOnline = function (teamId, option) {
+	    var request = new cs_is_online_request_1.CSIsOnlineRequest(teamId);
+	    var rocket = new Rocket_1["default"]({
+	      name: RocketTypes_1.RocketTypes.CS_IS_ONLINE,
+	      params: request,
+	      permission: Permission_1.Permission.READ,
+	      singleTimeout: SocketTimeout_1.SocketTimeout.commonQuerySingle,
+	      totalTimeout: SocketTimeout_1.SocketTimeout.commonQueryTotal,
+	      fail: function fail(err) {
+	        callback_utils_1$1.CallbackUtils.onFailed(option, err);
+	      },
+	      success: function success(res) {
+	        // todo 这里抛错如何捕获?
+	        callback_utils_1$1.CallbackUtils.onSuccess(option, res);
+	      }
+	    });
+	    g_1.G.s().emit(rocket);
+	  };
 
-	    if (call === null) {
-	      return;
-	    }
-
-	    var reason = new reason_1.Reason(userQuitedEvent.userQuiteType);
-	    var userId = userQuitedEvent.userId;
-	    var rtcUser = call.findUser(userId);
-
-	    if (rtcUser) {
-	      reason.user = {
-	        id: rtcUser.id,
-	        data: rtcUser.data
+	  StaffStatus.prototype.online = function (teamId, option) {
+	    if (!Calibrator_1["default"].isObject(option.staffData) || !Calibrator_1["default"].isObject(option.teamData)) {
+	      throw {
+	        code: 400,
+	        content: "staffData and teamData require an object"
 	      };
 	    }
 
-	    call.removeUser(userId);
-	    console.info("userLeft Call: " + JSON.stringify(reason));
-	    this.apiEventCenter.fire(rtc_api_events_1.RTCApiEvents.USER_QUITED, reason);
+	    var request = new cs_online_request_1.CSOnlineRequest(teamId, option.teamData, option.staffData);
+	    var rocket = new Rocket_1["default"]({
+	      name: RocketTypes_1.RocketTypes.CS_ONLINE,
+	      params: request,
+	      permission: Permission_1.Permission.WRITE,
+	      singleTimeout: SocketTimeout_1.SocketTimeout.commonRequestSingle,
+	      totalTimeout: SocketTimeout_1.SocketTimeout.commonRequestTotal,
+	      fail: function fail(err) {
+	        callback_utils_1$1.CallbackUtils.onFailed(option, err);
+	      },
+	      success: function success(res) {
+	        callback_utils_1$1.CallbackUtils.onSuccess(option);
+	        goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.CS_ONLINE_SUCCESS);
+	      }
+	    });
+	    g_1.G.s().emit(rocket);
 	  };
 
-	  return CallService;
+	  StaffStatus.prototype.offline = function (teamId, option) {
+	    var request = new cs_offline_request_1.CSOfflineRequest(teamId);
+	    var rocket = new Rocket_1["default"]({
+	      name: RocketTypes_1.RocketTypes.CS_OFFLINE,
+	      params: request,
+	      permission: Permission_1.Permission.WRITE,
+	      singleTimeout: SocketTimeout_1.SocketTimeout.commonRequestSingle,
+	      totalTimeout: SocketTimeout_1.SocketTimeout.commonRequestTotal,
+	      fail: function fail(err) {
+	        callback_utils_1$1.CallbackUtils.onFailed(option, err);
+	      },
+	      success: function success(res) {
+	        callback_utils_1$1.CallbackUtils.onSuccess(option);
+	        goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.CS_OFFLINE_SUCCESS);
+	      }
+	    });
+	    g_1.G.s().emit(rocket);
+	  };
+
+	  return StaffStatus;
 	}();
 
-	callService.CallService = CallService;
+	staffStatus.StaffStatus = StaffStatus;
+
+	var messageCreator = {};
+
+	messageCreator.__esModule = true;
+	messageCreator.MessageCreator = void 0;
+	var GoEasy_1 = GoEasy$1;
+	var im_1$1 = im;
+
+	var MessageCreator =
+	/** @class */
+	function () {
+	  function MessageCreator() {}
+
+	  MessageCreator.getInstance = function () {
+	    if (!MessageCreator.instance) {
+	      MessageCreator.instance = new MessageCreator();
+	    }
+
+	    return MessageCreator.instance;
+	  };
+
+	  MessageCreator.prototype.createTextMessage = function (teamId, createOptions) {
+	    var imMessage = im_1$1.IM.instance.createTextMessage(createOptions);
+	    this.extendProps(teamId, imMessage);
+	  };
+
+	  MessageCreator.prototype.createImageMessage = function (teamId, createOptions) {
+	    var imMessage = im_1$1.IM.instance.createImageMessage(createOptions);
+	    this.extendProps(teamId, imMessage);
+	  };
+
+	  MessageCreator.prototype.createFileMessage = function (teamId, createOptions) {
+	    var imMessage = im_1$1.IM.instance.createFileMessage(createOptions);
+	    this.extendProps(teamId, imMessage);
+	  };
+
+	  MessageCreator.prototype.createAudioMessage = function (teamId, createOptions) {
+	    var imMessage = im_1$1.IM.instance.createAudioMessage(createOptions);
+	    this.extendProps(teamId, imMessage);
+	  };
+
+	  MessageCreator.prototype.createVideoMessage = function (teamId, createOptions) {
+	    var imMessage = im_1$1.IM.instance.createVideoMessage(createOptions);
+	    this.extendProps(teamId, imMessage);
+	  };
+
+	  MessageCreator.prototype.createCustomMessage = function (teamId, createOptions) {
+	    var imMessage = im_1$1.IM.instance.createCustomMessage(createOptions);
+	    this.extendProps(teamId, imMessage);
+	  };
+	  /**
+	   * staff发送的消息accepted一定为true(staff必须接入才能发送消息)
+	   */
+
+
+	  MessageCreator.prototype.extendProps = function (teamId, imMessage) {
+	    if (imMessage.scene() === GoEasy_1.Scene.CS) {
+	      var csMessage = imMessage;
+	      csMessage.teamId = teamId;
+	      csMessage.accepted = true;
+	    }
+	  };
+
+	  return MessageCreator;
+	}();
+
+	messageCreator.MessageCreator = MessageCreator;
 
 	var __awaiter = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
 	  function adopt(value) {
@@ -20976,80 +21917,26 @@
 	  }
 	};
 
-	rtc.__esModule = true;
-	rtc.RTC = void 0;
-	var api_event_center_1 = apiEventCenter;
-	var call_1 = call;
-	var dialer_1 = dialer;
+	team.__esModule = true;
+	team.Team = void 0;
+	var validator_utils_1$1 = validatorUtils;
 	var callback_utils_1 = callbackUtils;
-	var ringer_1 = ringer;
-	var ali_rtc_1 = aliRtc;
-	var acceptor_1 = acceptor;
-	var ender_1 = ender;
-	var platform_detector_1 = platformDetector;
-	var RemoteEvents_1 = RemoteEvents;
-	var goeasy_event_center_1 = goeasyEventCenter;
-	var rtc_internal_events_1 = rtcInternalEvents;
-	var rtc_stabilizer_1 = rtcStabilizer;
-	var call_service_1 = callService;
-	/****
-	 *  to
-	 *      to.type 只能是group或者private
-	 *      to.id 字符串或者数字, 不能包含自己
-	 *      to.data  空，字符串或者对象
-	 *      users，要么为空， 要么是数组，并且每个对象里都应该包含id和data，并且每个id和data都按照上边的规则来
-	 *  mediaType，必填，必须是，voice或者video， 枚举验证？
-	 *  notification：可以为空，若不为空，必须有title和body，并且长度要与之前的匹配
-	 *
-	 */
+	var im_1 = im;
+	var conversation_handler_1 = conversationHandler;
+	var staff_status_1 = staffStatus;
+	var message_creator_1 = messageCreator;
 
-	var RTC =
+	var Team =
 	/** @class */
 	function () {
-	  function RTC() {
-	    this.apiEventCenter = new api_event_center_1.ApiEventCenter();
-	    this.ringer = new ringer_1.Ringer(this.apiEventCenter);
+	  function Team(teamId) {
+	    this.teamId = teamId;
+	    this.staffStatus = staff_status_1.StaffStatus.getInstance();
+	    this.conversationHandler = conversation_handler_1.ConversationHandler.getInstance();
+	    this.messageCreator = message_creator_1.MessageCreator.getInstance();
 	  }
 
-	  RTC.init = function () {
-	    RTC.instance = new RTC();
-	  };
-
-	  RTC.prototype.initialGoEasySocket = function (socket) {
-	    var _this = this;
-
-	    RTC.userId = String(socket.userId);
-	    this.socket = socket;
-	    this.socket.addMessageObserver(RemoteEvents_1.RemoteEvents.RTC_RING_EVENT, this.onRing.bind(this));
-	    goeasy_event_center_1.GoEasyEventCenter.on(rtc_internal_events_1.RTCInternalEvents.CALL_ENDED, function () {
-	      return _this.onCallEnded();
-	    }); //todo：是不是不要也可以，反正每次ring的时候都会覆盖旧的？
-	  };
-
-	  RTC.prototype.confirmInitial = function () {
-	    if (!this.cloudRTC) {
-	      if (![platform_detector_1.Platform.APP_ANDROID, platform_detector_1.Platform.APP_IOS].includes(platform_detector_1.PlatformDetector.currentPlatform())) {
-	        throw 'GoEasy RTC currently only supports APPs developed by uni-app';
-	      }
-
-	      this.cloudRTC = new ali_rtc_1.AliRTC(this.socket);
-	      this.ringer.initialSocket(this.socket, this.cloudRTC);
-	      this.dialer = new dialer_1.Dialer(this.socket, this.cloudRTC);
-	      this.ender = new ender_1.Ender(this.socket, this.apiEventCenter, this.cloudRTC);
-	      this.stabilizer = new rtc_stabilizer_1.RTCStabilizer(this.socket);
-	      this.callService = new call_service_1.CallService(this.socket, this.cloudRTC, this.apiEventCenter);
-	    }
-	  };
-
-	  RTC.prototype.onRing = function (ringEvent) {
-	    this.acceptor = new acceptor_1.Acceptor(this.socket, this.cloudRTC, this.apiEventCenter, ringEvent.token);
-	  };
-
-	  RTC.prototype.onCallEnded = function () {
-	    this.acceptor = null;
-	  };
-
-	  RTC.prototype["catch"] = function (functionObj, callbackOptions) {
+	  Team.prototype["catch"] = function (functionObj, callbackOptions) {
 	    return __awaiter(this, void 0, void 0, function () {
 	      var err_1;
 	      return __generator(this, function (_a) {
@@ -21057,7 +21944,7 @@
 	          case 0:
 	            _a.trys.push([0, 2,, 3]);
 
-	            this.confirmInitial();
+	            validator_utils_1$1["default"].validateCallbackOptions(callbackOptions);
 	            return [4
 	            /*yield*/
 	            , functionObj()];
@@ -21085,96 +21972,118 @@
 	    });
 	  };
 
-	  RTC.prototype.call = function (callOptions) {
+	  Team.prototype.isOnline = function (options) {
 	    var _this = this;
 
 	    this["catch"](function () {
-	      return __awaiter(_this, void 0, void 0, function () {
-	        return __generator(this, function (_a) {
-	          switch (_a.label) {
-	            case 0:
-	              return [4
-	              /*yield*/
-	              , this.dialer.dial(callOptions)];
-
-	            case 1:
-	              _a.sent();
-
-	              return [2
-	              /*return*/
-	              ];
-	          }
-	        });
-	      });
-	    }, callOptions);
+	      _this.staffStatus.isOnline(_this.teamId, options);
+	    }, options);
 	  };
 
-	  RTC.prototype.currentCall = function () {
-	    this.confirmInitial();
-	    return call_1.Call.current;
-	  };
-
-	  RTC.prototype.accept = function (callbackOptions) {
+	  Team.prototype.online = function (options) {
 	    var _this = this;
 
 	    this["catch"](function () {
-	      return __awaiter(_this, void 0, void 0, function () {
-	        return __generator(this, function (_a) {
-	          switch (_a.label) {
-	            case 0:
-	              return [4
-	              /*yield*/
-	              , this.acceptor.accept(callbackOptions)];
-
-	            case 1:
-	              _a.sent();
-
-	              return [2
-	              /*return*/
-	              ];
-	          }
-	        });
-	      });
-	    }, callbackOptions);
+	      _this.staffStatus.online(_this.teamId, options);
+	    }, options);
 	  };
 
-	  RTC.prototype.end = function (callbackOptions) {
+	  Team.prototype.offline = function (options) {
 	    var _this = this;
 
 	    this["catch"](function () {
-	      return __awaiter(_this, void 0, void 0, function () {
-	        return __generator(this, function (_a) {
-	          switch (_a.label) {
-	            case 0:
-	              return [4
-	              /*yield*/
-	              , this.ender.end(callbackOptions)];
-
-	            case 1:
-	              _a.sent();
-
-	              return [2
-	              /*return*/
-	              ];
-	          }
-	        });
-	      });
-	    }, callbackOptions);
+	      _this.staffStatus.offline(_this.teamId, options);
+	    }, options);
 	  };
 
-	  RTC.prototype.on = function (event, callback) {
-	    this.confirmInitial();
-	    this.apiEventCenter.on(event, callback);
+	  Team.prototype.customerStatus = function (options) {
+	    var _this = this;
+
+	    this["catch"](function () {
+	      _this.conversationHandler.queryCustomerStatus(_this.teamId, options);
+	    }, options);
 	  };
 
-	  RTC.prototype.switchViewLevel = function (userId) {
-	    this.cloudRTC.switchViewLevel(userId);
+	  Team.prototype.accept = function (options) {
+	    var _this = this;
+
+	    this["catch"](function () {
+	      _this.conversationHandler.accept(_this.teamId, options);
+	    }, options);
 	  };
 
-	  return RTC;
+	  Team.prototype.end = function (options) {
+	    var _this = this;
+
+	    this["catch"](function () {
+	      _this.conversationHandler.end(_this.teamId, options);
+	    }, options);
+	  };
+
+	  Team.prototype.history = function (options) {
+	    im_1.IM.instance.history(options, this.teamId);
+	  };
+
+	  Team.prototype.markMessageAsRead = function (options) {
+	    im_1.IM.instance.markMessageAsRead(options, this.teamId);
+	  };
+
+	  Team.prototype.createTextMessage = function (createOptions) {
+	    this.messageCreator.createTextMessage(this.teamId, createOptions);
+	  };
+
+	  Team.prototype.createImageMessage = function (createOptions) {
+	    this.messageCreator.createImageMessage(this.teamId, createOptions);
+	  };
+
+	  Team.prototype.createFileMessage = function (createOptions) {
+	    this.messageCreator.createFileMessage(this.teamId, createOptions);
+	  };
+
+	  Team.prototype.createAudioMessage = function (createOptions) {
+	    this.messageCreator.createAudioMessage(this.teamId, createOptions);
+	  };
+
+	  Team.prototype.createVideoMessage = function (createOptions) {
+	    this.messageCreator.createVideoMessage(this.teamId, createOptions);
+	  };
+
+	  Team.prototype.createCustomMessage = function (createOptions) {
+	    this.messageCreator.createCustomMessage(this.teamId, createOptions);
+	  };
+
+	  return Team;
 	}();
 
-	rtc.RTC = RTC;
+	team.Team = Team;
+
+	cs.__esModule = true;
+	cs.CS = void 0;
+	var team_1 = team;
+	var validator_utils_1 = validatorUtils;
+
+	var CS =
+	/** @class */
+	function () {
+	  function CS() {}
+
+	  CS.team = function (teamId) {
+	    validator_utils_1["default"].validateId(teamId, "teamId");
+	    var team = this.teams.get(teamId);
+
+	    if (!team) {
+	      team = new team_1.Team(teamId.toString());
+	      this.teams.set(teamId.toString(), team);
+	    }
+
+	    return team;
+	  };
+
+	  CS.teams = new Map();
+	  return CS;
+	}();
+
+	cs.CS = CS;
 
 	(function (exports) {
 
@@ -21207,7 +22116,7 @@
 	  }();
 
 	  exports.__esModule = true;
-	  exports.GoEasyRTC = exports.GoEasyIM = exports.GoEasyPubSub = exports.CustomerStatusQuery = exports.StaffOffline = exports.StaffOnline = exports.StaffIsOnline = exports.ConversationDTO = exports.MessageStatus = exports.Scene = exports.CallBackOptions = void 0;
+	  exports.CSTeam = exports.GoEasyRTC = exports.GoEasyIM = exports.GoEasyPubSub = exports.CustomerStatusQuery = exports.StaffOffline = exports.StaffOnline = exports.StaffIsOnline = exports.ConversationDTO = exports.MessageStatus = exports.Scene = exports.CallBackOptions = void 0;
 	  var NetworkStatus_1 = NetworkStatus;
 	  var GoEasySocket_1 = GoEasySocket;
 	  var Calibrator_1 = Calibrator;
@@ -21219,7 +22128,9 @@
 	  var goeasy_event_center_1 = goeasyEventCenter;
 	  var rtc_1 = rtc;
 	  var media_type_1 = mediaType;
-	  var rtc_api_events_1 = rtcApiEvents; // Lib version flag
+	  var rtc_api_events_1 = rtcApiEvents;
+	  var cs_1 = cs;
+	  var g_1 = g; // Lib version flag
 
 	  var packageVersion = '2.5.2-0';
 
@@ -21380,12 +22291,8 @@
 	      im_1.IM.init(options);
 	    }
 
-	    GoEasyIM.prototype.initialBeforeConnect = function (user) {
-	      im_1.IM.instance.initialBeforeConnect(user);
-	    };
-
-	    GoEasyIM.prototype.initialGoEasySocket = function (goEasySocket) {
-	      im_1.IM.instance.initialGoEasySocket(goEasySocket);
+	    GoEasyIM.prototype.afterConnect = function () {
+	      im_1.IM.instance.afterConnect();
 	    };
 
 	    GoEasyIM.prototype.on = function (event, callBack) {
@@ -21505,7 +22412,7 @@
 	    };
 
 	    GoEasyIM.prototype.csTeam = function (teamId) {
-	      return im_1.IM.instance.csTeam(teamId);
+	      return new CSTeam(teamId);
 	    };
 
 	    GoEasyIM.prototype.pendingConversations = function (options) {
@@ -21567,13 +22474,10 @@
 	      this.confirmUserId(options);
 	      goeasy_event_center_1.GoEasyEventCenter.initial();
 	      this.pubsub.initialBeforeConnect();
-	      this.im.initialBeforeConnect({
-	        id: options.id,
-	        data: options.data
-	      });
 	      this.goEasySocket = new GoEasySocket_1["default"](this.options, options);
 	      this.goEasySocket.connect();
-	      this.im.initialGoEasySocket(this.goEasySocket);
+	      g_1.G.i(this.goEasySocket);
+	      this.im.afterConnect();
 	      this.pubsub.initialGoEasySocket(this.goEasySocket);
 	      this.rtc.initialGoEasySocket(this.goEasySocket);
 	    };
@@ -21703,6 +22607,73 @@
 	  }();
 
 	  exports.GoEasyRTC = GoEasyRTC;
+
+	  var CSTeam =
+	  /** @class */
+	  function () {
+	    function CSTeam(id) {
+	      this.id = id;
+	    }
+
+	    CSTeam.prototype.isOnline = function (options) {
+	      cs_1.CS.team(this.id).isOnline(options);
+	    };
+
+	    CSTeam.prototype.online = function (options) {
+	      cs_1.CS.team(this.id).online(options);
+	    };
+
+	    CSTeam.prototype.offline = function (options) {
+	      cs_1.CS.team(this.id).offline(options);
+	    };
+
+	    CSTeam.prototype.customerStatus = function (options) {
+	      cs_1.CS.team(this.id).customerStatus(options);
+	    };
+
+	    CSTeam.prototype.accept = function (options) {
+	      cs_1.CS.team(this.id).accept(options);
+	    };
+
+	    CSTeam.prototype.end = function (options) {
+	      cs_1.CS.team(this.id).end(options);
+	    };
+
+	    CSTeam.prototype.history = function (options) {
+	      cs_1.CS.team(this.id).history(options);
+	    };
+
+	    CSTeam.prototype.markMessageAsRead = function (options) {
+	      cs_1.CS.team(this.id).markMessageAsRead(options);
+	    };
+
+	    CSTeam.prototype.createTextMessage = function (options) {
+	      cs_1.CS.team(this.id).createTextMessage(options);
+	    };
+
+	    CSTeam.prototype.createImageMessage = function (options) {
+	      cs_1.CS.team(this.id).createImageMessage(options);
+	    };
+
+	    CSTeam.prototype.createFileMessage = function (options) {
+	      cs_1.CS.team(this.id).createFileMessage(options);
+	    };
+
+	    CSTeam.prototype.createAudioMessage = function (options) {
+	      cs_1.CS.team(this.id).createAudioMessage(options);
+	    };
+
+	    CSTeam.prototype.createVideoMessage = function (options) {
+	      cs_1.CS.team(this.id).createVideoMessage(options);
+	    };
+
+	    CSTeam.prototype.createCustomMessage = function (options) {
+	      cs_1.CS.team(this.id).createCustomMessage(options);
+	    };
+	    return CSTeam;
+	  }();
+
+	  exports.CSTeam = CSTeam;
 	})(GoEasy$1);
 
 	var GoEasy = /*@__PURE__*/getDefaultExportFromCjs(GoEasy$1);
