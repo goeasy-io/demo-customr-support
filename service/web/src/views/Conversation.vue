@@ -10,9 +10,9 @@
             @click="goChatPage(conversation.id)"
             :class="{checked:conversation.id === $route.params.id}"
           >
-			<div class="item-head">
-				<img class="item-avatar" :src="conversation.data.avatar" />
-			</div>
+            <div class="item-head">
+              <img class="item-avatar" :src="conversation.data.avatar" />
+            </div>
             <div class="item-info">
               <div class="item-info-name">{{ conversation.data.name }}</div>
               <div class="item-info-message" v-if="conversation.lastMessage.type === 'text'">{{ conversation.lastMessage.payload.text }}</div>
@@ -34,18 +34,18 @@
             :class="{checked:conversation.id === $route.params.id}"
             @contextmenu.prevent.stop="e => showAction(e,conversation)"
           >
-			<div class="item-head">
-				<img class="item-avatar" :src="conversation.data.avatar" />
-				<span class="item-unread-num" v-if="conversation.unread">{{conversation.unread}}</span>
-			</div>
+            <div class="item-head">
+              <img class="item-avatar" :src="conversation.data.avatar" />
+              <span class="item-unread-num" v-if="conversation.unread">{{conversation.unread}}</span>
+            </div>
             <div class="item-info">
               <div class="item-info-top">
                 <div class="item-info-name">{{ conversation.data.name }}</div>
                 <div class="item-info-time">{{ formatDate(conversation.lastMessage.timestamp) }}</div>
               </div>
               <div class="item-info-bottom">
-				<div class="item-info-sending" v-if="conversation.lastMessage.status === 'sending'"></div>
-				<div class="item-info-failed" v-if="conversation.lastMessage.status === 'fail'"></div>
+                <div class="item-info-sending" v-if="conversation.lastMessage.status === 'sending'"></div>
+                <div class="item-info-failed" v-if="conversation.lastMessage.status === 'fail'"></div>
                 <div class="item-info-message" v-if="conversation.lastMessage.type === 'text'">{{ conversation.lastMessage.payload.text }}</div>
                 <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'image'">[图片消息]</div>
                 <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'video'">[视频消息]</div>
@@ -54,10 +54,10 @@
                 <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'CS_END'">会话已结束</div>
                 <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'CS_ACCEPT'">接入成功</div>
                 <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'CS_TRANSFER'">
-					{{conversation.lastMessage.senderId === staffData.uuid ? `已转接给` + conversation.lastMessage.payload.transferTo.data.name: '已接入来自' + conversation.lastMessage.senderData.name +'的转接'}}
-				</div>
-                <div class="item-info-message" v-else>[未识别内容]</div>
-			  </div>
+                {{conversation.lastMessage.senderId === staffData.uuid ? `已转接给` + conversation.lastMessage.payload.transferTo.data.name: '已接入来自' + conversation.lastMessage.senderData.name +'的转接'}}
+              </div>
+              <div class="item-info-message" v-else>[未识别内容]</div>
+              </div>
             </div>
           </div>
         </div>
@@ -103,7 +103,7 @@ export default {
     document.addEventListener('click', () => {
       this.actionPopup.visible = false
     })
-	this.staffData = JSON.parse(localStorage.getItem("staffData"));
+	  this.staffData = JSON.parse(localStorage.getItem("staffData"));
     this.listenConversationUpdate(); //监听会话列表变化
     this.loadConversations(); //加载会话列表
   },
@@ -241,18 +241,18 @@ export default {
       display: flex;
       padding: 12px;
 	  cursor: pointer;
-	  
+
 	  .item-head {
 		position: relative;
 		margin-right: 14px;
 	  }
-	  
+
 	  .item-avatar {
 	    width: 45px;
 	    height: 45px;
 		border-radius: 4px;
 	  }
-	  
+
 	  .item-unread-num {
 			position: absolute;
 			top: -9px;
@@ -265,8 +265,8 @@ export default {
 			color: #fff;
 			font-size: 12px;
 			background-color: #fa5151;
-	  }  
-	  
+	  }
+
       .item-info {
         flex: 1;
         display: flex;
@@ -299,7 +299,7 @@ export default {
 		  width: 80px;
           color: #606266;
         }
-		
+
 		.item-info-failed {
 			background: url("/static/images/failed.png") no-repeat center;
 			background-size: 12px;
@@ -307,7 +307,7 @@ export default {
 			height: 12px;
 			margin-right: 2px;
 		}
-		
+
 		.item-info-sending {
 			background: url("/static/images/pending.gif") no-repeat center;
 			background-size: 12px;
@@ -317,7 +317,7 @@ export default {
 		}
       }
     }
-	
+
     .checked {
       background: #eeeeee;
 	  border-radius: 5px;

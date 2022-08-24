@@ -23,9 +23,9 @@
             <div v-else-if="message.type === 'CS_END'" class="accept-message">
               {{message.senderData.name}}已结束
             </div>
-			<div v-else-if="message.type === 'CS_TRANSFER'" class="accept-message">
-				{{message.senderId === staffData.uuid ? `已转接给` + message.payload.transferTo.data.name: '已接入来自' + message.senderData.name +'的转接'}}
-			</div>
+            <div v-else-if="message.type === 'CS_TRANSFER'" class="accept-message">
+              {{message.senderId === staffData.uuid ? `已转接给` + message.payload.transferTo.data.name: '已接入来自' + message.senderData.name +'的转接'}}
+            </div>
             <div v-else class="message-item-content" :class="{ self: message.senderId !== customer.uuid }">
               <div class="sender-info">
                 <img class="sender-avatar" :src="message.senderData.avatar" />
@@ -137,10 +137,10 @@
               <i class="iconfont icon-lianjie" title="商品链接" @click="showLinkBox"></i>
             </div>
           </div>
-		<div class="session-action">
-			<span @click="transferStaffs()" class="transfer">转接</span>
-			<i class="iconfont icon-end_chat" title="结束会话" @click="endSession"></i>
-		</div>
+          <div class="session-action">
+            <span @click="transferStaffs()" class="transfer">转接</span>
+            <i class="iconfont icon-end_chat" title="结束会话" @click="endSession"></i>
+          </div>
         </div>
 
         <div class="input-box">
@@ -161,22 +161,27 @@
       <img :src="imagePreview.url" alt="图片" />
       <span class="close" @click="imagePreview.visible = false">x</span>
     </div>
-	<!-- 转接弹窗 -->
-	<div v-if="transferModel" class="transfer-popup">
-		<div class="transfer-model">
-			<div class="transfer-content">
-				<div class="transfer-to-info" v-for="(staff, index) in staffs">
-					<label>
-						<img class="transfer-to-avatar" :src="staff.data.avatar"></img>
-						<span class="transfer-to-name">{{staff.data.name}}</span>
-						<input :name="staff.data.name" :value="staff" v-model="transferTo" type="radio"/>
-					</label>
-				</div>
-			</div>
-			<span class="transfer-button" @click="transfer()">确认</span>
-			<span class="transfer-button" @click="closeTransferModel()">取消</span>
-		</div>
-	</div>
+    <!-- 转接弹窗 -->
+    <div v-if="transferModel" class="transfer-popup">
+      <div class="transfer-model">
+        <div class="transfer-content" v-if="staffs.length">
+          <div class="staff-info" v-for="(staff, index) in staffs">
+            <label class="staff-label">
+              <input :name="staff.data.name" :value="staff" v-model="transferTo" type="radio"/>
+              <img class="staff-avatar" :src="staff.data.avatar"/>
+              <span class="staff-name">{{staff.data.name}}</span>
+            </label>
+          </div>
+        </div>
+        <div class="transfer-content" v-else>
+          <div>-当前无其他客服在线-</div>
+        </div>
+        <div class="transfer-bottom">
+          <span class="transfer-button" v-if="staffs.length" @click="transfer()">确认</span>
+          <span class="transfer-button" @click="closeTransferModel()">取消</span>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -231,9 +236,9 @@ export default {
         orderList:[],
         visible: false,
       },
-	  staffs: [],
-	  transferModel: false,
-	  transferTo: null
+      staffs: [],
+      transferModel: false,
+      transferTo: null
     }
   },
   created() {
@@ -247,10 +252,10 @@ export default {
     this.staffData = JSON.parse(localStorage.getItem("staffData"));
     this.teamData = restApi.findShopByStaff(this.staffData.uuid);
     this.customMessage.orderList = restApi.getOrderList();
-	
+
     this.loadHistoryMessage(true, 0);
     this.getCustomerStatus();
-	this.markMessageAsRead();
+	  this.markMessageAsRead();
     this.goEasy.im.on(this.GoEasy.IM_EVENT.CS_MESSAGE_RECEIVED, this.onReceivedMessage);
   },
   beforeDestroy() {
@@ -261,51 +266,51 @@ export default {
       return this.emoji.decoder.decode(text);
     },
     getCustomerStatus () {
-		this.goEasy.im.csTeam(this.teamData.id).customerStatus({
-		  id: this.customer.uuid,
-		  onSuccess: (result) => {
-		    this.customerStatus = result.content;
-		  },
-		  onFailed: (error) => {
-		    console.log('获取用户当前状态失败',error);
-		  }
-		})
+      this.goEasy.im.csTeam(this.teamData.id).customerStatus({
+        id: this.customer.uuid,
+        onSuccess: (result) => {
+          this.customerStatus = result.content;
+        },
+        onFailed: (error) => {
+          console.log('获取用户当前状态失败',error);
+        }
+      })
     },
     onReceivedMessage (message) {
-		if (this.existsMessage(message)) {
-			return;
-		}
-		if (this.teamData.id === message.teamId && (this.customer.uuid === message.senderId || this.customer.uuid === message.to)) {
-			if (this.customerStatus) {
-				if (this.customerStatus.sessionId === message.sessionId) {
-					if (message.type === 'CS_TRANSFERRED') {
-						this.refresh();
-					} else {
-						this.history.messages.push(message);
-						this.markMessageAsRead();
-						this.scrollTo(0);
-					}
-				} else {
-					this.refresh();
-				}
-			} else {
-				this.history.messages.push(message);
-				this.markMessageAsRead();
-				this.scrollTo(0);
+      if (this.existsMessage(message)) {
+        return;
+      }
+      if (this.teamData.id === message.teamId && (this.customer.uuid === message.senderId || this.customer.uuid === message.to)) {
+        if (this.customerStatus) {
+          if (this.customerStatus.sessionId === message.sessionId) {
+            if (message.type === 'CS_TRANSFERRED') {
+              this.refresh();
+            } else {
+              this.history.messages.push(message);
+              this.markMessageAsRead();
+              this.scrollTo(0);
+            }
+          } else {
+            this.refresh();
+          }
+        } else {
+          this.history.messages.push(message);
+          this.markMessageAsRead();
+          this.scrollTo(0);
 			}
 		}
     },
-	existsMessage(newMessage) {
-		let exists = false;
-		for(let i = this.history.messages.length - 1; i >=0; i--) {
-			let message = this.history.messages[i];
-			if (newMessage.messageId === message.messageId) {
-				exists = true;
-				break;
-			}
-		}
-		return exists;
-	},
+    existsMessage(newMessage) {
+      let exists = false;
+      for(let i = this.history.messages.length - 1; i >=0; i--) {
+        let message = this.history.messages[i];
+        if (newMessage.messageId === message.messageId) {
+          exists = true;
+          break;
+        }
+      }
+      return exists;
+    },
     markMessageAsRead() {
       this.goEasy.im.csTeam(this.teamData.id).markMessageAsRead({
         type: this.GoEasy.IM_SCENE.CS,
@@ -318,9 +323,9 @@ export default {
         }
       });
     },
-	refresh() {
-		this.$emit('refresh', this.customer.uuid);
-	},
+    refresh() {
+      this.$emit('refresh', this.customer.uuid);
+    },
     loadHistoryMessage(scrollTo,offsetHeight) {
       this.history.loading = true;
       let lastMessageTimeStamp;
@@ -328,7 +333,7 @@ export default {
       if (lastMessage) {
         lastMessageTimeStamp = lastMessage.timestamp;
       }
-	  let limit = 10;
+	    let limit = 10;
       this.goEasy.im.csTeam(this.teamData.id).history({
         id: this.customer.uuid,
         type: this.GoEasy.IM_SCENE.CS,
@@ -341,10 +346,10 @@ export default {
             this.history.allLoaded = true;
           } else {
              if (lastMessageTimeStamp) {
-				  this.history.messages = messages.concat(this.history.messages);
-			  } else {
-				  this.history.messages = messages;
-			  }
+            this.history.messages = messages.concat(this.history.messages);
+          } else {
+            this.history.messages = messages;
+          }
             if (scrollTo) {
               this.scrollTo(offsetHeight);
             }
@@ -384,12 +389,12 @@ export default {
       this.goEasy.im.csTeam(this.teamData.id).accept({
         id: this.customer.uuid,
         onSuccess: (result) => {
-			if (this.customerStatus.sessionId === result.customerStatus.sessionId) {
-				this.history.messages.push(result.message);
-				this.scrollTo(0);
-			} else {
-				this.reloadHistory();
-			}
+          if (this.customerStatus.sessionId === result.customerStatus.sessionId) {
+            this.history.messages.push(result.message);
+            this.scrollTo(0);
+          } else {
+            this.customerStatus = result.customerStatus;
+          }
         },
         onFailed: (error) => {
           console.log('accept failed',error);
@@ -400,9 +405,9 @@ export default {
       this.goEasy.im.csTeam(this.teamData.id).end({
         id: this.customer.uuid,
         onSuccess: (result) => {
-			this.customerStatus = result.customerStatus;
-			this.history.messages.push(result.message);
-			this.scrollTo(0);
+          this.customerStatus = result.customerStatus;
+          this.history.messages.push(result.message);
+          this.scrollTo(0);
         },
         onFailed: (error) => {
           console.log('end failed',error);
@@ -455,14 +460,14 @@ export default {
       this.goEasy.im.csTeam(this.teamData.id).createTextMessage({
         text: this.text,
         to: this.to,
-		onSuccess: (message) => {
-			this.sendMessage(message);
-			this.text = '';
-		},
-		onFailed: (err) => {
-			console.log("创建消息err:", err);
-		}
-	  });
+        onSuccess: (message) => {
+          this.sendMessage(message);
+          this.text = '';
+        },
+        onFailed: (err) => {
+          console.log("创建消息err:", err);
+        }
+      });
     },
     sendImageMessage(e) {
       let fileList = [...e.target.files];
@@ -812,7 +817,7 @@ export default {
           align-items: center;
           justify-content: center;
           position: relative;
-		  
+
 		  .transfer {
 			  padding: 2px;
 			  display: inline-block;
@@ -908,58 +913,74 @@ export default {
       right: 10px;
     }
   }
-  
+
   .transfer-popup {
 	  position: absolute;
-	  left: 0; 
+	  left: 0;
 	  right: 0;
 	  top: 0;
 	  bottom: 0;
-	  
+
 	  display: flex;
 	  align-items: center;
 	  justify-content: center;
-	  
-	  background: rgba(165, 42, 42, 0.3);
-	  
+	  background: rgba(33, 33, 33, 0.7);
 	  .transfer-model {
-		  width: 100%;
+		  width: 450px;
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
 		  padding: 5px;
-		  box-sizing: border-box;
 		  border: 1px solid gainsboro;
 		  border-radius: 4px;
 		  text-align: center;
-		  background: #fff;
-		  
+		  background: #ffffff;
+
 		  .transfer-content {
+        flex: 1;
 			  display: flex;
 			  align-items: center;
-			  justify-content: center;
 			  flex-wrap: wrap;
-			  
-			  .transfer-to-info {
+
+			  .staff-info {
 				  padding: 20px;
-				  
-				  .transfer-to-avatar {
+
+          .staff-label {
+            display: flex;
+            align-items: center;
+          }
+
+				  .staff-avatar {
 					  width: 40px;
 					  height: 40px;
 					  min-width: 40px;
 					  min-height: 40px;
+            margin: 0 5px;
 				  }
-				  
-				  .transfer-to-name {
+
+				  .staff-name {
+            font-size: 14px;
 					  word-break: break-all;
 				  }
 			  }
 		  }
-		  
-		  .transfer-button {
-			  display: inline-block;
-			  padding: 5px;
-			  border: 1px solid gainsboro;
-			  border-radius: 4px;
-			  cursor: pointer;
-		   }
+
+      .transfer-bottom {
+        height: 50px;
+        display: flex;
+        margin:  0 50px;
+        align-items: center;
+        justify-content: space-around;
+        .transfer-button {
+          display: inline-block;
+          padding: 8px 15px;
+          font-size: 13px;
+          border: 1px solid #d02129;
+          color: #d02129;
+          border-radius: 4px;
+          cursor: pointer;
+        }
+      }
 	  }
   }
 }
