@@ -10,12 +10,15 @@
 						{{renderMessageDate(message, index)}}
 					</view>
 					<view class="message-item">
-						<view v-if="message.type === 'CS_ACCEPTED'" class="accept-message">
+						<view v-if="message.type === 'CS_ACCEPT'" class="accept-message">
 							{{message.senderData.name}}将为您服务
 						</view>
-						<view v-else-if="message.type === 'CS_ENDED'" class="accept-message">
+						<view v-else-if="message.type === 'CS_END'" class="accept-message">
 							{{message.senderData.name}}已结束
 						</view>
+						<div v-else-if="message.type === 'CS_TRANSFER'" class="accept-message">
+							{{message.payload.transferTo.data.name}}已接入
+						</div>
 						<view v-else class="message-item-content" :class="{'self' : message.senderId ===  currentUser.uuid}">
 							<view class="avatar">
 								<image :src="message.senderId === currentUser.uuid? currentUser.avatar : shop.avatar"></image>
@@ -54,9 +57,6 @@
 											</view>
 										</view>
 									</view>
-								</view>
-								<view v-if="message.senderId === currentUser.uuid" :class="message.read ?'message-read':'message-unread'">
-									<view>{{message.read?'已读':'未读'}}</view>
 								</view>
 							</view>
 						</view>
@@ -911,19 +911,4 @@
 		font-size: 20rpx;
 		text-align: center;
 	}
-
-	.message-read {
-		color: grey;
-		font-size: 24rpx;
-		text-align: end;
-		height: 36rpx;
-	}
-
-	.message-unread {
-		color: #6896c1;
-		font-size: 24rpx;
-		text-align: end;
-		height: 36rpx;
-	}
-
 </style>

@@ -51,8 +51,11 @@
                 <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'video'">[视频消息]</div>
                 <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'audio'">[语音消息]</div>
                 <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'order'">[自定义消息:订单]</div>
-                <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'CS_ENDED'">会话已结束</div>
-                <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'CS_ACCEPTED'">接入成功</div>
+                <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'CS_END'">会话已结束</div>
+                <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'CS_ACCEPT'">接入成功</div>
+                <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'CS_TRANSFER'">
+					{{conversation.lastMessage.senderId === staffData.uuid ? `已转接给` + conversation.lastMessage.payload.transferTo.data.name: '已接入来自' + conversation.lastMessage.senderData.name +'的转接'}}
+				</div>
                 <div class="item-info-message" v-else>[未识别内容]</div>
 			  </div>
             </div>
@@ -65,7 +68,7 @@
       </div>
     </div>
     <div class="conversation-main">
-      <Chat v-if="$route.name === 'Chat'" :key="$route.params.id"></Chat>
+      <Chat v-if="$route.name === 'Chat' && isRouterAlive" :key="$route.params.id" @refresh="refresh"></Chat>
     </div>
   </div>
 </template>
@@ -87,12 +90,20 @@ export default {
         left: null,
         right: null,
       },
+	  isRouterAlive: true,
+	  staffData: null
     }
+  },
+  watch: {
+    $route() {
+		this.currentPage = this.$route.name;
+    },
   },
   created() {
     document.addEventListener('click', () => {
       this.actionPopup.visible = false
     })
+	this.staffData = JSON.parse(localStorage.getItem("staffData"));
     this.listenConversationUpdate(); //监听会话列表变化
     this.loadConversations(); //加载会话列表
   },
@@ -168,6 +179,12 @@ export default {
         },
       });
     },
+	refresh(id) {
+		this.isRouterAlive = false;
+		this.$nextTick(function () {
+			this.isRouterAlive = true;
+		});
+	}
   }
 }
 </script>
@@ -279,7 +296,7 @@ export default {
           overflow: hidden;
           text-overflow:ellipsis;
           white-space: nowrap;
-		  flex: 0 80px;
+		  width: 80px;
           color: #606266;
         }
 		

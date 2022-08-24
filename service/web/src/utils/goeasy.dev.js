@@ -7572,6 +7572,8 @@
 	    RocketTypes["RTC_CALL_DATA"] = "RTC_CALL_DATA";
 	    RocketTypes["CS_ACCEPT"] = "CS_ACCEPT";
 	    RocketTypes["CS_END"] = "CS_END";
+	    RocketTypes["CS_TRANSFER"] = "CS_TRANSFER";
+	    RocketTypes["CS_STAFFS"] = "CS_STAFFS";
 	    RocketTypes["CS_CUSTOMER_STATUS"] = "CS_CUSTOMER_STATUS";
 	    RocketTypes["CS_IS_ONLINE"] = "CS_IS_ONLINE";
 	    RocketTypes["CS_ONLINE"] = "CS_ONLINE";
@@ -7938,30 +7940,29 @@
 	        this.userData = options.data;
 	      }
 
-	      if (Calibrator_1["default"].isObject(options.wxTemplateMessage)) {
-	        if (Calibrator_1["default"].isEmpty(options.wxTemplateMessage.appId)) {
+	      if (Calibrator_1["default"].isObject(options.wx_mp)) {
+	        if (Calibrator_1["default"].isEmpty(options.wx_mp.appid)) {
 	          throw {
 	            code: 400,
-	            content: 'wx.appId is required.'
+	            content: 'wx_mp.appid is required.'
 	          };
 	        }
 
-	        if (Calibrator_1["default"].isEmpty(options.wxTemplateMessage.openId)) {
+	        if (Calibrator_1["default"].isEmpty(options.wx_mp.openid)) {
 	          throw {
 	            code: 400,
-	            content: 'wx.openId is required. requires string.'
+	            content: 'wx_mp.openid is required. requires string.'
 	          };
 	        }
-	      } else if (Calibrator_1["default"].isPrimitive(options.wxTemplateMessage)) {
+	      } else if (Calibrator_1["default"].isPrimitive(options.wx_mp)) {
 	        throw {
 	          code: 400,
-	          content: 'TypeError: wx requires an object.'
+	          content: 'TypeError: wx_mp requires an object.'
 	        };
 	      }
 
-	      if (Calibrator_1["default"].isDef(options.wxTemplateMessage)) {
-	        this.wxAppId = options.wxTemplateMessage.appId;
-	        this.wxOpenId = options.wxTemplateMessage.openId;
+	      if (Calibrator_1["default"].isDef(options.wx_mp)) {
+	        this.wx_mp = options.wx_mp;
 	      }
 
 	      this.otp = options.otp || null;
@@ -8031,10 +8032,10 @@
 	        uri: this.uri,
 	        opts: this.ioOpts
 	      });
-	      var notification = GNS_1.GNS.instance;
+	      var gns = GNS_1.GNS.instance;
 
-	      if (notification && notification.supportNotification() && notification.getRegIdPromise()) {
-	        notification.getRegIdPromise().then(function (result) {
+	      if (gns && gns.supportNotification() && gns.getRegIdPromise()) {
+	        gns.getRegIdPromise().then(function (result) {
 	          console.log('Reg id is resolved: ', result);
 	          _this.regId = result;
 
@@ -8097,10 +8098,7 @@
 	        // imVersion : this.imVersion,
 	        allowNT: this.allowNotification,
 	        regId: this.regId,
-	        wxOpenId: {
-	          appId: this.wxAppId,
-	          openId: this.wxOpenId
-	        },
+	        wx_mp: this.wx_mp,
 	        modules: this.modules,
 	        a: this.anonymous,
 	        z: ClientInfo_1.clientInfo.z
@@ -8428,6 +8426,11 @@
 	      }
 	    };
 
+	    ValidatorUtils.prototype.validateWXMPTemplateMsg = function (wx_mp_template_msg) {
+	      //todo: 根据微信官方的
+	      throw 'Not implement yet.';
+	    };
+
 	    return ValidatorUtils;
 	  }();
 
@@ -8465,17 +8468,18 @@
 
 	      this.validate(options);
 	      options.channel = options.channel.toString();
+	      var wxTemplateMsg = options.wx_mp_template_msg;
 	      var params = {
 	        channel: options.channel,
 	        content: options.message,
 	        nt: options.notification,
 	        at: options.accessToken,
 	        guid: UUID_1["default"].get(),
-	        wxTemplateMessage: {
-	          templateId: options.wxTemplateMessage.templateId,
-	          url: options.wxTemplateMessage.url,
-	          miniProgram: options.wxTemplateMessage.miniProgram,
-	          data: JSON.stringify(options.wxTemplateMessage.data)
+	        wx_mp_template_msg: {
+	          templateId: wxTemplateMsg.template_id,
+	          url: wxTemplateMsg.url,
+	          miniProgram: wxTemplateMsg.miniprogram,
+	          data: JSON.stringify(wxTemplateMsg.data)
 	        }
 	      };
 
@@ -8526,6 +8530,10 @@
 	          code: 400,
 	          content: 'Message over max length 2500.'
 	        };
+	      }
+
+	      if (options.wx_mp_template_msg) {
+	        validator_utils_1["default"].validateWXMPTemplateMsg(options.wx_mp_template_msg);
 	      }
 
 	      if (options.notification) {
@@ -10685,6 +10693,7 @@
 	    IM_INTERNAL_EVENTS["CS_OFFLINE_SUCCESS"] = "CS_OFFLINE_SUCCESS";
 	    IM_INTERNAL_EVENTS["CS_ACCEPTED"] = "CS_ACCEPTED";
 	    IM_INTERNAL_EVENTS["CS_ENDED"] = "CS_ENDED";
+	    IM_INTERNAL_EVENTS["CS_TRANSFER"] = "CS_TRANSFER";
 	  })(exports.IM_INTERNAL_EVENTS || (exports.IM_INTERNAL_EVENTS = {}));
 	})(internalEvents);
 
@@ -10750,7 +10759,7 @@
 	      var buildOptions = message.buildOptions;
 	      var createOptions = buildOptions.createOptions;
 	      var notification = createOptions.notification;
-	      var wxTemplateMessage = createOptions.wxTemplateMessage;
+	      var wxTemplateMessage = createOptions.wx_mp_template_msg;
 	      var to = createOptions.to;
 
 	      if (!to.data) {
@@ -11134,39 +11143,10 @@
 
 	var Target$1 = {};
 
-	var ConversationIdUtils = {};
-
-	(function (exports) {
-
-	  exports.__esModule = true;
-	  var GoEasy_1 = GoEasy$1;
-	  var g_1 = g;
-
-	  var ConversationIdUtils =
-	  /** @class */
-	  function () {
-	    function ConversationIdUtils() {}
-
-	    ConversationIdUtils.targetId = function (scene, conversationId) {
-	      if (scene === GoEasy_1.Scene.PRIVATE) {
-	        var ids = conversationId.split(":", 2);
-	        return ids[0] === g_1.G.u() ? ids[1] : ids[0];
-	      }
-
-	      return conversationId;
-	    };
-
-	    return ConversationIdUtils;
-	  }();
-
-	  exports["default"] = ConversationIdUtils;
-	})(ConversationIdUtils);
-
 	Target$1.__esModule = true;
 	Target$1.Target = void 0;
 	var GoEasy_1$e = GoEasy$1;
 	var Calibrator_1$b = Calibrator;
-	var ConversationIdUtils_1 = ConversationIdUtils;
 	var g_1$a = g;
 	/**
 	 * target.id不同的场景表达不同的含义:
@@ -11295,12 +11275,6 @@
 	    }
 	  };
 
-	  Target.byMessageRecalledRemoteEvent = function (event) {
-	    var scene = event.scene;
-	    var targetId = ConversationIdUtils_1["default"].targetId(scene, event.conversationId);
-	    return new Target(scene, targetId);
-	  };
-
 	  Target.byIMHistoryQuery = function (options, teamId) {
 	    var targetId;
 	    var scene = options.type;
@@ -11323,6 +11297,11 @@
 	    }
 
 	    return new Target(scene, targetId, teamId);
+	  };
+
+	  Target.byConversationDTO = function (conversationDto) {
+	    var lastMessage = conversationDto.lastMessage;
+	    return this.byIMMessage(lastMessage);
 	  };
 
 	  return Target;
@@ -11884,6 +11863,20 @@
 
 	csMessage.CSMessage = CSMessage;
 
+	var csMessageType = {};
+
+	(function (exports) {
+
+	  exports.__esModule = true;
+	  exports.CSMessageType = void 0;
+
+	  (function (CSMessageType) {
+	    CSMessageType["ACCEPT"] = "CS_ACCEPT";
+	    CSMessageType["END"] = "CS_END";
+	    CSMessageType["TRANSFER"] = "CS_TRANSFER";
+	  })(exports.CSMessageType || (exports.CSMessageType = {}));
+	})(csMessageType);
+
 	remoteAbbrMessageBuilder.__esModule = true;
 	remoteAbbrMessageBuilder.RemoteAbbrMessageBuilder = void 0;
 	var GoEasy_1$9 = GoEasy$1;
@@ -11892,6 +11885,7 @@
 	var cs_message_1$1 = csMessage;
 	var Calibrator_1$a = Calibrator;
 	var g_1$8 = g;
+	var cs_message_type_1$2 = csMessageType;
 
 	var RemoteAbbrMessageBuilder =
 	/** @class */
@@ -11916,26 +11910,30 @@
 	      message.teamId = remoteAbbrMessage.tid;
 	      message.senderData = remoteAbbrMessage.d ? JSON.parse(remoteAbbrMessage.d) : {};
 	      message.accepted = remoteAbbrMessage.accepted;
+
+	      if (message.customerId() !== g_1$8.G.u()) {
+	        message.sessionId = remoteAbbrMessage.sessionId;
+	      }
 	    }
 
 	    message.senderId = remoteAbbrMessage.s;
 	    message.messageId = remoteAbbrMessage.i;
 	    message.timestamp = remoteAbbrMessage.ts;
 	    message.type = remoteAbbrMessage.mt;
+	    var payload = remoteAbbrMessage.p;
 
-	    if (Calibrator_1$a["default"].isDef(remoteAbbrMessage.p)) {
-	      message.payload = JSON.parse(remoteAbbrMessage.p);
+	    if (Calibrator_1$a["default"].isDef(payload)) {
+	      if (scene === GoEasy_1$9.Scene.CS && message.type === cs_message_type_1$2.CSMessageType.TRANSFER) {
+	        var jsonPayload = JSON.parse(payload);
+	        jsonPayload.transferTo.data = JSON.parse(jsonPayload.transferTo.data);
+	        message.payload = jsonPayload;
+	      } else {
+	        message.payload = JSON.parse(payload);
+	      }
 	    }
 
 	    message.recalled = remoteAbbrMessage.rc;
 	    message.status = GoEasy_1$9.MessageStatus.SUCCESS;
-
-	    if (scene === GoEasy_1$9.Scene.CS) {
-	      if (message.customerId() !== g_1$8.G.u()) {
-	        message.sessionId = remoteAbbrMessage.sessionId;
-	      }
-	    }
-
 	    return message;
 	  };
 
@@ -13095,19 +13093,6 @@
 
 	var staffHistory = {};
 
-	var csMessageType = {};
-
-	(function (exports) {
-
-	  exports.__esModule = true;
-	  exports.CSMessageType = void 0;
-
-	  (function (CSMessageType) {
-	    CSMessageType["ACCEPTED"] = "CS_ACCEPTED";
-	    CSMessageType["ENDED"] = "CS_ENDED";
-	  })(exports.CSMessageType || (exports.CSMessageType = {}));
-	})(csMessageType);
-
 	(function (exports) {
 
 	  var __extends = commonjsGlobal && commonjsGlobal.__extends || function () {
@@ -13382,15 +13367,14 @@
 	    StaffHistory.prototype.initMaxMessageAndOffsets = function (message, userOffsets) {
 	      var _this = this;
 
-	      var exists = this.existsMessage(message);
-
-	      if (exists) {
-	        return;
-	      }
-
 	      userOffsets.forEach(function (userOffset) {
 	        _this.userOffsets.updateOffset(userOffset.userId, userOffset.offset);
 	      });
+
+	      if (Calibrator_1["default"].isUndef(this.acceptedMaxMessage) || this.acceptedMaxMessage.timestamp < message.timestamp) {
+	        this.increaseUnreadAmount(message);
+	      }
+
 	      this.saveAcceptedMessage(message);
 	    };
 
@@ -13404,8 +13388,10 @@
 	    };
 
 	    StaffHistory.prototype.savePendingMessage = function (message) {
-	      if (this.pendingMaxMessage && this.pendingMaxMessage.timestamp < message.timestamp) {
-	        this.pendingMaxMessage = message;
+	      if (this.pendingMaxMessage) {
+	        if (this.pendingMaxMessage.timestamp < message.timestamp) {
+	          this.pendingMaxMessage = message;
+	        }
 	      } else {
 	        this.pendingMaxMessage = message;
 	      }
@@ -13418,14 +13404,6 @@
 	        }
 	      } else {
 	        this.acceptedMaxMessage = message;
-	      }
-
-	      if (message.sendByCustomer()) {
-	        var myOffset = this.userOffsets.myOffset();
-
-	        if (myOffset < message.timestamp && message.accepted) {
-	          this.unread += 1;
-	        }
 	      }
 	    };
 
@@ -13450,16 +13428,24 @@
 	    };
 
 	    StaffHistory.prototype.onMessageReceived = function (message) {
-	      if (!this.existsMessage(message)) {
-	        //pending
-	        if (!message.accepted || message.senderId !== g_1.G.u() && message.type === cs_message_type_1.CSMessageType.ACCEPTED) {
-	          this.savePendingMessage(message);
-	        } else {
-	          this.saveAcceptedMessage(message);
-	        }
+	      if (!message.accepted || message.senderId !== g_1.G.u() && message.type === cs_message_type_1.CSMessageType.ACCEPT) {
+	        this.savePendingMessage(message);
+	      } else {
+	        this.saveAcceptedMessage(message);
+	      }
 
-	        this.userOffsets.updateOffset(message.senderId, message.timestamp);
-	        goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.MAX_MESSAGE_CHANGED, message);
+	      this.userOffsets.updateOffset(message.senderId, message.timestamp);
+	      this.increaseUnreadAmount(message);
+	      goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.MAX_MESSAGE_CHANGED, message);
+	    };
+
+	    StaffHistory.prototype.increaseUnreadAmount = function (message) {
+	      if (message.sendByCustomer()) {
+	        var myOffset = this.userOffsets.myOffset();
+
+	        if (myOffset < message.timestamp && message.accepted) {
+	          this.unread += 1;
+	        }
 	      }
 	    };
 
@@ -13528,20 +13514,6 @@
 
 	    StaffHistory.prototype.existsMessage = function (message) {
 	      return this.acceptedMaxMessage && this.acceptedMaxMessage.messageId === message.messageId || this.pendingMaxMessage && this.pendingMaxMessage.messageId === message.messageId;
-	    };
-
-	    StaffHistory.prototype.saveOrUpdateMessage = function (message) {
-	      if (message.accepted) {
-	        this.saveAcceptedMessage(message);
-	      } else {
-	        if (this.pendingMaxMessage) {
-	          if (this.pendingMaxMessage.timestamp < message.timestamp) {
-	            this.pendingMaxMessage = message;
-	          }
-	        } else {
-	          this.pendingMaxMessage = message;
-	        }
-	      }
 	    };
 
 	    StaffHistory.prototype.maxAcceptedMessageTime = function () {
@@ -13977,6 +13949,9 @@
 	      goeasy_event_center_1.GoEasyEventCenter.on(internal_events_1.IM_INTERNAL_EVENTS.CS_ENDED, function (message) {
 	        return _this.onCSEnded(message);
 	      });
+	      goeasy_event_center_1.GoEasyEventCenter.on(internal_events_1.IM_INTERNAL_EVENTS.CS_TRANSFER, function (message) {
+	        return _this.onCSTransfer(message);
+	      });
 	      g_1.G.s().addMessageObserver(RemoteEvents_1.RemoteEvents.IM_MSG_READ, this.onRemoteMarkRead.bind(this));
 	      g_1.G.s().addMessageObserver(RemoteEvents_1.RemoteEvents.IM_MSG_DELETED, this.onRemoteMessageDeleted.bind(this));
 	      g_1.G.s().addMessageObserver(RemoteEvents_1.RemoteEvents.IM_MSG_RECALLED, this.onRemoteMessageRecalled.bind(this));
@@ -14211,7 +14186,7 @@
 	    };
 
 	    Histories.prototype.onRemoteMessageRecalled = function (event) {
-	      var target = Target_1.Target.byMessageRecalledRemoteEvent(event);
+	      var target = event.target();
 	      var history = this.findHistory(target);
 
 	      if (history) {
@@ -14230,6 +14205,10 @@
 	    };
 
 	    Histories.prototype.onCSEnded = function (message) {
+	      this.onMessageReceived(message);
+	    };
+
+	    Histories.prototype.onCSTransfer = function (message) {
 	      this.onMessageReceived(message);
 	    };
 
@@ -15149,7 +15128,7 @@
 	              csMessage = message;
 
 	              if (g_1$5.G.u() != csMessage.customerId()) {
-	                if (csMessage.accepted === false || csMessage.type === cs_message_type_1$1.CSMessageType.ACCEPTED && csMessage.senderId != g_1$5.G.u()) {
+	                if (csMessage.accepted === false || csMessage.type === cs_message_type_1$1.CSMessageType.ACCEPT && csMessage.senderId != g_1$5.G.u()) {
 	                  return [2
 	                  /*return*/
 	                  ];
@@ -15297,12 +15276,23 @@
 
 	  Conversations.prototype.top = function (target, top, options) {
 	    return __awaiter$8(this, void 0, void 0, function () {
-	      var conversation, err_2;
+	      var conversation;
 	      return __generator$8(this, function (_a) {
 	        switch (_a.label) {
 	          case 0:
-	            _a.trys.push([0, 2,, 3]);
+	            if (!Calibrator_1$8["default"].isBoolean(top)) {
+	              throw new Error('top must be boolean.');
+	            }
 
+	            conversation = this.findConversation(target);
+
+	            if (!conversation) {
+	              throw new Error('conversation does not exist.');
+	            }
+
+	            if (!(conversation.top != top)) return [3
+	            /*break*/
+	            , 2];
 	            return [4
 	            /*yield*/
 	            , this.remoteConversations.top(target, top)];
@@ -15310,23 +15300,13 @@
 	          case 1:
 	            _a.sent();
 
-	            conversation = this.findConversation(target);
 	            conversation.top = top;
 	            this.correctPosition(conversation);
-	            this.fireUpdated();
-	            callback_utils_1$9.CallbackUtils.onSuccess(options);
-	            return [3
-	            /*break*/
-	            , 3];
+	            _a.label = 2;
 
 	          case 2:
-	            err_2 = _a.sent();
-	            callback_utils_1$9.CallbackUtils.onFailed(options, err_2);
-	            return [3
-	            /*break*/
-	            , 3];
-
-	          case 3:
+	            this.fireUpdated();
+	            callback_utils_1$9.CallbackUtils.onSuccess(options);
 	            return [2
 	            /*return*/
 	            ];
@@ -15337,11 +15317,15 @@
 
 	  Conversations.prototype.remove = function (target, options) {
 	    return __awaiter$8(this, void 0, void 0, function () {
-	      var conversation, err_3;
+	      var conversation;
 	      return __generator$8(this, function (_a) {
 	        switch (_a.label) {
 	          case 0:
-	            _a.trys.push([0, 2,, 3]);
+	            conversation = this.findConversation(target);
+
+	            if (!conversation) {
+	              throw new Error('conversation does not exist.');
+	            }
 
 	            return [4
 	            /*yield*/
@@ -15350,22 +15334,9 @@
 	          case 1:
 	            _a.sent();
 
-	            conversation = this.findConversation(target);
 	            this.removeLocalConversation(conversation);
 	            this.fireUpdated();
 	            callback_utils_1$9.CallbackUtils.onSuccess(options);
-	            return [3
-	            /*break*/
-	            , 3];
-
-	          case 2:
-	            err_3 = _a.sent();
-	            callback_utils_1$9.CallbackUtils.onFailed(options, err_3);
-	            return [3
-	            /*break*/
-	            , 3];
-
-	          case 3:
 	            return [2
 	            /*return*/
 	            ];
@@ -15694,10 +15665,10 @@
 	            if (!(csMessage.customerId() != g_1$4.G.u())) return [3
 	            /*break*/
 	            , 3];
-	            if (!(csMessage.accepted === false || csMessage.type === cs_message_type_1.CSMessageType.ACCEPTED)) return [3
+	            if (!(csMessage.accepted === false || csMessage.type === cs_message_type_1.CSMessageType.ACCEPT)) return [3
 	            /*break*/
 	            , 3];
-	            if (!(cs_message_type_1.CSMessageType.ACCEPTED === message.type)) return [3
+	            if (!(cs_message_type_1.CSMessageType.ACCEPT === message.type)) return [3
 	            /*break*/
 	            , 1];
 	            this.removeConversation(message);
@@ -15858,9 +15829,8 @@
 	  var Conversations_1 = Conversations$1;
 	  var Target_1 = Target$1;
 	  var GoEasy_1 = GoEasy$1;
-	  var Calibrator_1 = Calibrator;
 	  var PendingConversations_1 = PendingConversations$1;
-	  var validator_utils_1 = validatorUtils;
+	  var cs_message_1 = csMessage;
 
 	  var ConversationList =
 	  /** @class */
@@ -15879,146 +15849,48 @@
 	    };
 
 	    ConversationList.prototype.topPrivateConversation = function (options) {
-	      this.validateTop(GoEasy_1.Scene.PRIVATE, options);
 	      var target = Target_1.Target.byScene(GoEasy_1.Scene.PRIVATE, options.userId);
-	      var top = options.top;
-	      this.conversations.top(target, top, options);
+	      this.conversations.top(target, options.top, options);
 	    };
 
 	    ConversationList.prototype.topGroupConversation = function (options) {
-	      this.validateTop(GoEasy_1.Scene.GROUP, options);
 	      var target = Target_1.Target.byScene(GoEasy_1.Scene.GROUP, options.groupId);
-	      var top = options.top;
-	      this.conversations.top(target, top, options);
+	      this.conversations.top(target, options.top, options);
 	    };
 
 	    ConversationList.prototype.topConversation = function (options) {
-	      var conversation = this.validateConversation(options, true);
-	      var top = !conversation.top;
-	      var target = conversation.target;
-	      this.conversations.top(target, top, options);
+	      var conversationDTO = options.conversation;
+	      this.validateConversationDTO(conversationDTO);
+	      var target = Target_1.Target.byConversationDTO(conversationDTO);
+	      this.conversations.top(target, options.top, options);
 	    };
 
 	    ConversationList.prototype.removePrivateConversation = function (options) {
-	      this.validateRemove(GoEasy_1.Scene.PRIVATE, options);
 	      var target = Target_1.Target.byScene(GoEasy_1.Scene.PRIVATE, options.userId);
 	      this.conversations.remove(target, options);
 	    };
 
 	    ConversationList.prototype.removeGroupConversation = function (options) {
-	      this.validateRemove(GoEasy_1.Scene.GROUP, options);
 	      var target = Target_1.Target.byScene(GoEasy_1.Scene.GROUP, options.groupId);
 	      this.conversations.remove(target, options);
 	    };
 
 	    ConversationList.prototype.removeConversation = function (options) {
-	      var conversation = this.validateConversation(options, false);
-	      this.conversations.remove(conversation.target, options);
-	    }; // todo 后续优化
-
-
-	    ConversationList.prototype.validateConversation = function (options, isTop) {
-	      var conversationDto = options.conversation;
-
-	      if (conversationDto instanceof GoEasy_1.ConversationDTO) {
-	        var scene = conversationDto.type;
-	        var target = void 0;
-
-	        if (scene === GoEasy_1.Scene.PRIVATE) {
-	          target = new Target_1.Target(scene, conversationDto.userId);
-	        } else if (scene === GoEasy_1.Scene.GROUP) {
-	          target = new Target_1.Target(scene, conversationDto.groupId);
-	        } else if (scene === GoEasy_1.Scene.CS) {
-	          var message = conversationDto.lastMessage;
-	          var csMessage = message;
-	          var accepted = csMessage.accepted;
-
-	          if (accepted === false) {
-	            if (isTop) {
-	              throw {
-	                code: 400,
-	                content: "pending conversation cannot be topped"
-	              };
-	            } else {
-	              throw {
-	                code: 400,
-	                content: "pending conversation cannot be removed"
-	              };
-	            }
-	          }
-
-	          var teamId = conversationDto.teamId;
-
-	          if (Calibrator_1["default"].isUndef(teamId)) {
-	            target = new Target_1.Target(scene, conversationDto.id, conversationDto.id);
-	          } else {
-	            target = new Target_1.Target(scene, conversationDto.id, teamId);
-	          }
-	        }
-
-	        var conversation = this.conversations.findConversation(target);
-
-	        if (!conversation) {
-	          throw {
-	            code: 400,
-	            content: 'conversation is incorrect'
-	          };
-	        }
-
-	        return conversation;
-	      }
-
-	      throw {
-	        code: 400,
-	        content: 'conversation is incorrect'
-	      };
+	      var conversationDTO = options.conversation;
+	      this.validateConversationDTO(conversationDTO);
+	      var target = Target_1.Target.byConversationDTO(conversationDTO);
+	      this.conversations.remove(target, options);
 	    };
 
-	    ConversationList.prototype.validateTop = function (scene, options) {
-	      var key = scene === GoEasy_1.Scene.PRIVATE ? 'userId' : 'groupId';
-	      var targetId = options[key];
-	      validator_utils_1["default"].validateId(targetId, key);
-	      options[key] = options[key].toString();
-	      var top = options["top"];
-
-	      if (!Calibrator_1["default"].isBoolean(top)) {
-	        throw {
-	          code: 400,
-	          content: 'top requires boolean'
-	        };
-	      }
-
-	      var target = new Target_1.Target(scene, targetId);
-	      var conversation = this.conversations.findConversation(target);
-
-	      if (Calibrator_1["default"].isUndef(conversation)) {
-	        throw {
-	          code: 400,
-	          content: 'conversation does not exists'
-	        };
+	    ConversationList.prototype.validateConversationDTO = function (conversationDTO) {
+	      if (!(conversationDTO instanceof GoEasy_1.ConversationDTO)) {
+	        throw new Error('Incorrect conversation object.');
 	      } else {
-	        if (conversation.top === top) {
-	          throw {
-	            code: 400,
-	            content: 'Failed to top conversation: no change'
-	          };
+	        var lastMessage = conversationDTO.lastMessage;
+
+	        if (lastMessage instanceof cs_message_1.CSMessage && lastMessage.accepted) {
+	          throw new Error('pending conversation cannot be topped or removed.');
 	        }
-	      }
-	    };
-
-	    ConversationList.prototype.validateRemove = function (scene, options) {
-	      var key = scene === GoEasy_1.Scene.PRIVATE ? 'userId' : 'groupId';
-	      var targetId = options[key];
-	      validator_utils_1["default"].validateId(targetId, key);
-	      options[key] = options[key].toString();
-	      var target = new Target_1.Target(scene, targetId.toString());
-	      var conversation = this.conversations.findConversation(target);
-
-	      if (Calibrator_1["default"].isUndef(conversation)) {
-	        throw {
-	          code: 400,
-	          content: 'Failed to remove conversation: conversation doesn\'t exists'
-	        };
 	      }
 	    };
 
@@ -18356,8 +18228,6 @@
 	    var _a;
 
 	    this.framework = framework_detector_1.FrameworkDetector.currentFramework();
-	    this.userId = g_1$3.G.u();
-	    this.userData = g_1$3.G.ud();
 	    this.payloadBuilders = (_a = {}, _a[framework_detector_1.Framework.UNIAPP] = {
 	      image: new UniAppImagePayloadBuilder_1["default"](),
 	      file: new UniAppFilePayloadBuilder_1["default"](),
@@ -18413,7 +18283,7 @@
 	    if (scene === GoEasy_1$3.Scene.GROUP) {
 	      message = new GroupMessage_1.GroupMessage();
 	      message.groupId = to.id.toString();
-	      message.senderData = this.userData;
+	      message.senderData = g_1$3.G.ud();
 	    } else if (scene === GoEasy_1$3.Scene.PRIVATE) {
 	      message = new PrivateMessage_1.PrivateMessage();
 	      message.read = false;
@@ -18422,10 +18292,10 @@
 	      message = new cs_message_1.CSMessage();
 	      message.to = to.id.toString();
 	      message.teamId = to.id.toString();
-	      message.senderData = this.userData;
+	      message.senderData = g_1$3.G.ud();
 	    }
 
-	    message.senderId = this.userId;
+	    message.senderId = g_1$3.G.u();
 	    message.messageId = UUID_1["default"].get();
 	    message.payload = payload;
 	    message.timestamp = Date.now();
@@ -18463,7 +18333,7 @@
 	      throw new Error("to.id should be a string or number.");
 	    }
 
-	    if (this.userId === to.id) {
+	    if (g_1$3.G.u() === to.id) {
 	      throw new Error("to.id can not be the same as your id.");
 	    }
 
@@ -21429,6 +21299,25 @@
 
 	csAcceptRequest.CSAcceptRequest = CSAcceptRequest;
 
+	var csTransferRequest = {};
+
+	csTransferRequest.__esModule = true;
+	csTransferRequest.CSTransferRequest = void 0;
+
+	var CSTransferRequest =
+	/** @class */
+	function () {
+	  function CSTransferRequest(customerId, teamId, to) {
+	    this.customerId = customerId;
+	    this.teamId = teamId;
+	    this.to = to;
+	  }
+
+	  return CSTransferRequest;
+	}();
+
+	csTransferRequest.CSTransferRequest = CSTransferRequest;
+
 	conversationHandler.__esModule = true;
 	conversationHandler.ConversationHandler = void 0;
 	var cs_status_query_request_1 = csStatusQueryRequest;
@@ -21443,6 +21332,7 @@
 	var goeasy_event_center_1$1 = goeasyEventCenter;
 	var internal_events_1$1 = internalEvents;
 	var remote_abbr_message_builder_1 = remoteAbbrMessageBuilder;
+	var cs_transfer_request_1 = csTransferRequest;
 
 	var ConversationHandler =
 	/** @class */
@@ -21544,10 +21434,52 @@
 	    g_1$1.G.s().emit(rocket);
 	  };
 
+	  ConversationHandler.prototype.transfer = function (teamId, options) {
+	    var _this = this;
+
+	    this.validate(options);
+	    this.validateTransfer(options);
+	    var customerId = options.id.toString();
+	    var to = options.to.toString();
+	    var request = new cs_transfer_request_1.CSTransferRequest(customerId, teamId, to);
+	    var rocket = new Rocket_1$1["default"]({
+	      name: RocketTypes_1$1.RocketTypes.CS_TRANSFER,
+	      params: request,
+	      permission: Permission_1$1.Permission.WRITE,
+	      singleTimeout: SocketTimeout_1$1.SocketTimeout.commonRequestSingle,
+	      totalTimeout: SocketTimeout_1$1.SocketTimeout.commonRequestTotal,
+	      fail: function fail(err) {
+	        callback_utils_1$2.CallbackUtils.onFailed(options, err);
+	      },
+	      success: function success(res) {
+	        var transferMessage = _this.builder.build(res.content.message);
+
+	        goeasy_event_center_1$1.GoEasyEventCenter.fire(internal_events_1$1.IM_INTERNAL_EVENTS.CS_TRANSFER, transferMessage);
+	        var customerStatus = res.content.customerStatus;
+
+	        if (customerStatus.staff) {
+	          customerStatus.staff.data = JSON.parse(customerStatus.staff.data);
+	        }
+
+	        callback_utils_1$2.CallbackUtils.onSuccess(options, {
+	          message: transferMessage,
+	          customerStatus: customerStatus
+	        });
+	      }
+	    });
+	    g_1$1.G.s().emit(rocket);
+	  };
+
 	  ConversationHandler.prototype.validate = function (options) {
 	    var key = "id";
 	    var customerId = options[key];
 	    validator_utils_1$2["default"].validateId(customerId, key);
+	  };
+
+	  ConversationHandler.prototype.validateTransfer = function (options) {
+	    var key = "to";
+	    var transferToId = options[key];
+	    validator_utils_1$2["default"].validateId(transferToId, key);
 	  };
 
 	  return ConversationHandler;
@@ -21610,6 +21542,23 @@
 
 	csOfflineRequest.CSOfflineRequest = CSOfflineRequest;
 
+	var csStaffsQueryRequest = {};
+
+	csStaffsQueryRequest.__esModule = true;
+	csStaffsQueryRequest.CSStaffsQueryRequest = void 0;
+
+	var CSStaffsQueryRequest =
+	/** @class */
+	function () {
+	  function CSStaffsQueryRequest(teamId) {
+	    this.teamId = teamId;
+	  }
+
+	  return CSStaffsQueryRequest;
+	}();
+
+	csStaffsQueryRequest.CSStaffsQueryRequest = CSStaffsQueryRequest;
+
 	staffStatus.__esModule = true;
 	staffStatus.StaffStatus = void 0;
 	var cs_is_online_request_1 = csIsOnlineRequest;
@@ -21624,6 +21573,7 @@
 	var internal_events_1 = internalEvents;
 	var callback_utils_1$1 = callbackUtils;
 	var g_1 = g;
+	var cs_staffs_query_request_1 = csStaffsQueryRequest;
 
 	var StaffStatus =
 	/** @class */
@@ -21697,6 +21647,27 @@
 	      success: function success(res) {
 	        callback_utils_1$1.CallbackUtils.onSuccess(option);
 	        goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.CS_OFFLINE_SUCCESS);
+	      }
+	    });
+	    g_1.G.s().emit(rocket);
+	  };
+
+	  StaffStatus.prototype.staffs = function (teamId, options) {
+	    var request = new cs_staffs_query_request_1.CSStaffsQueryRequest(teamId);
+	    var rocket = new Rocket_1["default"]({
+	      name: RocketTypes_1.RocketTypes.CS_STAFFS,
+	      params: request,
+	      permission: Permission_1.Permission.READ,
+	      singleTimeout: SocketTimeout_1.SocketTimeout.commonQuerySingle,
+	      totalTimeout: SocketTimeout_1.SocketTimeout.commonQueryTotal,
+	      fail: function fail(err) {
+	        callback_utils_1$1.CallbackUtils.onFailed(options, err);
+	      },
+	      success: function success(res) {
+	        res.content.forEach(function (staff) {
+	          staff.data = JSON.parse(staff.data);
+	        });
+	        callback_utils_1$1.CallbackUtils.onSuccess(options, res);
 	      }
 	    });
 	    g_1.G.s().emit(rocket);
@@ -22050,6 +22021,22 @@
 
 	  Team.prototype.createCustomMessage = function (createOptions) {
 	    this.messageCreator.createCustomMessage(this.teamId, createOptions);
+	  };
+
+	  Team.prototype.transfer = function (options) {
+	    var _this = this;
+
+	    this["catch"](function () {
+	      _this.conversationHandler.transfer(_this.teamId, options);
+	    }, options);
+	  };
+
+	  Team.prototype.staffs = function (options) {
+	    var _this = this;
+
+	    this["catch"](function () {
+	      _this.staffStatus.staffs(_this.teamId, options);
+	    }, options);
 	  };
 
 	  return Team;
@@ -22670,6 +22657,15 @@
 	    CSTeam.prototype.createCustomMessage = function (options) {
 	      cs_1.CS.team(this.id).createCustomMessage(options);
 	    };
+
+	    CSTeam.prototype.transfer = function (options) {
+	      cs_1.CS.team(this.id).transfer(options);
+	    };
+
+	    CSTeam.prototype.staffs = function (options) {
+	      cs_1.CS.team(this.id).staffs(options);
+	    };
+
 	    return CSTeam;
 	  }();
 

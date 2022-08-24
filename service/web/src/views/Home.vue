@@ -5,7 +5,7 @@
         <div class="menu-header">
 			<img class="shop-avatar" :src="teamData.avatar" />
 			<div class="team-info">
-				{{teamData.name}}asd54dsaaaaaaaaaasd54dsaaaaaaaaaasd54dsaaaaaaaaaasd54dsaaaaaaaaaasd54dsaaaaaaaaaasd54dsaaaaaaaaa
+				{{teamData.name}}
 			</div>
 		</div>
         <div class="menu-box">
@@ -31,6 +31,7 @@
           <div class="staff-info">
             <img class="staff-avatar" :src="staffData.avatar" @click="onlineConfigVisible = !onlineConfigVisible"/>
             <span :class="isOnline ?'spot online':'spot offline'"></span>
+			<div class="staff-name">{{staffData.name}}</div>
           </div>
 		  <div @click.prevent="closeOnlinePopup()" class="action-wrap" v-if="onlineConfigVisible">
 		  	<div class="action-box" v-if="onlineConfigVisible">
@@ -75,7 +76,7 @@ export default {
   },
   watch: {
     $route() {
-      this.currentPage = this.$route.name;
+		this.currentPage = this.$route.name;
     },
   },
   methods: {
@@ -249,6 +250,12 @@ export default {
           color: #d02129 !important;
         }
       }
+	  
+	  .staff-info:hover .staff-name {
+		  visibility: visible;
+		  text-decoration: none;
+	  }
+	  
       .staff-info {
         position: relative;
         .staff-avatar {
@@ -272,6 +279,32 @@ export default {
         .offline {
           background-color: #999999;
         }
+		
+		.staff-name {
+			visibility: hidden;
+			position: absolute;
+			top: 32px;
+			bottom: 0px;
+			left: 32px;
+			right: 0;
+			border: .5px solid hsla(0,9%,39%,.15);
+			border-radius: 4px;
+			width: fit-content;
+			max-width: 120px;
+			height: 24px;
+			line-height: 24px;
+			padding: 0 8px;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			box-sizing: border-box;
+			word-wrap: break-word;
+			background: #fff;
+			color: rgba(0,0,0,.5);
+			font-size: 12px;
+			font-weight: 400;
+			transition: all 0.4s 0.4s;
+		}
 		
         .action-box {
           position: absolute;

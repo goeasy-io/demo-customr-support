@@ -17,12 +17,15 @@
             {{ renderMessageDate(message, index) }}
           </div>
           <div class="message-item">
-            <div v-if="message.type === 'CS_ACCEPTED'" class="accept-message">
+            <div v-if="message.type === 'CS_ACCEPT'" class="accept-message">
               {{message.senderData.name}}已接入
             </div>
-            <div v-else-if="message.type === 'CS_ENDED'" class="accept-message">
+            <div v-else-if="message.type === 'CS_END'" class="accept-message">
               {{message.senderData.name}}已结束
             </div>
+			<div v-else-if="message.type === 'CS_TRANSFER'" class="accept-message">
+				{{message.senderId === staffData.uuid ? `已转接给` + message.payload.transferTo.data.name: '已接入来自' + message.senderData.name +'的转接'}}
+			</div>
             <div v-else class="message-item-content" :class="{ self: message.senderId !== customer.uuid }">
               <div class="sender-info">
                 <img class="sender-avatar" :src="message.senderData.avatar" />
@@ -63,9 +66,6 @@
                     </div>
                   </div>
                 </div>
-                <div v-if="message.senderId !== customer.uuid" :class="message.read ?'message-read':'message-unread'">
-                  <div>{{message.read?'已读':'未读'}}</div>
-                </div>
               </div>
             </div>
           </div>
@@ -73,14 +73,14 @@
       </div>
     </div>
     <div class="chat-footer">
-      <div v-if="customerStatus.status==='PENDING'" class="accept-session">
+      <div v-if="customerStatus && customerStatus.status==='PENDING'" class="accept-session">
         <div class="accept-info">会话已等待{{Math.ceil((Date.now()-customerStatus.time)/60000)}}分钟</div>
         <button class="accept-btn" @click="acceptSession">立即接入</button>
       </div>
-      <div v-else-if="customerStatus.status==='ACCEPTED' && staffData.uuid !== customerStatus.staff.id" class="accept-session">
+      <div v-else-if="customerStatus && customerStatus.status==='ACCEPTED' && staffData.uuid !== customerStatus.staff.id" class="accept-session">
         <div class="accept-info">{{ customerStatus.staff.data.name }}已接入</div>
       </div>
-      <div v-else-if="customerStatus.status==='FREE'" class="accept-session">
+      <div v-else-if="customerStatus && customerStatus.status==='FREE'" class="accept-session">
         <button class="accept-btn" @click="acceptSession">发起会话</button>
       </div>
       <div v-else class="action-box">
@@ -137,9 +137,10 @@
               <i class="iconfont icon-lianjie" title="商品链接" @click="showLinkBox"></i>
             </div>
           </div>
-          <div class="session-action">
-            <i class="iconfont icon-end_chat" title="结束会话" @click="endSession"></i>
-          </div>
+		<div class="session-action">
+			<span @click="transferStaffs()" class="transfer">转接</span>
+			<i class="iconfont icon-end_chat" title="结束会话" @click="endSession"></i>
+		</div>
         </div>
 
         <div class="input-box">
@@ -160,6 +161,22 @@
       <img :src="imagePreview.url" alt="图片" />
       <span class="close" @click="imagePreview.visible = false">x</span>
     </div>
+	<!-- 转接弹窗 -->
+	<div v-if="transferModel" class="transfer-popup">
+		<div class="transfer-model">
+			<div class="transfer-content">
+				<div class="transfer-to-info" v-for="(staff, index) in staffs">
+					<label>
+						<img class="transfer-to-avatar" :src="staff.data.avatar"></img>
+						<span class="transfer-to-name">{{staff.data.name}}</span>
+						<input :name="staff.data.name" :value="staff" v-model="transferTo" type="radio"/>
+					</label>
+				</div>
+			</div>
+			<span class="transfer-button" @click="transfer()">确认</span>
+			<span class="transfer-button" @click="closeTransferModel()">取消</span>
+		</div>
+	</div>
   </div>
 </template>
 
@@ -189,7 +206,7 @@ export default {
       teamData: null,
 
       customer: null,
-      customerStatus: {},
+      customerStatus: null,
 
       to: {},
 
@@ -214,6 +231,9 @@ export default {
         orderList:[],
         visible: false,
       },
+	  staffs: [],
+	  transferModel: false,
+	  transferTo: null
     }
   },
   created() {
@@ -252,17 +272,40 @@ export default {
 		})
     },
     onReceivedMessage (message) {
+		if (this.existsMessage(message)) {
+			return;
+		}
 		if (this.teamData.id === message.teamId && (this.customer.uuid === message.senderId || this.customer.uuid === message.to)) {
-			if (this.customerStatus.sessionId === message.sessionId) {
+			if (this.customerStatus) {
+				if (this.customerStatus.sessionId === message.sessionId) {
+					if (message.type === 'CS_TRANSFERRED') {
+						this.refresh();
+					} else {
+						this.history.messages.push(message);
+						this.markMessageAsRead();
+						this.scrollTo(0);
+					}
+				} else {
+					this.refresh();
+				}
+			} else {
 				this.history.messages.push(message);
 				this.markMessageAsRead();
-			} else {
-				this.reloadHistory();
-				this.getCustomerStatus();
+				this.scrollTo(0);
 			}
-			this.scrollTo(0);
 		}
     },
+	existsMessage(newMessage) {
+		let exists = false;
+		for(let i = this.history.messages.length - 1; i >=0; i--) {
+			let message = this.history.messages[i];
+			if (newMessage.messageId === message.messageId) {
+				exists = true;
+				break;
+			}
+		}
+		return exists;
+	},
     markMessageAsRead() {
       this.goEasy.im.csTeam(this.teamData.id).markMessageAsRead({
         type: this.GoEasy.IM_SCENE.CS,
@@ -272,12 +315,11 @@ export default {
         },
         onFailed: function (error) {
           console.log('标记已读失败', error);
-        },
+        }
       });
     },
-	reloadHistory(message) {
-		this.history.messages = [];
-		this.history.messages.push(message);
+	refresh() {
+		this.$emit('refresh', this.customer.uuid);
 	},
     loadHistoryMessage(scrollTo,offsetHeight) {
       this.history.loading = true;
@@ -298,11 +340,11 @@ export default {
           if (messages.length === 0) {
             this.history.allLoaded = true;
           } else {
-            this.history.messages = messages.concat(this.history.messages);
-            console.log('history:',this.history.messages);
-            if (messages.length < limit) {
-              this.history.allLoaded = true;
-            }
+             if (lastMessageTimeStamp) {
+				  this.history.messages = messages.concat(this.history.messages);
+			  } else {
+				  this.history.messages = messages;
+			  }
             if (scrollTo) {
               this.scrollTo(offsetHeight);
             }
@@ -346,8 +388,7 @@ export default {
 				this.history.messages.push(result.message);
 				this.scrollTo(0);
 			} else {
-				this.reloadHistory(result.message);
-				this.customerStatus = result.customerStatus;
+				this.reloadHistory();
 			}
         },
         onFailed: (error) => {
@@ -364,10 +405,41 @@ export default {
 			this.scrollTo(0);
         },
         onFailed: (error) => {
-          console.log('endSession failed',error);
+          console.log('end failed',error);
         }
       })
     },
+	transferStaffs() {
+		this.goEasy.im.csTeam(this.teamData.id).staffs({
+			onSuccess: (result) => {
+				this.transferModel = true;
+				this.staffs = result.content.filter((staff) => {
+					return staff.id !== this.staffData.uuid;
+				});
+			},
+			onFailed: (error) => {
+				console.log('query online staffs failed',error);
+			}
+		});
+	},
+	transfer() {
+		this.goEasy.im.csTeam(this.teamData.id).transfer({
+			id: this.customer.uuid,
+			to: this.transferTo.id,
+			onSuccess: (result) => {
+				this.transferModel = false;
+				this.customerStatus = result.customerStatus;
+				this.history.messages.push(result.message);
+				this.scrollTo(0);
+			},
+			onFailed: (error) => {
+				console.log('transfer failed',error);
+			}
+		})
+	},
+	closeTransferModel() {
+		this.transferModel = false;
+	},
     showEmojiBox () {
       this.emoji.visible = !this.emoji.visible;
     },
@@ -376,7 +448,7 @@ export default {
       this.emoji.visible = false;
     },
     sendTextMessage() {
-      if (!this.text.trim()) {
+      if (this.text.trim().length === 0) {
         console.log('输入为空');
         return
       }
@@ -461,11 +533,11 @@ export default {
         this.loadHistoryMessage(true,offsetHeight);
       }
     },
-    scrollTo(offsetHeight) {
-      // offsetHeight 距底部的偏移高度，为0则表示滚动到底部
-      this.$nextTick(() => {
-        this.$refs.scrollView.scrollTop = this.$refs.messageList.scrollHeight - offsetHeight;
-      });
+	scrollTo(offsetHeight) {
+		// offsetHeight 距底部的偏移高度，为0则表示滚动到底部
+		this.$nextTick(() => {
+			this.$refs.scrollView.scrollTop = this.$refs.messageList.scrollHeight - offsetHeight;
+		});
     },
   }
 
@@ -567,19 +639,6 @@ export default {
             background-size: 13px;
             width: 15px;
             height: 15px;
-          }
-          .message-read {
-            color: gray;
-            font-size: 12px;
-            text-align: end;
-            height: 16px;
-          }
-          .message-unread {
-            color: #d02129;
-            font-size: 12px;
-            text-align: end;
-            margin: 0 10px;
-            height: 16px;
           }
           .content-text {
             display: flex;
@@ -753,6 +812,16 @@ export default {
           align-items: center;
           justify-content: center;
           position: relative;
+		  
+		  .transfer {
+			  padding: 2px;
+			  display: inline-block;
+			  max-width: 60px;
+			  border: 1px solid gray;
+			  border-radius: 2px;
+			  text-align: center;
+			  cursor: pointer;
+		  }
         }
       }
       .input-box {
@@ -838,6 +907,60 @@ export default {
       top: 4px;
       right: 10px;
     }
+  }
+  
+  .transfer-popup {
+	  position: absolute;
+	  left: 0; 
+	  right: 0;
+	  top: 0;
+	  bottom: 0;
+	  
+	  display: flex;
+	  align-items: center;
+	  justify-content: center;
+	  
+	  background: rgba(165, 42, 42, 0.3);
+	  
+	  .transfer-model {
+		  width: 100%;
+		  padding: 5px;
+		  box-sizing: border-box;
+		  border: 1px solid gainsboro;
+		  border-radius: 4px;
+		  text-align: center;
+		  background: #fff;
+		  
+		  .transfer-content {
+			  display: flex;
+			  align-items: center;
+			  justify-content: center;
+			  flex-wrap: wrap;
+			  
+			  .transfer-to-info {
+				  padding: 20px;
+				  
+				  .transfer-to-avatar {
+					  width: 40px;
+					  height: 40px;
+					  min-width: 40px;
+					  min-height: 40px;
+				  }
+				  
+				  .transfer-to-name {
+					  word-break: break-all;
+				  }
+			  }
+		  }
+		  
+		  .transfer-button {
+			  display: inline-block;
+			  padding: 5px;
+			  border: 1px solid gainsboro;
+			  border-radius: 4px;
+			  cursor: pointer;
+		   }
+	  }
   }
 }
 </style>
