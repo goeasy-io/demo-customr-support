@@ -14,7 +14,6 @@
 					<view class="item-info-bottom">
 						<view class="item-info-bottom-item">
 							<view class="item-info-top_content">
-								<text class="unread-text">{{conversation.lastMessage.read === false && conversation.lastMessage.senderId === currentUser.uuid?'[未读]':''}}</text>
 								<text>{{conversation.lastMessage.senderId === currentUser.uuid? '我': conversation.lastMessage.senderData.name}}:</text>
 								<text v-if="conversation.lastMessage.type === 'text'">{{conversation.lastMessage.payload.text}}</text>
 								<text v-else-if="conversation.lastMessage.type === 'video'">[视频消息]</text>
@@ -48,7 +47,6 @@
 		name: 'conversation',
 		data () {
 			return {
-				unreadTotal : 0,
 				conversations : [],
 				actionPopup : {
 					conversation : null,

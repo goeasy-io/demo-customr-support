@@ -11,7 +11,7 @@
 					</view>
 					<view class="message-item">
 						<view v-if="message.type === 'CS_ACCEPT'" class="accept-message">
-							{{message.senderData.name}}将为您服务
+							{{message.senderData.name}}已接入
 						</view>
 						<view v-else-if="message.type === 'CS_END'" class="accept-message">
 							{{message.senderData.name}}已结束
@@ -90,9 +90,9 @@
 					<image src="/static/images/shipin.png"></image>
 					<text>视频</text>
 				</view>
-				<view class="more-item" @click="customMessage.visible = true">
+				<view class="more-item" @click="orderList.visible = true">
 					<image src="/static/images/zidingyi.png"></image>
-					<text>自定义消息</text>
+					<text>订单</text>
 				</view>
 			</view>
 		</view>
@@ -126,6 +126,8 @@
 	import restApi from '../lib/restapi';
 	import EmojiDecoder from '../lib/EmojiDecoder';
 	const recorderManager = uni.getRecorderManager();
+    const IMAGE_MAX_WIDTH = 300;
+    const IMAGE_MAX_HEIGHT = 200;
 	export default {
 		components : {
 			GoEasyAudioPlayer
@@ -140,10 +142,12 @@
 				'[偷笑]': 'emoji_7@2x.png',
 				'[傲慢]': 'emoji_8@2x.png'
 			};
+
 			return {
+
 				currentUser: {},
 				shop: {},
-				to: {},
+				to: {},// 作为createMessage的参数
 				text: '',
 				//定义表情列表
 				emoji : {
@@ -154,8 +158,8 @@
 				},
 				//是否展示‘其他消息类型面板’
 				otherTypesMessagePanelVisible: false,
-				customMessage: {
-					orderList:[],
+				orderList: {
+					orders:[],
 					visible: false,
 					selectedOrder: null
 				},
@@ -178,23 +182,9 @@
 				},
 			}
 		},
-		onReady () {
-			this.videoPlayer.context = uni.createVideoContext('videoPlayer',this);
-			uni.setNavigationBarTitle({
-				title : this.shop.name
-			});
-		},
-		onShow () {
-			this.otherTypesMessagePanelVisible = false;
-			this.emoji.visible = false;
-		},
-		onPullDownRefresh(e) {
-			this.loadHistoryMessage(false);
-		},
 		onLoad(options) {
 			let shopId = options.to;
 			this.shop = restApi.findShopById(shopId);
-			this.customMessage.orderList = restApi.getOrderList();
 			this.to = {
 				id : this.shop.id,
 				type : this.GoEasy.IM_SCENE.CS,
@@ -209,14 +199,30 @@
 			this.initRecorderListeners();
 			this.goEasy.im.on(this.GoEasy.IM_EVENT.CS_MESSAGE_RECEIVED, this.onMessageReceived);
 		},
+		onReady () {
+			this.videoPlayer.context = uni.createVideoContext('videoPlayer',this);
+			uni.setNavigationBarTitle({
+				title : this.shop.name
+			});
+		},
+		onShow () {
+			this.otherTypesMessagePanelVisible = false;
+			this.emoji.visible = false;
+		},
+		onPullDownRefresh(e) {
+			this.loadHistoryMessage(false);
+		},
 		beforeDestroy() {
 			this.goEasy.im.off(this.GoEasy.IM_EVENT.CS_MESSAGE_RECEIVED, this.onMessageReceived);
 		},
 		methods: {
+
 			getImgClass (width,height) {
-				if (height < 200) {
+				if (width <IMAGE_MAX_WIDTH && height < IMAGE_MAX_HEIGHT){
+                    return 'original-img'
+				}else if (width = height ) {
 					return 'normal-img'
-				} else if (width <= height) {
+				} else if (width < height) {
 					return 'vertical-img'
 				} else if (width > height) {
 					return 'horizontal-img'
@@ -436,12 +442,19 @@
 			selectOrder (order) {
 				this.customMessage.selectedOrder = order;
 			},
+			showOrderList() {
+				this.orderList.orderList = restApi.getOrderList();
+				this.orderList.visible = true;
+			},
+
 			closeCustomMessageForm () {
 				this.customMessage.visible = false;
 				this.customMessage.selectedOrder = null;
 			},
-			sendCustomMessage () {
-				let customMessage = this.goEasy.im.createCustomMessage({
+
+			sendOrderMessage () {
+				//GoEasyIM自定义消息,实现订单发送
+				this.goEasy.im.createCustomMessage({
 					type : 'order',
 					payload : this.customMessage.selectedOrder,
 					to : this.to,

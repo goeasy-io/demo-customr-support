@@ -35,9 +35,6 @@
 				this.connectGoEasy();  //连接goeasy
 			}
 		},
-		beforeDestroy() {
-			this.goEasy.im.off(this.GoEasy.IM_EVENT.CONVERSATIONS_UPDATED, this.setUnreadNumber);
-		},
 		methods: {
 			connectGoEasy () {
 				let currentUser = uni.getStorageSync('currentUser');
