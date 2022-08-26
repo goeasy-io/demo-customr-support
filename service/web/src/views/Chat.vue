@@ -215,7 +215,7 @@ export default {
       customer: null,
       customerStatus: null,
 
-      to: {},
+      to: {},//用于创建消息时传入
 
       history: {
         messages: [],
@@ -239,6 +239,11 @@ export default {
         visible: false,
       },
       staffs: [],
+      transferForm: {
+        visible: false,
+        staffs: [],
+        selectedStaff: {}
+      },
       transferModel: false,
       transferTo: null
     }
@@ -363,17 +368,36 @@ export default {
         },
       });
     },
-    getImgStyle (width,height) {
-      if (width < IMAGE_MAX_WIDTH && height < IMAGE_MAX_HEIGHT){
-        return { width: width + 'px',height: height +'px'}
-      } else if ( width === height ) {
-        return { width: IMAGE_MAX_HEIGHT + 'px', height: IMAGE_MAX_HEIGHT +'px'}
-      } else if (width < height) { //高度固定，宽度等比例
-        return { width: (width/height)*IMAGE_MAX_HEIGHT + 'px', height: IMAGE_MAX_HEIGHT +'px'}
-      } else if (width > height) { //宽度固定，高度等比例
-        return { width: IMAGE_MAX_WIDTH + 'px', height: (height/width)*IMAGE_MAX_WIDTH +'px'}
+
+
+      /**
+       * 核心就是设置高度，产生明确占位
+       *
+       * 宽 (宽度>高度)
+       *    高度= 根据宽度等比缩放
+       * 窄  (宽度<高度)或方(宽度=高度)
+       *    设高=MAX height
+       * 小  (宽度和高度都小于预设尺寸)
+       *    设高=原始高度
+       *
+       * @param message
+       * @returns {{height: string}}
+       */
+    getImageHeight (message) {
+      let width = message.payload.width;
+      let height = message.payload.height;
+
+      if (width > height) {
+          return  IMAGE_MAX_WIDTH / width * height;
+      } else {
+          if (width === height || width < height) {
+              return  IMAGE_MAX_HEIGHT;
+          } else if (width < IMAGE_MAX_WIDTH && height < IMAGE_MAX_HEIGHT) {
+              return  height;
+          }
       }
     },
+
     renderMessageDate(message, index) {
       if (index === 0) {
         return this.formatDate(message.timestamp);
