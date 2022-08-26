@@ -33,11 +33,16 @@
 										v-if="message.type === 'image'"
 										:src="message.payload.url"
 										:data-url="message.payload.url"
+										mode="heightFix"
+										:style="{height: getImageHeight(message.payload.width,message.payload.height)+'rpx' }"
 										@click="showImageFullScreen"
-										:style="[getImgStyle(message.payload.width,message.payload.height)]"
 									></image>
 									<view class="video-snapshot" v-if="message.type === 'video'" :data-url="message.payload.video.url" @click="playVideo">
-										<image :src="message.payload.thumbnail.url" mode="heightFix"></image>
+										<image
+											:src="message.payload.thumbnail.url"
+											mode="heightFix"
+											:style="{height: getImageHeight(message.payload.thumbnail.width,message.payload.thumbnail.height)+'rpx' }"
+										></image>
 										<view class="video-play-icon"></view>
 									</view>
 									<GoEasyAudioPlayer v-if="message.type ==='audio'" :src="message.payload.url" :duration="message.payload.duration" />
@@ -211,15 +216,26 @@
 			this.goEasy.im.off(this.GoEasy.IM_EVENT.CS_MESSAGE_RECEIVED, this.onMessageReceived);
 		},
 		methods: {
-			getImgStyle (width,height) {
-				if (width < IMAGE_MAX_WIDTH && height < IMAGE_MAX_HEIGHT){
-					return { width: width + 'px',height: height +'px'}
-				} else if ( width === height ) {
-					return { width: IMAGE_MAX_HEIGHT + 'px', height: IMAGE_MAX_HEIGHT +'px'}
-				} else if (width < height) { //高度固定，宽度等比例
-					return { width: (width/height)*IMAGE_MAX_HEIGHT + 'px', height: IMAGE_MAX_HEIGHT +'px'}
-				} else if (width > height) { //宽度固定，高度等比例
-					return { width: IMAGE_MAX_WIDTH + 'px', height: (height/width)*IMAGE_MAX_WIDTH +'px'}
+			/**
+				* 核心就是设置高度，产生明确占位
+				*
+				* 小 (宽度和高度都小于预设尺寸)
+				*    设高=原始高度
+				* 宽 (宽度>高度)
+				*    高度= 根据宽度等比缩放
+				* 窄 (宽度<高度)或方(宽度=高度)
+				*    设高=MAX height
+				* 
+				* @param width,height
+				* @returns number
+			*/
+			getImageHeight (width,height) {
+				if (width < IMAGE_MAX_WIDTH && height < IMAGE_MAX_HEIGHT) {
+					return  height*2;
+				} else if (width > height) {
+					return  (IMAGE_MAX_WIDTH / width * height)*2;
+				} else if (width === height || width < height) {
+					return  IMAGE_MAX_HEIGHT*2;
 				}
 			},
 			renderMessageDate(message, index) {
@@ -593,6 +609,12 @@
 		width: 50rpx;
 		height: 50rpx;
 	}
+  .widthFixClass {
+    width: 400rpx;
+  }
+  .heightFixClass {
+    height: 300rpx;
+  }
 	.scroll-view .content .order-content {
 		border-radius: 20rpx;
 		background: #EFEFEF;
@@ -849,11 +871,11 @@
 		justify-content: space-around;
 		padding: 10px 0;
 	}
-	
+
 	.order-item-checked {
 		background-color: #e9dddd;
 	}
-	
+
 	.order-img {
 		width: 80rpx;
 		height: 80rpx;

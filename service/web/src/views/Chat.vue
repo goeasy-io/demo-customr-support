@@ -39,10 +39,9 @@
 
                   <div class="content-image"
                     v-if="message.type === 'image'"
-                    :style="getImgStyle(message.payload.width,message.payload.height)"
                     @click="showImagePreview(message.payload.url)"
                   >
-                    <img :src="message.payload.url" alt="图片" />
+                    <img :style="{height:getImageHeight(message.payload.width,message.payload.height)+'px'}" :src="message.payload.url" />
                   </div>
                   <goeasy-audio-player
                     v-if="message.type ==='audio'"
@@ -373,28 +372,23 @@ export default {
       /**
        * 核心就是设置高度，产生明确占位
        *
+       * 小  (宽度和高度都小于预设尺寸)
+       *    设高=原始高度
        * 宽 (宽度>高度)
        *    高度= 根据宽度等比缩放
        * 窄  (宽度<高度)或方(宽度=高度)
        *    设高=MAX height
-       * 小  (宽度和高度都小于预设尺寸)
-       *    设高=原始高度
        *
-       * @param message
-       * @returns {{height: string}}
+       * @param width,height
+       * @returns number
        */
-    getImageHeight (message) {
-      let width = message.payload.width;
-      let height = message.payload.height;
-
-      if (width > height) {
-          return  IMAGE_MAX_WIDTH / width * height;
-      } else {
-          if (width === height || width < height) {
-              return  IMAGE_MAX_HEIGHT;
-          } else if (width < IMAGE_MAX_WIDTH && height < IMAGE_MAX_HEIGHT) {
-              return  height;
-          }
+    getImageHeight (width,height) {
+      if (width < IMAGE_MAX_WIDTH && height < IMAGE_MAX_HEIGHT) {
+        return  height;
+      } else if (width > height) {
+        return  IMAGE_MAX_WIDTH / width * height;
+      } else if (width === height || width < height) {
+        return  IMAGE_MAX_HEIGHT;
       }
     },
 
@@ -690,10 +684,6 @@ export default {
             display: block;
             margin: 5px 10px;
             cursor: pointer;
-            img {
-              width: 100%;
-              height: 100%;
-            }
           }
           .content-order {
             border-radius: 10px;

@@ -1,11 +1,7 @@
 <template>
     <div>
-        <div
-            class="content-video"
-            :style="getImgHeight(thumbnail.width,thumbnail.height)"
-            @click="play"
-        >
-            <img :src="thumbnail.url" />
+        <div class="content-video" @click="play">
+            <img :style="{height:getImageHeight(thumbnail.width,thumbnail.height)+'px'}" :src="thumbnail.url" />
             <div class="icon"></div>
         </div>
         <div class="video-player" v-if="playing">
@@ -20,7 +16,8 @@
 </template>
 
 <script>
-
+const IMAGE_MAX_WIDTH = 200;
+const IMAGE_MAX_HEIGHT = 150;
 export default {
     name: 'goeasy-video-player',
     props: ['src','thumbnail'],
@@ -30,13 +27,13 @@ export default {
         }
     },
     methods: {
-        getImgHeight (width,height) {
-            if (width < height) {
-                return { height:'200px' }
+        getImageHeight (width,height) {
+            if (width < IMAGE_MAX_WIDTH && height < IMAGE_MAX_HEIGHT) {
+                return  height;
             } else if (width > height) {
-                return { height:'150px' }
-            } else {
-                return { height: '100%' }
+                return  (IMAGE_MAX_WIDTH / width * height);
+            } else if (width === height || width < height) {
+                return  IMAGE_MAX_HEIGHT;
             }
         },
 
