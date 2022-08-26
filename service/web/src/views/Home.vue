@@ -55,19 +55,23 @@ export default {
   data() {
     return {
       isOnline: false,
-      staffData: null,
-      teamData: null,
-      currentPage: this.$route.name,
+       csTeam:null,
+      currentUser: null,
+      shop: null,
+      selectedTab: this.$route.name,
       unreadTotal: 0,
       onlineConfigVisible: false,
     };
   },
   created() {
-    this.staffData = JSON.parse(localStorage.getItem('staffData'));
-    if (!this.staffData) {
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (!this.currentUser) {
       this.$router.push({ name: 'Login'});
     }
-    this.teamData = RestApi.findShopByStaff(this.staffData.uuid);
+    this.shop = RestApi.findShopById(this.currentUser.shopId);
+
+    this.csTeam=this.goEasy.im.csTeam(this.currentUser.shopId);
+
     if(this.goEasy.getConnectionStatus() === 'disconnected') {
       this.connectGoEasy();  //连接goeasy
     }
@@ -82,8 +86,8 @@ export default {
   methods: {
     connectGoEasy () {
       this.goEasy.connect({
-        id: this.staffData.uuid,
-        data: this.staffData,
+        id: this.currentUser.uuid,
+        data: {name:this.currentUser.name, avatar:this.currentUser.avatar},
         onSuccess: function () {  //连接成功
           console.log("GoEasy connect successfully.") //连接成功
         },
@@ -99,7 +103,7 @@ export default {
 		this.unreadTotal = content.unreadTotal;
 	},
     initialOnlineStatus () {
-      this.goEasy.im.csTeam(this.teamData.id).isOnline({
+      this.team.isOnline({
         onSuccess: (result) => {
           this.isOnline = result.content;
         },
@@ -111,7 +115,7 @@ export default {
     switchOnlineStatus () {
       this.onlineConfigVisible = false;
       if (this.isOnline) {
-        this.goEasy.im.csTeam(this.teamData.id).offline({
+        this.team.offline({
           onSuccess: () => {
             this.isOnline = false;
           },
@@ -120,7 +124,7 @@ export default {
           }
         })
       } else {
-        this.goEasy.im.csTeam(this.teamData.id).online({
+        this.team.online({
           teamData: this.teamData,
           staffData: this.staffData,
           onSuccess: () => {

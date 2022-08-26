@@ -40,21 +40,18 @@ class RestApi {
 			name: 'GoEasy食品自营',
 			avatar: '/static/images/shop1.png',
 			id: 'shop01',
-			staffs: ['6ec2c1df-24f4-4c33-a16c-d0c9de69ac09','93f76849-6db8-47f1-a68f-6e597b45179a'],
 			goods: ['/static/images/goods1-1.jpg','/static/images/goods1-2.jpg','/static/images/goods1-3.jpg',]
 		},
 		{
 			name: 'GoEasy家具生活自营',
 			avatar: '/static/images/shop2.png',
 			id: 'shop02',
-			staffs: ['9c4ebaa6-e447-49cc-8091-34fdc25a3504','4f0b5003-c592-4469-bbe9-22180faffe7c'],
 			goods: ['/static/images/goods2-1.jpg','/static/images/goods2-2.jpg','/static/images/goods2-3.jpg',]
 		},
 		{
 			name: 'GoEasy电器自营',
 			avatar: '/static/images/shop3.png',
 			id: 'shop03',
-			staffs: ['f51f6655-be49-4813-87ad-353b9eee971f','6c751842-545d-4da0-a203-49c31a78d202'],
 			goods: ['/static/images/goods3-1.jpg','/static/images/goods3-2.jpg','/static/images/goods3-3.jpg',]
 		}
 	]
@@ -67,6 +64,7 @@ class RestApi {
 			avatar: '/static/images/Avatar-5.png',
 			email: 'Kim@goeasy.io',
 			phone: '138xxxxxxxx',
+			shopId: 'shop01'
 		},
 		{
 			uuid: '93f76849-6db8-47f1-a68f-6e597b45179a',
@@ -75,6 +73,7 @@ class RestApi {
 			avatar: '/static/images/Avatar-6.png',
 			email: 'Molly@goeasy.io',
 			phone: '138xxxxxxxx',
+			shopId: 'shop01'
 		},
 		{
 			uuid: '9c4ebaa6-e447-49cc-8091-34fdc25a3504',
@@ -83,6 +82,7 @@ class RestApi {
 			avatar: '/static/images/Avatar-7.png',
 			email: 'Harry@goeasy.io',
 			phone: '138xxxxxxxx',
+			shopId: 'shop02'
 		},
 		{
 			uuid: '4f0b5003-c592-4469-bbe9-22180faffe7c',
@@ -91,6 +91,7 @@ class RestApi {
 			avatar: '/static/images/Avatar-8.png',
 			email: 'Lara@goeasy.io',
 			phone: '138xxxxxxxx',
+			shopId: 'shop02'
 		},
 		{
 			uuid: 'f51f6655-be49-4813-87ad-353b9eee971f',
@@ -99,6 +100,7 @@ class RestApi {
 			avatar: '/static/images/Avatar-9.png',
 			email: 'Leo@goeasy.io',
 			phone: '138xxxxxxxx',
+			shopId: 'shop03'
 		},
 		{
 			uuid: '6c751842-545d-4da0-a203-49c31a78d202',
@@ -107,6 +109,7 @@ class RestApi {
 			avatar: '/static/images/Avatar-10.png',
 			email: 'Belle@goeasy.io',
 			phone: '138xxxxxxxx',
+			shopId: 'shop03'
 		}
 	];
 	orders = [
@@ -138,12 +141,9 @@ class RestApi {
 		return this.users.find((user) => user.name === username && user.password === password);
 	}
 
-	findStaffs () {
-		return this.staffs
-	}
 
-	findShopByStaff (staffId) {
-		return this.shop.find((shop) => shop.staffs.indexOf(staffId) !== -1);
+	findShopById (shopId) {
+		return this.shop.find((shop) => shop.id === shopId);
 	}
 
 	getOrderList () {

@@ -323,7 +323,7 @@
 			},
 			sendTextMessage ()  {
 				if (this.text.trim() !== '') {
-          this.goEasy.im.createTextMessage({
+                     this.goEasy.im.createTextMessage({
 						text: this.text,
 						to : this.to,
 						onSuccess: (message) => {

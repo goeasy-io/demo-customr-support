@@ -58,12 +58,11 @@ export default {
     this.customers = restApi.findFriends(staffData.uuid);
   },
   methods: {
-    handleListItem(contact) {
+    displayContact(contact) {
       this.currentContact = contact;
     },
-    goChatPage() {
-      const id = this.currentContact.uuid;
-      this.$router.push({ name: 'Chat', params: { id: id } });
+    chat(contactId) {
+      this.$router.push({ name: 'Chat', params: { id: contactId } });
     },
   },
 };

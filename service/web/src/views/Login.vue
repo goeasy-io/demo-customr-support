@@ -43,17 +43,12 @@ export default {
       errorVisible: false,
     };
   },
-  mounted() {
-    this.$nextTick(() => {
-      this.$refs.username.focus();
-    });
-  },
   methods: {
     login() {
       if (this.username.trim() !== '' && this.password.trim() !== '') {
         let user = restApi.findStaff(this.username, this.password);
         if (user) {
-          localStorage.setItem('staffData', JSON.stringify(user));
+          localStorage.setItem('currentUser', JSON.stringify(user));
           this.$router.push({ path: './conversation'});
           return;
         }
