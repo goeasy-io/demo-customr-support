@@ -34,12 +34,7 @@
 										:src="message.payload.url"
 										:data-url="message.payload.url"
 										@click="showImageFullScreen"
-										:class="[
-											{'vertical-img': getImgClass(message.payload.width,message.payload.height) === 'vertical-img'},
-											{'horizontal-img': getImgClass(message.payload.width,message.payload.height) === 'horizontal-img'},
-											{'normal-img': getImgClass(message.payload.width,message.payload.height) === 'normal-img'},
-										]"
-										mode="heightFix"
+										:style="[getImgStyle(message.payload.width,message.payload.height)]"
 									></image>
 									<view class="video-snapshot" v-if="message.type === 'video'" :data-url="message.payload.video.url" @click="playVideo">
 										<image :src="message.payload.thumbnail.url" mode="heightFix"></image>
@@ -90,7 +85,7 @@
 					<image src="/static/images/shipin.png"></image>
 					<text>视频</text>
 				</view>
-				<view class="more-item" @click="orderList.visible = true">
+				<view class="more-item" @click="showOrderMessageList">
 					<image src="/static/images/zidingyi.png"></image>
 					<text>订单</text>
 				</view>
@@ -98,13 +93,13 @@
 		</view>
 		<view class="record-loading" v-if="audio.recording"></view>
 		<video v-if="videoPlayer.visible" :src="videoPlayer.url" id="videoPlayer" @fullscreenchange="onVideoFullScreenChange"></video>
-		<view class="order-list" v-if="customMessage.visible">
+		<view class="order-list" v-if="orderList.visible">
 			<view class="orders-content">
 				<view class="title">选择一个订单</view>
 				<view class="orders">
 					<view
-						:class="customMessage.selectedOrder === order ? 'order-item order-item-checked':'order-item'"
-						v-for="(order, index) in customMessage.orderList" :key="index"
+						:class="orderList.selectedOrder === order ? 'order-item order-item-checked':'order-item'"
+						v-for="(order, index) in orderList.orders" :key="index"
 						@click="selectOrder(order)"
 					>
 						<image class="order-img" :src="order.url"></image>
@@ -112,8 +107,8 @@
 						<view class="order-price">{{order.price}}</view>
 					</view>
 					<view class="action">
-						<view class="cancel-btn" @click="closeCustomMessageForm">取消</view>
-						<view class="send-btn" @click="sendCustomMessage">发送</view>
+						<view class="cancel-btn" @click="hideOrderMessageList">取消</view>
+						<view class="send-btn" @click="sendOrderMessage">发送</view>
 					</view>
 				</view>
 			</view>
@@ -126,8 +121,8 @@
 	import restApi from '../lib/restapi';
 	import EmojiDecoder from '../lib/EmojiDecoder';
 	const recorderManager = uni.getRecorderManager();
-    const IMAGE_MAX_WIDTH = 300;
-    const IMAGE_MAX_HEIGHT = 200;
+	const IMAGE_MAX_WIDTH = 200;
+	const IMAGE_MAX_HEIGHT = 150;
 	export default {
 		components : {
 			GoEasyAudioPlayer
@@ -216,16 +211,15 @@
 			this.goEasy.im.off(this.GoEasy.IM_EVENT.CS_MESSAGE_RECEIVED, this.onMessageReceived);
 		},
 		methods: {
-
-			getImgClass (width,height) {
-				if (width <IMAGE_MAX_WIDTH && height < IMAGE_MAX_HEIGHT){
-                    return 'original-img'
-				}else if (width = height ) {
-					return 'normal-img'
-				} else if (width < height) {
-					return 'vertical-img'
-				} else if (width > height) {
-					return 'horizontal-img'
+			getImgStyle (width,height) {
+				if (width < IMAGE_MAX_WIDTH && height < IMAGE_MAX_HEIGHT){
+					return { width: width + 'px',height: height +'px'}
+				} else if ( width === height ) {
+					return { width: IMAGE_MAX_HEIGHT + 'px', height: IMAGE_MAX_HEIGHT +'px'}
+				} else if (width < height) { //高度固定，宽度等比例
+					return { width: (width/height)*IMAGE_MAX_HEIGHT + 'px', height: IMAGE_MAX_HEIGHT +'px'}
+				} else if (width > height) { //宽度固定，高度等比例
+					return { width: IMAGE_MAX_WIDTH + 'px', height: (height/width)*IMAGE_MAX_WIDTH +'px'}
 				}
 			},
 			renderMessageDate(message, index) {
@@ -313,11 +307,16 @@
 			},
 			sendTextMessage ()  {
 				if (this.text.trim() !== '') {
-					let textMessage = this.goEasy.im.createTextMessage({
+          this.goEasy.im.createTextMessage({
 						text: this.text,
-						to : this.to
+						to : this.to,
+						onSuccess: (message) => {
+							this.sendMessage(message);
+						},
+						onFailed: (e) => {
+							console.log('error :',e);
+						}
 					});
-					this.sendMessage(textMessage);
 				}
 				this.text = '';
 			},
@@ -440,28 +439,32 @@
 				});
 			},
 			selectOrder (order) {
-				this.customMessage.selectedOrder = order;
+				this.orderList.selectedOrder = order;
 			},
-			showOrderList() {
-				this.orderList.orderList = restApi.getOrderList();
+			showOrderMessageList() {
+				this.orderList.orders = restApi.getOrderList();
 				this.orderList.visible = true;
 			},
-
-			closeCustomMessageForm () {
-				this.customMessage.visible = false;
-				this.customMessage.selectedOrder = null;
+			hideOrderMessageList () {
+				this.orderList.visible = false;
+				this.orderList.selectedOrder = null;
 			},
 
 			sendOrderMessage () {
 				//GoEasyIM自定义消息,实现订单发送
 				this.goEasy.im.createCustomMessage({
 					type : 'order',
-					payload : this.customMessage.selectedOrder,
+					payload : this.orderList.selectedOrder,
 					to : this.to,
+					onSuccess: (message) => {
+						this.sendMessage(message);
+					},
+					onFailed: (e) => {
+						console.log('error :',e);
+					}
 				});
-				this.sendMessage(customMessage);
-				this.customMessage.selectedOrder = null;
-				this.customMessage.visible = false;
+				this.orderList.selectedOrder = null;
+				this.orderList.visible = false;
 			},
 			showImageFullScreen (e) {
 				let imagesUrl = [e.currentTarget.dataset.url];
@@ -585,15 +588,6 @@
 	}
 	.scroll-view .content .image-content{
 		border-radius: 12rpx;
-	}
-	.vertical-img {
-		height: 400rpx;
-	}
-	.horizontal-img {
-		height: 300rpx;
-	}
-	.normal-img {
-		height: 200rpx;
 	}
 	.scroll-view .content .text-content img{
 		width: 50rpx;
@@ -815,7 +809,7 @@
 		height: 100%!important;
 		width: 100%!important;
 	}
-	
+
 	.order-list {
 		position: fixed;
 		top: 0;

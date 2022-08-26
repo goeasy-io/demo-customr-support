@@ -90,13 +90,13 @@ export default {
         left: null,
         right: null,
       },
-	  isRouterAlive: true,
-	  staffData: null
+      isRouterAlive: true,
+      staffData: null
     }
   },
   watch: {
     $route() {
-		this.currentPage = this.$route.name;
+		  this.currentPage = this.$route.name;
     },
   },
   created() {
@@ -179,12 +179,12 @@ export default {
         },
       });
     },
-	refresh(id) {
-		this.isRouterAlive = false;
-		this.$nextTick(function () {
-			this.isRouterAlive = true;
-		});
-	}
+    refresh(id) {
+      this.isRouterAlive = false;
+      this.$nextTick(function () {
+        this.isRouterAlive = true;
+      });
+    }
   }
 }
 </script>
@@ -206,11 +206,11 @@ export default {
       .conversation-list-title {
         font-size: 16px;
         margin: 10px;
-		color: rgba(0,0,0,.9);
+		    color: rgba(0,0,0,.9);
       }
       .conversation-list-body {
         overflow-y: auto;
-        max-height: 200px;
+        max-height: 250px;
         &::-webkit-scrollbar { // Chrome Safari
           display: none;
         }
@@ -240,17 +240,17 @@ export default {
     .conversation-item {
       display: flex;
       padding: 12px;
-	  cursor: pointer;
+	    cursor: pointer;
 
 	  .item-head {
-		position: relative;
-		margin-right: 14px;
+      position: relative;
+      margin-right: 14px;
 	  }
 
 	  .item-avatar {
 	    width: 45px;
 	    height: 45px;
-		border-radius: 4px;
+      border-radius: 4px;
 	  }
 
 	  .item-unread-num {
@@ -284,7 +284,7 @@ export default {
         }
         .item-info-bottom {
           display: flex;
-		  align-items: center;
+          align-items: center;
           .more-action {
             font-size: 18px;
             cursor: pointer;
@@ -296,7 +296,7 @@ export default {
           overflow: hidden;
           text-overflow:ellipsis;
           white-space: nowrap;
-		  width: 80px;
+          width: 150px;
           color: #606266;
         }
 

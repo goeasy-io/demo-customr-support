@@ -14,16 +14,18 @@
 					<view class="item-info-bottom">
 						<view class="item-info-bottom-item">
 							<view class="item-info-top_content">
-								<text>{{conversation.lastMessage.senderId === currentUser.uuid? '我': conversation.lastMessage.senderData.name}}:</text>
-								<text v-if="conversation.lastMessage.type === 'text'">{{conversation.lastMessage.payload.text}}</text>
-								<text v-else-if="conversation.lastMessage.type === 'video'">[视频消息]</text>
-								<text v-else-if="conversation.lastMessage.type === 'audio'">[语音消息]</text>
-								<text v-else-if="conversation.lastMessage.type === 'image'">[图片消息]</text>
-								<text v-else-if="conversation.lastMessage.type === 'order'">[自定义消息:订单]</text>
-								<text v-else-if="conversation.lastMessage.type === 'CS_END'">会话已结束</text>
-								<text v-else-if="conversation.lastMessage.type === 'CS_ACCEPT'">已接入</text>
-								<text v-else-if="conversation.lastMessage.type === 'CS_TRANSFER'">{{conversation.lastMessage.payload.transferTo.data.name}}已接入</text>
-								<text v-else>[[未识别内容]]</text>
+								<text v-if="conversation.lastMessage.type === 'CS_TRANSFER'">{{conversation.lastMessage.payload.transferTo.data.name}}已接入</text>
+								<view v-else>
+									<text>{{conversation.lastMessage.senderId === currentUser.uuid? '我': conversation.lastMessage.senderData.name}}:</text>
+									<text v-if="conversation.lastMessage.type === 'text'">{{conversation.lastMessage.payload.text}}</text>
+									<text v-else-if="conversation.lastMessage.type === 'video'">[视频消息]</text>
+									<text v-else-if="conversation.lastMessage.type === 'audio'">[语音消息]</text>
+									<text v-else-if="conversation.lastMessage.type === 'image'">[图片消息]</text>
+									<text v-else-if="conversation.lastMessage.type === 'order'">[自定义消息:订单]</text>
+									<text v-else-if="conversation.lastMessage.type === 'CS_END'">会话已结束</text>
+									<text v-else-if="conversation.lastMessage.type === 'CS_ACCEPT'">已接入</text>
+									<text v-else>[[未识别内容]]</text>
+								</view>
 							</view>
 							<view class="item-info-bottom_action" @click.stop="showAction(conversation)"></view>
 						</view>
@@ -96,23 +98,25 @@
 				let conversation = this.actionPopup.conversation;
 				let description = conversation.top ? '取消置顶' : '置顶';
 				this.goEasy.im.topConversation({
-					conversation: this.actionPopup.conversation,
-					onSuccess: function () {
+					conversation: conversation,
+					onSuccess: () => {
 						uni.showToast({
 							title: description+'成功',
 							icon: 'none'
 						});
 					},
-					onFailed: function (error) {
+					onFailed: (error) => {
 						console.log(description,'失败：',error);
 					},
 				});
 			},
 			deleteConversation () {
 				this.actionPopup.visible = false;
+        let conversation = this.actionPopup.conversation;
+        let description = conversation.top ? '取消置顶' : '置顶';
 				this.goEasy.im.removeConversation({
-					conversation: this.actionPopup.conversation,
-					onSuccess: function () {
+					conversation: conversation,
+					onSuccess: () => {
 						uni.showToast({
 							title: description+'成功',
 							icon: 'none'
@@ -212,7 +216,7 @@
 		font-size: 28rpx;
 		color: #9D9D9D;
 	}
-	
+
 	.action-container{
 		width: 100%;
 		height: 100%;
@@ -232,7 +236,7 @@
 		height: 100%;
 		z-index: 99;
 	}
-	
+
 	.action-container .action-box{
 		width: 400rpx;
 		height: 240rpx;
@@ -242,7 +246,7 @@
 		border-radius: 20rpx;
 		overflow: hidden;
 	}
-	
+
 	.action-container .action-item{
 		text-align: center;
 		line-height: 120rpx;
@@ -250,7 +254,7 @@
 		color: #262628;
 		border-bottom: 1px solid #EFEFEF;
 	}
-	
+
 	.item-head{
 		position: relative;
 	}

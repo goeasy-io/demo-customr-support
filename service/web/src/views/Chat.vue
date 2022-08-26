@@ -39,7 +39,7 @@
 
                   <div class="content-image"
                     v-if="message.type === 'image'"
-                    :class="getImgClass(message.payload.width,message.payload.height)"
+                    :style="getImgStyle(message.payload.width,message.payload.height)"
                     @click="showImagePreview(message.payload.url)"
                   >
                     <img :src="message.payload.url" alt="图片" />
@@ -128,13 +128,13 @@
             </div>
             <!-- 商品链接 -->
             <div class="action-item">
-              <div v-if="customMessage.visible" class="link-box">
-                <div class="order-item" v-for="(order, index) in customMessage.orderList" :key="index" @click="sendCustomMessage(order)">
+              <div v-if="orderList.visible" class="link-box">
+                <div class="order-item" v-for="(order, index) in orderList.orders" :key="index" @click="sendOrderMessage(order)">
                   <img class="order-img" :src="order.url">
                   <div>{{order.name}}</div>
                 </div>
               </div>
-              <i class="iconfont icon-lianjie" title="商品链接" @click="showLinkBox"></i>
+              <i class="iconfont icon-lianjie" title="商品链接" @click="showOrderMessageList"></i>
             </div>
           </div>
           <div class="session-action">
@@ -190,6 +190,8 @@ import restApi from '../api/restapi';
 import EmojiDecoder from '../utils/EmojiDecoder';
 import GoeasyAudioPlayer from "../components/GoEasyAudioPlayer";
 import GoeasyVideoPlayer from "../components/GoEasyVideoPlayer";
+const IMAGE_MAX_WIDTH = 200;
+const IMAGE_MAX_HEIGHT = 150;
 export default {
   name: "Chat",
   components: {
@@ -232,8 +234,8 @@ export default {
         visible: false,
         url: ''
       },
-      customMessage: {
-        orderList:[],
+      orderList: {
+        orders:[],
         visible: false,
       },
       staffs: [],
@@ -251,7 +253,6 @@ export default {
     }
     this.staffData = JSON.parse(localStorage.getItem("staffData"));
     this.teamData = restApi.findShopByStaff(this.staffData.uuid);
-    this.customMessage.orderList = restApi.getOrderList();
 
     this.loadHistoryMessage(true, 0);
     this.getCustomerStatus();
@@ -362,13 +363,15 @@ export default {
         },
       });
     },
-    getImgClass (width,height) {
-      if (height < 200) {
-        return 'normal-img'
-      } else if (width <= height) {
-        return 'vertical-img'
-      } else if (width > height) {
-        return 'horizontal-img'
+    getImgStyle (width,height) {
+      if (width < IMAGE_MAX_WIDTH && height < IMAGE_MAX_HEIGHT){
+        return { width: width + 'px',height: height +'px'}
+      } else if ( width === height ) {
+        return { width: IMAGE_MAX_HEIGHT + 'px', height: IMAGE_MAX_HEIGHT +'px'}
+      } else if (width < height) { //高度固定，宽度等比例
+        return { width: (width/height)*IMAGE_MAX_HEIGHT + 'px', height: IMAGE_MAX_HEIGHT +'px'}
+      } else if (width > height) { //宽度固定，高度等比例
+        return { width: IMAGE_MAX_WIDTH + 'px', height: (height/width)*IMAGE_MAX_WIDTH +'px'}
       }
     },
     renderMessageDate(message, index) {
@@ -389,11 +392,10 @@ export default {
       this.goEasy.im.csTeam(this.teamData.id).accept({
         id: this.customer.uuid,
         onSuccess: (result) => {
+          this.customerStatus = result.customerStatus;
           if (this.customerStatus.sessionId === result.customerStatus.sessionId) {
             this.history.messages.push(result.message);
             this.scrollTo(0);
-          } else {
-            this.customerStatus = result.customerStatus;
           }
         },
         onFailed: (error) => {
@@ -503,21 +505,22 @@ export default {
         }
       });
     },
-    showLinkBox () {
-      this.customMessage.visible = true;
+    showOrderMessageList () {
+      this.orderList.orders = restApi.getOrderList();
+      this.orderList.visible = true;
     },
-    sendCustomMessage(order) {
-      this.customMessage.visible = false;
+    sendOrderMessage(order) {
+      this.orderList.visible = false;
       this.goEasy.im.csTeam(this.teamData.id).createCustomMessage({
         type : 'order',
         payload : order,
         to: this.to,
-		onSuccess: (message) => {
-			this.sendMessage(message);
-		},
-		onFailed: (err) => {
-			console.log("创建消息err:", err);
-		}
+        onSuccess: (message) => {
+          this.sendMessage(message);
+        },
+        onFailed: (err) => {
+          console.log("创建消息err:", err);
+        }
       });
     },
     sendMessage(message) {
@@ -538,11 +541,11 @@ export default {
         this.loadHistoryMessage(true,offsetHeight);
       }
     },
-	scrollTo(offsetHeight) {
-		// offsetHeight 距底部的偏移高度，为0则表示滚动到底部
-		this.$nextTick(() => {
-			this.$refs.scrollView.scrollTop = this.$refs.messageList.scrollHeight - offsetHeight;
-		});
+	  scrollTo(offsetHeight) {
+      // offsetHeight 距底部的偏移高度，为0则表示滚动到底部
+      this.$nextTick(() => {
+        this.$refs.scrollView.scrollTop = this.$refs.messageList.scrollHeight - offsetHeight;
+      });
     },
   }
 
@@ -664,17 +667,9 @@ export default {
             margin: 5px 10px;
             cursor: pointer;
             img {
+              width: 100%;
               height: 100%;
             }
-          }
-          .vertical-img {
-            height: 200px;
-          }
-          .horizontal-img {
-            height: 150px;
-          }
-          .normal-img {
-            height: 100%;
           }
           .content-order {
             border-radius: 10px;

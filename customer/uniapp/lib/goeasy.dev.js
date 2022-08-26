@@ -53,7 +53,7 @@
 
 	Emitter$6.__esModule = true;
 	Emitter$6.Emitter = void 0;
-	var NetworkStatus_1$3 = NetworkStatus;
+	var NetworkStatus_1$1 = NetworkStatus;
 
 	var Emitter$5 =
 	/** @class */
@@ -63,7 +63,7 @@
 	  }
 
 	  Emitter.prototype.emit = function (rocket) {
-	    if (this.socket.status === NetworkStatus_1$3.NetworkStatus.CONNECT_FAILED || this.socket.status === NetworkStatus_1$3.NetworkStatus.DISCONNECTED) {
+	    if (this.socket.status === NetworkStatus_1$1.NetworkStatus.CONNECT_FAILED || this.socket.status === NetworkStatus_1$1.NetworkStatus.DISCONNECTED) {
 	      rocket.fail({
 	        resultCode: '409',
 	        content: 'Please connect first'
@@ -86,7 +86,7 @@
 	      return;
 	    }
 
-	    if (this.socket.status === NetworkStatus_1$3.NetworkStatus.CONNECT_FAILED) {
+	    if (this.socket.status === NetworkStatus_1$1.NetworkStatus.CONNECT_FAILED) {
 	      rocket.fail({
 	        resultCode: 408,
 	        content: "Failed to connect GoEasy."
@@ -96,7 +96,7 @@
 
 	    if (this.authenticated()) {
 	      if (this.hasPermission(rocket)) {
-	        var status_1 = [NetworkStatus_1$3.NetworkStatus.CONNECTED, NetworkStatus_1$3.NetworkStatus.RECONNECTED, NetworkStatus_1$3.NetworkStatus.EXPIRED_RECONNECTED];
+	        var status_1 = [NetworkStatus_1$1.NetworkStatus.CONNECTED, NetworkStatus_1$1.NetworkStatus.RECONNECTED, NetworkStatus_1$1.NetworkStatus.EXPIRED_RECONNECTED];
 
 	        if (status_1.includes(this.socket.status)) {
 	          if (!rocket.complete) {
@@ -140,7 +140,7 @@
 	  };
 
 	  Emitter.prototype.authenticated = function () {
-	    var status = [NetworkStatus_1$3.NetworkStatus.CONNECTED, NetworkStatus_1$3.NetworkStatus.RECONNECTING, NetworkStatus_1$3.NetworkStatus.RECONNECTED, NetworkStatus_1$3.NetworkStatus.EXPIRED_RECONNECTED];
+	    var status = [NetworkStatus_1$1.NetworkStatus.CONNECTED, NetworkStatus_1$1.NetworkStatus.RECONNECTING, NetworkStatus_1$1.NetworkStatus.RECONNECTED, NetworkStatus_1$1.NetworkStatus.EXPIRED_RECONNECTED];
 	    return status.includes(this.socket.status);
 	  };
 
@@ -7378,6 +7378,11 @@
 	  exports.__esModule = true;
 
 	  function noop() {
+	    var params = [];
+
+	    for (var _i = 0; _i < arguments.length; _i++) {
+	      params[_i] = arguments[_i];
+	    }
 	  }
 
 	  exports["default"] = noop;
@@ -7448,7 +7453,7 @@
 
 	anonymousUserIdRepository.__esModule = true;
 	anonymousUserIdRepository.AnonymousUserIdRepository = void 0;
-	var Calibrator_1$j = Calibrator;
+	var Calibrator_1$i = Calibrator;
 	var local_storage_dispatcher_1 = localStorageDispatcher;
 
 	var AnonymousUserIdRepository =
@@ -7462,7 +7467,7 @@
 	    if (storage !== null) {
 	      var userId = storage.get(AnonymousUserIdRepository.ANONYMOUS_USER_ID_KEY);
 
-	      if (!Calibrator_1$j["default"].isEmpty(userId)) {
+	      if (!Calibrator_1$i["default"].isEmpty(userId)) {
 	        return userId.toString();
 	      }
 	    }
@@ -7489,14 +7494,14 @@
 
 	ClientInfo$1.__esModule = true;
 	ClientInfo$1.clientInfo = void 0;
-	var platform_detector_1$2 = platformDetector;
+	var platform_detector_1$1 = platformDetector;
 	var framework_detector_1$3 = frameworkDetector;
 
 	var ClientInfo =
 	/** @class */
 	function () {
 	  function ClientInfo() {
-	    this.platform = platform_detector_1$2.PlatformDetector.currentPlatform();
+	    this.platform = platform_detector_1$1.PlatformDetector.currentPlatform();
 	    this.framework = framework_detector_1$3.FrameworkDetector.currentFramework();
 	    this.z = this.toZ();
 	  }
@@ -7587,9 +7592,9 @@
 
 	GNS$1.__esModule = true;
 	GNS$1.GNS = void 0;
-	var Calibrator_1$i = Calibrator;
+	var Calibrator_1$h = Calibrator;
 	var framework_detector_1$2 = frameworkDetector;
-	var platform_detector_1$1 = platformDetector;
+	var platform_detector_1 = platformDetector;
 	var UniApp_1 = UniApp$1; // TODO:
 	// 2. 各个事件类型是否应该集中生命诚常量或枚举？  DONE
 	//      TS化后老类没有删？会不会增加打包后的体积？
@@ -7694,9 +7699,9 @@
 	  };
 
 	  GNS.prototype.supportNotification = function () {
-	    var platform = platform_detector_1$1.PlatformDetector.currentPlatform();
+	    var platform = platform_detector_1.PlatformDetector.currentPlatform();
 	    var framework = framework_detector_1$2.FrameworkDetector.currentFramework();
-	    return this.allowNotification && framework === framework_detector_1$2.Framework.UNIAPP && (platform === platform_detector_1$1.Platform.APP_ANDROID || platform === platform_detector_1$1.Platform.APP_IOS);
+	    return this.allowNotification && framework === framework_detector_1$2.Framework.UNIAPP && (platform === platform_detector_1.Platform.APP_ANDROID || platform === platform_detector_1.Platform.APP_IOS);
 	  };
 
 	  GNS.prototype.listenPlusClickNotification = function () {
@@ -7743,10 +7748,10 @@
 
 	      var payload = _this.assemblePayload(intentData);
 
-	      var platform = platform_detector_1$1.PlatformDetector.currentPlatform();
+	      var platform = platform_detector_1.PlatformDetector.currentPlatform();
 	      plus.push.clear();
 
-	      if (platform === platform_detector_1$1.Platform.APP_ANDROID) {
+	      if (platform === platform_detector_1.Platform.APP_ANDROID) {
 	        _this.uniappPlugin.clearAll();
 	      }
 
@@ -7756,9 +7761,9 @@
 
 	  GNS.prototype.listenClick = function () {
 	    this.listenPlusClickNotification();
-	    var platform = platform_detector_1$1.PlatformDetector.currentPlatform();
+	    var platform = platform_detector_1.PlatformDetector.currentPlatform();
 
-	    if (this.uniappPlugin && platform === platform_detector_1$1.Platform.APP_ANDROID) {
+	    if (this.uniappPlugin && platform === platform_detector_1.Platform.APP_ANDROID) {
 	      this.getIntentData();
 	    }
 	  };
@@ -7774,7 +7779,7 @@
 	      return;
 	    }
 
-	    if (!Calibrator_1$i["default"].isFunction(clickHandler)) {
+	    if (!Calibrator_1$h["default"].isFunction(clickHandler)) {
 	      throw new Error('The arguments must be a function.');
 	    }
 
@@ -8427,8 +8432,42 @@
 	    };
 
 	    ValidatorUtils.prototype.validateWXMPTemplateMsg = function (wx_mp_template_msg) {
-	      //todo: 根据微信官方的
-	      throw 'Not implement yet.';
+	      if (Calibrator_1["default"].isObject(wx_mp_template_msg)) {
+	        if (!Calibrator_1["default"].isString(wx_mp_template_msg.template_id)) {
+	          throw {
+	            code: 400,
+	            content: 'template_id must be string.'
+	          };
+	        }
+
+	        if (!Calibrator_1["default"].isEmpty(wx_mp_template_msg.url) && !Calibrator_1["default"].isString(wx_mp_template_msg.url)) {
+	          throw {
+	            code: 400,
+	            content: 'url must be string'
+	          };
+	        }
+
+	        if (!Calibrator_1["default"].isEmpty(wx_mp_template_msg.miniprogram)) {
+	          if (!Calibrator_1["default"].isString(wx_mp_template_msg.miniprogram.appid) || !Calibrator_1["default"].isString(wx_mp_template_msg.miniprogram.pagepath)) {
+	            throw {
+	              code: 400,
+	              content: 'miniprogram.appid and miniprogram.pagepath must be strings.'
+	            };
+	          }
+	        }
+
+	        if (!Calibrator_1["default"].isObject(wx_mp_template_msg.data)) {
+	          throw {
+	            code: 400,
+	            content: 'data requires an object.'
+	          };
+	        }
+	      } else if (Calibrator_1["default"].isPrimitive(wx_mp_template_msg)) {
+	        throw {
+	          code: 400,
+	          content: 'wx_mp_template_msg must be an object.'
+	        };
+	      }
 	    };
 
 	    return ValidatorUtils;
@@ -8437,6 +8476,41 @@
 	  var validatorUtils = new ValidatorUtils();
 	  exports["default"] = validatorUtils;
 	})(validatorUtils);
+
+	var g = {};
+
+	g.__esModule = true;
+	g.G = void 0;
+
+	var G =
+	/** @class */
+	function () {
+	  function G() {}
+
+	  G.i = function (socket) {
+	    this.socket = socket;
+	  };
+
+	  G.s = function () {
+	    if (this.socket) {
+	      return this.socket;
+	    }
+
+	    throw new Error('Please connect first.');
+	  };
+
+	  G.u = function () {
+	    return this.s().userId;
+	  };
+
+	  G.ud = function () {
+	    return this.s().userData;
+	  };
+
+	  return G;
+	}();
+
+	g.G = G;
 
 	(function (exports) {
 
@@ -8449,13 +8523,12 @@
 	  var SocketTimeout_1 = SocketTimeout;
 	  var RocketTypes_1 = RocketTypes;
 	  var validator_utils_1 = validatorUtils;
+	  var g_1 = g;
 
 	  var Publisher =
 	  /** @class */
 	  function () {
-	    function Publisher(goEasySocket) {
-	      this.goEasySocket = goEasySocket;
-	    }
+	    function Publisher() {}
 
 	    Publisher.prototype.publish = function (options) {
 	      if (!Calibrator_1["default"].isFunction(options.onFailed)) {
@@ -8468,20 +8541,18 @@
 
 	      this.validate(options);
 	      options.channel = options.channel.toString();
-	      var wxTemplateMsg = options.wx_mp_template_msg;
 	      var params = {
 	        channel: options.channel,
 	        content: options.message,
 	        nt: options.notification,
 	        at: options.accessToken,
-	        guid: UUID_1["default"].get(),
-	        wx_mp_template_msg: {
-	          templateId: wxTemplateMsg.template_id,
-	          url: wxTemplateMsg.url,
-	          miniProgram: wxTemplateMsg.miniprogram,
-	          data: JSON.stringify(wxTemplateMsg.data)
-	        }
+	        guid: UUID_1["default"].get()
 	      };
+
+	      if (options.wx_mp_template_msg) {
+	        params.wx_mp_template_msg = options.wx_mp_template_msg;
+	        params.wx_mp_template_msg.data = JSON.stringify(params.wx_mp_template_msg.data); // todo:这个data需要转换成字符串吗?
+	      }
 
 	      var success = function success(ack) {
 	        options.onSuccess({
@@ -8507,7 +8578,7 @@
 	        success: success,
 	        fail: fail
 	      });
-	      this.goEasySocket.emit(rocket);
+	      g_1.G.s().emit(rocket);
 	    };
 
 	    Publisher.prototype.validate = function (options) {
@@ -8598,24 +8669,23 @@
 	Subscriber$1.__esModule = true;
 	Subscriber$1.Subscriber = void 0;
 	var noop_1$3 = noop;
-	var Calibrator_1$h = Calibrator;
-	var Rocket_1$a = Rocket;
-	var Permission_1$a = Permission;
+	var Calibrator_1$g = Calibrator;
+	var Rocket_1$6 = Rocket;
+	var Permission_1$6 = Permission;
 	var Subscription_1 = Subscription$1;
-	var SocketTimeout_1$a = SocketTimeout;
-	var NetworkStatus_1$2 = NetworkStatus;
-	var RocketTypes_1$c = RocketTypes;
-	var RemoteEvents_1$5 = RemoteEvents;
-	var validator_utils_1$9 = validatorUtils;
-	var pubsub_1$1 = pubsub;
-	var GNS_1$1 = GNS$1;
+	var SocketTimeout_1$6 = SocketTimeout;
+	var RocketTypes_1$8 = RocketTypes;
+	var RemoteEvents_1$1 = RemoteEvents;
+	var validator_utils_1$8 = validatorUtils;
+	var GNS_1 = GNS$1;
+	var g_1$g = g;
 
 	var Subscriber =
 	/** @class */
 	function () {
 	  function Subscriber() {
 	    this.subscriptions = [];
-	    GNS_1$1.GNS.instance.addAssembler(new (
+	    GNS_1.GNS.instance.addAssembler(new (
 	    /** @class */
 	    function () {
 	      function class_1() {}
@@ -8635,11 +8705,9 @@
 	    }())());
 	  }
 
-	  Subscriber.prototype.initialGoEasySocket = function (goEasySocket) {
-	    this.goEasySocket = goEasySocket;
-	    this.goEasySocket.addMessageObserver(RemoteEvents_1$5.RemoteEvents.message, this.onNewMessage.bind(this));
-	    this.goEasySocket.addExpiredReconnectedObserver(this.onExpiredReconnected.bind(this));
-	    this.goEasySocket.addConnectedObserver(this.onReconnected.bind(this));
+	  Subscriber.prototype.initialGoEasySocket = function () {
+	    g_1$g.G.s().addMessageObserver(RemoteEvents_1$1.RemoteEvents.message, this.onNewMessage.bind(this));
+	    g_1$g.G.s().addExpiredReconnectedObserver(this.onExpiredReconnected.bind(this));
 	  };
 
 	  Subscriber.prototype.resubscribe = function () {
@@ -8653,16 +8721,12 @@
 	    }
 	  };
 
-	  Subscriber.prototype.onExpiredReconnected = function () {
-	    this.resubscribe();
+	  Subscriber.prototype.clearSubscriptions = function () {
+	    this.subscriptions = [];
 	  };
 
-	  Subscriber.prototype.onReconnected = function () {
-	    // todo:这里不应该调用PubSub的属性，违反了类之间只有导出耦合的规则
-	    if (!pubsub_1$1.PubSub.instance.neverConnect && this.goEasySocket.status != NetworkStatus_1$2.NetworkStatus.RECONNECTED) {
-	      //手动重连成功，自动重新订阅
-	      this.resubscribe();
-	    }
+	  Subscriber.prototype.onExpiredReconnected = function () {
+	    this.resubscribe();
 	  }; //收到消息分发
 
 
@@ -8672,7 +8736,7 @@
 	    console.log('Subscriber -> onNewMessage: ', message); //收到消息
 
 	    if (message.a) {
-	      this.goEasySocket.sendAck('ack', {
+	      g_1$g.G.s().sendAck('ack', {
 	        "publishGuid": message.i
 	      });
 	    }
@@ -8688,9 +8752,9 @@
 	  };
 
 	  Subscriber.prototype.createNotification = function (message) {
-	    var supportGNS = GNS_1$1.GNS.instance.supportNotification();
+	    var supportGNS = GNS_1.GNS.instance.supportNotification();
 
-	    if (!Calibrator_1$h["default"].isObject(message.nt) || !supportGNS) {
+	    if (!Calibrator_1$g["default"].isObject(message.nt) || !supportGNS) {
 	      return;
 	    }
 
@@ -8698,13 +8762,13 @@
 	      ch: message.n,
 	      ctt: message.c
 	    };
-	    GNS_1$1.GNS.instance.createLocalNotification(message.nt.t, message.nt.c, data);
+	    GNS_1.GNS.instance.createLocalNotification(message.nt.t, message.nt.c, data);
 	  };
 
 	  Subscriber.prototype.formatOptions = function (options) {
 	    this.formatCallback(options);
 
-	    if (!Calibrator_1$h["default"].isFunction(options.onMessage)) {
+	    if (!Calibrator_1$g["default"].isFunction(options.onMessage)) {
 	      options.onMessage = noop_1$3["default"];
 	    }
 
@@ -8719,11 +8783,11 @@
 	  };
 
 	  Subscriber.prototype.formatCallback = function (options) {
-	    if (!Calibrator_1$h["default"].isFunction(options.onSuccess)) {
+	    if (!Calibrator_1$g["default"].isFunction(options.onSuccess)) {
 	      options.onSuccess = noop_1$3["default"];
 	    }
 
-	    if (!Calibrator_1$h["default"].isFunction(options.onFailed)) {
+	    if (!Calibrator_1$g["default"].isFunction(options.onFailed)) {
 	      options.onFailed = noop_1$3["default"];
 	    }
 	  }; //订阅
@@ -8732,7 +8796,7 @@
 	  Subscriber.prototype.subscribe = function (options) {
 	    var _this = this;
 
-	    validator_utils_1$9["default"].validateChannelAndChannels(options.channel, options.channels);
+	    validator_utils_1$8["default"].validateChannelAndChannels(options.channel, options.channels);
 	    this.formatOptions(options);
 
 	    var success = function success() {
@@ -8759,11 +8823,11 @@
 	      });
 	    };
 
-	    var rocket = new Rocket_1$a["default"]({
-	      name: RocketTypes_1$c.RocketTypes.subscribe,
-	      permission: Permission_1$a.Permission.READ,
-	      singleTimeout: SocketTimeout_1$a.SocketTimeout.commonInfiniteSingle,
-	      totalTimeout: SocketTimeout_1$a.SocketTimeout.commonInfiniteTotal,
+	    var rocket = new Rocket_1$6["default"]({
+	      name: RocketTypes_1$8.RocketTypes.subscribe,
+	      permission: Permission_1$6.Permission.READ,
+	      singleTimeout: SocketTimeout_1$6.SocketTimeout.commonInfiniteSingle,
+	      totalTimeout: SocketTimeout_1$6.SocketTimeout.commonInfiniteTotal,
 	      params: {
 	        channels: options.channels,
 	        accessToken: options.accessToken
@@ -8771,14 +8835,14 @@
 	      success: success,
 	      fail: fail
 	    });
-	    this.goEasySocket.emit(rocket);
+	    g_1$g.G.s().emit(rocket);
 	  }; //取消订阅
 
 
 	  Subscriber.prototype.unsubscribe = function (options) {
 	    var _this = this;
 
-	    validator_utils_1$9["default"].validateChannel(options.channel, 'channel');
+	    validator_utils_1$8["default"].validateChannel(options.channel, 'channel');
 	    options.channel = options.channel.toString();
 
 	    if (!this.findSubscriptionByChannel(options.channel)) {
@@ -8805,18 +8869,18 @@
 	      });
 	    };
 
-	    var rocket = new Rocket_1$a["default"]({
-	      name: RocketTypes_1$c.RocketTypes.unsubscribe,
+	    var rocket = new Rocket_1$6["default"]({
+	      name: RocketTypes_1$8.RocketTypes.unsubscribe,
 	      params: {
 	        channel: options.channel
 	      },
-	      permission: Permission_1$a.Permission.READ,
-	      singleTimeout: SocketTimeout_1$a.SocketTimeout.commonRequestSingle,
-	      totalTimeout: SocketTimeout_1$a.SocketTimeout.commonRequestTotal,
+	      permission: Permission_1$6.Permission.READ,
+	      singleTimeout: SocketTimeout_1$6.SocketTimeout.commonRequestSingle,
+	      totalTimeout: SocketTimeout_1$6.SocketTimeout.commonRequestTotal,
 	      success: success,
 	      fail: fail
 	    });
-	    this.goEasySocket.emit(rocket);
+	    g_1$g.G.s().emit(rocket);
 	  };
 
 	  Subscriber.prototype.removeChannel = function (channel) {
@@ -8863,30 +8927,29 @@
 	History$2.__esModule = true;
 	History$2.History = void 0;
 	var noop_1$2 = noop;
-	var Calibrator_1$g = Calibrator;
-	var Rocket_1$9 = Rocket;
-	var Permission_1$9 = Permission;
-	var SocketTimeout_1$9 = SocketTimeout;
-	var RocketTypes_1$b = RocketTypes;
-	var validator_utils_1$8 = validatorUtils;
+	var Calibrator_1$f = Calibrator;
+	var Rocket_1$5 = Rocket;
+	var Permission_1$5 = Permission;
+	var SocketTimeout_1$5 = SocketTimeout;
+	var RocketTypes_1$7 = RocketTypes;
+	var validator_utils_1$7 = validatorUtils;
+	var g_1$f = g;
 
 	var History$1 =
 	/** @class */
 	function () {
-	  function History(goEasySocket) {
-	    this.goEasySocket = goEasySocket;
-	  }
+	  function History() {}
 
 	  History.prototype.get = function (options) {
-	    if (!Calibrator_1$g["default"].isFunction(options.onSuccess)) {
+	    if (!Calibrator_1$f["default"].isFunction(options.onSuccess)) {
 	      options.onSuccess = noop_1$2["default"];
 	    }
 
-	    if (!Calibrator_1$g["default"].isFunction(options.onFailed)) {
+	    if (!Calibrator_1$f["default"].isFunction(options.onFailed)) {
 	      options.onFailed = noop_1$2["default"];
 	    }
 
-	    validator_utils_1$8["default"].validateChannel(options.channel, 'channel');
+	    validator_utils_1$7["default"].validateChannel(options.channel, 'channel');
 	    options.channel = options.channel.toString();
 
 	    var ackCallback = function ackCallback(ack) {
@@ -8903,16 +8966,16 @@
 	      });
 	    };
 
-	    var rocket = new Rocket_1$9["default"]({
-	      name: RocketTypes_1$b.RocketTypes.historyMessages,
-	      permission: Permission_1$9.Permission.READ,
+	    var rocket = new Rocket_1$5["default"]({
+	      name: RocketTypes_1$7.RocketTypes.historyMessages,
+	      permission: Permission_1$5.Permission.READ,
 	      params: options,
-	      singleTimeout: SocketTimeout_1$9.SocketTimeout.commonQuerySingle,
-	      totalTimeout: SocketTimeout_1$9.SocketTimeout.commonQueryTotal,
+	      singleTimeout: SocketTimeout_1$5.SocketTimeout.commonQuerySingle,
+	      totalTimeout: SocketTimeout_1$5.SocketTimeout.commonQueryTotal,
 	      success: ackCallback,
 	      fail: failCallback
 	    });
-	    this.goEasySocket.emit(rocket);
+	    g_1$f.G.s().emit(rocket);
 	  };
 
 	  return History;
@@ -8945,29 +9008,26 @@
 	PresenceSubscriber$1.__esModule = true;
 	PresenceSubscriber$1.PresenceSubscriber = void 0;
 	var noop_1$1 = noop;
-	var Calibrator_1$f = Calibrator;
-	var Rocket_1$8 = Rocket;
-	var Permission_1$8 = Permission;
-	var SocketTimeout_1$8 = SocketTimeout;
+	var Calibrator_1$e = Calibrator;
+	var Rocket_1$4 = Rocket;
+	var Permission_1$4 = Permission;
+	var SocketTimeout_1$4 = SocketTimeout;
 	var PresenceSubscription_1 = PresenceSubscription$1;
-	var NetworkStatus_1$1 = NetworkStatus;
-	var RocketTypes_1$a = RocketTypes;
-	var RemoteEvents_1$4 = RemoteEvents;
-	var pubsub_1 = pubsub;
-	var validator_utils_1$7 = validatorUtils;
+	var RocketTypes_1$6 = RocketTypes;
+	var RemoteEvents_1 = RemoteEvents;
+	var validator_utils_1$6 = validatorUtils;
+	var g_1$e = g;
 
 	var PresenceSubscriber =
 	/** @class */
 	function () {
-	  function PresenceSubscriber(goEasySocket) {
+	  function PresenceSubscriber() {
 	    this.presenters = [];
-	    this.goEasySocket = goEasySocket;
 	  }
 
 	  PresenceSubscriber.prototype.initialGoEasySocket = function () {
-	    this.goEasySocket.addMessageObserver(RemoteEvents_1$4.RemoteEvents.message, this.onNewMessage.bind(this));
-	    this.goEasySocket.addExpiredReconnectedObserver(this.onExpiredReconnected.bind(this));
-	    this.goEasySocket.addConnectedObserver(this.onReconnected.bind(this));
+	    g_1$e.G.s().addMessageObserver(RemoteEvents_1.RemoteEvents.message, this.onNewMessage.bind(this));
+	    g_1$e.G.s().addExpiredReconnectedObserver(this.onExpiredReconnected.bind(this));
 	  };
 
 	  PresenceSubscriber.prototype.resubscribe = function () {
@@ -8988,13 +9048,6 @@
 
 	  PresenceSubscriber.prototype.onExpiredReconnected = function () {
 	    this.resubscribe();
-	  };
-
-	  PresenceSubscriber.prototype.onReconnected = function () {
-	    // todo:这里不应该调用PubSub的属性，违反了类之间只有导出耦合的规则
-	    if (!pubsub_1.PubSub.instance.neverConnect && this.goEasySocket.status != NetworkStatus_1$1.NetworkStatus.RECONNECTED) {
-	      this.resubscribe();
-	    }
 	  }; //收到消息分发
 
 
@@ -9022,7 +9075,7 @@
 	  PresenceSubscriber.prototype.formatOptions = function (options) {
 	    this.formatCallback(options);
 
-	    if (!Calibrator_1$f["default"].isFunction(options.onPresence)) {
+	    if (!Calibrator_1$e["default"].isFunction(options.onPresence)) {
 	      options.onPresence = noop_1$1["default"];
 	    }
 
@@ -9037,11 +9090,11 @@
 	  };
 
 	  PresenceSubscriber.prototype.formatCallback = function (options) {
-	    if (!Calibrator_1$f["default"].isFunction(options.onSuccess)) {
+	    if (!Calibrator_1$e["default"].isFunction(options.onSuccess)) {
 	      options.onSuccess = noop_1$1["default"];
 	    }
 
-	    if (!Calibrator_1$f["default"].isFunction(options.onFailed)) {
+	    if (!Calibrator_1$e["default"].isFunction(options.onFailed)) {
 	      options.onFailed = noop_1$1["default"];
 	    }
 	  };
@@ -9049,7 +9102,7 @@
 	  PresenceSubscriber.prototype.subscribePresence = function (options) {
 	    var _this = this;
 
-	    validator_utils_1$7["default"].validateChannelAndChannels(options.channel, options.channels);
+	    validator_utils_1$6["default"].validateChannelAndChannels(options.channel, options.channels);
 	    this.formatOptions(options);
 
 	    if (Array.isArray(options.channels)) {
@@ -9082,18 +9135,18 @@
 	      });
 	    };
 
-	    var rocket = new Rocket_1$8["default"]({
-	      name: RocketTypes_1$a.RocketTypes.subscribe,
-	      permission: Permission_1$8.Permission.READ,
-	      singleTimeout: SocketTimeout_1$8.SocketTimeout.commonInfiniteSingle,
-	      totalTimeout: SocketTimeout_1$8.SocketTimeout.commonInfiniteTotal,
+	    var rocket = new Rocket_1$4["default"]({
+	      name: RocketTypes_1$6.RocketTypes.subscribe,
+	      permission: Permission_1$4.Permission.READ,
+	      singleTimeout: SocketTimeout_1$4.SocketTimeout.commonInfiniteSingle,
+	      totalTimeout: SocketTimeout_1$4.SocketTimeout.commonInfiniteTotal,
 	      params: {
 	        channels: options.channels
 	      },
 	      success: success,
 	      fail: fail
 	    });
-	    this.goEasySocket.emit(rocket);
+	    g_1$e.G.s().emit(rocket);
 	  };
 
 	  PresenceSubscriber.prototype.unsubscribePresence = function (options) {
@@ -9101,7 +9154,7 @@
 
 	    this.formatCallback(options);
 
-	    if (!Calibrator_1$f["default"].isDef(options.channel)) {
+	    if (!Calibrator_1$e["default"].isDef(options.channel)) {
 	      options.onFailed({
 	        code: 400,
 	        content: 'channel is required'
@@ -9119,14 +9172,14 @@
 	      return;
 	    }
 
-	    var rocket = new Rocket_1$8["default"]({
-	      name: RocketTypes_1$a.RocketTypes.unsubscribe,
+	    var rocket = new Rocket_1$4["default"]({
+	      name: RocketTypes_1$6.RocketTypes.unsubscribe,
 	      params: {
 	        channel: options.channel
 	      },
-	      permission: Permission_1$8.Permission.READ,
-	      singleTimeout: SocketTimeout_1$8.SocketTimeout.commonRequestSingle,
-	      totalTimeout: SocketTimeout_1$8.SocketTimeout.commonRequestTotal,
+	      permission: Permission_1$4.Permission.READ,
+	      singleTimeout: SocketTimeout_1$4.SocketTimeout.commonRequestSingle,
+	      totalTimeout: SocketTimeout_1$4.SocketTimeout.commonRequestTotal,
 	      success: function success() {
 	        options.onSuccess({
 	          code: 200,
@@ -9142,7 +9195,7 @@
 	        });
 	      }
 	    });
-	    this.goEasySocket.emit(rocket);
+	    g_1$e.G.s().emit(rocket);
 	  };
 
 	  PresenceSubscriber.prototype.removeChannel = function (channel) {
@@ -9189,19 +9242,18 @@
 	HereNow$1.__esModule = true;
 	HereNow$1.HereNow = void 0;
 	var noop_1 = noop;
-	var Calibrator_1$e = Calibrator;
-	var Rocket_1$7 = Rocket;
-	var Permission_1$7 = Permission;
-	var SocketTimeout_1$7 = SocketTimeout;
-	var RocketTypes_1$9 = RocketTypes;
-	var validator_utils_1$6 = validatorUtils;
+	var Calibrator_1$d = Calibrator;
+	var Rocket_1$3 = Rocket;
+	var Permission_1$3 = Permission;
+	var SocketTimeout_1$3 = SocketTimeout;
+	var RocketTypes_1$5 = RocketTypes;
+	var validator_utils_1$5 = validatorUtils;
+	var g_1$d = g;
 
 	var HereNow =
 	/** @class */
 	function () {
-	  function HereNow(goEasySocket) {
-	    this.goEasySocket = goEasySocket;
-	  }
+	  function HereNow() {}
 
 	  HereNow.prototype.byChannel = function (options) {
 	    var params = {
@@ -9210,15 +9262,15 @@
 	      distinct: false
 	    };
 
-	    if (!Calibrator_1$e["default"].isFunction(options.onSuccess)) {
+	    if (!Calibrator_1$d["default"].isFunction(options.onSuccess)) {
 	      options.onSuccess = noop_1["default"];
 	    }
 
-	    if (!Calibrator_1$e["default"].isFunction(options.onFailed)) {
+	    if (!Calibrator_1$d["default"].isFunction(options.onFailed)) {
 	      options.onFailed = noop_1["default"];
 	    }
 
-	    validator_utils_1$6["default"].validateChannelArray(options.channels, 'channels');
+	    validator_utils_1$5["default"].validateChannelArray(options.channels, 'channels');
 	    params.channels = options.channels.toString().split(','); // 转换为字符串数组
 
 	    params.includeUsers = options.includeUsers || false;
@@ -9254,16 +9306,16 @@
 	      });
 	    };
 
-	    var rocket = new Rocket_1$7["default"]({
-	      name: RocketTypes_1$9.RocketTypes.hereNow,
-	      permission: Permission_1$7.Permission.READ,
+	    var rocket = new Rocket_1$3["default"]({
+	      name: RocketTypes_1$5.RocketTypes.hereNow,
+	      permission: Permission_1$3.Permission.READ,
 	      params: params,
-	      singleTimeout: SocketTimeout_1$7.SocketTimeout.commonQuerySingle,
-	      totalTimeout: SocketTimeout_1$7.SocketTimeout.commonQueryTotal,
+	      singleTimeout: SocketTimeout_1$3.SocketTimeout.commonQuerySingle,
+	      totalTimeout: SocketTimeout_1$3.SocketTimeout.commonQueryTotal,
 	      success: ackCallback,
 	      fail: failCallback
 	    });
-	    this.goEasySocket.emit(rocket);
+	    g_1$d.G.s().emit(rocket);
 	  };
 
 	  HereNow.prototype.byUserId = function (options) {
@@ -9272,15 +9324,15 @@
 	      distinct: true
 	    };
 
-	    if (!Calibrator_1$e["default"].isFunction(options.onSuccess)) {
+	    if (!Calibrator_1$d["default"].isFunction(options.onSuccess)) {
 	      options.onSuccess = noop_1["default"];
 	    }
 
-	    if (!Calibrator_1$e["default"].isFunction(options.onFailed)) {
+	    if (!Calibrator_1$d["default"].isFunction(options.onFailed)) {
 	      options.onFailed = noop_1["default"];
 	    }
 
-	    validator_utils_1$6["default"].validateIdArray(options.userIds, 'userIds');
+	    validator_utils_1$5["default"].validateIdArray(options.userIds, 'userIds');
 	    params.userIds = options.userIds.toString().split(',');
 
 	    if (options.distinct == false) {
@@ -9309,16 +9361,16 @@
 	      });
 	    };
 
-	    var rocket = new Rocket_1$7["default"]({
-	      name: RocketTypes_1$9.RocketTypes.hereNowByUserIds,
-	      permission: Permission_1$7.Permission.READ,
+	    var rocket = new Rocket_1$3["default"]({
+	      name: RocketTypes_1$5.RocketTypes.hereNowByUserIds,
+	      permission: Permission_1$3.Permission.READ,
 	      params: params,
-	      singleTimeout: SocketTimeout_1$7.SocketTimeout.commonQuerySingle,
-	      totalTimeout: SocketTimeout_1$7.SocketTimeout.commonQueryTotal,
+	      singleTimeout: SocketTimeout_1$3.SocketTimeout.commonQuerySingle,
+	      totalTimeout: SocketTimeout_1$3.SocketTimeout.commonQueryTotal,
 	      success: ackCallback,
 	      fail: failCallback
 	    });
-	    this.goEasySocket.emit(rocket);
+	    g_1$d.G.s().emit(rocket);
 	  };
 
 	  return HereNow;
@@ -9330,7 +9382,7 @@
 
 	callbackUtils.__esModule = true;
 	callbackUtils.CallbackUtils = void 0;
-	var Calibrator_1$d = Calibrator;
+	var Calibrator_1$c = Calibrator;
 
 	var CallbackUtils =
 	/** @class */
@@ -9338,13 +9390,13 @@
 	  function CallbackUtils() {}
 
 	  CallbackUtils.onSuccess = function (callbackOptions, result) {
-	    if (Calibrator_1$d["default"].isFunction(callbackOptions.onSuccess)) {
+	    if (Calibrator_1$c["default"].isFunction(callbackOptions.onSuccess)) {
 	      callbackOptions.onSuccess(result);
 	    }
 	  };
 
 	  CallbackUtils.onFailed = function (callbackOptions, error) {
-	    if (Calibrator_1$d["default"].isObject(callbackOptions) && Calibrator_1$d["default"].isFunction(callbackOptions.onFailed)) {
+	    if (Calibrator_1$c["default"].isObject(callbackOptions) && Calibrator_1$c["default"].isFunction(callbackOptions.onFailed)) {
 	      callbackOptions.onFailed(error);
 	    } else {
 	      throw error;
@@ -9363,16 +9415,16 @@
 	var History_1 = History$2;
 	var PresenceSubscriber_1 = PresenceSubscriber$1;
 	var HereNow_1 = HereNow$1;
-	var callback_utils_1$a = callbackUtils;
+	var callback_utils_1$6 = callbackUtils;
 	var NetworkStatus_1 = NetworkStatus;
 	var ModuleTypes_1$1 = ModuleTypes;
+	var g_1$c = g;
 
 	var PubSub =
 	/** @class */
 	function () {
 	  function PubSub(options) {
 	    this.subscriber = new Subscriber_1.Subscriber();
-	    this.neverConnect = true;
 	    this.options = options;
 	  }
 
@@ -9380,18 +9432,17 @@
 	    PubSub.instance = new PubSub(options);
 	  };
 
-	  PubSub.prototype.initialGoEasySocket = function (goEasySocket) {
-	    this.goEasySocket = goEasySocket;
-	    this.publisher = new Publisher_1["default"](this.goEasySocket);
-	    this.histories = new History_1.History(this.goEasySocket);
-	    this.presence = new PresenceSubscriber_1.PresenceSubscriber(this.goEasySocket);
-	    this.hereNows = new HereNow_1.HereNow(this.goEasySocket);
-	    this.subscriber.initialGoEasySocket(this.goEasySocket);
+	  PubSub.prototype.initialGoEasySocket = function () {
+	    this.publisher = new Publisher_1["default"]();
+	    this.histories = new History_1.History();
+	    this.presence = new PresenceSubscriber_1.PresenceSubscriber();
+	    this.hereNows = new HereNow_1.HereNow();
+	    this.subscriber.initialGoEasySocket();
 	    this.presence.initialGoEasySocket();
 	  };
 
 	  PubSub.prototype.initialBeforeConnect = function () {
-	    this.neverConnect = false;
+	    this.subscriber.clearSubscriptions();
 	  };
 
 	  PubSub.prototype["catch"] = function (functionObj, callbackOptions) {
@@ -9399,13 +9450,13 @@
 	      this.validateOptions();
 	      functionObj();
 	    } catch (err) {
-	      callback_utils_1$a.CallbackUtils.onFailed(callbackOptions, err);
+	      callback_utils_1$6.CallbackUtils.onFailed(callbackOptions, err);
 	    }
 	  }; // todo: 方法名
 
 
 	  PubSub.prototype.validateOptions = function () {
-	    if (!this.goEasySocket || this.goEasySocket.getStatus() !== NetworkStatus_1.NetworkStatus.CONNECTED) {
+	    if (!g_1$c.G.s() || g_1$c.G.s().getStatus() !== NetworkStatus_1.NetworkStatus.CONNECTED) {
 	      throw Error('Please call connect() first.');
 	    }
 
@@ -9530,9 +9581,9 @@
 	apiEventCenter.__esModule = true;
 	apiEventCenter.ApiEventCenter = void 0;
 	var im_api_events_1$2 = imApiEvents;
-	var rtc_api_events_1$3 = rtcApiEvents;
+	var rtc_api_events_1 = rtcApiEvents;
 	var Emitter$1 = componentEmitter.exports;
-	var Calibrator_1$c = Calibrator;
+	var Calibrator_1$b = Calibrator;
 
 	var ApiEventCenter =
 	/** @class */
@@ -9543,15 +9594,15 @@
 
 
 	  ApiEventCenter.prototype.on = function (apiEvent, callback) {
-	    if (!Calibrator_1$c["default"].isString(apiEvent)) {
+	    if (!Calibrator_1$b["default"].isString(apiEvent)) {
 	      throw Error('event require a string.');
 	    }
 
-	    if (!Calibrator_1$c["default"].isDef(im_api_events_1$2.ImApiEvents[apiEvent]) && !Calibrator_1$c["default"].isDef(rtc_api_events_1$3.RTCApiEvents[apiEvent])) {
+	    if (!Calibrator_1$b["default"].isDef(im_api_events_1$2.ImApiEvents[apiEvent]) && !Calibrator_1$b["default"].isDef(rtc_api_events_1.RTCApiEvents[apiEvent])) {
 	      throw Error('An event that is not defined');
 	    }
 
-	    if (!Calibrator_1$c["default"].isFunction(callback)) {
+	    if (!Calibrator_1$b["default"].isFunction(callback)) {
 	      throw Error('callback must be a function');
 	    }
 
@@ -9598,7 +9649,7 @@
 	  exports["default"] = AbstractFileUploader;
 	})(AbstractFileUploader);
 
-	var __extends$k = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$j = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -9633,7 +9684,7 @@
 	var UniAppFileUploader =
 	/** @class */
 	function (_super) {
-	  __extends$k(UniAppFileUploader, _super);
+	  __extends$j(UniAppFileUploader, _super);
 
 	  function UniAppFileUploader() {
 	    return _super.call(this) || this;
@@ -9701,7 +9752,7 @@
 
 	var WXFileUploader$1 = {};
 
-	var __extends$j = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$i = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -9736,7 +9787,7 @@
 	var WXFileUploader =
 	/** @class */
 	function (_super) {
-	  __extends$j(WXFileUploader, _super);
+	  __extends$i(WXFileUploader, _super);
 
 	  function WXFileUploader() {
 	    return _super !== null && _super.apply(this, arguments) || this;
@@ -9802,7 +9853,7 @@
 
 	var HtmlFileUploader$1 = {};
 
-	var __extends$i = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$h = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -9837,7 +9888,7 @@
 	var HtmlFileUploader =
 	/** @class */
 	function (_super) {
-	  __extends$i(HtmlFileUploader, _super);
+	  __extends$h(HtmlFileUploader, _super);
 
 	  function HtmlFileUploader() {
 	    return _super.call(this) || this;
@@ -10022,7 +10073,7 @@
 	  })(exports.MessageType || (exports.MessageType = {}));
 	})(MessageType);
 
-	var __extends$h = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$g = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -10059,7 +10110,7 @@
 	var AliYunOSSRequestBuilder =
 	/** @class */
 	function (_super) {
-	  __extends$h(AliYunOSSRequestBuilder, _super);
+	  __extends$g(AliYunOSSRequestBuilder, _super);
 
 	  function AliYunOSSRequestBuilder() {
 	    return _super.call(this) || this;
@@ -10108,7 +10159,7 @@
 
 	var QiNiuYunOSSRequestBuilder$1 = {};
 
-	var __extends$g = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$f = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -10144,7 +10195,7 @@
 	var QiNiuYunOSSRequestBuilder =
 	/** @class */
 	function (_super) {
-	  __extends$g(QiNiuYunOSSRequestBuilder, _super);
+	  __extends$f(QiNiuYunOSSRequestBuilder, _super);
 
 	  function QiNiuYunOSSRequestBuilder() {
 	    return _super.call(this) || this;
@@ -10198,41 +10249,6 @@
 	OSSRequestFactory$1.OSSRequestFactory = OSSRequestFactory;
 
 	var UploadTokenResolver = {};
-
-	var g = {};
-
-	g.__esModule = true;
-	g.G = void 0;
-
-	var G =
-	/** @class */
-	function () {
-	  function G() {}
-
-	  G.i = function (socket) {
-	    this.socket = socket;
-	  };
-
-	  G.s = function () {
-	    if (this.socket) {
-	      return this.socket;
-	    }
-
-	    throw new Error('Please connect first.');
-	  };
-
-	  G.u = function () {
-	    return this.s().userId;
-	  };
-
-	  G.ud = function () {
-	    return this.s().userData;
-	  };
-
-	  return G;
-	}();
-
-	g.G = G;
 
 	(function (exports) {
 
@@ -10371,7 +10387,7 @@
 
 	AbstractPayloadImprover$1.AbstractPayloadImprover = AbstractPayloadImprover;
 
-	var __extends$f = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$e = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -10408,7 +10424,7 @@
 	var FileMessagePayloadImprover =
 	/** @class */
 	function (_super) {
-	  __extends$f(FileMessagePayloadImprover, _super);
+	  __extends$e(FileMessagePayloadImprover, _super);
 
 	  function FileMessagePayloadImprover() {
 	    var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -10461,7 +10477,7 @@
 
 	var VideoMessagePayloadImprover$1 = {};
 
-	var __extends$e = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$d = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -10496,7 +10512,7 @@
 	var VideoMessagePayloadImprover =
 	/** @class */
 	function (_super) {
-	  __extends$e(VideoMessagePayloadImprover, _super);
+	  __extends$d(VideoMessagePayloadImprover, _super);
 
 	  function VideoMessagePayloadImprover() {
 	    return _super !== null && _super.apply(this, arguments) || this;
@@ -10557,7 +10573,7 @@
 	  var BulletMessage =
 	  /** @class */
 	  function () {
-	    function BulletMessage(message, to, notification, wximTemplateMessage, accessToken) {
+	    function BulletMessage(message, to, notification, wx_mp_template_msg, accessToken) {
 	      this.validate(message);
 	      this.mt = message.type;
 	      this.to = to.id.toString();
@@ -10572,10 +10588,10 @@
 	        this.at = accessToken;
 	      }
 
-	      if (wximTemplateMessage) {
+	      if (wx_mp_template_msg) {
 	        // @ts-ignore /todo：暂时先这样
-	        wximTemplateMessage.data = JSON.stringify(wximTemplateMessage.data);
-	        this.wxTemplateMessage = wximTemplateMessage;
+	        wx_mp_template_msg.data = JSON.stringify(wx_mp_template_msg.data);
+	        this.wx_mp_template_msg = wx_mp_template_msg;
 	      }
 
 	      var scene = to.type;
@@ -10759,7 +10775,7 @@
 	      var buildOptions = message.buildOptions;
 	      var createOptions = buildOptions.createOptions;
 	      var notification = createOptions.notification;
-	      var wxTemplateMessage = createOptions.wx_mp_template_msg;
+	      var wx_mp_template_msg = createOptions.wx_mp_template_msg;
 	      var to = createOptions.to;
 
 	      if (!to.data) {
@@ -10770,7 +10786,7 @@
 	      var buildPromise = buildOptions.complete;
 	      var improvePromise = this.payloadImprover.improve(sendOptions);
 	      Promise.all([buildPromise, improvePromise]).then(function () {
-	        _this.doSend(message, to, notification, wxTemplateMessage, accessToken, sendOptions);
+	        _this.doSend(message, to, notification, wx_mp_template_msg, accessToken, sendOptions);
 	      })["catch"](function (error) {
 	        message.status = GoEasy_1.MessageStatus.FAIL;
 	        sendOptions.onFailed({
@@ -10780,8 +10796,8 @@
 	      });
 	    };
 
-	    IMMessageSender.prototype.doSend = function (message, to, notification, wxTemplateMessage, accessToken, options) {
-	      var bulletMessage = new BulletMessage_1["default"](message, to, notification, wxTemplateMessage, accessToken);
+	    IMMessageSender.prototype.doSend = function (message, to, notification, wx_mp_template_msg, accessToken, options) {
+	      var bulletMessage = new BulletMessage_1["default"](message, to, notification, wx_mp_template_msg, accessToken);
 	      goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.MESSAGE_SENDING, message);
 	      var rocket = new Rocket_1["default"]({
 	        name: RocketTypes_1.RocketTypes.publishIM,
@@ -11011,14 +11027,12 @@
 	      var firstMessage = this.messages[0];
 	      var totalSize = this.messages.length;
 
-	      if (!request.lastTimestamp || totalSize > 0 && firstMessage.timestamp === request.lastTimestamp) {
+	      if (this.messages.length < MessageCache.CACHE_MAX_LENGTH && (!request.lastTimestamp || totalSize > 0 && firstMessage.timestamp === request.lastTimestamp)) {
 	        this.messages = serverMessages.concat(this.messages);
 
 	        if (serverMessages.length < request.limit) {
 	          this.allLoaded = true;
 	        }
-
-	        this.sliceOverLengthMessages();
 	      }
 	    };
 
@@ -11145,8 +11159,8 @@
 
 	Target$1.__esModule = true;
 	Target$1.Target = void 0;
-	var GoEasy_1$e = GoEasy$1;
-	var Calibrator_1$b = Calibrator;
+	var GoEasy_1$c = GoEasy$1;
+	var Calibrator_1$a = Calibrator;
 	var g_1$a = g;
 	/**
 	 * target.id不同的场景表达不同的含义:
@@ -11163,25 +11177,21 @@
 	    this.scene = scene;
 	    this.id = id;
 
-	    if (Calibrator_1$b["default"].isDef(teamId)) {
+	    if (Calibrator_1$a["default"].isDef(teamId)) {
 	      this.teamId = teamId;
 	    }
 	  }
 
 	  Target.prototype.toString = function () {
-	    if (GoEasy_1$e.Scene.PRIVATE === this.scene || GoEasy_1$e.Scene.GROUP === this.scene) {
+	    if (GoEasy_1$c.Scene.PRIVATE === this.scene || GoEasy_1$c.Scene.GROUP === this.scene) {
 	      return this.scene + "#" + this.id;
 	    }
 
 	    return this.scene + "#" + this.id + "#" + this.teamId;
 	  };
 
-	  Target.prototype.isCS = function () {
-	    return GoEasy_1$e.Scene.CS === this.scene;
-	  };
-
 	  Target.prototype.customerId = function () {
-	    if (GoEasy_1$e.Scene.CS === this.scene) {
+	    if (GoEasy_1$c.Scene.CS === this.scene) {
 	      if (this.id === this.teamId) {
 	        return g_1$a.G.u();
 	      } else {
@@ -11194,30 +11204,18 @@
 	    return new Target(scene, targetId, teamId);
 	  };
 
-	  Target.byIds = function (userId, groupId) {
-	    var scene = GoEasy_1$e.Scene.PRIVATE;
-	    var targetId = userId;
-
-	    if (Calibrator_1$b["default"].isDef(groupId)) {
-	      scene = GoEasy_1$e.Scene.GROUP;
-	      targetId = groupId;
-	    }
-
-	    return Target.byScene(scene, targetId);
-	  };
-
 	  Target.byIMMessage = function (message) {
 	    var teamId;
 	    var id;
 	    var scene = message.scene();
 
-	    if (scene === GoEasy_1$e.Scene.PRIVATE) {
+	    if (scene === GoEasy_1$c.Scene.PRIVATE) {
 	      var senderId = message.senderId;
 	      var receiverId = message.targetId();
 	      id = g_1$a.G.u() === senderId ? receiverId : senderId;
-	    } else if (scene === GoEasy_1$e.Scene.GROUP) {
+	    } else if (scene === GoEasy_1$c.Scene.GROUP) {
 	      id = message.targetId();
-	    } else if (scene === GoEasy_1$e.Scene.CS) {
+	    } else if (scene === GoEasy_1$c.Scene.CS) {
 	      id = message.targetId();
 	      var csMessage = message;
 	      teamId = csMessage.teamId;
@@ -11238,11 +11236,11 @@
 	    var teamId = event.teamId;
 	    var targetId;
 
-	    if (scene === GoEasy_1$e.Scene.PRIVATE) {
+	    if (scene === GoEasy_1$c.Scene.PRIVATE) {
 	      targetId = g_1$a.G.u() === markerId ? receiverId : markerId;
-	    } else if (scene === GoEasy_1$e.Scene.GROUP) {
+	    } else if (scene === GoEasy_1$c.Scene.GROUP) {
 	      targetId = receiverId;
-	    } else if (scene === GoEasy_1$e.Scene.CS) {
+	    } else if (scene === GoEasy_1$c.Scene.CS) {
 	      if (receiverId === teamId) {
 	        // customer mark
 	        if (markerId === g_1$a.G.u()) {
@@ -11267,41 +11265,30 @@
 	    var scene = event.scene;
 	    var deleterId = event.deleterId;
 
-	    if (scene === GoEasy_1$e.Scene.PRIVATE) {
+	    if (scene === GoEasy_1$c.Scene.PRIVATE) {
 	      var targetId = g_1$a.G.u() === deleterId ? event.targetId : deleterId;
 	      return new Target(scene, targetId);
-	    } else if (scene === GoEasy_1$e.Scene.GROUP) {
+	    } else if (scene === GoEasy_1$c.Scene.GROUP) {
 	      return new Target(scene, event.targetId);
 	    }
-	  };
-
-	  Target.byIMHistoryQuery = function (options, teamId) {
-	    var targetId;
-	    var scene = options.type;
-
-	    if (GoEasy_1$e.Scene.CS == options.type) {
-	      targetId = options.id;
-
-	      if (Calibrator_1$b["default"].isUndef(teamId)) {
-	        teamId = options.id;
-	      }
-	    } // todo 兼容老版本
-
-
-	    if (Calibrator_1$b["default"].isDef(options.userId)) {
-	      scene = GoEasy_1$e.Scene.PRIVATE;
-	      targetId = options.userId;
-	    } else if (Calibrator_1$b["default"].isDef(options.groupId)) {
-	      scene = GoEasy_1$e.Scene.GROUP;
-	      targetId = options.groupId;
-	    }
-
-	    return new Target(scene, targetId, teamId);
 	  };
 
 	  Target.byConversationDTO = function (conversationDto) {
 	    var lastMessage = conversationDto.lastMessage;
 	    return this.byIMMessage(lastMessage);
+	  };
+
+	  Target.byRemoteRecallEvent = function (event) {
+	    var targetId;
+
+	    if (event.scene === GoEasy_1$c.Scene.PRIVATE) {
+	      var ids = event.conversationId.split(":", 2);
+	      targetId = ids[0] === g_1$a.G.u() ? ids[1] : ids[0];
+	    } else {
+	      targetId = event.conversationId;
+	    }
+
+	    return new Target(event.scene, targetId);
 	  };
 
 	  return Target;
@@ -11311,7 +11298,7 @@
 
 	DeleteMessageRequest$1.__esModule = true;
 	DeleteMessageRequest$1.DeleteMessageRequest = void 0;
-	var GoEasy_1$d = GoEasy$1;
+	var GoEasy_1$b = GoEasy$1;
 	var Target_1$3 = Target$1;
 
 	var DeleteMessageRequest =
@@ -11326,7 +11313,7 @@
 	    this.scene = target.scene;
 	    this.targetId = target.id;
 	    messages.forEach(function (message) {
-	      if (message.status === GoEasy_1$d.MessageStatus.SUCCESS) {
+	      if (message.status === GoEasy_1$b.MessageStatus.SUCCESS) {
 	        //未成功的消息，不要发到服务端
 	        _this.times.push(message.timestamp);
 	      }
@@ -11345,15 +11332,12 @@
 	(function (exports) {
 
 	  exports.__esModule = true;
-	  var AbstractMessage_1 = AbstractMessage$1;
-	  var Calibrator_1 = Calibrator;
 	  var GoEasy_1 = GoEasy$1;
 	  var DeleteMessageRequest_1 = DeleteMessageRequest$1;
 	  var Rocket_1 = Rocket;
 	  var Permission_1 = Permission;
 	  var SocketTimeout_1 = SocketTimeout;
 	  var RocketTypes_1 = RocketTypes;
-	  var Target_1 = Target$1;
 	  var g_1 = g;
 
 	  var MessageDeleter =
@@ -11391,50 +11375,16 @@
 	    };
 
 	    MessageDeleter.validate = function (options) {
-	      if (!Calibrator_1["default"].isArray(options.messages) || Calibrator_1["default"].isEmpty(options.messages)) {
-	        throw {
-	          code: 400,
-	          content: "messages requires non empty array"
-	        };
-	      }
-
 	      var messages = options.messages;
-
-	      if (messages.length > 50) {
-	        throw {
-	          code: 400,
-	          content: "a maximum of 50 messages can be deleted at a time"
-	        };
-	      }
-
-	      var firstTarget = Target_1.Target.byIMMessage(messages[0]);
 
 	      for (var i = 0; i < messages.length; i++) {
 	        var message = messages[i];
-
-	        if (!(message instanceof AbstractMessage_1.AbstractMessage)) {
-	          throw {
-	            code: 400,
-	            content: "message[" + i + "] is not a correct message"
-	          };
-	        }
 
 	        if (message.status === GoEasy_1.MessageStatus.SENDING) {
 	          throw {
 	            code: 400,
 	            content: "message[" + i + "] is '" + message.status + "' and cannot be deleted"
 	          };
-	        }
-
-	        if (i > 0) {
-	          var target = Target_1.Target.byIMMessage(message);
-
-	          if (target.scene !== firstTarget.scene || target.id !== firstTarget.id) {
-	            throw {
-	              code: 400,
-	              content: "each message must be from the same friend or group"
-	            };
-	          }
 	        }
 	      }
 	    };
@@ -11486,10 +11436,7 @@
 	  var Rocket_1 = Rocket;
 	  var Permission_1 = Permission;
 	  var SocketTimeout_1 = SocketTimeout;
-	  var AbstractMessage_1 = AbstractMessage$1;
-	  var Calibrator_1 = Calibrator;
 	  var RocketTypes_1 = RocketTypes;
-	  var Target_1 = Target$1;
 	  var g_1 = g;
 	  /**
 	   * todo MessageRecaller名称并不专业需要优化
@@ -11537,31 +11484,8 @@
 	    MessageRecaller.validate = function (options) {
 	      var messages = options.messages;
 
-	      if (!Calibrator_1["default"].isArray(messages) || Calibrator_1["default"].isEmpty(messages)) {
-	        throw {
-	          code: 400,
-	          content: "messages requires non empty array"
-	        };
-	      }
-
-	      if (messages.length > 50) {
-	        throw {
-	          code: 400,
-	          content: "a maximum of 50 messages can be recalled at a time"
-	        };
-	      }
-
-	      var firstTarget;
-
 	      for (var i = 0; i < messages.length; i++) {
 	        var message = messages[i];
-
-	        if (!(message instanceof AbstractMessage_1.AbstractMessage)) {
-	          throw {
-	            code: 400,
-	            content: "message[" + i + "] is an illegal message object"
-	          };
-	        }
 
 	        if (message.status !== GoEasy_1.MessageStatus.SUCCESS) {
 	          throw {
@@ -11582,19 +11506,6 @@
 	            code: 400,
 	            content: "it is not allowed to recall messages sent by others"
 	          };
-	        }
-
-	        if (i > 0) {
-	          var target = Target_1.Target.byIMMessage(message);
-
-	          if (target.scene !== firstTarget.scene || target.id !== firstTarget.id) {
-	            throw {
-	              code: 400,
-	              content: "each message must be from the same friend or group"
-	            };
-	          }
-	        } else {
-	          firstTarget = Target_1.Target.byIMMessage(message);
 	        }
 	      }
 	    };
@@ -11654,7 +11565,7 @@
 
 	var PrivateMessage$1 = {};
 
-	var __extends$d = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$c = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -11685,12 +11596,12 @@
 	PrivateMessage$1.__esModule = true;
 	PrivateMessage$1.PrivateMessage = void 0;
 	var AbstractMessage_1$2 = AbstractMessage$1;
-	var GoEasy_1$c = GoEasy$1;
+	var GoEasy_1$a = GoEasy$1;
 
 	var PrivateMessage =
 	/** @class */
 	function (_super) {
-	  __extends$d(PrivateMessage, _super);
+	  __extends$c(PrivateMessage, _super);
 
 	  function PrivateMessage() {
 	    var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -11700,7 +11611,7 @@
 	  }
 
 	  PrivateMessage.prototype.scene = function () {
-	    return GoEasy_1$c.Scene.PRIVATE;
+	    return GoEasy_1$a.Scene.PRIVATE;
 	  };
 
 	  PrivateMessage.prototype.targetId = function () {
@@ -11714,7 +11625,7 @@
 
 	var GroupMessage$1 = {};
 
-	var __extends$c = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$b = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -11745,12 +11656,12 @@
 	GroupMessage$1.__esModule = true;
 	GroupMessage$1.GroupMessage = void 0;
 	var AbstractMessage_1$1 = AbstractMessage$1;
-	var GoEasy_1$b = GoEasy$1;
+	var GoEasy_1$9 = GoEasy$1;
 
 	var GroupMessage =
 	/** @class */
 	function (_super) {
-	  __extends$c(GroupMessage, _super);
+	  __extends$b(GroupMessage, _super);
 
 	  function GroupMessage() {
 	    return _super !== null && _super.apply(this, arguments) || this;
@@ -11759,7 +11670,7 @@
 
 
 	  GroupMessage.prototype.scene = function () {
-	    return GoEasy_1$b.Scene.GROUP;
+	    return GoEasy_1$9.Scene.GROUP;
 	  };
 
 	  GroupMessage.prototype.targetId = function () {
@@ -11773,7 +11684,7 @@
 
 	var csMessage = {};
 
-	var __extends$b = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$a = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -11804,13 +11715,13 @@
 	csMessage.__esModule = true;
 	csMessage.CSMessage = void 0;
 	var AbstractMessage_1 = AbstractMessage$1;
-	var GoEasy_1$a = GoEasy$1;
+	var GoEasy_1$8 = GoEasy$1;
 	var g_1$9 = g;
 
 	var CSMessage =
 	/** @class */
 	function (_super) {
-	  __extends$b(CSMessage, _super);
+	  __extends$a(CSMessage, _super);
 
 	  function CSMessage() {
 	    var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -11820,7 +11731,7 @@
 	  }
 
 	  CSMessage.prototype.scene = function () {
-	    return GoEasy_1$a.Scene.CS;
+	    return GoEasy_1$8.Scene.CS;
 	  };
 	  /**
 	   * 当前用户是customer，返回teamId
@@ -11879,11 +11790,11 @@
 
 	remoteAbbrMessageBuilder.__esModule = true;
 	remoteAbbrMessageBuilder.RemoteAbbrMessageBuilder = void 0;
-	var GoEasy_1$9 = GoEasy$1;
+	var GoEasy_1$7 = GoEasy$1;
 	var PrivateMessage_1$1 = PrivateMessage$1;
 	var GroupMessage_1$1 = GroupMessage$1;
 	var cs_message_1$1 = csMessage;
-	var Calibrator_1$a = Calibrator;
+	var Calibrator_1$9 = Calibrator;
 	var g_1$8 = g;
 	var cs_message_type_1$2 = csMessageType;
 
@@ -11896,15 +11807,15 @@
 	    var message;
 	    var scene = remoteAbbrMessage.t;
 
-	    if (scene === GoEasy_1$9.Scene.PRIVATE) {
+	    if (scene === GoEasy_1$7.Scene.PRIVATE) {
 	      message = new PrivateMessage_1$1.PrivateMessage();
 	      message.read = false;
 	      message.receiverId = remoteAbbrMessage.r;
-	    } else if (scene === GoEasy_1$9.Scene.GROUP) {
+	    } else if (scene === GoEasy_1$7.Scene.GROUP) {
 	      message = new GroupMessage_1$1.GroupMessage();
 	      message.groupId = remoteAbbrMessage.r;
 	      message.senderData = remoteAbbrMessage.d ? JSON.parse(remoteAbbrMessage.d) : {};
-	    } else if (scene === GoEasy_1$9.Scene.CS) {
+	    } else if (scene === GoEasy_1$7.Scene.CS) {
 	      message = new cs_message_1$1.CSMessage();
 	      message.to = remoteAbbrMessage.r;
 	      message.teamId = remoteAbbrMessage.tid;
@@ -11922,8 +11833,8 @@
 	    message.type = remoteAbbrMessage.mt;
 	    var payload = remoteAbbrMessage.p;
 
-	    if (Calibrator_1$a["default"].isDef(payload)) {
-	      if (scene === GoEasy_1$9.Scene.CS && message.type === cs_message_type_1$2.CSMessageType.TRANSFER) {
+	    if (Calibrator_1$9["default"].isDef(payload)) {
+	      if (scene === GoEasy_1$7.Scene.CS && message.type === cs_message_type_1$2.CSMessageType.TRANSFER) {
 	        var jsonPayload = JSON.parse(payload);
 	        jsonPayload.transferTo.data = JSON.parse(jsonPayload.transferTo.data);
 	        message.payload = jsonPayload;
@@ -11933,7 +11844,7 @@
 	    }
 
 	    message.recalled = remoteAbbrMessage.rc;
-	    message.status = GoEasy_1$9.MessageStatus.SUCCESS;
+	    message.status = GoEasy_1$7.MessageStatus.SUCCESS;
 	    return message;
 	  };
 
@@ -11942,7 +11853,7 @@
 
 	remoteAbbrMessageBuilder.RemoteAbbrMessageBuilder = RemoteAbbrMessageBuilder;
 
-	var __awaiter$9 = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
+	var __awaiter$4 = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
 	  function adopt(value) {
 	    return value instanceof P ? value : new P(function (resolve) {
 	      resolve(value);
@@ -11974,7 +11885,7 @@
 	  });
 	};
 
-	var __generator$9 = commonjsGlobal && commonjsGlobal.__generator || function (thisArg, body) {
+	var __generator$4 = commonjsGlobal && commonjsGlobal.__generator || function (thisArg, body) {
 	  var _ = {
 	    label: 0,
 	    sent: function sent() {
@@ -12087,12 +11998,12 @@
 
 	remoteHistory.__esModule = true;
 	remoteHistory.RemoteHistory = void 0;
-	var GoEasy_1$8 = GoEasy$1;
+	var GoEasy_1$6 = GoEasy$1;
 	var HistoryChangeQueryRequest_1 = HistoryChangeQueryRequest;
-	var Rocket_1$6 = Rocket;
-	var RocketTypes_1$8 = RocketTypes;
-	var Permission_1$6 = Permission;
-	var SocketTimeout_1$6 = SocketTimeout;
+	var Rocket_1$2 = Rocket;
+	var RocketTypes_1$4 = RocketTypes;
+	var Permission_1$2 = Permission;
+	var SocketTimeout_1$2 = SocketTimeout;
 	var g_1$7 = g;
 	var ReadMessageMarkRequest_1 = ReadMessageMarkRequest$1;
 	var remote_abbr_message_builder_1$2 = remoteAbbrMessageBuilder;
@@ -12107,12 +12018,12 @@
 	  RemoteHistory.prototype.sync = function (scene, targetId, after, min, teamId) {
 	    var request = new HistoryChangeQueryRequest_1["default"](scene, targetId, after, min, teamId);
 	    return new Promise(function (resolve, reject) {
-	      var rocket = new Rocket_1$6["default"]({
-	        name: RocketTypes_1$8.RocketTypes.IM_HISTORY_CHANGE,
+	      var rocket = new Rocket_1$2["default"]({
+	        name: RocketTypes_1$4.RocketTypes.IM_HISTORY_CHANGE,
 	        params: request,
-	        permission: Permission_1$6.Permission.READ,
-	        singleTimeout: SocketTimeout_1$6.SocketTimeout.commonQuerySingle,
-	        totalTimeout: SocketTimeout_1$6.SocketTimeout.commonQueryTotal,
+	        permission: Permission_1$2.Permission.READ,
+	        singleTimeout: SocketTimeout_1$2.SocketTimeout.commonQuerySingle,
+	        totalTimeout: SocketTimeout_1$2.SocketTimeout.commonQueryTotal,
 	        fail: function fail(err) {
 	          reject(err);
 	        },
@@ -12129,12 +12040,12 @@
 	    var _this = this;
 
 	    return new Promise(function (resolve, reject) {
-	      var rocket = new Rocket_1$6["default"]({
-	        name: RocketTypes_1$8.RocketTypes.IM_HISTORY,
+	      var rocket = new Rocket_1$2["default"]({
+	        name: RocketTypes_1$4.RocketTypes.IM_HISTORY,
 	        params: request,
-	        permission: Permission_1$6.Permission.READ,
-	        singleTimeout: SocketTimeout_1$6.SocketTimeout.commonQuerySingle,
-	        totalTimeout: SocketTimeout_1$6.SocketTimeout.commonQueryTotal,
+	        permission: Permission_1$2.Permission.READ,
+	        singleTimeout: SocketTimeout_1$2.SocketTimeout.commonQuerySingle,
+	        totalTimeout: SocketTimeout_1$2.SocketTimeout.commonQueryTotal,
 	        fail: function fail(err) {
 	          reject(err);
 	        },
@@ -12155,13 +12066,13 @@
 	    var scene = target.scene;
 	    var targetId = target.id;
 	    serverMessages.forEach(function (remoteAbbrMessage) {
-	      remoteAbbrMessage.t = scene; // todo 这里拼接remoteAbbrMessage.r会有问题,任何人都可以查询该会话的history,所以这里拼接出来导致remoteAbbrMessage.r可能是当前用户id
+	      remoteAbbrMessage.t = scene;
 
-	      if (GoEasy_1$8.Scene.PRIVATE === scene) {
+	      if (GoEasy_1$6.Scene.PRIVATE === scene) {
 	        remoteAbbrMessage.r = remoteAbbrMessage.s === g_1$7.G.u() ? targetId : g_1$7.G.u();
-	      } else if (GoEasy_1$8.Scene.GROUP === scene) {
+	      } else if (GoEasy_1$6.Scene.GROUP === scene) {
 	        remoteAbbrMessage.r = targetId;
-	      } else if (GoEasy_1$8.Scene.CS === scene) {
+	      } else if (GoEasy_1$6.Scene.CS === scene) {
 	        var customerId = target.customerId();
 	        var teamId = target.teamId;
 
@@ -12180,19 +12091,19 @@
 	  };
 
 	  RemoteHistory.prototype.updateServerOffsets = function (markTime, target) {
-	    return __awaiter$9(this, void 0, void 0, function () {
+	    return __awaiter$4(this, void 0, void 0, function () {
 	      var request;
-	      return __generator$9(this, function (_a) {
+	      return __generator$4(this, function (_a) {
 	        request = new ReadMessageMarkRequest_1.ReadMessageMarkRequest(target.id, target.scene, markTime, target.teamId);
 	        return [2
 	        /*return*/
 	        , new Promise(function (resolve, reject) {
-	          var rocket = new Rocket_1$6["default"]({
-	            name: RocketTypes_1$8.RocketTypes.MARK_AS_READ,
+	          var rocket = new Rocket_1$2["default"]({
+	            name: RocketTypes_1$4.RocketTypes.MARK_AS_READ,
 	            params: request,
-	            permission: Permission_1$6.Permission.WRITE,
-	            singleTimeout: SocketTimeout_1$6.SocketTimeout.commonRequestSingle,
-	            totalTimeout: SocketTimeout_1$6.SocketTimeout.commonRequestTotal,
+	            permission: Permission_1$2.Permission.WRITE,
+	            singleTimeout: SocketTimeout_1$2.SocketTimeout.commonRequestSingle,
+	            totalTimeout: SocketTimeout_1$2.SocketTimeout.commonRequestTotal,
 	            success: function success(res) {
 	              resolve(res);
 	            },
@@ -12216,7 +12127,7 @@
 
 	UserOffsets$1.__esModule = true;
 	UserOffsets$1.UserOffsets = void 0;
-	var Calibrator_1$9 = Calibrator;
+	var Calibrator_1$8 = Calibrator;
 	var g_1$6 = g;
 
 	var UserOffsets =
@@ -12233,7 +12144,7 @@
 	  UserOffsets.prototype.updateOffset = function (userId, offset) {
 	    var oldOffset = this.offsetMap.get(userId);
 
-	    if (Calibrator_1$9["default"].isDef(oldOffset)) {
+	    if (Calibrator_1$8["default"].isDef(oldOffset)) {
 	      if (offset > oldOffset) {
 	        this.offsetMap.set(userId, offset);
 	        return true;
@@ -12307,7 +12218,7 @@
 
 	unreadamountMaxmessageChangeDetector.__esModule = true;
 	unreadamountMaxmessageChangeDetector.UnreadAmountMaxMessageChangeDetector = void 0;
-	var goeasy_event_center_1$c = goeasyEventCenter;
+	var goeasy_event_center_1$4 = goeasyEventCenter;
 	var internal_events_1$4 = internalEvents;
 
 	var UnreadAmountMaxMessageChangeDetector =
@@ -12361,9 +12272,9 @@
 	    }
 
 	    if (this.oldLastMessage !== newLastMessage || this.oldLastMessageRead !== newLastMessageRead || this.oldLastMessageRecalled !== newLastMessageRecalled || this.oldLastMessageStatus !== newLastMessageStatus) {
-	      goeasy_event_center_1$c.GoEasyEventCenter.fire(internal_events_1$4.IM_INTERNAL_EVENTS.MAX_MESSAGE_CHANGED, newLastMessage);
+	      goeasy_event_center_1$4.GoEasyEventCenter.fire(internal_events_1$4.IM_INTERNAL_EVENTS.MAX_MESSAGE_CHANGED, newLastMessage);
 	    } else if (this.oldUnreadAmount !== newUnreadAmount) {
-	      goeasy_event_center_1$c.GoEasyEventCenter.fire(internal_events_1$4.IM_INTERNAL_EVENTS.UNREAD_AMOUNT_CHANGED, this.history.target);
+	      goeasy_event_center_1$4.GoEasyEventCenter.fire(internal_events_1$4.IM_INTERNAL_EVENTS.UNREAD_AMOUNT_CHANGED, this.history.target);
 	    }
 	  };
 
@@ -12562,9 +12473,6 @@
 	      this.messageCache = new MessageCache_1["default"](target);
 	    }
 	    /**
-	     * todo 该方法插入可能会出现消息顺序问题，conversation的查询，新消息的接收，history的查询，三者的异步操作可能导致消息列表顺序混乱,后面线上出现问题再优化
-	     *
-	     * 需要确认
 	     * @param message
 	     * @param userOffsets
 	     */
@@ -12671,32 +12579,41 @@
 	        var _this = this;
 
 	        return __generator(this, function (_a) {
-	          this.aopUnreadAmountMaxMessage(function () {
-	            return __awaiter(_this, void 0, void 0, function () {
-	              var messages;
-	              return __generator(this, function (_a) {
-	                switch (_a.label) {
-	                  case 0:
-	                    messages = options.messages;
-	                    return [4
-	                    /*yield*/
-	                    , MessageDeleter_1["default"].deleteServerMessages(messages)];
+	          switch (_a.label) {
+	            case 0:
+	              return [4
+	              /*yield*/
+	              , this.aopUnreadAmountMaxMessage(function () {
+	                return __awaiter(_this, void 0, void 0, function () {
+	                  var messages;
+	                  return __generator(this, function (_a) {
+	                    switch (_a.label) {
+	                      case 0:
+	                        messages = options.messages;
+	                        return [4
+	                        /*yield*/
+	                        , MessageDeleter_1["default"].deleteServerMessages(messages)];
 
-	                  case 1:
-	                    _a.sent();
+	                      case 1:
+	                        _a.sent();
 
-	                    this.messageCache.deleteMessages(messages);
-	                    callback_utils_1.CallbackUtils.onSuccess(options);
-	                    return [2
-	                    /*return*/
-	                    ];
-	                }
-	              });
-	            });
-	          });
-	          return [2
-	          /*return*/
-	          ];
+	                        this.messageCache.deleteMessages(messages);
+	                        callback_utils_1.CallbackUtils.onSuccess(options);
+	                        return [2
+	                        /*return*/
+	                        ];
+	                    }
+	                  });
+	                });
+	              })];
+
+	            case 1:
+	              _a.sent();
+
+	              return [2
+	              /*return*/
+	              ];
+	          }
 	        });
 	      });
 	    };
@@ -12725,32 +12642,41 @@
 	        var _this = this;
 
 	        return __generator(this, function (_a) {
-	          this.aopUnreadAmountMaxMessage(function () {
-	            return __awaiter(_this, void 0, void 0, function () {
-	              var messages;
-	              return __generator(this, function (_a) {
-	                switch (_a.label) {
-	                  case 0:
-	                    messages = options.messages;
-	                    return [4
-	                    /*yield*/
-	                    , MessageRecaller_1["default"].recallServerMessages(messages)];
+	          switch (_a.label) {
+	            case 0:
+	              return [4
+	              /*yield*/
+	              , this.aopUnreadAmountMaxMessage(function () {
+	                return __awaiter(_this, void 0, void 0, function () {
+	                  var messages;
+	                  return __generator(this, function (_a) {
+	                    switch (_a.label) {
+	                      case 0:
+	                        messages = options.messages;
+	                        return [4
+	                        /*yield*/
+	                        , MessageRecaller_1["default"].recallServerMessages(messages)];
 
-	                  case 1:
-	                    _a.sent();
+	                      case 1:
+	                        _a.sent();
 
-	                    this.messageCache.recallMessages(messages);
-	                    callback_utils_1.CallbackUtils.onSuccess(options);
-	                    return [2
-	                    /*return*/
-	                    ];
-	                }
-	              });
-	            });
-	          });
-	          return [2
-	          /*return*/
-	          ];
+	                        this.messageCache.recallMessages(messages);
+	                        callback_utils_1.CallbackUtils.onSuccess(options);
+	                        return [2
+	                        /*return*/
+	                        ];
+	                    }
+	                  });
+	                });
+	              })];
+
+	            case 1:
+	              _a.sent();
+
+	              return [2
+	              /*return*/
+	              ];
+	          }
 	        });
 	      });
 	    };
@@ -12798,94 +12724,111 @@
 	        var _this = this;
 
 	        return __generator(this, function (_a) {
-	          this.aopUnreadAmountMaxMessage(function () {
-	            return __awaiter(_this, void 0, void 0, function () {
-	              var content, deletedMessageTimes, recalledTimes;
+	          switch (_a.label) {
+	            case 0:
+	              return [4
+	              /*yield*/
+	              , this.aopUnreadAmountMaxMessage(function () {
+	                return __awaiter(_this, void 0, void 0, function () {
+	                  var content, deletedMessageTimes, recalledTimes;
 
-	              var _this = this;
+	                  var _this = this;
 
-	              return __generator(this, function (_a) {
-	                switch (_a.label) {
-	                  case 0:
-	                    return [4
-	                    /*yield*/
-	                    , this.remoteHistory.sync(this.target.scene, this.target.id, this.expiredTime, this.messageCache.minTime(), this.target.teamId)];
+	                  return __generator(this, function (_a) {
+	                    switch (_a.label) {
+	                      case 0:
+	                        return [4
+	                        /*yield*/
+	                        , this.remoteHistory.sync(this.target.scene, this.target.id, this.expiredTime, this.messageCache.minTime(), this.target.teamId)];
 
-	                  case 1:
-	                    content = _a.sent();
-	                    content.userOffsets.forEach(function (userOffset) {
-	                      _this.markLocalMessagesRead(_this.messageCache.all(), userOffset.userId, userOffset.offset, true);
-	                    });
-	                    deletedMessageTimes = content.deletedMessageTimes;
+	                      case 1:
+	                        content = _a.sent();
+	                        content.userOffsets.forEach(function (userOffset) {
+	                          _this.markLocalMessagesRead(_this.messageCache.all(), userOffset.userId, userOffset.offset, true);
+	                        });
+	                        deletedMessageTimes = content.deletedMessageTimes;
 
-	                    if (deletedMessageTimes.length > 0) {
-	                      this.doSyncDeletedMessage(g_1.G.u(), deletedMessageTimes);
+	                        if (deletedMessageTimes.length > 0) {
+	                          this.doSyncDeletedMessage(g_1.G.u(), deletedMessageTimes);
+	                        }
+
+	                        recalledTimes = content.recalled;
+
+	                        if (recalledTimes.length > 0) {
+	                          this.doSyncRecalledMessage(recalledTimes);
+	                        }
+
+	                        this.expiredTime = 0;
+	                        return [2
+	                        /*return*/
+	                        ];
 	                    }
+	                  });
+	                });
+	              })];
 
-	                    recalledTimes = content.recalled;
+	            case 1:
+	              _a.sent();
 
-	                    if (recalledTimes.length > 0) {
-	                      this.doSyncRecalledMessage(recalledTimes);
-	                    }
-
-	                    this.expiredTime = 0;
-	                    return [2
-	                    /*return*/
-	                    ];
-	                }
-	              });
-	            });
-	          });
-	          return [2
-	          /*return*/
-	          ];
+	              return [2
+	              /*return*/
+	              ];
+	          }
 	        });
 	      });
 	    };
 
-	    History.prototype.markRead = function (markOption) {
+	    History.prototype.markRead = function () {
 	      return __awaiter(this, void 0, void 0, function () {
 	        var _this = this;
 
 	        return __generator(this, function (_a) {
-	          this.aopUnreadAmountMaxMessage(function () {
-	            return __awaiter(_this, void 0, void 0, function () {
-	              var markTime, myOffset;
-	              return __generator(this, function (_a) {
-	                switch (_a.label) {
-	                  case 0:
-	                    markTime = this.messageCache.maxSuccessMessageTime();
-	                    myOffset = this.userOffsets.myOffset();
-	                    if (!(markTime > myOffset)) return [3
-	                    /*break*/
-	                    , 2];
-	                    this.userOffsets.markingTime = markTime;
-	                    return [4
-	                    /*yield*/
-	                    , this.remoteHistory.updateServerOffsets(markTime, this.target)];
+	          switch (_a.label) {
+	            case 0:
+	              return [4
+	              /*yield*/
+	              , this.aopUnreadAmountMaxMessage(function () {
+	                return __awaiter(_this, void 0, void 0, function () {
+	                  var markTime, myOffset;
+	                  return __generator(this, function (_a) {
+	                    switch (_a.label) {
+	                      case 0:
+	                        markTime = this.messageCache.maxSuccessMessageTime();
+	                        myOffset = this.userOffsets.myOffset();
+	                        if (!(markTime > myOffset)) return [3
+	                        /*break*/
+	                        , 2];
+	                        this.userOffsets.markingTime = markTime;
+	                        return [4
+	                        /*yield*/
+	                        , this.remoteHistory.updateServerOffsets(markTime, this.target)];
 
-	                  case 1:
-	                    _a.sent();
+	                      case 1:
+	                        _a.sent();
 
-	                    if (markTime === this.userOffsets.markingTime) {
-	                      //在你异步操作服务器期间，没有其他新的操作给出新的markingTime
-	                      this.markLocalMessagesRead(this.messageCache.all(), g_1.G.u(), markTime, true);
+	                        if (markTime === this.userOffsets.markingTime) {
+	                          //在你异步操作服务器期间，没有其他新的操作给出新的markingTime
+	                          this.markLocalMessagesRead(this.messageCache.all(), g_1.G.u(), markTime, true);
+	                        }
+
+	                        _a.label = 2;
+
+	                      case 2:
+	                        return [2
+	                        /*return*/
+	                        ];
 	                    }
+	                  });
+	                });
+	              })];
 
-	                    _a.label = 2;
+	            case 1:
+	              _a.sent();
 
-	                  case 2:
-	                    callback_utils_1.CallbackUtils.onSuccess(markOption);
-	                    return [2
-	                    /*return*/
-	                    ];
-	                }
-	              });
-	            });
-	          });
-	          return [2
-	          /*return*/
-	          ];
+	              return [2
+	              /*return*/
+	              ];
+	          }
 	        });
 	      });
 	    };
@@ -13069,10 +13012,6 @@
 
 	    History.prototype.getMaxMessage = function (accepted) {
 	      return this.messageCache.getMaxMessage();
-	    };
-
-	    History.prototype.getMessageByTime = function (time) {
-	      return this.messageCache.findMessageByTime(time);
 	    };
 
 	    History.prototype.maxTime = function (accepted) {
@@ -13440,7 +13379,7 @@
 	    };
 
 	    StaffHistory.prototype.increaseUnreadAmount = function (message) {
-	      if (message.sendByCustomer()) {
+	      if (message.sendByCustomer() || message.type === cs_message_type_1.CSMessageType.TRANSFER && message.senderId !== g_1.G.u()) {
 	        var myOffset = this.userOffsets.myOffset();
 
 	        if (myOffset < message.timestamp && message.accepted) {
@@ -13449,7 +13388,7 @@
 	      }
 	    };
 
-	    StaffHistory.prototype.markRead = function (markOption) {
+	    StaffHistory.prototype.markRead = function () {
 	      return __awaiter(this, void 0, void 0, function () {
 	        var markTime;
 	        return __generator(this, function (_a) {
@@ -13470,7 +13409,6 @@
 	              _a.label = 2;
 
 	            case 2:
-	              callback_utils_1.CallbackUtils.onSuccess(markOption);
 	              return [2
 	              /*return*/
 	              ];
@@ -13899,12 +13837,12 @@
 
 	  exports.__esModule = true;
 	  var GoEasy_1 = GoEasy$1;
-	  var validator_utils_1 = validatorUtils;
 	  var Calibrator_1 = Calibrator;
 	  var History_1 = History;
 	  var Target_1 = Target$1;
 	  var goeasy_event_center_1 = goeasyEventCenter;
 	  var internal_events_1 = internalEvents;
+	  var AbstractMessage_1 = AbstractMessage$1;
 	  var MessageDeleter_1 = MessageDeleter;
 	  var MessageRecaller_1 = MessageRecaller;
 	  var RemoteEvents_1 = RemoteEvents;
@@ -13960,46 +13898,55 @@
 
 	    Histories.prototype.loadHistory = function (options, teamId) {
 	      return __awaiter(this, void 0, void 0, function () {
-	        var target, history, messages, err_1;
+	        var target, history, messages;
 	        return __generator(this, function (_a) {
 	          switch (_a.label) {
 	            case 0:
-	              this.validate(options);
-	              target = Target_1.Target.byIMHistoryQuery(options, teamId);
+	              target = this.queryToTarget(options, teamId);
 	              history = this.findOrCreateHistory(target);
-	              _a.label = 1;
-
-	            case 1:
-	              _a.trys.push([1, 3,, 4]);
-
 	              return [4
 	              /*yield*/
 	              , history.loadHistory(options.lastTimestamp, options.limit)];
 
-	            case 2:
+	            case 1:
 	              messages = _a.sent();
 	              callback_utils_1.CallbackUtils.onSuccess(options, {
 	                code: 200,
 	                content: messages
 	              });
-	              return [3
-	              /*break*/
-	              , 4];
-
-	            case 3:
-	              err_1 = _a.sent();
-	              callback_utils_1.CallbackUtils.onFailed(options, err_1);
-	              return [3
-	              /*break*/
-	              , 4];
-
-	            case 4:
 	              return [2
 	              /*return*/
 	              ];
 	          }
 	        });
 	      });
+	    };
+
+	    Histories.prototype.queryToTarget = function (options, teamId) {
+	      if (Calibrator_1["default"].isDef(options.userId)) {
+	        return new Target_1.Target(GoEasy_1.Scene.PRIVATE, options.userId);
+	      } else if (Calibrator_1["default"].isDef(options.groupId)) {
+	        return new Target_1.Target(GoEasy_1.Scene.GROUP, options.groupId);
+	      } else if (Calibrator_1["default"].isDef(options.type)) {
+	        if (!Object.values(GoEasy_1.Scene).includes(options.type)) {
+	          throw new Error('incorrect type, must be: ' + Object.values(GoEasy_1.Scene));
+	        }
+
+	        if (Calibrator_1["default"].isUndef(options.id)) {
+	          throw new Error('If type is not empty, id is required.');
+	        }
+
+	        if (GoEasy_1.Scene.CS == options.type) {
+	          //如果teamId为空，就认为是customer端查询，更好的方式是能够判断当前用户是否customer
+	          if (Calibrator_1["default"].isUndef(teamId)) {
+	            teamId = options.id;
+	          }
+	        }
+
+	        return new Target_1.Target(options.type, options.id, teamId);
+	      }
+
+	      throw new Error('incorrect query options.');
 	    };
 
 	    Histories.prototype.onMessageSending = function (message) {
@@ -14027,29 +13974,92 @@
 	    };
 
 	    Histories.prototype.privateMarkAsRead = function (markOption) {
-	      var target = Target_1.Target.byScene(GoEasy_1.Scene.PRIVATE, markOption.userId);
-	      this.markAsRead(target, markOption);
+	      return __awaiter(this, void 0, void 0, function () {
+	        var target;
+	        return __generator(this, function (_a) {
+	          switch (_a.label) {
+	            case 0:
+	              if (Calibrator_1["default"].isUndef(markOption.userId)) {
+	                throw new Error('userId could not be empty.');
+	              }
+
+	              target = Target_1.Target.byScene(GoEasy_1.Scene.PRIVATE, markOption.userId);
+	              return [4
+	              /*yield*/
+	              , this.markAsRead(target, markOption)];
+
+	            case 1:
+	              _a.sent();
+
+	              return [2
+	              /*return*/
+	              ];
+	          }
+	        });
+	      });
 	    };
 
 	    Histories.prototype.groupMarkAsRead = function (markOption) {
-	      var target = Target_1.Target.byScene(GoEasy_1.Scene.GROUP, markOption.groupId);
-	      this.markAsRead(target, markOption);
+	      return __awaiter(this, void 0, void 0, function () {
+	        var target;
+	        return __generator(this, function (_a) {
+	          switch (_a.label) {
+	            case 0:
+	              if (Calibrator_1["default"].isUndef(markOption.groupId)) {
+	                throw new Error('groupId could not be empty.');
+	              }
+
+	              target = Target_1.Target.byScene(GoEasy_1.Scene.GROUP, markOption.groupId);
+	              return [4
+	              /*yield*/
+	              , this.markAsRead(target, markOption)];
+
+	            case 1:
+	              _a.sent();
+
+	              return [2
+	              /*return*/
+	              ];
+	          }
+	        });
+	      });
 	    };
 
 	    Histories.prototype.markMessageAsRead = function (option, teamId) {
-	      var targetId = option.id;
+	      return __awaiter(this, void 0, void 0, function () {
+	        var target;
+	        return __generator(this, function (_a) {
+	          switch (_a.label) {
+	            case 0:
+	              if (Calibrator_1["default"].isUndef(option.id)) {
+	                throw new Error('id could not be empty.');
+	              }
 
-	      if (GoEasy_1.Scene.CS == option.type) {
-	        if (Calibrator_1["default"].isDef(teamId)) {
-	          targetId = option.id;
-	        } else {
-	          targetId = option.id;
-	          teamId = option.id;
-	        }
-	      }
+	              if (!Object.values(GoEasy_1.Scene).includes(option.type)) {
+	                throw new Error('incorrect type, must be: ' + Object.values(GoEasy_1.Scene));
+	              }
 
-	      var target = Target_1.Target.byScene(option.type, targetId, teamId);
-	      this.markAsRead(target, option);
+	              if (GoEasy_1.Scene.CS == option.type) {
+	                //如果teamId为空，就认为是customer端mark，更好的方式是能够判断当前用户是否customer
+	                if (Calibrator_1["default"].isUndef(teamId)) {
+	                  teamId = option.id;
+	                }
+	              }
+
+	              target = Target_1.Target.byScene(option.type, option.id, teamId);
+	              return [4
+	              /*yield*/
+	              , this.markAsRead(target, option)];
+
+	            case 1:
+	              _a.sent();
+
+	              return [2
+	              /*return*/
+	              ];
+	          }
+	        });
+	      });
 	    };
 
 	    Histories.prototype.markAsRead = function (target, markOption) {
@@ -14058,29 +14068,21 @@
 	        return __generator(this, function (_a) {
 	          switch (_a.label) {
 	            case 0:
-	              this.validate(markOption);
 	              history = this.findHistory(target);
 	              if (!history) return [3
 	              /*break*/
 	              , 2];
 	              return [4
 	              /*yield*/
-	              , history.markRead(markOption)];
+	              , history.markRead()];
 
 	            case 1:
 	              _a.sent();
 
-	              return [3
-	              /*break*/
-	              , 3];
+	              _a.label = 2;
 
 	            case 2:
-	              throw {
-	                code: 400,
-	                content: 'No unread message that could be marked.'
-	              };
-
-	            case 3:
+	              callback_utils_1.CallbackUtils.onSuccess(markOption);
 	              return [2
 	              /*return*/
 	              ];
@@ -14104,6 +14106,7 @@
 	        return __generator(this, function (_a) {
 	          switch (_a.label) {
 	            case 0:
+	              this.validateMessageArray(options.messages);
 	              MessageDeleter_1["default"].validate(options);
 	              message = options.messages[0];
 	              target = Target_1.Target.byIMMessage(message);
@@ -14152,6 +14155,7 @@
 	        return __generator(this, function (_a) {
 	          switch (_a.label) {
 	            case 0:
+	              this.validateMessageArray(options.messages);
 	              MessageRecaller_1["default"].validate(options);
 	              message = options.messages[0];
 	              target = Target_1.Target.byIMMessage(message);
@@ -14186,7 +14190,7 @@
 	    };
 
 	    Histories.prototype.onRemoteMessageRecalled = function (event) {
-	      var target = event.target();
+	      var target = Target_1.Target.byRemoteRecallEvent(event);
 	      var history = this.findHistory(target);
 
 	      if (history) {
@@ -14241,43 +14245,44 @@
 	      return this.map.get(target.toString());
 	    };
 
-	    Histories.prototype.validate = function (options) {
-	      var hasId = options.hasOwnProperty("id");
-	      var hasUserId = options.hasOwnProperty("userId");
-	      var hasGroupId = options.hasOwnProperty("groupId");
-	      var is = hasUserId && !hasGroupId && !hasId || hasGroupId && !hasUserId && !hasId || hasId && !hasUserId && !hasGroupId;
-
-	      if (!is) {
+	    Histories.prototype.validateMessageArray = function (messages) {
+	      if (!Calibrator_1["default"].isArray(messages) || Calibrator_1["default"].isEmpty(messages)) {
 	        throw {
 	          code: 400,
-	          content: "only contain userId or groupId or id"
+	          content: "messages requires non empty array"
 	        };
 	      }
 
-	      var hasType = options.hasOwnProperty("type");
-
-	      if (hasType && !hasId || hasType && !hasId) {
+	      if (messages.length > 50) {
 	        throw {
 	          code: 400,
-	          content: "id and type is required"
+	          content: "The maximum number of messages is 50"
 	        };
 	      }
 
-	      var key;
+	      var firstTarget = Target_1.Target.byIMMessage(messages[0]);
 
-	      if (hasId) {
-	        key = 'id';
-	        var typeKey = "type";
-	        var type = options[typeKey];
-	        validator_utils_1["default"].validateValIsEmpty(type, typeKey);
-	      } else if (hasUserId) {
-	        key = 'userId';
-	      } else if (hasGroupId) {
-	        key = 'groupId';
+	      for (var i = 0; i < messages.length; i++) {
+	        var message = messages[i];
+
+	        if (!(message instanceof AbstractMessage_1.AbstractMessage)) {
+	          throw {
+	            code: 400,
+	            content: "message[" + i + "] is not a correct message"
+	          };
+	        }
+
+	        if (i > 0) {
+	          var target = Target_1.Target.byIMMessage(message);
+
+	          if (target.scene !== firstTarget.scene || target.id !== firstTarget.id) {
+	            throw {
+	              code: 400,
+	              content: "each message must be from the same friend or group"
+	            };
+	          }
+	        }
 	      }
-
-	      var targetId = options[key];
-	      validator_utils_1["default"].validateId(targetId, key);
 	    };
 
 	    return Histories;
@@ -14288,7 +14293,7 @@
 
 	Conversation$1.__esModule = true;
 	Conversation$1.Conversation = void 0;
-	var GoEasy_1$7 = GoEasy$1;
+	var GoEasy_1$5 = GoEasy$1;
 	var histories_1$4 = histories;
 
 	var Conversation =
@@ -14304,13 +14309,13 @@
 	  Conversation.prototype.toDto = function () {
 	    var scene = this.target.scene;
 	    var targetId = this.target.id;
-	    var conversationDto = new GoEasy_1$7.ConversationDTO();
+	    var conversationDto = new GoEasy_1$5.ConversationDTO();
 
-	    if (scene === GoEasy_1$7.Scene.PRIVATE) {
+	    if (scene === GoEasy_1$5.Scene.PRIVATE) {
 	      conversationDto.userId = targetId;
-	    } else if (scene === GoEasy_1$7.Scene.GROUP) {
+	    } else if (scene === GoEasy_1$5.Scene.GROUP) {
 	      conversationDto.groupId = targetId;
-	    } else if (scene === GoEasy_1$7.Scene.CS) {
+	    } else if (scene === GoEasy_1$5.Scene.CS) {
 	      //customer
 	      conversationDto.id = this.target.teamId;
 	    }
@@ -14342,7 +14347,7 @@
 
 	var CSConversation$1 = {};
 
-	var __extends$a = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$9 = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -14374,12 +14379,12 @@
 	CSConversation$1.CSConversation = void 0;
 	var Conversation_1$1 = Conversation$1;
 	var histories_1$3 = histories;
-	var GoEasy_1$6 = GoEasy$1;
+	var GoEasy_1$4 = GoEasy$1;
 
 	var CSConversation =
 	/** @class */
 	function (_super) {
-	  __extends$a(CSConversation, _super);
+	  __extends$9(CSConversation, _super);
 
 	  function CSConversation(target) {
 	    var _this = _super.call(this, target) || this;
@@ -14389,7 +14394,7 @@
 	  }
 
 	  CSConversation.prototype.toDto = function () {
-	    var conversationDto = new GoEasy_1$6.ConversationDTO();
+	    var conversationDto = new GoEasy_1$4.ConversationDTO();
 	    var scene = this.target.scene;
 	    var customerId = this.target.id;
 	    var teamId = this.target.teamId;
@@ -14750,7 +14755,7 @@
 	  exports["default"] = RemoteConversations;
 	})(remoteConversations);
 
-	var __extends$9 = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$8 = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -14778,7 +14783,7 @@
 	  };
 	}();
 
-	var __awaiter$8 = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
+	var __awaiter$3 = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
 	  function adopt(value) {
 	    return value instanceof P ? value : new P(function (resolve) {
 	      resolve(value);
@@ -14810,7 +14815,7 @@
 	  });
 	};
 
-	var __generator$8 = commonjsGlobal && commonjsGlobal.__generator || function (thisArg, body) {
+	var __generator$3 = commonjsGlobal && commonjsGlobal.__generator || function (thisArg, body) {
 	  var _ = {
 	    label: 0,
 	    sent: function sent() {
@@ -14941,13 +14946,13 @@
 	Conversations$1.__esModule = true;
 	Conversations$1.Conversations = void 0;
 	var Conversation_1 = Conversation$1;
-	var callback_utils_1$9 = callbackUtils;
-	var GoEasy_1$5 = GoEasy$1;
+	var callback_utils_1$5 = callbackUtils;
+	var GoEasy_1$3 = GoEasy$1;
 	var remote_abbr_message_builder_1$1 = remoteAbbrMessageBuilder;
-	var RocketTypes_1$7 = RocketTypes;
+	var RocketTypes_1$3 = RocketTypes;
 	var im_api_events_1$1 = imApiEvents;
 	var sorted_inserter_1 = sortedInserter;
-	var goeasy_event_center_1$b = goeasyEventCenter;
+	var goeasy_event_center_1$3 = goeasyEventCenter;
 	var internal_events_1$3 = internalEvents;
 	var Target_1$1 = Target$1;
 	var CSConversation_1$1 = CSConversation$1;
@@ -14956,7 +14961,7 @@
 	var histories_1$2 = histories;
 	var g_1$5 = g;
 	var cs_message_type_1$1 = csMessageType;
-	var Calibrator_1$8 = Calibrator;
+	var Calibrator_1$7 = Calibrator;
 
 	var Conversations =
 	/** @class */
@@ -14968,10 +14973,10 @@
 	    this.builder = new remote_abbr_message_builder_1$1.RemoteAbbrMessageBuilder();
 	    this.remoteConversations = remote_conversations_1["default"].instance;
 	    this["synchronized"] = false;
-	    goeasy_event_center_1$b.GoEasyEventCenter.on(internal_events_1$3.IM_INTERNAL_EVENTS.MAX_MESSAGE_CHANGED, function (message) {
+	    goeasy_event_center_1$3.GoEasyEventCenter.on(internal_events_1$3.IM_INTERNAL_EVENTS.MAX_MESSAGE_CHANGED, function (message) {
 	      return _this.onMaxMessageChanged(message);
 	    });
-	    goeasy_event_center_1$b.GoEasyEventCenter.on(internal_events_1$3.IM_INTERNAL_EVENTS.UNREAD_AMOUNT_CHANGED, function (target) {
+	    goeasy_event_center_1$3.GoEasyEventCenter.on(internal_events_1$3.IM_INTERNAL_EVENTS.UNREAD_AMOUNT_CHANGED, function (target) {
 	      return _this.onUnreadMessageChanged(target);
 	    });
 	  }
@@ -14980,15 +14985,7 @@
 	    var conversation = this.findConversation(target);
 
 	    if (conversation) {
-	      if (target.scene === GoEasy_1$5.Scene.CS && target.customerId() !== g_1$5.G.u()) {
-	        var csConversation = conversation;
-
-	        if (csConversation.accepted) {
-	          this.fireUpdated();
-	        }
-	      } else {
-	        this.fireUpdated();
-	      }
+	      this.fireUpdated();
 	    }
 	  };
 
@@ -15006,13 +15003,11 @@
 	  };
 
 	  Conversations.prototype.latestConversations = function (options) {
-	    return __awaiter$8(this, void 0, void 0, function () {
-	      var data, err_1;
-	      return __generator$8(this, function (_a) {
+	    return __awaiter$3(this, void 0, void 0, function () {
+	      var data;
+	      return __generator$3(this, function (_a) {
 	        switch (_a.label) {
 	          case 0:
-	            _a.trys.push([0, 3,, 4]);
-
 	            if (!!this["synchronized"]) return [3
 	            /*break*/
 	            , 2];
@@ -15027,19 +15022,7 @@
 
 	          case 2:
 	            data = this.loadLocalConversations();
-	            callback_utils_1$9.CallbackUtils.onSuccess(options, data);
-	            return [3
-	            /*break*/
-	            , 4];
-
-	          case 3:
-	            err_1 = _a.sent();
-	            callback_utils_1$9.CallbackUtils.onFailed(options, err_1);
-	            return [3
-	            /*break*/
-	            , 4];
-
-	          case 4:
+	            callback_utils_1$5.CallbackUtils.onSuccess(options, data);
 	            return [2
 	            /*return*/
 	            ];
@@ -15049,9 +15032,9 @@
 	  };
 
 	  Conversations.prototype.loadServerConversations = function () {
-	    return __awaiter$8(this, void 0, void 0, function () {
+	    return __awaiter$3(this, void 0, void 0, function () {
 	      var rocketType, data;
-	      return __generator$8(this, function (_a) {
+	      return __generator$3(this, function (_a) {
 	        switch (_a.label) {
 	          case 0:
 	            rocketType = this.rocketName();
@@ -15072,7 +15055,7 @@
 	  };
 
 	  Conversations.prototype.rocketName = function () {
-	    return RocketTypes_1$7.RocketTypes.imLastConversations;
+	    return RocketTypes_1$3.RocketTypes.imLastConversations;
 	  };
 
 	  Conversations.prototype.convertAbbrConversation = function (abbrConversations) {
@@ -15093,7 +15076,7 @@
 	        var target = Target_1$1.Target.byIMMessage(message);
 	        var conversation = this.findConversation(target);
 
-	        if (Calibrator_1$8["default"].isUndef(conversation)) {
+	        if (Calibrator_1$7["default"].isUndef(conversation)) {
 	          conversation = this.buildByAbbr(abbrConversation, message);
 	          this.insertOne(conversation);
 	        } else {
@@ -15118,13 +15101,13 @@
 	  };
 
 	  Conversations.prototype.onMaxMessageChanged = function (message) {
-	    return __awaiter$8(this, void 0, void 0, function () {
+	    return __awaiter$3(this, void 0, void 0, function () {
 	      var csMessage;
-	      return __generator$8(this, function (_a) {
+	      return __generator$3(this, function (_a) {
 	        switch (_a.label) {
 	          case 0:
 	            //对于staff收到的accepted=false的消息, 或者其他staff accepted的消息，不可以更新自己的userConversation，只能更新pendingConversation
-	            if (message.scene() === GoEasy_1$5.Scene.CS) {
+	            if (message.scene() === GoEasy_1$3.Scene.CS) {
 	              csMessage = message;
 
 	              if (g_1$5.G.u() != csMessage.customerId()) {
@@ -15152,21 +15135,21 @@
 	  };
 
 	  Conversations.prototype.saveOrUpdateConversation = function (message) {
-	    return __awaiter$8(this, void 0, void 0, function () {
+	    return __awaiter$3(this, void 0, void 0, function () {
 	      var status, target, conversation, _a;
 
-	      return __generator$8(this, function (_b) {
+	      return __generator$3(this, function (_b) {
 	        switch (_b.label) {
 	          case 0:
 	            status = message.status;
 	            target = Target_1$1.Target.byIMMessage(message);
 	            conversation = this.findConversation(target);
-	            if (!(Calibrator_1$8["default"].isUndef(conversation) && status !== GoEasy_1$5.MessageStatus.FAIL)) return [3
+	            if (!(Calibrator_1$7["default"].isUndef(conversation) && status !== GoEasy_1$3.MessageStatus.FAIL)) return [3
 	            /*break*/
 	            , 2];
 	            conversation = this.buildByMessage(message);
 	            this.insertOne(conversation);
-	            if (!(status === GoEasy_1$5.MessageStatus.SUCCESS)) return [3
+	            if (!(status === GoEasy_1$3.MessageStatus.SUCCESS)) return [3
 	            /*break*/
 	            , 2];
 	            _a = conversation;
@@ -15180,7 +15163,7 @@
 	            _b.label = 2;
 
 	          case 2:
-	            if (status === GoEasy_1$5.MessageStatus.SENDING) {
+	            if (status === GoEasy_1$3.MessageStatus.SENDING) {
 	              conversation.data = message.getToData();
 	              conversation.dataLoaded = true;
 	            }
@@ -15275,12 +15258,12 @@
 	  };
 
 	  Conversations.prototype.top = function (target, top, options) {
-	    return __awaiter$8(this, void 0, void 0, function () {
+	    return __awaiter$3(this, void 0, void 0, function () {
 	      var conversation;
-	      return __generator$8(this, function (_a) {
+	      return __generator$3(this, function (_a) {
 	        switch (_a.label) {
 	          case 0:
-	            if (!Calibrator_1$8["default"].isBoolean(top)) {
+	            if (!Calibrator_1$7["default"].isBoolean(top)) {
 	              throw new Error('top must be boolean.');
 	            }
 
@@ -15306,7 +15289,7 @@
 
 	          case 2:
 	            this.fireUpdated();
-	            callback_utils_1$9.CallbackUtils.onSuccess(options);
+	            callback_utils_1$5.CallbackUtils.onSuccess(options);
 	            return [2
 	            /*return*/
 	            ];
@@ -15316,9 +15299,9 @@
 	  };
 
 	  Conversations.prototype.remove = function (target, options) {
-	    return __awaiter$8(this, void 0, void 0, function () {
+	    return __awaiter$3(this, void 0, void 0, function () {
 	      var conversation;
-	      return __generator$8(this, function (_a) {
+	      return __generator$3(this, function (_a) {
 	        switch (_a.label) {
 	          case 0:
 	            conversation = this.findConversation(target);
@@ -15336,7 +15319,7 @@
 
 	            this.removeLocalConversation(conversation);
 	            this.fireUpdated();
-	            callback_utils_1$9.CallbackUtils.onSuccess(options);
+	            callback_utils_1$5.CallbackUtils.onSuccess(options);
 	            return [2
 	            /*return*/
 	            ];
@@ -15349,7 +15332,7 @@
 	    var conversation;
 	    var target = Target_1$1.Target.byIMMessage(message);
 
-	    if (abbrConversation.t === GoEasy_1$5.Scene.CS) {
+	    if (abbrConversation.t === GoEasy_1$3.Scene.CS) {
 	      var csMessage = message;
 
 	      if (g_1$5.G.u() === csMessage.customerId()) {
@@ -15380,7 +15363,7 @@
 	    var conversation;
 	    var target = Target_1$1.Target.byIMMessage(message);
 
-	    if (message.scene() === GoEasy_1$5.Scene.CS) {
+	    if (message.scene() === GoEasy_1$3.Scene.CS) {
 	      var csMessage = message;
 
 	      if (g_1$5.G.u() === csMessage.customerId()) {
@@ -15400,7 +15383,7 @@
 	  Conversations.sortedInserter = new (
 	  /** @class */
 	  function (_super) {
-	    __extends$9(class_1, _super);
+	    __extends$8(class_1, _super);
 
 	    function class_1() {
 	      return _super !== null && _super.apply(this, arguments) || this;
@@ -15429,7 +15412,7 @@
 
 	var PendingConversations$1 = {};
 
-	var __extends$8 = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$7 = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -15457,7 +15440,7 @@
 	  };
 	}();
 
-	var __awaiter$7 = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
+	var __awaiter$2 = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
 	  function adopt(value) {
 	    return value instanceof P ? value : new P(function (resolve) {
 	      resolve(value);
@@ -15489,7 +15472,7 @@
 	  });
 	};
 
-	var __generator$7 = commonjsGlobal && commonjsGlobal.__generator || function (thisArg, body) {
+	var __generator$2 = commonjsGlobal && commonjsGlobal.__generator || function (thisArg, body) {
 	  var _ = {
 	    label: 0,
 	    sent: function sent() {
@@ -15620,31 +15603,31 @@
 	PendingConversations$1.__esModule = true;
 	PendingConversations$1.PendingConversations = void 0;
 	var Conversations_1 = Conversations$1;
-	var GoEasy_1$4 = GoEasy$1;
-	var RocketTypes_1$6 = RocketTypes;
+	var GoEasy_1$2 = GoEasy$1;
+	var RocketTypes_1$2 = RocketTypes;
 	var Target_1 = Target$1;
-	var goeasy_event_center_1$a = goeasyEventCenter;
+	var goeasy_event_center_1$2 = goeasyEventCenter;
 	var internal_events_1$2 = internalEvents;
 	var im_api_events_1 = imApiEvents;
 	var cs_message_type_1 = csMessageType;
 	var histories_1$1 = histories;
 	var CSConversation_1 = CSConversation$1;
 	var g_1$4 = g;
-	var Calibrator_1$7 = Calibrator;
+	var Calibrator_1$6 = Calibrator;
 
 	var PendingConversations =
 	/** @class */
 	function (_super) {
-	  __extends$8(PendingConversations, _super);
+	  __extends$7(PendingConversations, _super);
 
 	  function PendingConversations() {
 	    var _this = _super.call(this) || this;
 
 	    _this.expired = false;
-	    goeasy_event_center_1$a.GoEasyEventCenter.on(internal_events_1$2.IM_INTERNAL_EVENTS.CS_ONLINE_SUCCESS, function () {
+	    goeasy_event_center_1$2.GoEasyEventCenter.on(internal_events_1$2.IM_INTERNAL_EVENTS.CS_ONLINE_SUCCESS, function () {
 	      return _this.onCSOnlineSuccess();
 	    });
-	    goeasy_event_center_1$a.GoEasyEventCenter.on(internal_events_1$2.IM_INTERNAL_EVENTS.CS_OFFLINE_SUCCESS, function () {
+	    goeasy_event_center_1$2.GoEasyEventCenter.on(internal_events_1$2.IM_INTERNAL_EVENTS.CS_OFFLINE_SUCCESS, function () {
 	      return _this.onCSOfflineSuccess();
 	    });
 	    g_1$4.G.s().addDisconnectedObserver(_this.onDisconnected.bind(_this));
@@ -15653,12 +15636,12 @@
 	  }
 
 	  PendingConversations.prototype.onMaxMessageChanged = function (message) {
-	    return __awaiter$7(this, void 0, void 0, function () {
+	    return __awaiter$2(this, void 0, void 0, function () {
 	      var csMessage;
-	      return __generator$7(this, function (_a) {
+	      return __generator$2(this, function (_a) {
 	        switch (_a.label) {
 	          case 0:
-	            if (!(message.scene() === GoEasy_1$4.Scene.CS)) return [3
+	            if (!(message.scene() === GoEasy_1$2.Scene.CS)) return [3
 	            /*break*/
 	            , 3];
 	            csMessage = message;
@@ -15699,8 +15682,8 @@
 	  };
 
 	  PendingConversations.prototype.onCSOnlineSuccess = function () {
-	    return __awaiter$7(this, void 0, void 0, function () {
-	      return __generator$7(this, function (_a) {
+	    return __awaiter$2(this, void 0, void 0, function () {
+	      return __generator$2(this, function (_a) {
 	        switch (_a.label) {
 	          case 0:
 	            return [4
@@ -15729,22 +15712,22 @@
 	  };
 
 	  PendingConversations.prototype.rocketName = function () {
-	    return RocketTypes_1$6.RocketTypes.PENDING_CONVERSATION;
+	    return RocketTypes_1$2.RocketTypes.PENDING_CONVERSATION;
 	  };
 
 	  PendingConversations.prototype.convertAbbrConversation = function (abbrConversations) {
-	    return __awaiter$7(this, void 0, void 0, function () {
+	    return __awaiter$2(this, void 0, void 0, function () {
 	      var conversations, conversations_1, conversations_1_1, abbrConversation, customerData, lastMessage, userOffsets, data, message, target, conversation, staffHistory;
 
 	      var e_1, _a;
 
-	      return __generator$7(this, function (_b) {
+	      return __generator$2(this, function (_b) {
 	        conversations = abbrConversations;
 
 	        try {
 	          for (conversations_1 = __values(conversations), conversations_1_1 = conversations_1.next(); !conversations_1_1.done; conversations_1_1 = conversations_1.next()) {
 	            abbrConversation = conversations_1_1.value;
-	            abbrConversation.lastMessage.t = GoEasy_1$4.Scene.CS;
+	            abbrConversation.lastMessage.t = GoEasy_1$2.Scene.CS;
 	            customerData = abbrConversation.customerData;
 	            lastMessage = abbrConversation.lastMessage;
 	            userOffsets = abbrConversation.userOffsets;
@@ -15753,7 +15736,7 @@
 	            target = Target_1.Target.byIMMessage(message);
 	            conversation = this.findConversation(target);
 
-	            if (Calibrator_1$7["default"].isUndef(conversation)) {
+	            if (Calibrator_1$6["default"].isUndef(conversation)) {
 	              conversation = new CSConversation_1.CSConversation(target);
 	              conversation.accepted = message.accepted;
 	              conversation.dataLoaded = true;
@@ -15790,8 +15773,8 @@
 	  };
 
 	  PendingConversations.prototype.onConnected = function () {
-	    return __awaiter$7(this, void 0, void 0, function () {
-	      return __generator$7(this, function (_a) {
+	    return __awaiter$2(this, void 0, void 0, function () {
+	      return __generator$2(this, function (_a) {
 	        switch (_a.label) {
 	          case 0:
 	            if (!this.expired) return [3
@@ -16488,7 +16471,7 @@
 
 	Str$1.__esModule = true;
 	Str$1.str = void 0;
-	var Calibrator_1$6 = Calibrator;
+	var Calibrator_1$5 = Calibrator;
 
 	var Str =
 	/** @class */
@@ -16496,7 +16479,7 @@
 	  function Str() {}
 
 	  Str.prototype.fileExtension = function (str, type) {
-	    if (!Calibrator_1$6["default"].isString(str)) return;
+	    if (!Calibrator_1$5["default"].isString(str)) return;
 
 	    try {
 	      var strArr = str.split(type);
@@ -16531,7 +16514,7 @@
 
 	AbstractMessagePayload$1.AbstractMessagePayload = AbstractMessagePayload;
 
-	var __extends$7 = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$6 = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -16566,7 +16549,7 @@
 	var FileMessagePayload =
 	/** @class */
 	function (_super) {
-	  __extends$7(FileMessagePayload, _super);
+	  __extends$6(FileMessagePayload, _super);
 
 	  function FileMessagePayload() {
 	    var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -16583,7 +16566,7 @@
 
 	FileMessagePayload$1.FileMessagePayload = FileMessagePayload;
 
-	var __extends$6 = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$5 = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -16618,7 +16601,7 @@
 	var ImageMessagePayload =
 	/** @class */
 	function (_super) {
-	  __extends$6(ImageMessagePayload, _super);
+	  __extends$5(ImageMessagePayload, _super);
 
 	  function ImageMessagePayload() {
 	    var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -16823,7 +16806,7 @@
 
 	var AudioMessagePayload$1 = {};
 
-	var __extends$5 = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$4 = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -16858,7 +16841,7 @@
 	var AudioMessagePayload =
 	/** @class */
 	function (_super) {
-	  __extends$5(AudioMessagePayload, _super);
+	  __extends$4(AudioMessagePayload, _super);
 
 	  function AudioMessagePayload() {
 	    var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -16953,7 +16936,7 @@
 
 	var TextMessagePayload$1 = {};
 
-	var __extends$4 = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$3 = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -16988,7 +16971,7 @@
 	var TextMessagePayload =
 	/** @class */
 	function (_super) {
-	  __extends$4(TextMessagePayload, _super);
+	  __extends$3(TextMessagePayload, _super);
 
 	  function TextMessagePayload() {
 	    var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -17002,7 +16985,7 @@
 
 	TextMessagePayload$1.TextMessagePayload = TextMessagePayload;
 
-	var __extends$3 = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$2 = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -17034,12 +17017,12 @@
 	TextPayloadBuilder$1.TextPayloadBuilder = void 0;
 	var AbstractPayloadBuilder_1$1 = AbstractPayloadBuilder$1;
 	var TextMessagePayload_1 = TextMessagePayload$1;
-	var Calibrator_1$5 = Calibrator;
+	var Calibrator_1$4 = Calibrator;
 
 	var TextPayloadBuilder =
 	/** @class */
 	function (_super) {
-	  __extends$3(TextPayloadBuilder, _super);
+	  __extends$2(TextPayloadBuilder, _super);
 
 	  function TextPayloadBuilder() {
 	    return _super !== null && _super.apply(this, arguments) || this;
@@ -17057,14 +17040,14 @@
 	  };
 
 	  TextPayloadBuilder.prototype.validate = function (createOptions) {
-	    if (Calibrator_1$5["default"].isEmpty(createOptions.text)) {
+	    if (Calibrator_1$4["default"].isEmpty(createOptions.text)) {
 	      throw {
 	        code: 400,
 	        content: "text is empty"
 	      };
 	    }
 
-	    if (Calibrator_1$5["default"].isString(createOptions.text)) {
+	    if (Calibrator_1$4["default"].isString(createOptions.text)) {
 	      if (createOptions.text.trim() === '') {
 	        throw {
 	          code: 400,
@@ -17095,7 +17078,7 @@
 
 	var VideoMessagePayload$1 = {};
 
-	var __extends$2 = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$1 = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -17130,7 +17113,7 @@
 	var VideoMessagePayload =
 	/** @class */
 	function (_super) {
-	  __extends$2(VideoMessagePayload, _super);
+	  __extends$1(VideoMessagePayload, _super);
 
 	  function VideoMessagePayload() {
 	    var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -18095,7 +18078,7 @@
 	  exports["default"] = CustomMessagePayload;
 	})(CustomMessagePayload);
 
-	var __extends$1 = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -18127,12 +18110,12 @@
 	CustomPayloadBuilder$1.CustomPayloadBuilder = void 0;
 	var AbstractPayloadBuilder_1 = AbstractPayloadBuilder$1;
 	var CustomMessagePayload_1 = CustomMessagePayload;
-	var Calibrator_1$4 = Calibrator;
+	var Calibrator_1$3 = Calibrator;
 
 	var CustomPayloadBuilder =
 	/** @class */
 	function (_super) {
-	  __extends$1(CustomPayloadBuilder, _super);
+	  __extends(CustomPayloadBuilder, _super);
 
 	  function CustomPayloadBuilder() {
 	    return _super !== null && _super.apply(this, arguments) || this;
@@ -18153,19 +18136,19 @@
 	    var type = createOptions.type;
 	    var payload = createOptions.payload;
 
-	    if (Calibrator_1$4["default"].isEmpty(type)) {
+	    if (Calibrator_1$3["default"].isEmpty(type)) {
 	      throw Error('type is empty.');
 	    }
 
-	    if (!Calibrator_1$4["default"].isString(type)) {
+	    if (!Calibrator_1$3["default"].isString(type)) {
 	      throw Error('type require a string');
 	    }
 
-	    if (Calibrator_1$4["default"].isEmpty(payload)) {
+	    if (Calibrator_1$3["default"].isEmpty(payload)) {
 	      throw Error('payload is empty.');
 	    }
 
-	    if (!Calibrator_1$4["default"].isPlainObject(payload) && !Calibrator_1$4["default"].isStringOrNumber(payload)) {
+	    if (!Calibrator_1$3["default"].isPlainObject(payload) && !Calibrator_1$3["default"].isStringOrNumber(payload)) {
 	      throw Error('payload require object | string | number.');
 	    }
 	  };
@@ -18212,13 +18195,13 @@
 	var CustomPayloadBuilder_1 = CustomPayloadBuilder$1;
 	var LocalIMMessageBuildOptions_1 = LocalIMMessageBuildOptions$1;
 	var UUID_1 = UUID;
-	var Calibrator_1$3 = Calibrator;
-	var GoEasy_1$3 = GoEasy$1;
+	var Calibrator_1$2 = Calibrator;
+	var GoEasy_1$1 = GoEasy$1;
 	var GroupMessage_1 = GroupMessage$1;
 	var PrivateMessage_1 = PrivateMessage$1;
-	var validator_utils_1$5 = validatorUtils;
+	var validator_utils_1$4 = validatorUtils;
 	var cs_message_1 = csMessage;
-	var callback_utils_1$8 = callbackUtils;
+	var callback_utils_1$4 = callbackUtils;
 	var g_1$3 = g;
 
 	var IMMessageBuilder =
@@ -18264,9 +18247,9 @@
 
 	    var message = this.build(buildOptions);
 	    buildOptions.complete.then(function () {
-	      callback_utils_1$8.CallbackUtils.onSuccess(createOptions, message);
+	      callback_utils_1$4.CallbackUtils.onSuccess(createOptions, message);
 	    })["catch"](function (e) {
-	      callback_utils_1$8.CallbackUtils.onFailed(createOptions, e);
+	      callback_utils_1$4.CallbackUtils.onFailed(createOptions, e);
 	    });
 	    return message;
 	  };
@@ -18280,15 +18263,15 @@
 	    this.validate(createOptions);
 	    var message;
 
-	    if (scene === GoEasy_1$3.Scene.GROUP) {
+	    if (scene === GoEasy_1$1.Scene.GROUP) {
 	      message = new GroupMessage_1.GroupMessage();
 	      message.groupId = to.id.toString();
 	      message.senderData = g_1$3.G.ud();
-	    } else if (scene === GoEasy_1$3.Scene.PRIVATE) {
+	    } else if (scene === GoEasy_1$1.Scene.PRIVATE) {
 	      message = new PrivateMessage_1.PrivateMessage();
 	      message.read = false;
 	      message.receiverId = to.id.toString();
-	    } else if (scene === GoEasy_1$3.Scene.CS) {
+	    } else if (scene === GoEasy_1$1.Scene.CS) {
 	      message = new cs_message_1.CSMessage();
 	      message.to = to.id.toString();
 	      message.teamId = to.id.toString();
@@ -18301,7 +18284,7 @@
 	    message.timestamp = Date.now();
 	    message.type = type;
 	    message.recalled = false;
-	    message.status = GoEasy_1$3.MessageStatus.NEW;
+	    message.status = GoEasy_1$1.MessageStatus.NEW;
 	    message.buildOptions = buildOptions;
 	    return message;
 	  };
@@ -18313,23 +18296,23 @@
 	      throw new Error("message require property to.");
 	    }
 
-	    if (!Calibrator_1$3["default"].isObject(to)) {
+	    if (!Calibrator_1$2["default"].isObject(to)) {
 	      throw new Error("TypeError: to requires an object.");
 	    }
 
-	    if (!Calibrator_1$3["default"].isObject(to.data)) {
+	    if (!Calibrator_1$2["default"].isObject(to.data)) {
 	      throw new Error("TypeError: to.data requires an object.");
 	    }
 
-	    if (!to.type || to.type !== GoEasy_1$3.Scene.GROUP && to.type !== GoEasy_1$3.Scene.PRIVATE && to.type !== GoEasy_1$3.Scene.CS) {
+	    if (!to.type || to.type !== GoEasy_1$1.Scene.GROUP && to.type !== GoEasy_1$1.Scene.PRIVATE && to.type !== GoEasy_1$1.Scene.CS) {
 	      throw new Error("message require property to.type");
 	    }
 
-	    if (Calibrator_1$3["default"].isEmpty(to.id)) {
+	    if (Calibrator_1$2["default"].isEmpty(to.id)) {
 	      throw new Error("message require property to.id");
 	    }
 
-	    if (!Calibrator_1$3["default"].isStringOrNumber(to.id)) {
+	    if (!Calibrator_1$2["default"].isStringOrNumber(to.id)) {
 	      throw new Error("to.id should be a string or number.");
 	    }
 
@@ -18338,7 +18321,11 @@
 	    }
 
 	    if (createOptions.notification) {
-	      validator_utils_1$5["default"].validateNotification(createOptions.notification);
+	      validator_utils_1$4["default"].validateNotification(createOptions.notification);
+	    }
+
+	    if (createOptions.wx_mp_template_msg) {
+	      validator_utils_1$4["default"].validateWXMPTemplateMsg(createOptions.wx_mp_template_msg);
 	    }
 	  };
 
@@ -18346,2573 +18333,6 @@
 	}();
 
 	IMMessageBuilder$1.IMMessageBuilder = IMMessageBuilder;
-
-	im.__esModule = true;
-	im.IM = void 0;
-	var api_event_center_1$1 = apiEventCenter;
-	var GoEasyUploader_1 = GoEasyUploader$1;
-	var IMMessageSender_1 = IMMessageSender;
-	var conversation_list_1 = conversationList;
-	var IMReceiver_1 = IMReceiver;
-	var GroupMessageSubscriber_1 = GroupMessageSubscriber;
-	var GroupPresenceSubscriber_1 = GroupPresenceSubscriber;
-	var GroupOnlineCount_1 = GroupOnlineCount;
-	var GroupHereNow_1 = GroupHereNow;
-	var UserPresenceSubscriber_1 = UserPresenceSubscriber;
-	var UserHereNow_1 = UserHereNow;
-	var Calibrator_1$2 = Calibrator;
-	var ModuleTypes_1 = ModuleTypes;
-	var validator_utils_1$4 = validatorUtils;
-	var callback_utils_1$7 = callbackUtils;
-	var IMMessageBuilder_1 = IMMessageBuilder$1;
-	var MessageType_1 = MessageType;
-	var histories_1 = histories;
-	var g_1$2 = g;
-
-	var IM =
-	/** @class */
-	function () {
-	  function IM(options) {
-	    this._iMReceiver = new IMReceiver_1["default"]();
-	    this.options = options;
-	    IM.aec = new api_event_center_1$1.ApiEventCenter();
-	    this._userHereNow = new UserHereNow_1["default"]();
-	    this.goEasyUploader = new GoEasyUploader_1.GoEasyUploader();
-	    this._groupHereNow = new GroupHereNow_1["default"]();
-	    this._groupOnlineCount = new GroupOnlineCount_1["default"]();
-	    this.groupMessageSubscriber = new GroupMessageSubscriber_1["default"]();
-	  }
-
-	  IM.init = function (options) {
-	    IM.instance = new IM(options);
-	  };
-
-	  IM.prototype.afterConnect = function () {
-	    this._iMReceiver.initialGoEasySocket();
-
-	    this.messageBuilder = new IMMessageBuilder_1.IMMessageBuilder();
-	    this.messageSender = new IMMessageSender_1["default"]();
-	    this.histories = histories_1["default"].init();
-	    this.histories.initialListeners();
-	    this.conversations = new conversation_list_1["default"]();
-	    this._groupPresenceSubscriber = new GroupPresenceSubscriber_1["default"]();
-	    this._userPresenceSubscriber = new UserPresenceSubscriber_1["default"]();
-	  }; // todo: 函数名
-
-
-	  IM.prototype.validateModules = function () {
-	    if (Calibrator_1$2["default"].isUndef(g_1$2.G.s())) {
-	      throw Error('Please call connect() first.');
-	    }
-
-	    if (!this.options.modules || !this.options.modules.includes(ModuleTypes_1.ModuleTypes.IM)) {
-	      throw Error("Invalid options: module '".concat(ModuleTypes_1.ModuleTypes.IM, "' is not enabled"));
-	    }
-	  };
-
-	  IM.prototype["catch"] = function (functionObj, callbackOptions) {
-	    try {
-	      this.validateModules();
-	      validator_utils_1$4["default"].validateCallbackOptions(callbackOptions);
-	      functionObj();
-	    } catch (err) {
-	      callback_utils_1$7.CallbackUtils.onFailed(callbackOptions, err);
-	    }
-	  }; // ----------- External API ----------
-
-
-	  IM.prototype.on = function (event, callBack) {
-	    IM.aec.on(event, callBack);
-	  };
-
-	  IM.prototype.off = function (event, callBack) {
-	    IM.aec.off(event, callBack);
-	  };
-
-	  IM.prototype.createTextMessage = function (createOptions) {
-	    this.validateModules();
-	    return this.messageBuilder.buildMessage(MessageType_1.MessageType.TEXT, createOptions);
-	  };
-
-	  IM.prototype.createImageMessage = function (createOptions) {
-	    this.validateModules();
-	    return this.messageBuilder.buildMessage(MessageType_1.MessageType.IMAGE, createOptions);
-	  };
-
-	  IM.prototype.createFileMessage = function (createOptions) {
-	    this.validateModules();
-	    return this.messageBuilder.buildMessage(MessageType_1.MessageType.FILE, createOptions);
-	  };
-
-	  IM.prototype.createAudioMessage = function (createOptions) {
-	    this.validateModules();
-	    return this.messageBuilder.buildMessage(MessageType_1.MessageType.AUDIO, createOptions);
-	  };
-
-	  IM.prototype.createVideoMessage = function (createOptions) {
-	    this.validateModules();
-	    return this.messageBuilder.buildMessage(MessageType_1.MessageType.VIDEO, createOptions);
-	  };
-
-	  IM.prototype.createCustomMessage = function (createOptions) {
-	    this.validateModules();
-	    return this.messageBuilder.buildMessage(createOptions.type, createOptions);
-	  };
-
-	  IM.prototype.sendMessage = function (sendOptions) {
-	    var _this = this;
-
-	    this["catch"](function () {
-	      _this.messageSender.send(sendOptions);
-	    }, sendOptions);
-	  };
-
-	  IM.prototype.recallMessage = function (messageRecallOptions) {
-	    var _this = this;
-
-	    this["catch"](function () {
-	      _this.histories.recallMessage(messageRecallOptions);
-	    }, messageRecallOptions);
-	  };
-
-	  IM.prototype.deleteMessage = function (messageDeleteOptions) {
-	    var _this = this;
-
-	    this["catch"](function () {
-	      _this.histories.deleteMessage(messageDeleteOptions);
-	    }, messageDeleteOptions);
-	  };
-
-	  IM.prototype.markGroupMessageAsRead = function (options) {
-	    var _this = this;
-
-	    this["catch"](function () {
-	      return _this.histories.groupMarkAsRead(options);
-	    }, options);
-	  };
-
-	  IM.prototype.markPrivateMessageAsRead = function (options) {
-	    var _this = this;
-
-	    this["catch"](function () {
-	      return _this.histories.privateMarkAsRead(options);
-	    }, options);
-	  };
-
-	  IM.prototype.markMessageAsRead = function (option, teamId) {
-	    var _this = this;
-
-	    this["catch"](function () {
-	      return _this.histories.markMessageAsRead(option, teamId);
-	    }, option);
-	  };
-
-	  IM.prototype.latestConversations = function (options) {
-	    this.validateModules();
-	    this.conversations.latestConversations(options);
-	  };
-
-	  IM.prototype.removePrivateConversation = function (options) {
-	    var _this = this;
-
-	    this["catch"](function () {
-	      return _this.conversations.removePrivateConversation(options);
-	    }, options);
-	  };
-
-	  IM.prototype.removeGroupConversation = function (options) {
-	    var _this = this;
-
-	    this["catch"](function () {
-	      return _this.conversations.removeGroupConversation(options);
-	    }, options);
-	  };
-
-	  IM.prototype.topPrivateConversation = function (options) {
-	    var _this = this;
-
-	    this["catch"](function () {
-	      return _this.conversations.topPrivateConversation(options);
-	    }, options);
-	  };
-
-	  IM.prototype.topGroupConversation = function (options) {
-	    var _this = this;
-
-	    this["catch"](function () {
-	      return _this.conversations.topGroupConversation(options);
-	    }, options);
-	  };
-
-	  IM.prototype.history = function (options, teamId) {
-	    var _this = this;
-
-	    this["catch"](function () {
-	      _this.histories.loadHistory(options, teamId);
-	    }, options);
-	  };
-
-	  IM.prototype.subscribeUserPresence = function (options) {
-	    var _this = this;
-
-	    this["catch"](function () {
-	      return _this._userPresenceSubscriber.presence(options);
-	    }, options);
-	  };
-
-	  IM.prototype.unsubscribeUserPresence = function (options) {
-	    var _this = this;
-
-	    this["catch"](function () {
-	      return _this._userPresenceSubscriber.unPresence(options);
-	    }, options);
-	  };
-
-	  IM.prototype.hereNow = function (options) {
-	    var _this = this;
-
-	    this["catch"](function () {
-	      return _this._userHereNow.hereNow(options);
-	    }, options);
-	  };
-
-	  IM.prototype.subscribeGroup = function (options) {
-	    var _this = this;
-
-	    this["catch"](function () {
-	      return _this.groupMessageSubscriber.subscribe(options);
-	    }, options);
-	  };
-
-	  IM.prototype.unsubscribeGroup = function (options) {
-	    var _this = this;
-
-	    this["catch"](function () {
-	      return _this.groupMessageSubscriber.unsubscribe(options);
-	    }, options);
-	  };
-
-	  IM.prototype.subscribeGroupPresence = function (options) {
-	    var _this = this;
-
-	    this["catch"](function () {
-	      return _this._groupPresenceSubscriber.presence(options);
-	    }, options);
-	  };
-
-	  IM.prototype.unsubscribeGroupPresence = function (options) {
-	    var _this = this;
-
-	    this["catch"](function () {
-	      return _this._groupPresenceSubscriber.unPresence(options);
-	    }, options);
-	  };
-
-	  IM.prototype.groupHereNow = function (options) {
-	    var _this = this;
-
-	    this["catch"](function () {
-	      return _this._groupHereNow.hereNow(options);
-	    }, options);
-	  };
-
-	  IM.prototype.groupOnlineCount = function (options) {
-	    var _this = this;
-
-	    this["catch"](function () {
-	      return _this._groupOnlineCount.get(options);
-	    }, options);
-	  };
-
-	  IM.prototype.latestPendingConversations = function (options) {
-	    this.validateModules();
-	    this.conversations.latestPendingConversations(options);
-	  };
-
-	  IM.prototype.topConversation = function (options) {
-	    this.validateModules();
-	    this.conversations.topConversation(options);
-	  };
-
-	  IM.prototype.removeConversation = function (options) {
-	    this.validateModules();
-	    this.conversations.removeConversation(options);
-	  };
-
-	  return IM;
-	}();
-
-	im.IM = IM;
-
-	var rtc = {};
-
-	var call = {};
-
-	var mediaType = {};
-
-	(function (exports) {
-
-	  exports.__esModule = true;
-	  exports.MediaType = void 0;
-
-	  (function (MediaType) {
-	    MediaType["VIDEO"] = "VIDEO";
-	    MediaType["VOICE"] = "VOICE";
-	  })(exports.MediaType || (exports.MediaType = {}));
-	})(mediaType);
-
-	var rtcUser = {};
-
-	rtcUser.__esModule = true;
-	rtcUser.RTCUser = void 0;
-
-	var RTCUser =
-	/** @class */
-	function () {
-	  function RTCUser(id, data, video, voice, accepted) {
-	    this.id = id;
-	    this.data = data;
-	    this.video = video;
-	    this.voice = voice;
-	    this.accepted = accepted;
-	  }
-
-	  return RTCUser;
-	}();
-
-	rtcUser.RTCUser = RTCUser;
-
-	var rtcCallStatus = {};
-
-	(function (exports) {
-
-	  exports.__esModule = true;
-	  exports.RTCCallStatus = void 0;
-
-	  (function (RTCCallStatus) {
-	    RTCCallStatus[RTCCallStatus["dialing"] = 0] = "dialing";
-	    RTCCallStatus[RTCCallStatus["ringing"] = 1] = "ringing";
-	    RTCCallStatus[RTCCallStatus["in_progress"] = 2] = "in_progress";
-	  })(exports.RTCCallStatus || (exports.RTCCallStatus = {}));
-	})(rtcCallStatus);
-
-	call.__esModule = true;
-	call.Call = void 0;
-	var media_type_1$2 = mediaType;
-	var rtc_user_1$3 = rtcUser;
-	var rtc_call_status_1$3 = rtcCallStatus;
-	var rtc_1$2 = rtc;
-
-	var Call =
-	/** @class */
-	function () {
-	  function Call(id, mediaType, type, invitees) {
-	    this.id = id;
-	    this.mediaType = mediaType;
-	    this.type = type;
-	    this.invitees = invitees;
-	  }
-
-	  Call.buildDialingCall = function (id, mediaType, type, invitees, userId, userData) {
-	    var call = new Call(id, mediaType, type, invitees);
-	    call.inviter = new rtc_user_1$3.RTCUser(userId, userData, true, mediaType === media_type_1$2.MediaType.VIDEO, true);
-	    call.status = rtc_call_status_1$3.RTCCallStatus.dialing;
-	    this.current = call;
-	    return call;
-	  };
-
-	  Call.buildRingCall = function (id, mediaType, type, inviter, invitees) {
-	    var call = new Call(id, mediaType, type, invitees);
-	    call.status = rtc_call_status_1$3.RTCCallStatus.ringing;
-	    call.inviter = inviter;
-	    this.current = call;
-	    return call;
-	  };
-
-	  Call.prototype.allUsers = function () {
-	    if (this.inviter !== null) {
-	      return [this.inviter].concat(this.invitees);
-	    } else {
-	      return this.invitees;
-	    }
-	  };
-
-	  Call.prototype.otherUsers = function () {
-	    return this.allUsers().filter(function (user) {
-	      if (user.id !== rtc_1$2.RTC.userId) {
-	        return user;
-	      }
-	    });
-	  };
-
-	  Call.prototype.mine = function () {
-	    var mine = null;
-	    this.allUsers().forEach(function (user) {
-	      if (user.id === rtc_1$2.RTC.userId) {
-	        mine = user;
-	      }
-	    });
-	    return mine;
-	  };
-
-	  Call.prototype.isVideo = function () {
-	    return this.mediaType === media_type_1$2.MediaType.VIDEO;
-	  };
-
-	  Call.prototype.findUser = function (userId) {
-	    if (!userId) {
-	      return null;
-	    }
-
-	    var findUser = null;
-	    this.allUsers().forEach(function (user) {
-	      if (user.id === userId) {
-	        findUser = user;
-	      }
-	    });
-	    return findUser;
-	  };
-
-	  Call.prototype.removeUser = function (userId) {
-	    if (this.inviter != null && this.inviter.id === userId) {
-	      this.inviter = null;
-	    } else {
-	      this.invitees = this.invitees.filter(function (user) {
-	        if (user.id !== userId) {
-	          return user;
-	        }
-	      });
-	    }
-	  };
-
-	  return Call;
-	}();
-
-	call.Call = Call;
-
-	var dialer = {};
-
-	var dialRequest = {};
-
-	dialRequest.__esModule = true;
-	dialRequest.DialRequest = void 0;
-	var GoEasy_1$2 = GoEasy$1;
-
-	var DialRequest =
-	/** @class */
-	function () {
-	  function DialRequest(scene, mediaType, invitees, notification, callId) {
-	    var _this = this;
-
-	    this.invitees = new Array();
-	    this.scene = scene;
-	    this.mediaType = mediaType;
-	    invitees.forEach(function (user) {
-	      _this.invitees.push({
-	        id: user.id,
-	        data: JSON.stringify(user.data)
-	      });
-	    });
-	    this.notification = notification;
-	    this.callId = callId;
-	  }
-
-	  DialRequest.buildPrivateRequest = function (mediaType, invitees, notification, callId) {
-	    return new DialRequest(GoEasy_1$2.Scene.PRIVATE.toString(), mediaType, invitees, notification, callId);
-	  };
-
-	  DialRequest.buildGroupRequest = function (mediaType, groupId, groupData, invitees, notification, callId) {
-	    var request = new DialRequest(GoEasy_1$2.Scene.GROUP.toString(), mediaType, invitees, notification, callId);
-	    request.groupId = groupId;
-	    request.groupData = JSON.stringify(groupData);
-	    return request;
-	  };
-
-	  return DialRequest;
-	}();
-
-	dialRequest.DialRequest = DialRequest;
-
-	var rtcInternalEvents = {};
-
-	(function (exports) {
-
-	  exports.__esModule = true;
-	  exports.RTCInternalEvents = void 0;
-
-	  (function (RTCInternalEvents) {
-	    RTCInternalEvents[RTCInternalEvents["CLIENT_BUSY"] = 0] = "CLIENT_BUSY";
-	    RTCInternalEvents[RTCInternalEvents["CLIENT_JOIN_CHANNEL_FAILED"] = 1] = "CLIENT_JOIN_CHANNEL_FAILED";
-	    RTCInternalEvents[RTCInternalEvents["CLIENT_DIAL_FAILED"] = 2] = "CLIENT_DIAL_FAILED";
-	    RTCInternalEvents[RTCInternalEvents["CLIENT_ASK_TOKEN_FAILED"] = 3] = "CLIENT_ASK_TOKEN_FAILED";
-	    RTCInternalEvents[RTCInternalEvents["CLIENT_ACCEPT_FAILED"] = 4] = "CLIENT_ACCEPT_FAILED";
-	    RTCInternalEvents[RTCInternalEvents["RTC_DISCONNECT"] = 5] = "RTC_DISCONNECT";
-	    RTCInternalEvents[RTCInternalEvents["RTC_RECONNECT"] = 6] = "RTC_RECONNECT";
-	    RTCInternalEvents[RTCInternalEvents["RTC_TIMEOUT"] = 7] = "RTC_TIMEOUT";
-	    RTCInternalEvents[RTCInternalEvents["GOEASY_TIMEOUT"] = 8] = "GOEASY_TIMEOUT";
-	    RTCInternalEvents[RTCInternalEvents["CALL_ENDED"] = 9] = "CALL_ENDED";
-	    RTCInternalEvents[RTCInternalEvents["CALL_ACCEPTED"] = 10] = "CALL_ACCEPTED";
-	    RTCInternalEvents[RTCInternalEvents["RECEIVED_RTC_REMOTE_FLOW"] = 11] = "RECEIVED_RTC_REMOTE_FLOW";
-	  })(exports.RTCInternalEvents || (exports.RTCInternalEvents = {}));
-	})(rtcInternalEvents);
-
-	var __awaiter$6 = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
-	  function adopt(value) {
-	    return value instanceof P ? value : new P(function (resolve) {
-	      resolve(value);
-	    });
-	  }
-
-	  return new (P || (P = Promise))(function (resolve, reject) {
-	    function fulfilled(value) {
-	      try {
-	        step(generator.next(value));
-	      } catch (e) {
-	        reject(e);
-	      }
-	    }
-
-	    function rejected(value) {
-	      try {
-	        step(generator["throw"](value));
-	      } catch (e) {
-	        reject(e);
-	      }
-	    }
-
-	    function step(result) {
-	      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
-	    }
-
-	    step((generator = generator.apply(thisArg, _arguments || [])).next());
-	  });
-	};
-
-	var __generator$6 = commonjsGlobal && commonjsGlobal.__generator || function (thisArg, body) {
-	  var _ = {
-	    label: 0,
-	    sent: function sent() {
-	      if (t[0] & 1) throw t[1];
-	      return t[1];
-	    },
-	    trys: [],
-	    ops: []
-	  },
-	      f,
-	      y,
-	      t,
-	      g;
-	  return g = {
-	    next: verb(0),
-	    "throw": verb(1),
-	    "return": verb(2)
-	  }, typeof Symbol === "function" && (g[Symbol.iterator] = function () {
-	    return this;
-	  }), g;
-
-	  function verb(n) {
-	    return function (v) {
-	      return step([n, v]);
-	    };
-	  }
-
-	  function step(op) {
-	    if (f) throw new TypeError("Generator is already executing.");
-
-	    while (_) {
-	      try {
-	        if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-	        if (y = 0, t) op = [op[0] & 2, t.value];
-
-	        switch (op[0]) {
-	          case 0:
-	          case 1:
-	            t = op;
-	            break;
-
-	          case 4:
-	            _.label++;
-	            return {
-	              value: op[1],
-	              done: false
-	            };
-
-	          case 5:
-	            _.label++;
-	            y = op[1];
-	            op = [0];
-	            continue;
-
-	          case 7:
-	            op = _.ops.pop();
-
-	            _.trys.pop();
-
-	            continue;
-
-	          default:
-	            if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
-	              _ = 0;
-	              continue;
-	            }
-
-	            if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
-	              _.label = op[1];
-	              break;
-	            }
-
-	            if (op[0] === 6 && _.label < t[1]) {
-	              _.label = t[1];
-	              t = op;
-	              break;
-	            }
-
-	            if (t && _.label < t[2]) {
-	              _.label = t[2];
-
-	              _.ops.push(op);
-
-	              break;
-	            }
-
-	            if (t[2]) _.ops.pop();
-
-	            _.trys.pop();
-
-	            continue;
-	        }
-
-	        op = body.call(thisArg, _);
-	      } catch (e) {
-	        op = [6, e];
-	        y = 0;
-	      } finally {
-	        f = t = 0;
-	      }
-	    }
-
-	    if (op[0] & 5) throw op[1];
-	    return {
-	      value: op[0] ? op[1] : void 0,
-	      done: true
-	    };
-	  }
-	};
-
-	dialer.__esModule = true;
-	dialer.Dialer = void 0;
-	var call_1$7 = call;
-	var Rocket_1$5 = Rocket;
-	var Permission_1$5 = Permission;
-	var SocketTimeout_1$5 = SocketTimeout;
-	var rtc_user_1$2 = rtcUser;
-	var dial_request_1 = dialRequest;
-	var GoEasy_1$1 = GoEasy$1;
-	var media_type_1$1 = mediaType;
-	var goeasy_event_center_1$9 = goeasyEventCenter;
-	var rtc_internal_events_1$7 = rtcInternalEvents;
-	var callback_utils_1$6 = callbackUtils;
-	var RocketTypes_1$5 = RocketTypes;
-	var Calibrator_1$1 = Calibrator;
-	var validator_utils_1$3 = validatorUtils;
-	var rtc_1$1 = rtc;
-
-	var Dialer =
-	/** @class */
-	function () {
-	  function Dialer(socket, cloudRTC) {
-	    this.socket = socket;
-	    this.cloudRTC = cloudRTC;
-	  }
-
-	  Dialer.prototype.dial = function (callOptions) {
-	    return __awaiter$6(this, void 0, void 0, function () {
-	      var invitees, currentUserId, cloudRTCToken, call;
-	      return __generator$6(this, function (_a) {
-	        switch (_a.label) {
-	          case 0:
-	            this.validate(callOptions);
-	            invitees = new Array();
-
-	            if (callOptions.to.users) {
-	              callOptions.to.users.forEach(function (user) {
-	                invitees.push(new rtc_user_1$2.RTCUser(user.id, user.data, false, false, false));
-	              });
-	            } else {
-	              invitees.push(new rtc_user_1$2.RTCUser(callOptions.to.id, callOptions.to.data, false, false, false));
-	            }
-
-	            currentUserId = rtc_1$1.RTC.userId;
-	            return [4
-	            /*yield*/
-	            , this.askNewToken()];
-
-	          case 1:
-	            cloudRTCToken = _a.sent();
-	            cloudRTCToken.video = false;
-	            cloudRTCToken.voice = false;
-	            this.cloudRTC.createEngine(currentUserId);
-	            return [4
-	            /*yield*/
-	            , this.cloudRTC.join(cloudRTCToken)];
-
-	          case 2:
-	            _a.sent();
-
-	            call = call_1$7.Call.buildDialingCall(cloudRTCToken.callId, callOptions.mediaType, callOptions.to.type, invitees, currentUserId, this.socket.userData);
-	            console.info("init call: " + JSON.stringify(call));
-	            return [4
-	            /*yield*/
-	            , this.sendDialRequest(callOptions, call.id)];
-
-	          case 3:
-	            _a.sent();
-
-	            callback_utils_1$6.CallbackUtils.onSuccess(callOptions);
-	            return [2
-	            /*return*/
-	            ];
-	        }
-	      });
-	    });
-	  };
-
-	  Dialer.prototype.askNewToken = function () {
-	    return __awaiter$6(this, void 0, void 0, function () {
-	      var _this = this;
-
-	      return __generator$6(this, function (_a) {
-	        return [2
-	        /*return*/
-	        , new Promise(function (resolve, reject) {
-	          var rocket = new Rocket_1$5["default"]({
-	            name: RocketTypes_1$5.RocketTypes.RTC_ASK_NEW_TOKEN,
-	            params: {},
-	            permission: Permission_1$5.Permission.WRITE,
-	            singleTimeout: SocketTimeout_1$5.SocketTimeout.commonRequestSingle,
-	            totalTimeout: SocketTimeout_1$5.SocketTimeout.commonRequestTotal,
-	            success: function success(res) {
-	              resolve(JSON.parse(res.content));
-	            },
-	            fail: function fail(err) {
-	              reject({
-	                code: 400,
-	                content: err.content
-	              });
-	            }
-	          });
-
-	          _this.socket.emit(rocket);
-	        })];
-	      });
-	    });
-	  };
-	  /****
-	   *  to
-	   *      to.type 只能是group或者private
-	   *      to.id 字符串或者数字, 不能包含自己
-	   *      to.data  空，字符串或者对象
-	   *      users，要么为空， 要么是数组，并且每个对象里都应该包含id和data，并且每个id和data都按照上边的规则来
-	   *  mediaType，必填，必须是，voice或者video， 枚举验证？
-	   *  notification：可以为空，若不为空，必须有title和body，并且长度要与之前的匹配
-	   *
-	   */
-
-
-	  Dialer.prototype.validate = function (callOptions) {
-	    if (call_1$7.Call.current != null) {
-	      throw {
-	        code: 400,
-	        content: 'The current call has not been end.'
-	      };
-	    }
-
-	    validator_utils_1$3["default"].validateId(callOptions.to.id, "to.id");
-
-	    if (callOptions.to.type == GoEasy_1$1.Scene.PRIVATE) {
-	      if (callOptions.to.id === rtc_1$1.RTC.userId) {
-	        throw {
-	          code: 400,
-	          content: 'to.id should not be current caller id.'
-	        };
-	      }
-	    } else if (callOptions.to.type == GoEasy_1$1.Scene.GROUP) {
-	      if (!Calibrator_1$1["default"].isArray(callOptions.to.users) || Calibrator_1$1["default"].isEmpty(callOptions.to.users)) {
-	        throw {
-	          code: 400,
-	          content: 'to.users must be an non-empty array.'
-	        };
-	      }
-
-	      callOptions.to.users.forEach(function (user) {
-	        validator_utils_1$3["default"].validateId(user.id, "to.users.id");
-	      });
-	    } else {
-	      throw {
-	        code: 400,
-	        content: "to.type must be 'private' or 'group."
-	      };
-	    }
-
-	    if (Calibrator_1$1["default"].isEmpty(callOptions.mediaType) || callOptions.mediaType !== media_type_1$1.MediaType.VOICE && callOptions.mediaType !== media_type_1$1.MediaType.VIDEO) {
-	      throw {
-	        code: 400,
-	        content: 'media type is invalid.'
-	      };
-	    }
-
-	    validator_utils_1$3["default"].validateNotification(callOptions.notification);
-	  };
-	  /**
-	   *
-	   * todo: 这里到底应该传callOption还是call
-	   * 按理说，callOption帮助创建好了call对象，就不应该传的太深，call应该来接替这个工作，但是call里边没有notification
-	   *
-	   *
-	   * @param callOptions
-	   * @param callId
-	   */
-
-
-	  Dialer.prototype.sendDialRequest = function (callOptions, callId) {
-	    var _this = this;
-
-	    var request;
-	    var invitees;
-
-	    if (callOptions.to.type === GoEasy_1$1.Scene.GROUP) {
-	      invitees = callOptions.to.users;
-	      request = dial_request_1.DialRequest.buildGroupRequest(callOptions.mediaType.toString(), callOptions.to.id, callOptions.to.data, invitees, callOptions.notification, callId);
-	    } else {
-	      invitees = new Array();
-	      invitees.push({
-	        id: callOptions.to.id,
-	        data: callOptions.to.data
-	      });
-	      request = dial_request_1.DialRequest.buildPrivateRequest(callOptions.mediaType.toString(), invitees, callOptions.notification, callId);
-	    }
-
-	    return new Promise(function (resolve, reject) {
-	      var rocket = new Rocket_1$5["default"]({
-	        name: RocketTypes_1$5.RocketTypes.RTC_DIAL,
-	        params: request,
-	        permission: Permission_1$5.Permission.WRITE,
-	        singleTimeout: SocketTimeout_1$5.SocketTimeout.commonRequestSingle,
-	        totalTimeout: SocketTimeout_1$5.SocketTimeout.commonRequestTotal,
-	        success: function success() {
-	          resolve();
-	        },
-	        fail: function fail(err) {
-	          //todo：确认是具体的拨打失败事件，还是通用的通话结束事件
-	          goeasy_event_center_1$9.GoEasyEventCenter.fire(rtc_internal_events_1$7.RTCInternalEvents.CLIENT_DIAL_FAILED);
-	          reject({
-	            code: 400,
-	            content: err.content
-	          });
-	        }
-	      });
-
-	      _this.socket.emit(rocket);
-	    });
-	  };
-
-	  return Dialer;
-	}();
-
-	dialer.Dialer = Dialer;
-
-	var ringer = {};
-
-	var endReason = {};
-
-	(function (exports) {
-
-	  exports.__esModule = true;
-	  exports.EndReason = void 0;
-
-	  (function (EndReason) {
-	    EndReason["USER_BUSY"] = "USER_BUSY";
-	    EndReason["USER_TIMEOUT"] = "USER_TIMEOUT";
-	    EndReason["USER_REJECTED"] = "USER_REJECTED";
-	    EndReason["USER_HANGUP"] = "USER_HANGUP";
-	    EndReason["LOCAL_TIMEOUT"] = "LOCAL_TIMEOUT";
-	    EndReason["OTHER_DEVICE_HANDLED"] = "OTHER_DEVICE_HANDLED";
-	    EndReason["NO_USER_ACCEPT"] = "NO_USER_ACCEPT";
-	    EndReason["USER_CANCEL"] = "USER_CANCEL";
-	  })(exports.EndReason || (exports.EndReason = {}));
-	})(endReason);
-
-	var __awaiter$5 = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
-	  function adopt(value) {
-	    return value instanceof P ? value : new P(function (resolve) {
-	      resolve(value);
-	    });
-	  }
-
-	  return new (P || (P = Promise))(function (resolve, reject) {
-	    function fulfilled(value) {
-	      try {
-	        step(generator.next(value));
-	      } catch (e) {
-	        reject(e);
-	      }
-	    }
-
-	    function rejected(value) {
-	      try {
-	        step(generator["throw"](value));
-	      } catch (e) {
-	        reject(e);
-	      }
-	    }
-
-	    function step(result) {
-	      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
-	    }
-
-	    step((generator = generator.apply(thisArg, _arguments || [])).next());
-	  });
-	};
-
-	var __generator$5 = commonjsGlobal && commonjsGlobal.__generator || function (thisArg, body) {
-	  var _ = {
-	    label: 0,
-	    sent: function sent() {
-	      if (t[0] & 1) throw t[1];
-	      return t[1];
-	    },
-	    trys: [],
-	    ops: []
-	  },
-	      f,
-	      y,
-	      t,
-	      g;
-	  return g = {
-	    next: verb(0),
-	    "throw": verb(1),
-	    "return": verb(2)
-	  }, typeof Symbol === "function" && (g[Symbol.iterator] = function () {
-	    return this;
-	  }), g;
-
-	  function verb(n) {
-	    return function (v) {
-	      return step([n, v]);
-	    };
-	  }
-
-	  function step(op) {
-	    if (f) throw new TypeError("Generator is already executing.");
-
-	    while (_) {
-	      try {
-	        if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-	        if (y = 0, t) op = [op[0] & 2, t.value];
-
-	        switch (op[0]) {
-	          case 0:
-	          case 1:
-	            t = op;
-	            break;
-
-	          case 4:
-	            _.label++;
-	            return {
-	              value: op[1],
-	              done: false
-	            };
-
-	          case 5:
-	            _.label++;
-	            y = op[1];
-	            op = [0];
-	            continue;
-
-	          case 7:
-	            op = _.ops.pop();
-
-	            _.trys.pop();
-
-	            continue;
-
-	          default:
-	            if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
-	              _ = 0;
-	              continue;
-	            }
-
-	            if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
-	              _.label = op[1];
-	              break;
-	            }
-
-	            if (op[0] === 6 && _.label < t[1]) {
-	              _.label = t[1];
-	              t = op;
-	              break;
-	            }
-
-	            if (t && _.label < t[2]) {
-	              _.label = t[2];
-
-	              _.ops.push(op);
-
-	              break;
-	            }
-
-	            if (t[2]) _.ops.pop();
-
-	            _.trys.pop();
-
-	            continue;
-	        }
-
-	        op = body.call(thisArg, _);
-	      } catch (e) {
-	        op = [6, e];
-	        y = 0;
-	      } finally {
-	        f = t = 0;
-	      }
-	    }
-
-	    if (op[0] & 5) throw op[1];
-	    return {
-	      value: op[0] ? op[1] : void 0,
-	      done: true
-	    };
-	  }
-	};
-
-	ringer.__esModule = true;
-	ringer.Ringer = void 0;
-	var RemoteEvents_1$3 = RemoteEvents;
-	var call_1$6 = call;
-	var goeasy_event_center_1$8 = goeasyEventCenter;
-	var rtc_internal_events_1$6 = rtcInternalEvents;
-	var rtc_user_1$1 = rtcUser;
-	var rtc_api_events_1$2 = rtcApiEvents;
-	var GNS_1 = GNS$1;
-	var rtc_1 = rtc;
-	var end_reason_1$1 = endReason;
-	var rtc_call_status_1$2 = rtcCallStatus;
-
-	var Ringer =
-	/** @class */
-	function () {
-	  function Ringer(apiEventCenter) {
-	    this.apiEventCenter = apiEventCenter;
-	    GNS_1.GNS.instance.addAssembler(new (
-	    /** @class */
-	    function () {
-	      function class_1() {}
-
-	      class_1.prototype.assemble = function (oldPayload) {
-	        return {
-	          callId: oldPayload.callId,
-	          type: oldPayload.type,
-	          mediaType: oldPayload.mediaType,
-	          inviterId: oldPayload.inviterId,
-	          toId: oldPayload.toId
-	        };
-	      };
-
-	      class_1.prototype.support = function (oldPayload) {
-	        return !!oldPayload.callId;
-	      };
-
-	      return class_1;
-	    }())());
-	  }
-
-	  Ringer.prototype.initialSocket = function (socket, cloudRTC) {
-	    var _this = this;
-
-	    this.socket = socket;
-	    this.cloudRTC = cloudRTC;
-	    this.socket.addMessageObserver(RemoteEvents_1$3.RemoteEvents.RTC_RING_EVENT, this.onRing.bind(this));
-	    this.socket.addMessageObserver(RemoteEvents_1$3.RemoteEvents.RTC_CANCEL_RING, function (ringOtherEndEvent) {
-	      return _this.onCancelRing(ringOtherEndEvent);
-	    });
-	  };
-
-	  Ringer.prototype.onCancelRing = function (cancelRingEvent) {
-	    return __awaiter$5(this, void 0, void 0, function () {
-	      var result;
-	      return __generator$5(this, function (_a) {
-	        result = {
-	          action: end_reason_1$1.EndReason.OTHER_DEVICE_HANDLED
-	        };
-	        console.info("通话在其他端处理: " + JSON.stringify(cancelRingEvent));
-
-	        if (cancelRingEvent.callId === call_1$6.Call.current.id && cancelRingEvent.userId === rtc_1.RTC.userId && call_1$6.Call.current.status === rtc_call_status_1$2.RTCCallStatus.ringing) {
-	          this.apiEventCenter.fire(rtc_api_events_1$2.RTCApiEvents.CALL_ENDED, result);
-	          call_1$6.Call.current = null;
-	          this.cloudRTC.destroy();
-	        } else {
-	          console.info("CancelRingEvent 数据不匹配 cancelRingEvent: " + JSON.stringify(cancelRingEvent) + ", currentCall: " + JSON.stringify(call_1$6.Call.current));
-	        }
-
-	        return [2
-	        /*return*/
-	        ];
-	      });
-	    });
-	  };
-
-	  Ringer.prototype.onRing = function (ringEvent) {
-	    if (call_1$6.Call.current != null) {
-	      goeasy_event_center_1$8.GoEasyEventCenter.fire(rtc_internal_events_1$6.RTCInternalEvents.CLIENT_BUSY, ringEvent.callId);
-	    } else {
-	      this.cloudRTC.createEngine(rtc_1.RTC.userId);
-	      var inviter_1 = null;
-	      var invitees_1 = new Array();
-	      ringEvent.users.forEach(function (user) {
-	        if (user.invitation) {
-	          inviter_1 = new rtc_user_1$1.RTCUser(user.id, JSON.parse(user.data), false, false, false);
-	        } else {
-	          invitees_1.push(new rtc_user_1$1.RTCUser(user.id, JSON.parse(user.data), false, false, false));
-	        }
-	      }); //todo: 把token传递给接听域
-
-	      var call = call_1$6.Call.buildRingCall(ringEvent.callId, ringEvent.mediaType, ringEvent.type, inviter_1, invitees_1);
-	      this.createNotification(call, ringEvent);
-	      this.apiEventCenter.fire(rtc_api_events_1$2.RTCApiEvents.RING, {
-	        id: call.inviter.id,
-	        data: call.inviter.data
-	      });
-	    }
-	  };
-
-	  Ringer.prototype.createNotification = function (call, ringEvent) {
-	    var supportGNS = GNS_1.GNS.instance.supportNotification();
-
-	    if (ringEvent.notification && supportGNS) {
-	      var notificationData = {
-	        callId: call.id,
-	        type: call.type,
-	        mediaType: call.mediaType,
-	        inviterId: call.inviter.id,
-	        toId: ringEvent.toId
-	      };
-	      var notification = ringEvent.notification;
-	      GNS_1.GNS.instance.createLocalNotification(notification.title, notification.body, notificationData);
-	    }
-	  };
-
-	  return Ringer;
-	}();
-
-	ringer.Ringer = Ringer;
-
-	var aliRtc = {};
-
-	var cloudRtc = {};
-
-	cloudRtc.__esModule = true;
-	cloudRtc.CloudRTC = void 0;
-
-	var CloudRTC =
-	/** @class */
-	function () {
-	  function CloudRTC(goEasySocket) {
-	    this.goEasySocket = goEasySocket;
-	  }
-
-	  return CloudRTC;
-	}();
-
-	cloudRtc.CloudRTC = CloudRTC;
-
-	var __extends = commonjsGlobal && commonjsGlobal.__extends || function () {
-	  var _extendStatics = function extendStatics(d, b) {
-	    _extendStatics = Object.setPrototypeOf || {
-	      __proto__: []
-	    } instanceof Array && function (d, b) {
-	      d.__proto__ = b;
-	    } || function (d, b) {
-	      for (var p in b) {
-	        if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
-	      }
-	    };
-
-	    return _extendStatics(d, b);
-	  };
-
-	  return function (d, b) {
-	    if (typeof b !== "function" && b !== null) throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-
-	    _extendStatics(d, b);
-
-	    function __() {
-	      this.constructor = d;
-	    }
-
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	  };
-	}();
-
-	aliRtc.__esModule = true;
-	aliRtc.AliRTC = void 0;
-	var cloud_rtc_1 = cloudRtc;
-	var goeasy_event_center_1$7 = goeasyEventCenter;
-	var rtc_internal_events_1$5 = rtcInternalEvents;
-	var media_type_1 = mediaType;
-	var call_1$5 = call;
-
-	var AliRTC =
-	/** @class */
-	function (_super) {
-	  __extends(AliRTC, _super);
-
-	  function AliRTC(socket) {
-	    var _this = _super.call(this, socket) || this;
-
-	    _this.rtcClientPlugin = uni.requireNativePlugin('RTCClientPlugin');
-
-	    if (!_this.rtcClientPlugin) {
-	      //todo: 待文档完成后补充真实的连接
-	      throw 'Please configure GoEasy RTC native plugin first: http://www.goeasy.io';
-	    }
-
-	    var connectionLost = function connectionLost(result) {
-	      goeasy_event_center_1$7.GoEasyEventCenter.fire(rtc_internal_events_1$5.RTCInternalEvents.RTC_DISCONNECT, call_1$5.Call.current.id);
-	    };
-
-	    plus.globalEvent.addEventListener('connectionLost', connectionLost);
-
-	    var connectionRecovery = function connectionRecovery(result) {
-	      goeasy_event_center_1$7.GoEasyEventCenter.fire(rtc_internal_events_1$5.RTCInternalEvents.RTC_RECONNECT, call_1$5.Call.current.id);
-	    };
-
-	    plus.globalEvent.addEventListener('connectionRecovery', connectionRecovery);
-	    plus.globalEvent.removeEventListener('receivedRemoteFlow'); //监听拉流信息
-
-	    var receivedRemoteFlow = function receivedRemoteFlow(receivedRemoteFlowResult) {
-	      goeasy_event_center_1$7.GoEasyEventCenter.fire(rtc_internal_events_1$5.RTCInternalEvents.RECEIVED_RTC_REMOTE_FLOW, receivedRemoteFlowResult);
-	    };
-
-	    plus.globalEvent.addEventListener('receivedRemoteFlow', receivedRemoteFlow);
-	    return _this;
-	  }
-
-	  AliRTC.prototype.destroy = function () {
-	    this.rtcClientPlugin.destroyEngine();
-	  };
-
-	  AliRTC.prototype.createEngine = function (userId) {
-	    this.rtcClientPlugin.createEngine({
-	      userId: userId
-	    });
-	  };
-
-	  AliRTC.prototype.join = function (cloudRTCToken) {
-	    var self = this;
-	    cloudRTCToken.voice = false;
-	    return new Promise(function (resolve, reject) {
-	      self.rtcClientPlugin.joinChannel(cloudRTCToken, function () {
-	        console.log('user{' + cloudRTCToken.userId + '}join channel{' + cloudRTCToken.callId + '} successful.');
-	        resolve();
-	      }, function (errorCode) {
-	        console.log('user{' + cloudRTCToken.userId + '}join channel{' + cloudRTCToken.callId + '} failed: ' + errorCode);
-	        goeasy_event_center_1$7.GoEasyEventCenter.fire(rtc_internal_events_1$5.RTCInternalEvents.CLIENT_JOIN_CHANNEL_FAILED);
-	        reject({
-	          code: 400,
-	          content: 'Failed to join Channel, error code:' + errorCode
-	        });
-	      });
-	    });
-	  };
-
-	  AliRTC.prototype.push = function (mediaType) {
-	    if (mediaType === media_type_1.MediaType.VIDEO) {
-	      this.rtcClientPlugin.callVideo(); // this.rtcClientPlugin.callVoice();
-	    }
-	  };
-
-	  AliRTC.prototype.switchViewLevel = function (userId) {
-	    this.rtcClientPlugin.switchLevel({
-	      userId: userId
-	    });
-	  };
-
-	  return AliRTC;
-	}(cloud_rtc_1.CloudRTC);
-
-	aliRtc.AliRTC = AliRTC;
-
-	var acceptor = {};
-
-	var acceptRequest = {};
-
-	acceptRequest.__esModule = true;
-	acceptRequest.AcceptRequest = void 0;
-
-	var AcceptRequest =
-	/** @class */
-	function () {
-	  function AcceptRequest(callId) {
-	    this.callId = callId;
-	  }
-
-	  return AcceptRequest;
-	}();
-
-	acceptRequest.AcceptRequest = AcceptRequest;
-
-	var __awaiter$4 = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
-	  function adopt(value) {
-	    return value instanceof P ? value : new P(function (resolve) {
-	      resolve(value);
-	    });
-	  }
-
-	  return new (P || (P = Promise))(function (resolve, reject) {
-	    function fulfilled(value) {
-	      try {
-	        step(generator.next(value));
-	      } catch (e) {
-	        reject(e);
-	      }
-	    }
-
-	    function rejected(value) {
-	      try {
-	        step(generator["throw"](value));
-	      } catch (e) {
-	        reject(e);
-	      }
-	    }
-
-	    function step(result) {
-	      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
-	    }
-
-	    step((generator = generator.apply(thisArg, _arguments || [])).next());
-	  });
-	};
-
-	var __generator$4 = commonjsGlobal && commonjsGlobal.__generator || function (thisArg, body) {
-	  var _ = {
-	    label: 0,
-	    sent: function sent() {
-	      if (t[0] & 1) throw t[1];
-	      return t[1];
-	    },
-	    trys: [],
-	    ops: []
-	  },
-	      f,
-	      y,
-	      t,
-	      g;
-	  return g = {
-	    next: verb(0),
-	    "throw": verb(1),
-	    "return": verb(2)
-	  }, typeof Symbol === "function" && (g[Symbol.iterator] = function () {
-	    return this;
-	  }), g;
-
-	  function verb(n) {
-	    return function (v) {
-	      return step([n, v]);
-	    };
-	  }
-
-	  function step(op) {
-	    if (f) throw new TypeError("Generator is already executing.");
-
-	    while (_) {
-	      try {
-	        if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-	        if (y = 0, t) op = [op[0] & 2, t.value];
-
-	        switch (op[0]) {
-	          case 0:
-	          case 1:
-	            t = op;
-	            break;
-
-	          case 4:
-	            _.label++;
-	            return {
-	              value: op[1],
-	              done: false
-	            };
-
-	          case 5:
-	            _.label++;
-	            y = op[1];
-	            op = [0];
-	            continue;
-
-	          case 7:
-	            op = _.ops.pop();
-
-	            _.trys.pop();
-
-	            continue;
-
-	          default:
-	            if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
-	              _ = 0;
-	              continue;
-	            }
-
-	            if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
-	              _.label = op[1];
-	              break;
-	            }
-
-	            if (op[0] === 6 && _.label < t[1]) {
-	              _.label = t[1];
-	              t = op;
-	              break;
-	            }
-
-	            if (t && _.label < t[2]) {
-	              _.label = t[2];
-
-	              _.ops.push(op);
-
-	              break;
-	            }
-
-	            if (t[2]) _.ops.pop();
-
-	            _.trys.pop();
-
-	            continue;
-	        }
-
-	        op = body.call(thisArg, _);
-	      } catch (e) {
-	        op = [6, e];
-	        y = 0;
-	      } finally {
-	        f = t = 0;
-	      }
-	    }
-
-	    if (op[0] & 5) throw op[1];
-	    return {
-	      value: op[0] ? op[1] : void 0,
-	      done: true
-	    };
-	  }
-	};
-
-	acceptor.__esModule = true;
-	acceptor.Acceptor = void 0;
-	var call_1$4 = call;
-	var rtc_call_status_1$1 = rtcCallStatus;
-	var callback_utils_1$5 = callbackUtils;
-	var Rocket_1$4 = Rocket;
-	var Permission_1$4 = Permission;
-	var SocketTimeout_1$4 = SocketTimeout;
-	var goeasy_event_center_1$6 = goeasyEventCenter;
-	var rtc_internal_events_1$4 = rtcInternalEvents;
-	var accept_request_1 = acceptRequest;
-	var RocketTypes_1$4 = RocketTypes;
-
-	var Acceptor =
-	/** @class */
-	function () {
-	  function Acceptor(socket, cloudRTC, apiEventCenter, cloudRTCToken) {
-	    var _this = this;
-
-	    this.socket = socket;
-	    this.cloudRTC = cloudRTC;
-	    this.apiEventCenter = apiEventCenter;
-	    this.acceptToken = cloudRTCToken;
-	    goeasy_event_center_1$6.GoEasyEventCenter.on(rtc_internal_events_1$4.RTCInternalEvents.RECEIVED_RTC_REMOTE_FLOW, function (result) {
-	      return _this.sendAcceptRequest();
-	    });
-	  }
-
-	  Acceptor.prototype.accept = function (callOptions) {
-	    return __awaiter$4(this, void 0, void 0, function () {
-	      var call, acceptToken;
-	      return __generator$4(this, function (_a) {
-	        switch (_a.label) {
-	          case 0:
-	            call = call_1$4.Call.current;
-	            this.acceptCallback = callOptions;
-	            if (!(call && call.status == rtc_call_status_1$1.RTCCallStatus.ringing)) return [3
-	            /*break*/
-	            , 2];
-	            acceptToken = this.acceptToken;
-	            acceptToken.voice = true;
-	            acceptToken.video = call.isVideo();
-	            console.info("cloudRTCToken: " + JSON.stringify(acceptToken));
-	            return [4
-	            /*yield*/
-	            , this.cloudRTC.join(acceptToken)];
-
-	          case 1:
-	            _a.sent();
-
-	            return [3
-	            /*break*/
-	            , 3];
-
-	          case 2:
-	            throw 'No incoming call to accept';
-
-	          case 3:
-	            return [2
-	            /*return*/
-	            ];
-	        }
-	      });
-	    });
-	  };
-
-	  Acceptor.prototype.sendAcceptRequest = function () {
-	    var _this = this;
-
-	    var currentCall = call_1$4.Call.current; //todo:
-	    // 1.要不要检查channel？因为不加入channel的话，是收不到这个事件的，这个事件的channel一定是一致的，
-	    // 2. 要不要检查用户？ 有没有可能收到channel以外的流？应该不可能
-	    // 3. 要不要检查状态？ 要，只有地第一次变化才算接听，其他的只能算有人加入 USER_ACCEPTED
-
-	    if (currentCall.status === rtc_call_status_1$1.RTCCallStatus.ringing) {
-	      var request = new accept_request_1.AcceptRequest(currentCall.id);
-	      var rocket = new Rocket_1$4["default"]({
-	        name: RocketTypes_1$4.RocketTypes.RTC_ACCEPT,
-	        params: request,
-	        permission: Permission_1$4.Permission.WRITE,
-	        singleTimeout: SocketTimeout_1$4.SocketTimeout.commonRequestSingle,
-	        totalTimeout: SocketTimeout_1$4.SocketTimeout.commonRequestTotal,
-	        success: function success() {
-	          currentCall.status = rtc_call_status_1$1.RTCCallStatus.in_progress;
-	          var mine = currentCall.mine();
-	          mine.accepted = true;
-	          mine.video = true;
-	          mine.voice = currentCall.isVideo();
-
-	          if (_this.acceptCallback) {
-	            callback_utils_1$5.CallbackUtils.onSuccess(_this.acceptCallback);
-	          }
-	        },
-	        fail: function fail(err) {
-	          goeasy_event_center_1$6.GoEasyEventCenter.fire(rtc_internal_events_1$4.RTCInternalEvents.CLIENT_ACCEPT_FAILED); //todo: end域该怎么处理？
-
-	          if (_this.acceptCallback) {
-	            callback_utils_1$5.CallbackUtils.onFailed(_this.acceptCallback, err);
-	          }
-	        }
-	      });
-	      this.socket.emit(rocket);
-	    }
-	  };
-
-	  return Acceptor;
-	}();
-
-	acceptor.Acceptor = Acceptor;
-
-	var ender = {};
-
-	var endRequest = {};
-
-	endRequest.__esModule = true;
-	endRequest.EndRequest = void 0;
-
-	var EndRequest =
-	/** @class */
-	function () {
-	  function EndRequest(callId) {
-	    this.callId = callId;
-	  }
-
-	  return EndRequest;
-	}();
-
-	endRequest.EndRequest = EndRequest;
-
-	var reason = {};
-
-	reason.__esModule = true;
-	reason.Reason = void 0;
-
-	var Reason =
-	/** @class */
-	function () {
-	  function Reason(reason) {
-	    this.reason = reason;
-	  }
-
-	  return Reason;
-	}();
-
-	reason.Reason = Reason;
-
-	var __awaiter$3 = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
-	  function adopt(value) {
-	    return value instanceof P ? value : new P(function (resolve) {
-	      resolve(value);
-	    });
-	  }
-
-	  return new (P || (P = Promise))(function (resolve, reject) {
-	    function fulfilled(value) {
-	      try {
-	        step(generator.next(value));
-	      } catch (e) {
-	        reject(e);
-	      }
-	    }
-
-	    function rejected(value) {
-	      try {
-	        step(generator["throw"](value));
-	      } catch (e) {
-	        reject(e);
-	      }
-	    }
-
-	    function step(result) {
-	      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
-	    }
-
-	    step((generator = generator.apply(thisArg, _arguments || [])).next());
-	  });
-	};
-
-	var __generator$3 = commonjsGlobal && commonjsGlobal.__generator || function (thisArg, body) {
-	  var _ = {
-	    label: 0,
-	    sent: function sent() {
-	      if (t[0] & 1) throw t[1];
-	      return t[1];
-	    },
-	    trys: [],
-	    ops: []
-	  },
-	      f,
-	      y,
-	      t,
-	      g;
-	  return g = {
-	    next: verb(0),
-	    "throw": verb(1),
-	    "return": verb(2)
-	  }, typeof Symbol === "function" && (g[Symbol.iterator] = function () {
-	    return this;
-	  }), g;
-
-	  function verb(n) {
-	    return function (v) {
-	      return step([n, v]);
-	    };
-	  }
-
-	  function step(op) {
-	    if (f) throw new TypeError("Generator is already executing.");
-
-	    while (_) {
-	      try {
-	        if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-	        if (y = 0, t) op = [op[0] & 2, t.value];
-
-	        switch (op[0]) {
-	          case 0:
-	          case 1:
-	            t = op;
-	            break;
-
-	          case 4:
-	            _.label++;
-	            return {
-	              value: op[1],
-	              done: false
-	            };
-
-	          case 5:
-	            _.label++;
-	            y = op[1];
-	            op = [0];
-	            continue;
-
-	          case 7:
-	            op = _.ops.pop();
-
-	            _.trys.pop();
-
-	            continue;
-
-	          default:
-	            if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
-	              _ = 0;
-	              continue;
-	            }
-
-	            if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
-	              _.label = op[1];
-	              break;
-	            }
-
-	            if (op[0] === 6 && _.label < t[1]) {
-	              _.label = t[1];
-	              t = op;
-	              break;
-	            }
-
-	            if (t && _.label < t[2]) {
-	              _.label = t[2];
-
-	              _.ops.push(op);
-
-	              break;
-	            }
-
-	            if (t[2]) _.ops.pop();
-
-	            _.trys.pop();
-
-	            continue;
-	        }
-
-	        op = body.call(thisArg, _);
-	      } catch (e) {
-	        op = [6, e];
-	        y = 0;
-	      } finally {
-	        f = t = 0;
-	      }
-	    }
-
-	    if (op[0] & 5) throw op[1];
-	    return {
-	      value: op[0] ? op[1] : void 0,
-	      done: true
-	    };
-	  }
-	};
-
-	ender.__esModule = true;
-	ender.Ender = void 0;
-	var goeasy_event_center_1$5 = goeasyEventCenter;
-	var rtc_internal_events_1$3 = rtcInternalEvents;
-	var call_1$3 = call;
-	var callback_utils_1$4 = callbackUtils;
-	var Rocket_1$3 = Rocket;
-	var Permission_1$3 = Permission;
-	var SocketTimeout_1$3 = SocketTimeout;
-	var end_request_1 = endRequest;
-	var RemoteEvents_1$2 = RemoteEvents;
-	var rtc_api_events_1$1 = rtcApiEvents;
-	var RocketTypes_1$3 = RocketTypes;
-	var end_reason_1 = endReason;
-	var reason_1$1 = reason;
-
-	var Ender =
-	/** @class */
-	function () {
-	  function Ender(socket, apiEventCenter, cloudRTC) {
-	    var _this = this;
-
-	    this.apiEventCenter = apiEventCenter;
-	    this.cloudRTC = cloudRTC;
-	    this.goEasySocket = socket;
-	    goeasy_event_center_1$5.GoEasyEventCenter.on(rtc_internal_events_1$3.RTCInternalEvents.CLIENT_BUSY, function (callId) {
-	      return _this.onBusy(callId);
-	    });
-	    goeasy_event_center_1$5.GoEasyEventCenter.on(rtc_internal_events_1$3.RTCInternalEvents.RTC_TIMEOUT, function (callId) {
-	      return _this.onRTCTimeout(callId);
-	    });
-	    goeasy_event_center_1$5.GoEasyEventCenter.on(rtc_internal_events_1$3.RTCInternalEvents.GOEASY_TIMEOUT, function (callId) {
-	      return _this.onGoEasyTimeout(callId);
-	    });
-	    goeasy_event_center_1$5.GoEasyEventCenter.on(rtc_internal_events_1$3.RTCInternalEvents.CLIENT_DIAL_FAILED, function () {
-	      return _this.onDialFailed();
-	    });
-	    goeasy_event_center_1$5.GoEasyEventCenter.on(rtc_internal_events_1$3.RTCInternalEvents.CLIENT_ACCEPT_FAILED, function () {
-	      return _this.onAcceptFailed();
-	    });
-	    socket.addMessageObserver(RemoteEvents_1$2.RemoteEvents.RTC_CALL_END, this.callEnd.bind(this)); //todo: 不需要监听客goeasy网络断开嘛？ 之前说了如果没信号了，看他自己愿不愿意等，我们不管他
-	  } //todo: 是否应该在cloudRTC域？
-
-
-	  Ender.prototype.onDialFailed = function () {
-	    return __awaiter$3(this, void 0, void 0, function () {
-	      var _this = this;
-
-	      return __generator$3(this, function (_a) {
-	        switch (_a.label) {
-	          case 0:
-	            return [4
-	            /*yield*/
-	            , this.endCatch(function () {
-	              return __awaiter$3(_this, void 0, void 0, function () {
-	                return __generator$3(this, function (_a) {
-	                  call_1$3.Call.current = null;
-	                  this.cloudRTC.destroy();
-	                  return [2
-	                  /*return*/
-	                  ];
-	                });
-	              });
-	            }, null)];
-
-	          case 1:
-	            _a.sent();
-
-	            return [2
-	            /*return*/
-	            ];
-	        }
-	      });
-	    });
-	  }; //todo: 要发消息吗？
-
-
-	  Ender.prototype.onAcceptFailed = function () {
-	    return __awaiter$3(this, void 0, void 0, function () {
-	      var _this = this;
-
-	      return __generator$3(this, function (_a) {
-	        switch (_a.label) {
-	          case 0:
-	            return [4
-	            /*yield*/
-	            , this.endCatch(function () {
-	              return __awaiter$3(_this, void 0, void 0, function () {
-	                var callId;
-	                return __generator$3(this, function (_a) {
-	                  switch (_a.label) {
-	                    case 0:
-	                      callId = call_1$3.Call.current.id;
-	                      console.info("Call: " + callId + "接通失败");
-	                      call_1$3.Call.current = null; //todo:上一行代码出问题，这里是不会执行的 ，如果给goeasy说失败了，怎么办？
-
-	                      this.cloudRTC.destroy();
-	                      return [4
-	                      /*yield*/
-	                      , this.sendUserEndRequest(callId, RocketTypes_1$3.RocketTypes.RTC_ACCEPT_FAILED)];
-
-	                    case 1:
-	                      _a.sent();
-
-	                      return [2
-	                      /*return*/
-	                      ];
-	                  }
-	                });
-	              });
-	            }, null)];
-
-	          case 1:
-	            _a.sent();
-
-	            return [2
-	            /*return*/
-	            ];
-	        }
-	      });
-	    });
-	  };
-
-	  Ender.prototype.onBusy = function (callId) {
-	    return __awaiter$3(this, void 0, void 0, function () {
-	      return __generator$3(this, function (_a) {
-	        switch (_a.label) {
-	          case 0:
-	            console.info("Call: " + callId + " 占线");
-	            return [4
-	            /*yield*/
-	            , this.sendUserEndRequest(callId, RocketTypes_1$3.RocketTypes.RTC_CLIENT_BUSY)];
-
-	          case 1:
-	            _a.sent();
-
-	            return [2
-	            /*return*/
-	            ];
-	        }
-	      });
-	    });
-	  }; //todo： 我们有用户离开的api吗？
-
-
-	  Ender.prototype.onRTCTimeout = function (callId) {
-	    return __awaiter$3(this, void 0, void 0, function () {
-	      var result;
-
-	      var _this = this;
-
-	      return __generator$3(this, function (_a) {
-	        switch (_a.label) {
-	          case 0:
-	            result = {
-	              action: end_reason_1.EndReason.LOCAL_TIMEOUT
-	            };
-	            return [4
-	            /*yield*/
-	            , this.endCatch(function () {
-	              return __awaiter$3(_this, void 0, void 0, function () {
-	                return __generator$3(this, function (_a) {
-	                  switch (_a.label) {
-	                    case 0:
-	                      console.info("Call: " + callId + " rtc 断开");
-	                      call_1$3.Call.current = null;
-	                      this.cloudRTC.destroy();
-	                      this.apiEventCenter.fire(rtc_api_events_1$1.RTCApiEvents.CALL_ENDED, result);
-	                      return [4
-	                      /*yield*/
-	                      , this.sendUserEndRequest(callId, RocketTypes_1$3.RocketTypes.RTC_TIMEOUT)];
-
-	                    case 1:
-	                      _a.sent();
-
-	                      return [2
-	                      /*return*/
-	                      ];
-	                  }
-	                });
-	              });
-	            }, result)];
-
-	          case 1:
-	            _a.sent();
-
-	            return [2
-	            /*return*/
-	            ];
-	        }
-	      });
-	    });
-	  };
-
-	  Ender.prototype.onGoEasyTimeout = function (callId) {
-	    return __awaiter$3(this, void 0, void 0, function () {
-	      var result;
-
-	      var _this = this;
-
-	      return __generator$3(this, function (_a) {
-	        switch (_a.label) {
-	          case 0:
-	            result = {
-	              action: end_reason_1.EndReason.LOCAL_TIMEOUT
-	            };
-	            return [4
-	            /*yield*/
-	            , this.endCatch(function () {
-	              return __awaiter$3(_this, void 0, void 0, function () {
-	                return __generator$3(this, function (_a) {
-	                  console.info("Call: " + callId + " goEasy 断开");
-	                  call_1$3.Call.current = null;
-	                  this.cloudRTC.destroy();
-	                  this.apiEventCenter.fire(rtc_api_events_1$1.RTCApiEvents.CALL_ENDED, result);
-	                  return [2
-	                  /*return*/
-	                  ];
-	                });
-	              });
-	            }, result)];
-
-	          case 1:
-	            _a.sent();
-
-	            return [2
-	            /*return*/
-	            ];
-	        }
-	      });
-	    });
-	  }; //todo： 服务端结束，通话结束的api如何定义？
-
-
-	  Ender.prototype.callEnd = function (callEndEvent) {
-	    var _this = this;
-
-	    console.info("Call end event: " + JSON.stringify(callEndEvent));
-	    var call = call_1$3.Call.current;
-
-	    if (call === null) {
-	      return;
-	    }
-
-	    var userId = callEndEvent.userId;
-	    var reason = new reason_1$1.Reason(callEndEvent.endType);
-	    var rtcUser = call.findUser(userId);
-
-	    if (rtcUser) {
-	      reason.user = {
-	        id: rtcUser.id,
-	        data: rtcUser.data
-	      };
-	    }
-
-	    this.endCatch(function () {
-	      return __awaiter$3(_this, void 0, void 0, function () {
-	        return __generator$3(this, function (_a) {
-	          call_1$3.Call.current = null;
-	          this.cloudRTC.destroy();
-	          console.info("callEnd Call: " + JSON.stringify(reason));
-	          this.apiEventCenter.fire(rtc_api_events_1$1.RTCApiEvents.CALL_ENDED, reason);
-	          return [2
-	          /*return*/
-	          ];
-	        });
-	      });
-	    }, reason);
-	  };
-	  /**
-	   *
-	   * 结束通话目标
-	   * 1. 停止推拉流
-	   * 2. rtc的状态回到待机状态
-	   * 3. 清除有可能执行的定时任务或者可能触发的事件
-	   * 4. 要触发通话结束的事件
-	   *
-	   *
-	   *
-	   * @param callOptions
-	   */
-	  // destroy(){
-	  //     this.cloudRTC.destory();
-	  //
-	  //     Call.current = null;
-	  //
-	  //     清除有可能执行的定时任务或者可能触发的事件
-	  //
-	  //
-	  // }
-
-
-	  Ender.prototype.end = function (callOptions) {
-	    return __awaiter$3(this, void 0, void 0, function () {
-	      var action, callId, err_1;
-	      return __generator$3(this, function (_a) {
-	        switch (_a.label) {
-	          case 0:
-	            _a.trys.push([0, 2,, 3]); //todo: 如果没有电话不能接听
-
-
-	            if (call_1$3.Call.current === null) {
-	              console.info("当前通话为空, 不能结束.");
-	              return [2
-	              /*return*/
-	              ];
-	            }
-
-	            action = RocketTypes_1$3.RocketTypes.RTC_MANUAL_END;
-	            callId = call_1$3.Call.current.id;
-	            call_1$3.Call.current = null;
-	            this.cloudRTC.destroy();
-	            return [4
-	            /*yield*/
-	            , this.sendUserEndRequest(callId, action)];
-
-	          case 1:
-	            _a.sent();
-
-	            callback_utils_1$4.CallbackUtils.onSuccess(callOptions);
-	            return [3
-	            /*break*/
-	            , 3];
-
-	          case 2:
-	            err_1 = _a.sent();
-	            console.info("End failed: " + JSON.stringify(err_1));
-	            call_1$3.Call.current = null;
-	            this.cloudRTC.destroy();
-	            callback_utils_1$4.CallbackUtils.onSuccess(callOptions);
-	            return [3
-	            /*break*/
-	            , 3];
-
-	          case 3:
-	            return [2
-	            /*return*/
-	            ];
-	        }
-	      });
-	    });
-	  };
-
-	  Ender.prototype.sendUserEndRequest = function (callId, action) {
-	    var _this = this;
-
-	    var request = new end_request_1.EndRequest(callId);
-	    console.info("sendUserEndRequest: " + JSON.stringify(request));
-	    return new Promise(function (resolve, reject) {
-	      var rocket = new Rocket_1$3["default"]({
-	        name: action,
-	        params: request,
-	        permission: Permission_1$3.Permission.WRITE,
-	        singleTimeout: SocketTimeout_1$3.SocketTimeout.commonRequestSingle,
-	        totalTimeout: SocketTimeout_1$3.SocketTimeout.commonRequestTotal,
-	        success: function success() {
-	          resolve();
-	        },
-	        fail: function fail(err) {
-	          reject({
-	            code: 400,
-	            content: err.content
-	          });
-	        }
-	      });
-
-	      _this.goEasySocket.emit(rocket);
-	    });
-	  };
-
-	  Ender.prototype.endCatch = function (functionObj, result) {
-	    return __awaiter$3(this, void 0, void 0, function () {
-	      var err_2;
-	      return __generator$3(this, function (_a) {
-	        switch (_a.label) {
-	          case 0:
-	            _a.trys.push([0, 2,, 3]);
-
-	            return [4
-	            /*yield*/
-	            , functionObj()];
-
-	          case 1:
-	            _a.sent();
-
-	            return [3
-	            /*break*/
-	            , 3];
-
-	          case 2:
-	            err_2 = _a.sent();
-	            console.info("End failed: " + JSON.stringify(err_2));
-	            call_1$3.Call.current = null;
-	            this.cloudRTC.destroy();
-
-	            if (result != null) {
-	              this.apiEventCenter.fire(rtc_api_events_1$1.RTCApiEvents.CALL_ENDED, result);
-	            }
-
-	            return [3
-	            /*break*/
-	            , 3];
-
-	          case 3:
-	            return [2
-	            /*return*/
-	            ];
-	        }
-	      });
-	    });
-	  };
-
-	  return Ender;
-	}();
-
-	ender.Ender = Ender;
-
-	var rtcStabilizer = {};
-
-	var findCallRequest = {};
-
-	findCallRequest.__esModule = true;
-	findCallRequest.FindCallRequest = void 0;
-
-	var FindCallRequest =
-	/** @class */
-	function () {
-	  function FindCallRequest(callId) {
-	    this.callId = callId;
-	  }
-
-	  return FindCallRequest;
-	}();
-
-	findCallRequest.FindCallRequest = FindCallRequest;
-
-	var __awaiter$2 = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
-	  function adopt(value) {
-	    return value instanceof P ? value : new P(function (resolve) {
-	      resolve(value);
-	    });
-	  }
-
-	  return new (P || (P = Promise))(function (resolve, reject) {
-	    function fulfilled(value) {
-	      try {
-	        step(generator.next(value));
-	      } catch (e) {
-	        reject(e);
-	      }
-	    }
-
-	    function rejected(value) {
-	      try {
-	        step(generator["throw"](value));
-	      } catch (e) {
-	        reject(e);
-	      }
-	    }
-
-	    function step(result) {
-	      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
-	    }
-
-	    step((generator = generator.apply(thisArg, _arguments || [])).next());
-	  });
-	};
-
-	var __generator$2 = commonjsGlobal && commonjsGlobal.__generator || function (thisArg, body) {
-	  var _ = {
-	    label: 0,
-	    sent: function sent() {
-	      if (t[0] & 1) throw t[1];
-	      return t[1];
-	    },
-	    trys: [],
-	    ops: []
-	  },
-	      f,
-	      y,
-	      t,
-	      g;
-	  return g = {
-	    next: verb(0),
-	    "throw": verb(1),
-	    "return": verb(2)
-	  }, typeof Symbol === "function" && (g[Symbol.iterator] = function () {
-	    return this;
-	  }), g;
-
-	  function verb(n) {
-	    return function (v) {
-	      return step([n, v]);
-	    };
-	  }
-
-	  function step(op) {
-	    if (f) throw new TypeError("Generator is already executing.");
-
-	    while (_) {
-	      try {
-	        if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-	        if (y = 0, t) op = [op[0] & 2, t.value];
-
-	        switch (op[0]) {
-	          case 0:
-	          case 1:
-	            t = op;
-	            break;
-
-	          case 4:
-	            _.label++;
-	            return {
-	              value: op[1],
-	              done: false
-	            };
-
-	          case 5:
-	            _.label++;
-	            y = op[1];
-	            op = [0];
-	            continue;
-
-	          case 7:
-	            op = _.ops.pop();
-
-	            _.trys.pop();
-
-	            continue;
-
-	          default:
-	            if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
-	              _ = 0;
-	              continue;
-	            }
-
-	            if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
-	              _.label = op[1];
-	              break;
-	            }
-
-	            if (op[0] === 6 && _.label < t[1]) {
-	              _.label = t[1];
-	              t = op;
-	              break;
-	            }
-
-	            if (t && _.label < t[2]) {
-	              _.label = t[2];
-
-	              _.ops.push(op);
-
-	              break;
-	            }
-
-	            if (t[2]) _.ops.pop();
-
-	            _.trys.pop();
-
-	            continue;
-	        }
-
-	        op = body.call(thisArg, _);
-	      } catch (e) {
-	        op = [6, e];
-	        y = 0;
-	      } finally {
-	        f = t = 0;
-	      }
-	    }
-
-	    if (op[0] & 5) throw op[1];
-	    return {
-	      value: op[0] ? op[1] : void 0,
-	      done: true
-	    };
-	  }
-	};
-
-	rtcStabilizer.__esModule = true;
-	rtcStabilizer.RTCStabilizer = void 0;
-	var call_1$2 = call;
-	var goeasy_event_center_1$4 = goeasyEventCenter;
-	var rtc_internal_events_1$2 = rtcInternalEvents;
-	var find_call_request_1 = findCallRequest;
-	var Rocket_1$2 = Rocket;
-	var RocketTypes_1$2 = RocketTypes;
-	var Permission_1$2 = Permission;
-	var SocketTimeout_1$2 = SocketTimeout;
-	var rtc_user_1 = rtcUser;
-
-	var RTCStabilizer =
-	/** @class */
-	function () {
-	  function RTCStabilizer(goEasySocket) {
-	    var _this = this;
-
-	    this.goEasyDisconnectTimer = null;
-	    this.rtcDisconnectTimer = null;
-	    this.goEasySocket = goEasySocket;
-	    this.goEasySocket.addDisconnectedObserver(this.onGoEasyDisconnected.bind(this));
-	    this.goEasySocket.addConnectedObserver(this.onGoEasyReconnected.bind(this));
-	    goeasy_event_center_1$4.GoEasyEventCenter.on(rtc_internal_events_1$2.RTCInternalEvents.RTC_DISCONNECT, function (callId) {
-	      return _this.onRTCDisconnect();
-	    });
-	    goeasy_event_center_1$4.GoEasyEventCenter.on(rtc_internal_events_1$2.RTCInternalEvents.RTC_RECONNECT, function (callId) {
-	      return _this.onRTCReconnect();
-	    });
-	  }
-
-	  RTCStabilizer.prototype.onRTCDisconnect = function () {
-	    var self = this;
-
-	    if (self.rtcDisconnectTimer === null) {
-	      console.log("RTC 网络断开");
-	      self.rtcDisconnectTimer = setTimeout(function () {
-	        clearTimeout(self.goEasyDisconnectTimer);
-	        self.goEasyDisconnectTimer = null;
-	        goeasy_event_center_1$4.GoEasyEventCenter.fire(rtc_internal_events_1$2.RTCInternalEvents.RTC_TIMEOUT, call_1$2.Call.current.id);
-	      }, 20 * 1000);
-	    }
-	  };
-
-	  RTCStabilizer.prototype.onRTCReconnect = function () {
-	    var self = this;
-
-	    if (self.rtcDisconnectTimer !== null) {
-	      console.log("RTC 重连成功: ");
-	      clearTimeout(self.rtcDisconnectTimer);
-	      self.rtcDisconnectTimer = null;
-	    }
-	  };
-
-	  RTCStabilizer.prototype.onGoEasyDisconnected = function () {
-	    console.info("GoEasy 断开连接");
-	    var self = this;
-
-	    if (call_1$2.Call.current != null && self.goEasyDisconnectTimer === null) {
-	      self.goEasyDisconnectTimer = setTimeout(function () {
-	        clearTimeout(self.goEasyDisconnectTimer);
-	        self.goEasyDisconnectTimer = null;
-	        goeasy_event_center_1$4.GoEasyEventCenter.fire(rtc_internal_events_1$2.RTCInternalEvents.GOEASY_TIMEOUT, call_1$2.Call.current.id);
-	      }, 20 * 1000);
-	    }
-	  };
-
-	  RTCStabilizer.prototype.onGoEasyReconnected = function () {
-	    return __awaiter$2(this, void 0, void 0, function () {
-	      var self, callData, inviter_1, invitees_1, call_2;
-	      return __generator$2(this, function (_a) {
-	        switch (_a.label) {
-	          case 0:
-	            console.info("GoEasy 重连成功");
-	            self = this;
-	            if (!(call_1$2.Call.current != null && self.goEasyDisconnectTimer !== null)) return [3
-	            /*break*/
-	            , 2];
-	            clearTimeout(self.goEasyDisconnectTimer);
-	            self.goEasyDisconnectTimer = null;
-	            return [4
-	            /*yield*/
-	            , this.sendFindCallDataRequest(call_1$2.Call.current.id)];
-
-	          case 1:
-	            callData = _a.sent();
-	            console.info("sendFindCallDataRequest result: " + JSON.stringify(callData));
-	            inviter_1 = null;
-	            invitees_1 = new Array();
-	            call_2 = call_1$2.Call.current;
-	            callData.users.forEach(function (user) {
-	              var rtcUser = call_2.findUser(user.id);
-
-	              if (user.invitation) {
-	                inviter_1 = new rtc_user_1.RTCUser(user.id, JSON.parse(user.data), rtcUser.video, rtcUser.voice, rtcUser.accepted);
-	              } else {
-	                invitees_1.push(new rtc_user_1.RTCUser(user.id, JSON.parse(user.data), rtcUser.video, rtcUser.voice, rtcUser.accepted));
-	              }
-	            });
-	            call_2.inviter = inviter_1;
-	            call_2.invitees = invitees_1;
-	            console.info("Current call: " + JSON.stringify(call_2));
-	            _a.label = 2;
-
-	          case 2:
-	            return [2
-	            /*return*/
-	            ];
-	        }
-	      });
-	    });
-	  };
-
-	  RTCStabilizer.prototype.sendFindCallDataRequest = function (callId) {
-	    return __awaiter$2(this, void 0, void 0, function () {
-	      var _this = this;
-
-	      return __generator$2(this, function (_a) {
-	        return [2
-	        /*return*/
-	        , new Promise(function (resolve, reject) {
-	          var request = new find_call_request_1.FindCallRequest(callId);
-	          var rocket = new Rocket_1$2["default"]({
-	            name: RocketTypes_1$2.RocketTypes.RTC_CALL_DATA,
-	            params: request,
-	            permission: Permission_1$2.Permission.WRITE,
-	            singleTimeout: SocketTimeout_1$2.SocketTimeout.commonRequestSingle,
-	            totalTimeout: SocketTimeout_1$2.SocketTimeout.commonRequestTotal,
-	            success: function success(res) {
-	              resolve(res.content);
-	            },
-	            fail: function fail(err) {
-	              reject({
-	                code: 400,
-	                content: err.content
-	              });
-	            }
-	          });
-
-	          _this.goEasySocket.emit(rocket);
-	        })];
-	      });
-	    });
-	  };
-
-	  return RTCStabilizer;
-	}();
-
-	rtcStabilizer.RTCStabilizer = RTCStabilizer;
-
-	var callService = {};
-
-	callService.__esModule = true;
-	callService.CallService = void 0;
-	var call_1$1 = call;
-	var rtc_api_events_1 = rtcApiEvents;
-	var rtc_call_status_1 = rtcCallStatus;
-	var goeasy_event_center_1$3 = goeasyEventCenter;
-	var rtc_internal_events_1$1 = rtcInternalEvents;
-	var RemoteEvents_1$1 = RemoteEvents;
-	var reason_1 = reason;
-
-	var CallService =
-	/** @class */
-	function () {
-	  function CallService(socket, cloudRTC, apiEventCenter) {
-	    var _this = this;
-
-	    this.socket = socket;
-	    this.cloudRTC = cloudRTC;
-	    this.apiEventCenter = apiEventCenter;
-	    goeasy_event_center_1$3.GoEasyEventCenter.on(rtc_internal_events_1$1.RTCInternalEvents.RECEIVED_RTC_REMOTE_FLOW, function (result) {
-	      return _this.onReceivedRTCRemoteFlow(result);
-	    });
-	    socket.addMessageObserver(RemoteEvents_1$1.RemoteEvents.RTC_REMOTE_USER_LEFT, this.remoteUserLeft.bind(this));
-	  }
-
-	  CallService.prototype.onReceivedRTCRemoteFlow = function (result) {
-	    var call = call_1$1.Call.current;
-
-	    if (call === null) {
-	      return;
-	    }
-
-	    console.log('收到用户{' + JSON.stringify(result) + '}流信息. call: ' + JSON.stringify(call_1$1.Call.current));
-	    this.inviterPush();
-	    this.otherUserAccepted(result);
-	    goeasy_event_center_1$3.GoEasyEventCenter.fire(rtc_internal_events_1$1.RTCInternalEvents.CALL_ACCEPTED);
-	  };
-
-	  CallService.prototype.otherUserAccepted = function (result) {
-	    var call = call_1$1.Call.current;
-	    var user = call.otherUsers().find(function (user) {
-	      return user.id === result.userId;
-	    });
-	    user.video = result.video;
-	    user.voice = result.voice;
-	    user.accepted = true;
-	    this.apiEventCenter.fire(rtc_api_events_1.RTCApiEvents.USER_ACCEPTED, {
-	      id: user.id,
-	      data: user.data
-	    });
-	  };
-
-	  CallService.prototype.inviterPush = function () {
-	    var call = call_1$1.Call.current; //拨打方
-
-	    if (call.mine().id === call_1$1.Call.current.inviter.id && call_1$1.Call.current.status === rtc_call_status_1.RTCCallStatus.dialing) {
-	      this.cloudRTC.push(call_1$1.Call.current.mediaType);
-	      call_1$1.Call.current.status = rtc_call_status_1.RTCCallStatus.in_progress;
-	    }
-	  }; //todo： 我们有远程用户离开的api吗？
-
-
-	  CallService.prototype.remoteUserLeft = function (userQuitedEvent) {
-	    var call = call_1$1.Call.current;
-
-	    if (call === null) {
-	      return;
-	    }
-
-	    var reason = new reason_1.Reason(userQuitedEvent.userQuiteType);
-	    var userId = userQuitedEvent.userId;
-	    var rtcUser = call.findUser(userId);
-
-	    if (rtcUser) {
-	      reason.user = {
-	        id: rtcUser.id,
-	        data: rtcUser.data
-	      };
-	    }
-
-	    call.removeUser(userId);
-	    console.info("userLeft Call: " + JSON.stringify(reason));
-	    this.apiEventCenter.fire(rtc_api_events_1.RTCApiEvents.USER_QUITED, reason);
-	  };
-
-	  return CallService;
-	}();
-
-	callService.CallService = CallService;
 
 	var __awaiter$1 = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
 	  function adopt(value) {
@@ -21057,80 +18477,70 @@
 	  }
 	};
 
-	rtc.__esModule = true;
-	rtc.RTC = void 0;
+	im.__esModule = true;
+	im.IM = void 0;
 	var api_event_center_1 = apiEventCenter;
-	var call_1 = call;
-	var dialer_1 = dialer;
+	var GoEasyUploader_1 = GoEasyUploader$1;
+	var IMMessageSender_1 = IMMessageSender;
+	var conversation_list_1 = conversationList;
+	var IMReceiver_1 = IMReceiver;
+	var GroupMessageSubscriber_1 = GroupMessageSubscriber;
+	var GroupPresenceSubscriber_1 = GroupPresenceSubscriber;
+	var GroupOnlineCount_1 = GroupOnlineCount;
+	var GroupHereNow_1 = GroupHereNow;
+	var UserPresenceSubscriber_1 = UserPresenceSubscriber;
+	var UserHereNow_1 = UserHereNow;
+	var Calibrator_1$1 = Calibrator;
+	var ModuleTypes_1 = ModuleTypes;
+	var validator_utils_1$3 = validatorUtils;
 	var callback_utils_1$3 = callbackUtils;
-	var ringer_1 = ringer;
-	var ali_rtc_1 = aliRtc;
-	var acceptor_1 = acceptor;
-	var ender_1 = ender;
-	var platform_detector_1 = platformDetector;
-	var RemoteEvents_1 = RemoteEvents;
-	var goeasy_event_center_1$2 = goeasyEventCenter;
-	var rtc_internal_events_1 = rtcInternalEvents;
-	var rtc_stabilizer_1 = rtcStabilizer;
-	var call_service_1 = callService;
-	/****
-	 *  to
-	 *      to.type 只能是group或者private
-	 *      to.id 字符串或者数字, 不能包含自己
-	 *      to.data  空，字符串或者对象
-	 *      users，要么为空， 要么是数组，并且每个对象里都应该包含id和data，并且每个id和data都按照上边的规则来
-	 *  mediaType，必填，必须是，voice或者video， 枚举验证？
-	 *  notification：可以为空，若不为空，必须有title和body，并且长度要与之前的匹配
-	 *
-	 */
+	var IMMessageBuilder_1 = IMMessageBuilder$1;
+	var MessageType_1 = MessageType;
+	var histories_1 = histories;
+	var g_1$2 = g;
 
-	var RTC =
+	var IM =
 	/** @class */
 	function () {
-	  function RTC() {
-	    this.apiEventCenter = new api_event_center_1.ApiEventCenter();
-	    this.ringer = new ringer_1.Ringer(this.apiEventCenter);
+	  function IM(options) {
+	    this._iMReceiver = new IMReceiver_1["default"]();
+	    this.options = options;
+	    IM.aec = new api_event_center_1.ApiEventCenter();
+	    this._userHereNow = new UserHereNow_1["default"]();
+	    this.goEasyUploader = new GoEasyUploader_1.GoEasyUploader();
+	    this._groupHereNow = new GroupHereNow_1["default"]();
+	    this._groupOnlineCount = new GroupOnlineCount_1["default"]();
+	    this.groupMessageSubscriber = new GroupMessageSubscriber_1["default"]();
 	  }
 
-	  RTC.init = function () {
-	    RTC.instance = new RTC();
+	  IM.init = function (options) {
+	    IM.instance = new IM(options);
 	  };
 
-	  RTC.prototype.initialGoEasySocket = function (socket) {
-	    var _this = this;
+	  IM.prototype.afterConnect = function () {
+	    this._iMReceiver.initialGoEasySocket();
 
-	    RTC.userId = String(socket.userId);
-	    this.socket = socket;
-	    this.socket.addMessageObserver(RemoteEvents_1.RemoteEvents.RTC_RING_EVENT, this.onRing.bind(this));
-	    goeasy_event_center_1$2.GoEasyEventCenter.on(rtc_internal_events_1.RTCInternalEvents.CALL_ENDED, function () {
-	      return _this.onCallEnded();
-	    }); //todo：是不是不要也可以，反正每次ring的时候都会覆盖旧的？
-	  };
+	    this.messageBuilder = new IMMessageBuilder_1.IMMessageBuilder();
+	    this.messageSender = new IMMessageSender_1["default"]();
+	    this.histories = histories_1["default"].init();
+	    this.histories.initialListeners();
+	    this.conversations = new conversation_list_1["default"]();
+	    this._groupPresenceSubscriber = new GroupPresenceSubscriber_1["default"]();
+	    this._userPresenceSubscriber = new UserPresenceSubscriber_1["default"]();
+	  }; // todo: 函数名
 
-	  RTC.prototype.confirmInitial = function () {
-	    if (!this.cloudRTC) {
-	      if (![platform_detector_1.Platform.APP_ANDROID, platform_detector_1.Platform.APP_IOS].includes(platform_detector_1.PlatformDetector.currentPlatform())) {
-	        throw 'GoEasy RTC currently only supports APPs developed by uni-app';
-	      }
 
-	      this.cloudRTC = new ali_rtc_1.AliRTC(this.socket);
-	      this.ringer.initialSocket(this.socket, this.cloudRTC);
-	      this.dialer = new dialer_1.Dialer(this.socket, this.cloudRTC);
-	      this.ender = new ender_1.Ender(this.socket, this.apiEventCenter, this.cloudRTC);
-	      this.stabilizer = new rtc_stabilizer_1.RTCStabilizer(this.socket);
-	      this.callService = new call_service_1.CallService(this.socket, this.cloudRTC, this.apiEventCenter);
+	  IM.prototype.validateModules = function () {
+	    if (Calibrator_1$1["default"].isUndef(g_1$2.G.s())) {
+	      throw Error('Please call connect() first.');
+	    }
+
+	    if (!this.options.modules || !this.options.modules.includes(ModuleTypes_1.ModuleTypes.IM)) {
+	      throw Error("Invalid options: module '".concat(ModuleTypes_1.ModuleTypes.IM, "' is not enabled"));
 	    }
 	  };
 
-	  RTC.prototype.onRing = function (ringEvent) {
-	    this.acceptor = new acceptor_1.Acceptor(this.socket, this.cloudRTC, this.apiEventCenter, ringEvent.token);
-	  };
-
-	  RTC.prototype.onCallEnded = function () {
-	    this.acceptor = null;
-	  };
-
-	  RTC.prototype["catch"] = function (functionObj, callbackOptions) {
+	  IM.prototype["catch"] = function (functionObj, callbackOptions) {
 	    return __awaiter$1(this, void 0, void 0, function () {
 	      var err_1;
 	      return __generator$1(this, function (_a) {
@@ -21138,7 +18548,8 @@
 	          case 0:
 	            _a.trys.push([0, 2,, 3]);
 
-	            this.confirmInitial();
+	            this.validateModules();
+	            validator_utils_1$3["default"].validateCallbackOptions(callbackOptions);
 	            return [4
 	            /*yield*/
 	            , functionObj()];
@@ -21164,9 +18575,72 @@
 	        }
 	      });
 	    });
+	  }; // ----------- External API ----------
+
+
+	  IM.prototype.on = function (event, callBack) {
+	    IM.aec.on(event, callBack);
 	  };
 
-	  RTC.prototype.call = function (callOptions) {
+	  IM.prototype.off = function (event, callBack) {
+	    IM.aec.off(event, callBack);
+	  };
+
+	  IM.prototype.createTextMessage = function (createOptions) {
+	    this.validateModules();
+	    return this.messageBuilder.buildMessage(MessageType_1.MessageType.TEXT, createOptions);
+	  };
+
+	  IM.prototype.createImageMessage = function (createOptions) {
+	    this.validateModules();
+	    return this.messageBuilder.buildMessage(MessageType_1.MessageType.IMAGE, createOptions);
+	  };
+
+	  IM.prototype.createFileMessage = function (createOptions) {
+	    this.validateModules();
+	    return this.messageBuilder.buildMessage(MessageType_1.MessageType.FILE, createOptions);
+	  };
+
+	  IM.prototype.createAudioMessage = function (createOptions) {
+	    this.validateModules();
+	    return this.messageBuilder.buildMessage(MessageType_1.MessageType.AUDIO, createOptions);
+	  };
+
+	  IM.prototype.createVideoMessage = function (createOptions) {
+	    this.validateModules();
+	    return this.messageBuilder.buildMessage(MessageType_1.MessageType.VIDEO, createOptions);
+	  };
+
+	  IM.prototype.createCustomMessage = function (createOptions) {
+	    this.validateModules();
+	    return this.messageBuilder.buildMessage(createOptions.type, createOptions);
+	  };
+
+	  IM.prototype.sendMessage = function (sendOptions) {
+	    var _this = this;
+
+	    this["catch"](function () {
+	      _this.messageSender.send(sendOptions);
+	    }, sendOptions);
+	  };
+
+	  IM.prototype.recallMessage = function (messageRecallOptions) {
+	    var _this = this;
+
+	    this["catch"](function () {
+	      _this.histories.recallMessage(messageRecallOptions);
+	    }, messageRecallOptions);
+	  };
+
+	  IM.prototype.deleteMessage = function (messageDeleteOptions) {
+	    var _this = this;
+
+	    this["catch"](function () {
+	      _this.histories.deleteMessage(messageDeleteOptions);
+	    }, messageDeleteOptions);
+	  };
+
+	  IM.prototype.markGroupMessageAsRead = function (options) {
 	    var _this = this;
 
 	    this["catch"](function () {
@@ -21176,7 +18650,7 @@
 	            case 0:
 	              return [4
 	              /*yield*/
-	              , this.dialer.dial(callOptions)];
+	              , this.histories.groupMarkAsRead(options)];
 
 	            case 1:
 	              _a.sent();
@@ -21187,15 +18661,10 @@
 	          }
 	        });
 	      });
-	    }, callOptions);
+	    }, options);
 	  };
 
-	  RTC.prototype.currentCall = function () {
-	    this.confirmInitial();
-	    return call_1.Call.current;
-	  };
-
-	  RTC.prototype.accept = function (callbackOptions) {
+	  IM.prototype.markPrivateMessageAsRead = function (options) {
 	    var _this = this;
 
 	    this["catch"](function () {
@@ -21205,7 +18674,7 @@
 	            case 0:
 	              return [4
 	              /*yield*/
-	              , this.acceptor.accept(callbackOptions)];
+	              , this.histories.privateMarkAsRead(options)];
 
 	            case 1:
 	              _a.sent();
@@ -21216,10 +18685,10 @@
 	          }
 	        });
 	      });
-	    }, callbackOptions);
+	    }, options);
 	  };
 
-	  RTC.prototype.end = function (callbackOptions) {
+	  IM.prototype.markMessageAsRead = function (option, teamId) {
 	    var _this = this;
 
 	    this["catch"](function () {
@@ -21229,7 +18698,7 @@
 	            case 0:
 	              return [4
 	              /*yield*/
-	              , this.ender.end(callbackOptions)];
+	              , this.histories.markMessageAsRead(option, teamId)];
 
 	            case 1:
 	              _a.sent();
@@ -21240,22 +18709,158 @@
 	          }
 	        });
 	      });
-	    }, callbackOptions);
+	    }, option);
 	  };
 
-	  RTC.prototype.on = function (event, callback) {
-	    this.confirmInitial();
-	    this.apiEventCenter.on(event, callback);
+	  IM.prototype.latestConversations = function (options) {
+	    this.validateModules();
+	    this.conversations.latestConversations(options);
 	  };
 
-	  RTC.prototype.switchViewLevel = function (userId) {
-	    this.cloudRTC.switchViewLevel(userId);
+	  IM.prototype.removePrivateConversation = function (options) {
+	    var _this = this;
+
+	    this["catch"](function () {
+	      return _this.conversations.removePrivateConversation(options);
+	    }, options);
 	  };
 
-	  return RTC;
+	  IM.prototype.removeGroupConversation = function (options) {
+	    var _this = this;
+
+	    this["catch"](function () {
+	      return _this.conversations.removeGroupConversation(options);
+	    }, options);
+	  };
+
+	  IM.prototype.topPrivateConversation = function (options) {
+	    var _this = this;
+
+	    this["catch"](function () {
+	      return _this.conversations.topPrivateConversation(options);
+	    }, options);
+	  };
+
+	  IM.prototype.topGroupConversation = function (options) {
+	    var _this = this;
+
+	    this["catch"](function () {
+	      return _this.conversations.topGroupConversation(options);
+	    }, options);
+	  };
+
+	  IM.prototype.history = function (options, teamId) {
+	    var _this = this;
+
+	    this["catch"](function () {
+	      _this.histories.loadHistory(options, teamId);
+	    }, options);
+	  };
+
+	  IM.prototype.subscribeUserPresence = function (options) {
+	    var _this = this;
+
+	    this["catch"](function () {
+	      return _this._userPresenceSubscriber.presence(options);
+	    }, options);
+	  };
+
+	  IM.prototype.unsubscribeUserPresence = function (options) {
+	    var _this = this;
+
+	    this["catch"](function () {
+	      return _this._userPresenceSubscriber.unPresence(options);
+	    }, options);
+	  };
+
+	  IM.prototype.hereNow = function (options) {
+	    var _this = this;
+
+	    this["catch"](function () {
+	      return _this._userHereNow.hereNow(options);
+	    }, options);
+	  };
+
+	  IM.prototype.subscribeGroup = function (options) {
+	    var _this = this;
+
+	    this["catch"](function () {
+	      return _this.groupMessageSubscriber.subscribe(options);
+	    }, options);
+	  };
+
+	  IM.prototype.unsubscribeGroup = function (options) {
+	    var _this = this;
+
+	    this["catch"](function () {
+	      return _this.groupMessageSubscriber.unsubscribe(options);
+	    }, options);
+	  };
+
+	  IM.prototype.subscribeGroupPresence = function (options) {
+	    var _this = this;
+
+	    this["catch"](function () {
+	      return _this._groupPresenceSubscriber.presence(options);
+	    }, options);
+	  };
+
+	  IM.prototype.unsubscribeGroupPresence = function (options) {
+	    var _this = this;
+
+	    this["catch"](function () {
+	      return _this._groupPresenceSubscriber.unPresence(options);
+	    }, options);
+	  };
+
+	  IM.prototype.groupHereNow = function (options) {
+	    var _this = this;
+
+	    this["catch"](function () {
+	      return _this._groupHereNow.hereNow(options);
+	    }, options);
+	  };
+
+	  IM.prototype.groupOnlineCount = function (options) {
+	    var _this = this;
+
+	    this["catch"](function () {
+	      return _this._groupOnlineCount.get(options);
+	    }, options);
+	  };
+
+	  IM.prototype.latestPendingConversations = function (options) {
+	    this.validateModules();
+	    this.conversations.latestPendingConversations(options);
+	  };
+
+	  IM.prototype.topConversation = function (options) {
+	    this.validateModules();
+	    this.conversations.topConversation(options);
+	  };
+
+	  IM.prototype.removeConversation = function (options) {
+	    this.validateModules();
+	    this.conversations.removeConversation(options);
+	  };
+
+	  return IM;
 	}();
 
-	rtc.RTC = RTC;
+	im.IM = IM;
+
+	var mediaType = {};
+
+	(function (exports) {
+
+	  exports.__esModule = true;
+	  exports.MediaType = void 0;
+
+	  (function (MediaType) {
+	    MediaType["VIDEO"] = "VIDEO";
+	    MediaType["VOICE"] = "VOICE";
+	  })(exports.MediaType || (exports.MediaType = {}));
+	})(mediaType);
 
 	var cs = {};
 
@@ -22103,7 +19708,7 @@
 	  }();
 
 	  exports.__esModule = true;
-	  exports.CSTeam = exports.GoEasyRTC = exports.GoEasyIM = exports.GoEasyPubSub = exports.CustomerStatusQuery = exports.StaffOffline = exports.StaffOnline = exports.StaffIsOnline = exports.ConversationDTO = exports.MessageStatus = exports.Scene = exports.CallBackOptions = void 0;
+	  exports.CSTeam = exports.GoEasyIM = exports.GoEasyPubSub = exports.CustomerStatusQuery = exports.StaffOffline = exports.StaffOnline = exports.StaffIsOnline = exports.ConversationDTO = exports.MessageStatus = exports.Scene = exports.CallBackOptions = void 0;
 	  var NetworkStatus_1 = NetworkStatus;
 	  var GoEasySocket_1 = GoEasySocket;
 	  var Calibrator_1 = Calibrator;
@@ -22113,13 +19718,11 @@
 	  var GNS_1 = GNS$1;
 	  var im_api_events_1 = imApiEvents;
 	  var goeasy_event_center_1 = goeasyEventCenter;
-	  var rtc_1 = rtc;
 	  var media_type_1 = mediaType;
-	  var rtc_api_events_1 = rtcApiEvents;
 	  var cs_1 = cs;
 	  var g_1 = g; // Lib version flag
 
-	  var packageVersion = '2.5.2-0';
+	  var packageVersion = '2.5.2-1';
 
 	  var CallBackOptions =
 	  /** @class */
@@ -22223,8 +19826,8 @@
 	      pubsub_1.PubSub.init(options);
 	    }
 
-	    GoEasyPubSub.prototype.initialGoEasySocket = function (goEasySocket) {
-	      pubsub_1.PubSub.instance.initialGoEasySocket(goEasySocket);
+	    GoEasyPubSub.prototype.initialGoEasySocket = function () {
+	      pubsub_1.PubSub.instance.initialGoEasySocket();
 	    };
 
 	    GoEasyPubSub.prototype.initialBeforeConnect = function () {
@@ -22434,8 +20037,7 @@
 	      this.options = options;
 	      GNS_1.GNS.init(options.allowNotification);
 	      this.pubsub = new GoEasyPubSub(this.options);
-	      this.im = new GoEasyIM(this.options);
-	      this.rtc = new GoEasyRTC();
+	      this.im = new GoEasyIM(this.options); // this.rtc = new GoEasyRTC();
 	    }
 
 	    GoEasy.getInstance = function (options) {
@@ -22465,8 +20067,7 @@
 	      this.goEasySocket.connect();
 	      g_1.G.i(this.goEasySocket);
 	      this.im.afterConnect();
-	      this.pubsub.initialGoEasySocket(this.goEasySocket);
-	      this.rtc.initialGoEasySocket(this.goEasySocket);
+	      this.pubsub.initialGoEasySocket(); // this.rtc.initialGoEasySocket(this.goEasySocket);
 	    };
 
 	    GoEasy.prototype.disconnect = function (options) {
@@ -22549,51 +20150,10 @@
 	    GoEasy.IM_EVENT = im_api_events_1.ImApiEvents;
 	    GoEasy.IM_SCENE = Scene;
 	    GoEasy.MEDIA_TYPE = media_type_1.MediaType;
-	    GoEasy.RTC_EVENT = rtc_api_events_1.RTCApiEvents;
 	    return GoEasy;
 	  }();
 
 	  exports["default"] = GoEasy;
-
-	  var GoEasyRTC =
-	  /** @class */
-	  function () {
-	    function GoEasyRTC() {
-	      rtc_1.RTC.init();
-	    }
-
-	    GoEasyRTC.prototype.initialGoEasySocket = function (goEasySocket) {
-	      rtc_1.RTC.instance.initialGoEasySocket(goEasySocket);
-	    };
-
-	    GoEasyRTC.prototype.call = function (callOptions) {
-	      rtc_1.RTC.instance.call(callOptions);
-	    };
-
-	    GoEasyRTC.prototype.currentCall = function () {
-	      return rtc_1.RTC.instance.currentCall();
-	    };
-
-	    GoEasyRTC.prototype.accept = function (callbackOptions) {
-	      rtc_1.RTC.instance.accept(callbackOptions);
-	    };
-
-	    GoEasyRTC.prototype.end = function (callbackOptions) {
-	      rtc_1.RTC.instance.end(callbackOptions);
-	    };
-
-	    GoEasyRTC.prototype.on = function (event, callback) {
-	      rtc_1.RTC.instance.on(event, callback);
-	    };
-
-	    GoEasyRTC.prototype.switchViewLevel = function (userId) {
-	      rtc_1.RTC.instance.switchViewLevel(userId);
-	    };
-
-	    return GoEasyRTC;
-	  }();
-
-	  exports.GoEasyRTC = GoEasyRTC;
 
 	  var CSTeam =
 	  /** @class */
