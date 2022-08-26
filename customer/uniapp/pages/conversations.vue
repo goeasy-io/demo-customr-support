@@ -98,6 +98,7 @@
 				let conversation = this.actionPopup.conversation;
 				let description = conversation.top ? '取消置顶' : '置顶';
 				this.goEasy.im.topConversation({
+          top: !conversation.top,
 					conversation: conversation,
 					onSuccess: () => {
 						uni.showToast({
@@ -113,12 +114,11 @@
 			deleteConversation () {
 				this.actionPopup.visible = false;
         let conversation = this.actionPopup.conversation;
-        let description = conversation.top ? '取消置顶' : '置顶';
 				this.goEasy.im.removeConversation({
 					conversation: conversation,
 					onSuccess: () => {
 						uni.showToast({
-							title: description+'成功',
+							title: '删除成功',
 							icon: 'none'
 						});
 					},
