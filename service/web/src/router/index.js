@@ -56,7 +56,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const currentUser = JSON.parse(localStorage.getItem('staffData'));
+  const currentUser = JSON.parse(localStorage.getItem('currentUser'));
   if (to.name !== 'Login' && !currentUser) {
     next({name: 'Login'})
   }

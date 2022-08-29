@@ -7,7 +7,7 @@
           :class="currentContact && currentContact.uuid === user.uuid ?'user-item checked' : 'user-item'"
           v-for="(user, key) in customers || []"
           :key="key"
-          @click="handleListItem(user)"
+          @click="chat(user.uuid)"
         >
           <div class="user-avatar">
             <img :src="user.avatar" />
@@ -54,8 +54,8 @@ export default {
     };
   },
   mounted() {
-    let staffData = JSON.parse(localStorage.getItem("currentUser"));
-    this.customers = restApi.findFriends(staffData.uuid);
+    let currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    this.customers = restApi.findFriends(currentUser.uuid);
   },
   methods: {
     displayContact(contact) {

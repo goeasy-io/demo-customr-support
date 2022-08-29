@@ -3,9 +3,9 @@
     <div class="home-container">
       <div class="home-menu">
         <div class="menu-header">
-			<img class="shop-avatar" :src="teamData.avatar" />
+			<img class="shop-avatar" :src="shop.avatar" />
 			<div class="team-info">
-				{{teamData.name}}
+				{{shop.name}}
 			</div>
 		</div>
         <div class="menu-box">
@@ -14,7 +14,7 @@
               <router-link to="/conversation">
                 <i
                   class="iconfont icon-zaixiankefu"
-                  :class="{ selected: currentPage === 'Conversation' || currentPage === 'Chat' }"
+                  :class="{ selected: selectedTab === 'Conversation' || selectedTab === 'Chat' }"
                 ></i>
               </router-link>
               <span v-if="unreadTotal" class="menu-unread">{{ unreadTotal }}</span>
@@ -23,15 +23,15 @@
               <router-link to="/contact">
                 <i
                   class="iconfont icon-haoyou"
-                  :class="{ selected: currentPage === 'Contact' }"
+                  :class="{ selected: selectedTab === 'Contact' }"
                 ></i>
               </router-link>
             </div>
           </div>
           <div class="staff-info">
-            <img class="staff-avatar" :src="staffData.avatar" @click="onlineConfigVisible = !onlineConfigVisible"/>
+            <img class="staff-avatar" :src="currentUser.avatar" @click="onlineConfigVisible = !onlineConfigVisible"/>
             <span :class="isOnline ?'spot online':'spot offline'"></span>
-			<div class="staff-name">{{staffData.name}}</div>
+			<div class="staff-name">{{currentUser.name}}</div>
           </div>
 		  <div @click.prevent="closeOnlinePopup()" class="action-wrap" v-if="onlineConfigVisible">
 		  	<div class="action-box" v-if="onlineConfigVisible">
@@ -70,17 +70,17 @@ export default {
     }
     this.shop = RestApi.findShopById(this.currentUser.shopId);
 
-    this.csTeam=this.goEasy.im.csTeam(this.currentUser.shopId);
+    this.csTeam = this.goEasy.im.csTeam(this.currentUser.shopId);
 
     if(this.goEasy.getConnectionStatus() === 'disconnected') {
       this.connectGoEasy();  //连接goeasy
     }
     this.initialOnlineStatus();
-	 this.goEasy.im.on(this.GoEasy.IM_EVENT.CONVERSATIONS_UPDATED, this.setUnreadTotal);
+    this.goEasy.im.on(this.GoEasy.IM_EVENT.CONVERSATIONS_UPDATED, this.setUnreadTotal);
   },
   watch: {
     $route() {
-		this.currentPage = this.$route.name;
+		this.selectedTab = this.$route.name;
     },
   },
   methods: {
@@ -103,19 +103,19 @@ export default {
 		this.unreadTotal = content.unreadTotal;
 	},
     initialOnlineStatus () {
-      this.team.isOnline({
-        onSuccess: (result) => {
-          this.isOnline = result.content;
-        },
-        onFailed:(error) =>{
-          console.log('获取在线状态失败，error:',error)
-        }
-      })
+        this.csTeam.isOnline({
+            onSuccess: (result) => {
+              this.isOnline = result.content;
+            },
+            onFailed:(error) =>{
+              console.log('获取在线状态失败，error:',error)
+            }
+        })
     },
     switchOnlineStatus () {
       this.onlineConfigVisible = false;
       if (this.isOnline) {
-        this.team.offline({
+        this.csTeam.offline({
           onSuccess: () => {
             this.isOnline = false;
           },
@@ -124,9 +124,9 @@ export default {
           }
         })
       } else {
-        this.team.online({
-          teamData: this.teamData,
-          staffData: this.staffData,
+        this.csTeam.online({
+          teamData: {name: this.shop.name, avatar: this.shop.avatar},
+          staffData: {name: this.currentUser.name, avatar: this.currentUser.avatar},
           onSuccess: () => {
             this.isOnline = true;
           },
@@ -139,7 +139,7 @@ export default {
     logout() {
       this.goEasy.disconnect({
         onSuccess: () => {
-          localStorage.removeItem('staffData');
+          localStorage.removeItem('currentUser');
           this.$router.push({ name: 'Login'});
         },
         onFailed: (error) => {
