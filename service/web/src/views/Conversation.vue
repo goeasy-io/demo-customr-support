@@ -68,18 +68,14 @@
       </div>
     </div>
     <div class="conversation-main">
-      <Chat v-if="$route.name === 'Chat'" :key="$route.params.id"></Chat>
+      <router-view></router-view>
     </div>
   </div>
 </template>
 
 <script>
-import Chat from "./Chat";
 export default {
   name: 'Conversation',
-  components: {
-    Chat
-  },
   data() {
     return {
       pendingConversations: [],
@@ -137,8 +133,7 @@ export default {
     },
     goChatPage (id) {
       this.$router.push({
-        name: 'Chat',
-        params: { id: id },
+        path: `conversation/chat/${id}`
       });
     },
     showAction(e,conversation) {

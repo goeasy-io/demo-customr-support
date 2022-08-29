@@ -17,25 +17,22 @@ const routes = [
   {
     path: '/',
     component: Home,
-	  redirect: "/conversation",
+    redirect: '/conversation',
     children: [
       {
-        path: '/conversation',
-        name: 'Conversation',
+        path: 'conversation',
         components: {
           default: Conversation
         },
 	    children: [{
-		  path: '/chat/:id',
-		  name: 'Chat',
+		  path: 'chat/:id',
 		  components: {
 			default: Chat
 		  }
         }]
       },
       {
-        path: '/contact',
-        name: 'Contact',
+        path: 'contact',
         components: {
           default: Contact
         }
@@ -44,7 +41,6 @@ const routes = [
   },
   {
     path: '/login',
-    name: 'Login',
     components: {
       default: Login
     }
@@ -57,8 +53,8 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-  if (to.name !== 'Login' && !currentUser) {
-    next({name: 'Login'})
+  if (to.path !== '/login' && !currentUser) {
+    next({path: './login'})
   }
   else next()
 })

@@ -14,7 +14,7 @@
               <router-link to="/conversation">
                 <i
                   class="iconfont icon-zaixiankefu"
-                  :class="{ selected: selectedTab === 'Conversation' || selectedTab === 'Chat' }"
+                  :class="{ selected: selectedTab === 'conversation'}"
                 ></i>
               </router-link>
               <span v-if="unreadTotal" class="menu-unread">{{ unreadTotal }}</span>
@@ -23,7 +23,7 @@
               <router-link to="/contact">
                 <i
                   class="iconfont icon-haoyou"
-                  :class="{ selected: selectedTab === 'Contact' }"
+                  :class="{ selected: selectedTab === 'contact' }"
                 ></i>
               </router-link>
             </div>
@@ -79,9 +79,14 @@ export default {
     this.goEasy.im.on(this.GoEasy.IM_EVENT.CONVERSATIONS_UPDATED, this.setUnreadTotal);
   },
   watch: {
-    $route() {
-		this.selectedTab = this.$route.name;
-    },
+      $route : {
+          handler() {
+              let path = this.$route.path;
+              let urls = path.split("/");
+              this.selectedTab = urls[1];
+          },
+          immediate:true,
+      }
   },
   methods: {
     connectGoEasy () {
@@ -140,7 +145,7 @@ export default {
       this.goEasy.disconnect({
         onSuccess: () => {
           localStorage.removeItem('currentUser');
-          this.$router.push({ name: 'Login'});
+          this.$router.push({ path: './login'});
         },
         onFailed: (error) => {
           console.log("Failed to disconnect GoEasy, code:"+error.code+ ",error:"+error.content);

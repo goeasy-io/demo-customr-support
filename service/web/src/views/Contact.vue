@@ -7,7 +7,7 @@
           :class="currentContact && currentContact.uuid === user.uuid ?'user-item checked' : 'user-item'"
           v-for="(user, key) in customers || []"
           :key="key"
-          @click="chat(user.uuid)"
+          @click="displayContact(user)"
         >
           <div class="user-avatar">
             <img :src="user.avatar" />
@@ -36,7 +36,7 @@
           <div class="info-text">{{ currentContact.phone }}</div>
         </div>
         <div class="button-box">
-          <button class="card-button" @click="goChatPage()">发消息</button>
+          <button class="card-button" @click="chat()">发消息</button>
         </div>
       </div>
     </div>
@@ -61,8 +61,10 @@ export default {
     displayContact(contact) {
       this.currentContact = contact;
     },
-    chat(contactId) {
-      this.$router.push({ name: 'Chat', params: { id: contactId } });
+    chat() {
+      this.$router.push({
+        path: `conversation/chat/${this.currentContact.uuid}`
+      });
     },
   },
 };
