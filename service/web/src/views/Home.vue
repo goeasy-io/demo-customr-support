@@ -17,7 +17,7 @@
                   :class="{ selected: selectedTab === 'conversation'}"
                 ></i>
               </router-link>
-              <span v-if="unreadTotal" class="menu-unread">{{ unreadTotal }}</span>
+              <span v-if="unread + pendingConversationCount" class="menu-unread">{{ unread + pendingConversationCount }}</span>
             </div>
             <div class="menu-item">
               <router-link to="/contact">
@@ -58,8 +58,9 @@ export default {
        csTeam:null,
       currentUser: null,
       shop: null,
-      selectedTab: this.$route.name,
-      unreadTotal: 0,
+      selectedTab: "",
+      unread: 0,
+      pendingConversationCount: 0,
       onlineConfigVisible: false,
     };
   },
@@ -77,6 +78,7 @@ export default {
     }
     this.initialOnlineStatus();
     this.goEasy.im.on(this.GoEasy.IM_EVENT.CONVERSATIONS_UPDATED, this.setUnreadTotal);
+    this.goEasy.im.on(this.GoEasy.IM_EVENT.PENDING_CONVERSATIONS_UPDATED, this.setPendingConversationCount);
   },
   watch: {
       $route : {
@@ -105,8 +107,11 @@ export default {
       });
     },
 	setUnreadTotal(content) {
-		this.unreadTotal = content.unreadTotal;
+		this.unread = content.unreadTotal;
 	},
+    setPendingConversationCount(content) {
+        this.pendingConversationCount = content.conversations.length;
+    },
     initialOnlineStatus () {
         this.csTeam.isOnline({
             onSuccess: (result) => {

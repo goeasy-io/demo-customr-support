@@ -7378,11 +7378,6 @@
 	  exports.__esModule = true;
 
 	  function noop() {
-	    var params = [];
-
-	    for (var _i = 0; _i < arguments.length; _i++) {
-	      params[_i] = arguments[_i];
-	    }
 	  }
 
 	  exports["default"] = noop;
@@ -15670,6 +15665,34 @@
 	            _a.label = 3;
 
 	          case 3:
+	            return [2
+	            /*return*/
+	            ];
+	        }
+	      });
+	    });
+	  };
+
+	  PendingConversations.prototype.latestConversations = function (options) {
+	    return __awaiter$2(this, void 0, void 0, function () {
+	      var _synchronized;
+
+	      return __generator$2(this, function (_a) {
+	        switch (_a.label) {
+	          case 0:
+	            _synchronized = this["synchronized"];
+	            return [4
+	            /*yield*/
+	            , _super.prototype.latestConversations.call(this, options)];
+
+	          case 1:
+	            _a.sent();
+
+	            if (this.list.length > 0 && !_synchronized) {
+	              //todo:首次查询会倒是DTO重复转换，未来业务逻辑成熟后优化
+	              this.fireUpdated();
+	            }
+
 	            return [2
 	            /*return*/
 	            ];
