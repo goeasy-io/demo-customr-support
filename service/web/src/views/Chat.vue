@@ -161,12 +161,12 @@
       <span class="close" @click="imagePreview.visible = false">x</span>
     </div>
     <!-- 转接弹窗 -->
-    <div v-if="transferModel" class="transfer-popup">
+    <div v-if="transferForm.visible" class="transfer-popup">
       <div class="transfer-model">
-        <div class="transfer-content" v-if="staffs.length">
-          <div class="staff-info" v-for="(staff, index) in staffs">
+        <div class="transfer-content" v-if="transferForm.staffs.length">
+          <div class="staff-info" v-for="(staff, index) in transferForm.staffs">
             <label class="staff-label">
-              <input :name="staff.data.name" :value="staff" v-model="transferTo" type="radio"/>
+              <input :name="staff.data.name" :value="staff" v-model="transferForm.to" type="radio"/>
               <img class="staff-avatar" :src="staff.data.avatar"/>
               <span class="staff-name">{{staff.data.name}}</span>
             </label>
@@ -176,7 +176,7 @@
           <div>-当前无其他客服在线-</div>
         </div>
         <div class="transfer-bottom">
-          <span class="transfer-button" v-if="staffs.length" @click="transfer()">确认</span>
+          <span class="transfer-button" v-if="transferForm.staffs.length" @click="transfer()">确认</span>
           <span class="transfer-button" @click="closeTransferModel()">取消</span>
         </div>
       </div>
@@ -238,14 +238,11 @@ export default {
         orders:[],
         visible: false,
       },
-      staffs: [],
       transferForm: {
         visible: false,
         staffs: [],
-        selectedStaff: {}
+        to: {}
       },
-      transferModel: false,
-      transferTo: null
     }
   },
   async created() {
@@ -433,8 +430,8 @@ export default {
 	transferStaffs() {
       this.csTeam.staffs({
 			onSuccess: (result) => {
-				this.transferModel = true;
-				this.staffs = result.content.filter((staff) => {
+				this.transferForm.visible = true;
+				this.transferForm.staffs = result.content.filter((staff) => {
 					return staff.id !== this.currentUser.uuid;
 				});
 			},
@@ -446,9 +443,9 @@ export default {
 	transfer() {
       this.csTeam.transfer({
 			id: this.customer.uuid,
-			to: this.transferTo.id,
+			to: this.transferForm.to.id,
 			onSuccess: (result) => {
-				this.transferModel = false;
+                this.transferForm.visible = false;
 				this.customerStatus = result.customerStatus;
 				this.history.messages.push(result.message);
 				this.scrollTo(0);
@@ -459,7 +456,7 @@ export default {
 		})
 	},
 	closeTransferModel() {
-		this.transferModel = false;
+      this.transferForm.visible = false;
 	},
     showEmojiBox () {
       this.emoji.visible = !this.emoji.visible;
@@ -948,6 +945,7 @@ export default {
 			  flex-wrap: wrap;
 
 			  .staff-info {
+                width: 110px;
 				  padding: 20px;
 
           .staff-label {

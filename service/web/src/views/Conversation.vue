@@ -133,7 +133,7 @@ export default {
     },
     goChatPage (id) {
       this.$router.push({
-        path: `conversation/chat/${id}`
+        path: `/conversation/chat/${id}`
       });
     },
     showAction(e,conversation) {

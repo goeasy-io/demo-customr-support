@@ -54,7 +54,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   const currentUser = JSON.parse(localStorage.getItem('currentUser'));
   if (to.path !== '/login' && !currentUser) {
-    next({path: './login'})
+    next({path: '/login'})
   }
   else next()
 })
