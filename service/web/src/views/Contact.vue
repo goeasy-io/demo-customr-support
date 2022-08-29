@@ -54,7 +54,7 @@ export default {
     };
   },
   mounted() {
-    let staffData = JSON.parse(localStorage.getItem("staffData"));
+    let staffData = JSON.parse(localStorage.getItem("currentUser"));
     this.customers = restApi.findFriends(staffData.uuid);
   },
   methods: {

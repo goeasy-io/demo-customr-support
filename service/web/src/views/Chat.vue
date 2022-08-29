@@ -185,11 +185,12 @@
 </template>
 
 <script>
-import restApi from '../api/restapi';
-import EmojiDecoder from '../utils/EmojiDecoder';
-import GoeasyAudioPlayer from "../components/GoEasyAudioPlayer";
-import GoeasyVideoPlayer from "../components/GoEasyVideoPlayer";
-const IMAGE_MAX_WIDTH = 200;
+    import restApi from '../api/restapi';
+    import EmojiDecoder from '../utils/EmojiDecoder';
+    import GoeasyAudioPlayer from "../components/GoEasyAudioPlayer";
+    import GoeasyVideoPlayer from "../components/GoEasyVideoPlayer";
+
+    const IMAGE_MAX_WIDTH = 200;
 const IMAGE_MAX_HEIGHT = 150;
 export default {
   name: "Chat",
@@ -208,8 +209,11 @@ export default {
       '[傲慢]': 'emoji_8@2x.png',
     };
     return {
-      staffData: null,
+      currentUser: null,
       teamData: null,
+
+
+      csTeam:null,
 
       customer: null,
       customerStatus: null,
@@ -253,15 +257,31 @@ export default {
     this.to = {
       type: this.GoEasy.IM_SCENE.CS,
       id: this.customer.uuid,
-      data: this.customer,
+      data: {name:this.customer.name, avatar:this.customer.avatar},
     }
-    this.staffData = JSON.parse(localStorage.getItem("staffData"));
-    this.teamData = restApi.findShopByStaff(this.staffData.uuid);
+      this.csTeam = this.goEasy.im.csTeam(this.currentUser.shopId);
 
-    this.loadHistoryMessage(true, 0);
-    this.getCustomerStatus();
-	  this.markMessageAsRead();
-    this.goEasy.im.on(this.GoEasy.IM_EVENT.CS_MESSAGE_RECEIVED, this.onReceivedMessage);
+    this.currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    this.shop = restApi.findShopById(this.currentUser.shopId);
+
+      this.markMessageAsRead();
+
+      this.getCustomerStatus();
+
+      this.goEasy.im.csTeam(this.teamData.id).customerStatus({
+          id: this.customer.uuid,
+          onSuccess: (result) => {
+              this.customerStatus = result.content;
+          },
+          onFailed: (error) => {
+              console.log('获取用户当前状态失败',error);
+          }
+      })
+
+
+      this.goEasy.im.on(this.GoEasy.IM_EVENT.CS_MESSAGE_RECEIVED, this.onReceivedMessage);
+
+      this.loadHistoryMessage(true, 0);
   },
   beforeDestroy() {
     this.goEasy.im.off(this.GoEasy.IM_EVENT.CS_MESSAGE_RECEIVED, this.onReceivedMessage);
@@ -281,43 +301,32 @@ export default {
         }
       })
     },
-    onReceivedMessage (message) {
-      if (this.existsMessage(message)) {
-        return;
-      }
-      if (this.teamData.id === message.teamId && (this.customer.uuid === message.senderId || this.customer.uuid === message.to)) {
-        if (this.customerStatus) {
-          if (this.customerStatus.sessionId === message.sessionId) {
-            if (message.type === 'CS_TRANSFERRED') {
-              this.refresh();
-            } else {
-              this.history.messages.push(message);
-              this.markMessageAsRead();
-              this.scrollTo(0);
+    onReceivedMessage (newMessage) {
+
+        if (this.currentUser.shopId === message.teamId && (this.customer.uuid === message.senderId || this.customer.uuid === message.to)) {
+
+            //如果该消息已存在，跳过
+            if (this.history.messages.findIndex((message) => newMessage.id === message.messageId) >= 0) {
+                return;
             }
-          } else {
-            this.refresh();
-          }
-        } else {
-          this.history.messages.push(message);
-          this.markMessageAsRead();
-          this.scrollTo(0);
-			}
-		}
-    },
-    existsMessage(newMessage) {
-      let exists = false;
-      for(let i = this.history.messages.length - 1; i >=0; i--) {
-        let message = this.history.messages[i];
-        if (newMessage.messageId === message.messageId) {
-          exists = true;
-          break;
+
+            //只接收同一个session的消息
+            if (this.customerStatus.sessionId === newMessage.sessionId) {
+                //如果是一条来自其他同事的转接，需要刷新页面获取最新的消息历史
+                if (newMessage.type === 'CS_TRANSFERRED') {
+                    this.refresh();
+                }
+                this.history.messages.push(message);
+                this.markMessageAsRead();
+                this.scrollTo(0);
+            } else {
+                this.refresh();
+            }
         }
-      }
-      return exists;
     },
+
     markMessageAsRead() {
-      this.goEasy.im.csTeam(this.teamData.id).markMessageAsRead({
+      this.csTeam.markMessageAsRead({
         type: this.GoEasy.IM_SCENE.CS,
         id: this.customer.uuid,
         onSuccess: function () {
@@ -329,7 +338,8 @@ export default {
       });
     },
     refresh() {
-      this.$emit('refresh', this.customer.uuid);
+        this.getCustomerStatus();
+        this.loadHistoryMessage(true, 0);
     },
     loadHistoryMessage(scrollTo,offsetHeight) {
       this.history.loading = true;
@@ -359,6 +369,7 @@ export default {
               this.scrollTo(offsetHeight);
             }
           }
+
         },
         onFailed: (error) => {
           //获取失败
