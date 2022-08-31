@@ -56,14 +56,18 @@
 		name: 'Home',
 		data() {
 			return {
-				isOnline: false,
 				csTeam: null,
 				currentUser: null,
 				shop: null,
 				selectedTab: "",
 				unreadAmount: 0,
 				pendingConversationAmount: 0,
-				onlineConfigVisible: false,
+
+				onlineConfig:{
+					visible:false,
+					online: false
+				}
+
 			};
 		},
 		created() {
@@ -124,7 +128,7 @@
 					}
 				})
 			},
-			switchOnlineStatus() {
+			online() {
 				this.onlineConfigVisible = false;
 				if (this.isOnline) {
 					this.csTeam.offline({
@@ -135,7 +139,9 @@
 							console.log('下线失败,error:', error);
 						}
 					})
-				} else {
+				} else
+
+				offline(){
 					this.csTeam.online({
 						teamData: {name: this.shop.name, avatar: this.shop.avatar},
 						staffData: {name: this.currentUser.name, avatar: this.currentUser.avatar},
