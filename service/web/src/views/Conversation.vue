@@ -1,175 +1,205 @@
 <template>
-  <div class="conversation-container">
-    <div class="conversation-list">
-      <div class="conversation-list-item">
-        <div class="conversation-list-title">待接入 {{ pendingConversations.length }}</div>
-        <div class="conversation-list-body">
-          <div
-            class="conversation-item"
-            v-for="(conversation, key) in pendingConversations" :key="key"
-            @click="goChatPage(conversation.id)"
-            :class="{checked:conversation.id === $route.params.id}"
-          >
-            <div class="item-head">
-              <img class="item-avatar" :src="conversation.data.avatar" />
-            </div>
-            <div class="item-info">
-              <div class="item-info-name">{{ conversation.data.name }}</div>
-              <div class="item-info-message" v-if="conversation.lastMessage.type === 'text'">{{ conversation.lastMessage.payload.text }}</div>
-              <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'image'">[图片消息]</div>
-              <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'video'">[视频消息]</div>
-              <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'audio'">[语音消息]</div>
-              <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'goods'">[自定义消息:商品]</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="conversation-list-item">
-        <div class="conversation-list-title">已接入 {{ conversations.length }}</div>
-        <div class="conversation-list-body" v-if="conversations.length">
-          <div
-            class="conversation-item"
-            v-for="(conversation, key) in conversations" :key="key"
-            @click="goChatPage(conversation.id)"
-            :class="{checked:conversation.id === $route.params.id}"
-            @contextmenu.prevent.stop="e => showAction(e,conversation)"
-          >
-            <div class="item-head">
-              <img class="item-avatar" :src="conversation.data.avatar" />
-              <span class="item-unread-num" v-if="conversation.unread">{{conversation.unread}}</span>
-            </div>
-            <div class="item-info">
-              <div class="item-info-top">
-                <div class="item-info-name">{{ conversation.data.name }}</div>
-                <div class="item-info-time">{{ formatDate(conversation.lastMessage.timestamp) }}</div>
-              </div>
-              <div class="item-info-bottom">
-                <div class="item-info-sending" v-if="conversation.lastMessage.status === 'sending'"></div>
-                <div class="item-info-failed" v-if="conversation.lastMessage.status === 'fail'"></div>
-                <div class="item-info-message" v-if="conversation.lastMessage.type === 'text'">{{ conversation.lastMessage.payload.text }}</div>
-                <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'image'">[图片消息]</div>
-                <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'video'">[视频消息]</div>
-                <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'audio'">[语音消息]</div>
-                <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'order'">[自定义消息:订单]</div>
-                <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'CS_END'">会话已结束</div>
-                <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'CS_ACCEPT'">接入成功</div>
-                <div class="item-info-message" v-else-if="conversation.lastMessage.type === 'CS_TRANSFER'">
-                {{conversation.lastMessage.senderId === currentUser.uuid ? `已转接给` + conversation.lastMessage.payload.transferTo.data.name: '已接入来自' + conversation.lastMessage.senderData.name +'的转接'}}
-              </div>
-              <div class="item-info-message" v-else>[未识别内容]</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div v-if="actionPopup.visible" class="action-box" :style="{'left': actionPopup.left + 'px', 'top': actionPopup.top + 'px'}">
-        <div class="action-item" @click="topConversation">{{ actionPopup.conversation.top ? '取消置顶' : '置顶' }}</div>
-        <div class="action-item" @click="deleteConversation">删除聊天</div>
-      </div>
-    </div>
-    <div class="conversation-main">
-      <router-view></router-view>
-    </div>
-  </div>
+	<div class="conversation-container">
+		<div class="conversation-list">
+			<div class="conversation-list-item">
+				<div class="conversation-list-title">待接入 {{ pendingConversations.length }}</div>
+				<div class="conversation-list-body">
+					<div
+							class="conversation-item"
+							v-for="(conversation, key) in pendingConversations" :key="key"
+							@click="chat(conversation.id)"
+							:class="{checked:conversation.id === $route.params.id}"
+					>
+						<div class="item-head">
+							<img class="item-avatar" :src="conversation.data.avatar"/>
+						</div>
+						<div class="item-info">
+							<div class="item-info-name">{{ conversation.data.name }}</div>
+							<div class="item-info-message" v-if="conversation.lastMessage.type === 'text'">{{
+								conversation.lastMessage.payload.text }}
+							</div>
+							<div class="item-info-message" v-else-if="conversation.lastMessage.type === 'image'">
+								[图片消息]
+							</div>
+							<div class="item-info-message" v-else-if="conversation.lastMessage.type === 'video'">
+								[视频消息]
+							</div>
+							<div class="item-info-message" v-else-if="conversation.lastMessage.type === 'audio'">
+								[语音消息]
+							</div>
+							<div class="item-info-message" v-else-if="conversation.lastMessage.type === 'goods'">
+								[自定义消息:商品]
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="conversation-list-item">
+				<div class="conversation-list-title">已接入 {{ conversations.length }}</div>
+				<div class="conversation-list-body" v-if="conversations.length">
+					<div
+							class="conversation-item"
+							v-for="(conversation, key) in conversations" :key="key"
+							@click="goChatPage(conversation.id)"
+							:class="{checked:conversation.id === $route.params.id}"
+							@contextmenu.prevent.stop="e => showAction(e,conversation)"
+					>
+						<div class="item-head">
+							<img class="item-avatar" :src="conversation.data.avatar"/>
+							<span class="item-unread-num" v-if="conversation.unread">{{conversation.unread}}</span>
+						</div>
+						<div class="item-info">
+							<div class="item-info-top">
+								<div class="item-info-name">{{ conversation.data.name }}</div>
+								<div class="item-info-time">{{ formatDate(conversation.lastMessage.timestamp) }}</div>
+							</div>
+							<div class="item-info-bottom">
+								<div class="item-info-sending"
+								     v-if="conversation.lastMessage.status === 'sending'"></div>
+								<div class="item-info-failed" v-if="conversation.lastMessage.status === 'fail'"></div>
+								<div class="item-info-message" v-if="conversation.lastMessage.type === 'text'">{{
+									conversation.lastMessage.payload.text }}
+								</div>
+								<div class="item-info-message" v-else-if="conversation.lastMessage.type === 'image'">
+									[图片消息]
+								</div>
+								<div class="item-info-message" v-else-if="conversation.lastMessage.type === 'video'">
+									[视频消息]
+								</div>
+								<div class="item-info-message" v-else-if="conversation.lastMessage.type === 'audio'">
+									[语音消息]
+								</div>
+								<div class="item-info-message" v-else-if="conversation.lastMessage.type === 'order'">
+									[自定义消息:订单]
+								</div>
+								<div class="item-info-message" v-else-if="conversation.lastMessage.type === 'CS_END'">
+									会话已结束
+								</div>
+								<div class="item-info-message"
+								     v-else-if="conversation.lastMessage.type === 'CS_ACCEPT'">接入成功
+								</div>
+								<div class="item-info-message"
+								     v-else-if="conversation.lastMessage.type === 'CS_TRANSFER'">
+									{{conversation.lastMessage.senderId === currentUser.uuid ? `已转接给` +
+									conversation.lastMessage.payload.transferTo.data.name: '已接入来自' +
+									conversation.lastMessage.senderData.name +'的转接'}}
+								</div>
+								<div class="item-info-message" v-else>[未识别内容]</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div v-if="actionPopup.visible" class="action-box"
+			     :style="{'left': actionPopup.left + 'px', 'top': actionPopup.top + 'px'}">
+				<div class="action-item" @click="topConversation">{{ actionPopup.conversation.top ? '取消置顶' : '置顶' }}
+				</div>
+				<div class="action-item" @click="deleteConversation">删除聊天</div>
+			</div>
+		</div>
+		<div class="conversation-main">
+			<router-view></router-view>
+		</div>
+	</div>
 </template>
 
 <script>
-export default {
-  name: 'Conversation',
-  data() {
-    return {
-      pendingConversations: [],
-      conversations : [],
-      actionPopup: {
-        conversation: null,
-        visible: false,
-        left: null,
-        right: null,
-      },
-      currentUser: null
-    }
-  },
-  created() {
-    document.addEventListener('click', () => {
-      this.actionPopup.visible = false
-    })
-    this.currentUser = JSON.parse(localStorage.getItem("currentUser"));
-    this.listenConversationUpdate(); //监听会话列表变化
-    this.loadConversations(); //加载会话列表
-  },
-  beforeDestroy(){
-    this.goEasy.im.off(this.GoEasy.IM_EVENT.CONVERSATIONS_UPDATED, this.renderLatestConversations);
-    this.goEasy.im.off(this.GoEasy.IM_EVENT.PENDING_CONVERSATIONS_UPDATED, this.renderPendingConversations);
-  },
-  methods: {
-    loadConversations() {
-      this.goEasy.im.pendingConversations({
-        onSuccess: (result) => {
-          this.renderPendingConversations(result.content);
-        },
-        onFailed: (error) => {
-          console.log('获取待接入列表失败, code:' + error.code + 'content:' + error.content);
-        },
-      });
-      this.goEasy.im.latestConversations({
-        onSuccess: (result) => {
-          this.renderLatestConversations(result.content);
-        },
-        onFailed: (error) => {
-          console.log('获取已接入列表失败, code:' + error.code + 'content:' + error.content);
-        },
-      });
-    },
-    listenConversationUpdate() {
-      // 监听会话列表变化
-      this.goEasy.im.on(this.GoEasy.IM_EVENT.CONVERSATIONS_UPDATED, this.renderLatestConversations);
-      this.goEasy.im.on(this.GoEasy.IM_EVENT.PENDING_CONVERSATIONS_UPDATED, this.renderPendingConversations);
-    },
-    renderPendingConversations(content) {
-      this.pendingConversations = content.conversations;
-    },
-    renderLatestConversations(content) {
-      this.conversations = content.conversations;
-    },
-    goChatPage (id) {
-      this.$router.push({
-        path: `/conversation/chat/${id}`
-      });
-    },
-    showAction(e,conversation) {
-      this.actionPopup.conversation = conversation;
-      this.actionPopup.visible = true;
-      this.actionPopup.left = e.pageX;
-      this.actionPopup.top = e.pageY;
-    },
-    topConversation () {
-      this.actionPopup.visible = false;
-      let conversation = this.actionPopup.conversation;
-      let description = conversation.top ? '取消置顶' : '置顶';
-      this.goEasy.im.topConversation({
-        conversation: this.actionPopup.conversation,
-        onSuccess: function () {
-          console.log(description,'成功');
-        },
-        onFailed: function (error) {
-          console.log(description,'失败：',error);
-        },
-      });
-    },
-    deleteConversation () {
-      this.actionPopup.visible = false;
-      this.goEasy.im.removeConversation({
-        conversation: this.actionPopup.conversation,
-        onSuccess: function () {
-          console.log('删除会话成功');
-        },
-        onFailed: function (error) {
-          console.log(error);
-        },
-      });
-    }
-  }
-}
+	export default {
+		name: 'Conversation',
+		data() {
+			return {
+				pendingConversations: [],
+				conversations: [],
+				actionPopup: {
+					conversation: null,
+					visible: false,
+					left: null,
+					right: null,
+				},
+				currentUser: null
+			}
+		},
+		created() {
+			document.addEventListener('click', () => {
+				this.actionPopup.visible = false
+			});
+			this.currentUser = JSON.parse(localStorage.getItem("currentUser"));
+			this.listenConversationUpdate(); //监听会话列表变化
+			this.loadConversations(); //加载会话列表
+		},
+		beforeDestroy() {
+			this.goEasy.im.off(this.GoEasy.IM_EVENT.CONVERSATIONS_UPDATED, this.renderLatestConversations);
+			this.goEasy.im.off(this.GoEasy.IM_EVENT.PENDING_CONVERSATIONS_UPDATED, this.renderPendingConversations);
+		},
+		methods: {
+			loadConversations() {
+				this.goEasy.im.pendingConversations({
+					onSuccess: (result) => {
+						this.renderPendingConversations(result.content);
+					},
+					onFailed: (error) => {
+						console.log('获取待接入列表失败, code:' + error.code + 'content:' + error.content);
+					},
+				});
+				this.goEasy.im.latestConversations({
+					onSuccess: (result) => {
+						this.renderLatestConversations(result.content);
+					},
+					onFailed: (error) => {
+						console.log('获取已接入列表失败, code:' + error.code + 'content:' + error.content);
+					},
+				});
+			},
+			listenConversationUpdate() {
+				// 监听会话列表变化
+				this.goEasy.im.on(this.GoEasy.IM_EVENT.CONVERSATIONS_UPDATED, this.renderLatestConversations);
+				this.goEasy.im.on(this.GoEasy.IM_EVENT.PENDING_CONVERSATIONS_UPDATED, this.renderPendingConversations);
+			},
+			renderPendingConversations(content) {
+				this.pendingConversations = content.conversations;
+			},
+			renderLatestConversations(content) {
+				this.conversations = content.conversations;
+			},
+			goChatPage(id) {
+				this.$router.push({
+					path: `/conversation/chat/${id}`
+				});
+			},
+			showAction(e, conversation) {
+				this.actionPopup.conversation = conversation;
+				this.actionPopup.visible = true;
+				this.actionPopup.left = e.pageX;
+				this.actionPopup.top = e.pageY;
+			},
+			topConversation() {
+				this.actionPopup.visible = false;
+				let conversation = this.actionPopup.conversation;
+				let description = conversation.top ? '取消置顶' : '置顶';
+				this.goEasy.im.topConversation({
+					conversation: this.actionPopup.conversation,
+					onSuccess: function () {
+						console.log(description, '成功');
+					},
+					onFailed: function (error) {
+						console.log(description, '失败：', error);
+					},
+				});
+			},
+			deleteConversation() {
+				this.actionPopup.visible = false;
+				this.goEasy.im.removeConversation({
+					conversation: this.actionPopup.conversation,
+					onSuccess: function () {
+						console.log('删除会话成功');
+					},
+					onFailed: function (error) {
+						console.log(error);
+					},
+				});
+			}
+		}
+	}
 </script>
 
 <style lang="scss" scoped>
@@ -225,91 +255,99 @@ export default {
       padding: 12px;
 	    cursor: pointer;
 
-	  .item-head {
-      position: relative;
-      margin-right: 14px;
-	  }
+	.item-head {
+		position: relative;
+		margin-right: 14px;
+	}
 
-	  .item-avatar {
-	    width: 45px;
-	    height: 45px;
-      border-radius: 4px;
-	  }
+	.item-avatar {
+		width: 45px;
+		height: 45px;
+		border-radius: 4px;
+	}
 
-	  .item-unread-num {
-			position: absolute;
-			top: -9px;
-			right: -9px;
-			width: 18px;
-			height: 18px;
-			line-height: 18px;
-			border-radius: 50%;
-			text-align: center;
-			color: #fff;
-			font-size: 12px;
-			background-color: #fa5151;
-	  }
+	.item-unread-num {
+		position: absolute;
+		top: -9px;
+		right: -9px;
+		width: 18px;
+		height: 18px;
+		line-height: 18px;
+		border-radius: 50%;
+		text-align: center;
+		color: #fff;
+		font-size: 12px;
+		background-color: #fa5151;
+	}
 
-      .item-info {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        .item-info-top {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
-        .item-info-name {
-          font-size: 16px;
-          line-height: 25px;
-          color: #333333;
-        }
-        .item-info-bottom {
-          display: flex;
-          align-items: center;
-          .more-action {
-            font-size: 18px;
-            cursor: pointer;
-          }
-        }
-        .item-info-message {
-          font-size: 12px;
-          line-height: 20px;
-          overflow: hidden;
-          text-overflow:ellipsis;
-          white-space: nowrap;
-          width: 150px;
-          color: #606266;
-        }
+	.item-info {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
 
-		.item-info-failed {
-			background: url("/static/images/failed.png") no-repeat center;
-			background-size: 12px;
-			width: 12px;
-			height: 12px;
-			margin-right: 2px;
-		}
+	.item-info-top {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
 
-		.item-info-sending {
-			background: url("/static/images/pending.gif") no-repeat center;
-			background-size: 12px;
-			width: 12px;
-			height: 12px;
-			margin-right: 2px;
-		}
-      }
-    }
+	.item-info-name {
+		font-size: 16px;
+		line-height: 25px;
+		color: #333333;
+	}
 
-    .checked {
-      background: #eeeeee;
-	  border-radius: 5px;
-    }
-  }
-  .conversation-main {
-    flex: 1;
-    background: #FFFFFF;
-  }
-}
+	.item-info-bottom {
+		display: flex;
+		align-items: center;
+
+	.more-action {
+		font-size: 18px;
+		cursor: pointer;
+	}
+
+	}
+	.item-info-message {
+		font-size: 12px;
+		line-height: 20px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		width: 150px;
+		color: #606266;
+	}
+
+	.item-info-failed {
+		background: url("/static/images/failed.png") no-repeat center;
+		background-size: 12px;
+		width: 12px;
+		height: 12px;
+		margin-right: 2px;
+	}
+
+	.item-info-sending {
+		background: url("/static/images/pending.gif") no-repeat center;
+		background-size: 12px;
+		width: 12px;
+		height: 12px;
+		margin-right: 2px;
+	}
+
+	}
+	}
+
+	.checked {
+		background: #eeeeee;
+		border-radius: 5px;
+	}
+
+	}
+	.conversation-main {
+		flex: 1;
+		background: #FFFFFF;
+	}
+
+	}
 
 </style>

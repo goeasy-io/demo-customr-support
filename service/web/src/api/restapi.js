@@ -35,26 +35,26 @@ class RestApi {
 		},
 	];
 	// 店铺
-	shop = [
+	shops = [
 		{
 			name: 'GoEasy食品自营',
 			avatar: '/static/images/shop1.png',
 			id: 'shop01',
-			goods: ['/static/images/goods1-1.jpg','/static/images/goods1-2.jpg','/static/images/goods1-3.jpg',]
+			goods: ['/static/images/goods1-1.jpg', '/static/images/goods1-2.jpg', '/static/images/goods1-3.jpg',]
 		},
 		{
 			name: 'GoEasy家具生活自营',
 			avatar: '/static/images/shop2.png',
 			id: 'shop02',
-			goods: ['/static/images/goods2-1.jpg','/static/images/goods2-2.jpg','/static/images/goods2-3.jpg',]
+			goods: ['/static/images/goods2-1.jpg', '/static/images/goods2-2.jpg', '/static/images/goods2-3.jpg',]
 		},
 		{
 			name: 'GoEasy电器自营',
 			avatar: '/static/images/shop3.png',
 			id: 'shop03',
-			goods: ['/static/images/goods3-1.jpg','/static/images/goods3-2.jpg','/static/images/goods3-3.jpg',]
+			goods: ['/static/images/goods3-1.jpg', '/static/images/goods3-2.jpg', '/static/images/goods3-3.jpg',]
 		}
-	]
+	];
 	// 客服
 	staffs = [
 		{
@@ -112,6 +112,7 @@ class RestApi {
 			shopId: 'shop03'
 		}
 	];
+	// 订单
 	orders = [
 		{
 			url: '/static/images/goods1-1.jpg',
@@ -131,32 +132,44 @@ class RestApi {
 			price: '￥12',
 			sales: 258
 		}
-	]
+	];
 
-	findFriends (id) {
-		return this.users.filter((v) => v.uuid !== id);
+	getShopList() {
+		return this.shops;
 	}
 
-	findUser (username, password) {
+	findUserById(userId) {
+		return this.users.find((user) => user.uuid === userId);
+	}
+
+	findUser(username, password) {
 		return this.users.find((user) => user.name === username && user.password === password);
 	}
 
-
-	findShopById (shopId) {
-		return this.shop.find((shop) => shop.id === shopId);
+	findStaffs() {
+		return this.staffs;
 	}
 
-	getOrderList () {
+	findShopById(shopId) {
+		return this.shops.find((shop) => shop.id === shopId);
+	}
+
+	findStaff(username, password) {
+		return this.staffs.find((staff) => staff.name === username && staff.password === password);
+	}
+
+	findStaffById(staffId) {
+		return this.staffs.find((staff) => staff.uuid === staffId);
+	}
+
+	getOrderList() {
 		return this.orders;
 	}
 
-	findStaff (username, password) {
-		return this.staffs.find((user) => user.name === username && user.password === password);
+	findCustomers (id) {
+		return this.users.filter((v) => v.uuid !== id);
 	}
 
-	findUserById (userId) {
-		return this.users.find((user) => user.uuid === userId);
-	}
 }
 
 export default new RestApi();
