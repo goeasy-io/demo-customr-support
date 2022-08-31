@@ -30,13 +30,14 @@
 					</div>
 					<div class="staff-info">
 						<img class="staff-avatar" :src="currentUser.avatar"
-						     @click="onlineConfigVisible = !onlineConfigVisible"/>
-						<span :class="isOnline ?'spot online':'spot offline'"></span>
+						     @click="onlineConfig.visible = !onlineConfig.visible"/>
+						<span :class="onlineConfig.online ?'spot online':'spot offline'"></span>
 						<div class="staff-name">{{currentUser.name}}</div>
 					</div>
-					<div @click.prevent="closeOnlinePopup()" class="action-wrap" v-if="onlineConfigVisible">
-						<div class="action-box" v-if="onlineConfigVisible">
-							<div class="action-item" @click="switchOnlineStatus">{{ isOnline ? '下线':'上线' }}</div>
+					<div @click.prevent="closeOnlinePopup()" class="action-wrap" v-if="onlineConfig.visible">
+						<div class="action-box" v-if="onlineConfig.visible">
+                            <div v-if="onlineConfig.online" class="action-item" @click="offline">下线</div>
+							<div v-else class="action-item" @click="online">上线</div>
 							<div class="action-item" @click="logout">退出登录</div>
 						</div>
 					</div>
@@ -50,9 +51,9 @@
 </template>
 
 <script>
-	import RestApi from '../api/restapi'
+    import RestApi from '../api/restapi'
 
-	export default {
+    export default {
 		name: 'Home',
 		data() {
 			return {
@@ -63,11 +64,10 @@
 				unreadAmount: 0,
 				pendingConversationAmount: 0,
 
-				onlineConfig:{
-					visible:false,
-					online: false
-				}
-
+                onlineConfig: {
+                    visible: false,
+                    online: false
+                }
 			};
 		},
 		created() {
@@ -121,39 +121,36 @@
 			initialOnlineStatus() {
 				this.csTeam.isOnline({
 					onSuccess: (result) => {
-						this.isOnline = result.content;
+						this.onlineConfig.online = result.content;
 					},
 					onFailed: (error) => {
 						console.log('获取在线状态失败，error:', error)
 					}
 				})
 			},
-			online() {
-				this.onlineConfigVisible = false;
-				if (this.isOnline) {
-					this.csTeam.offline({
-						onSuccess: () => {
-							this.isOnline = false;
-						},
-						onFailed: (error) => {
-							console.log('下线失败,error:', error);
-						}
-					})
-				} else
-
-				offline(){
-					this.csTeam.online({
-						teamData: {name: this.shop.name, avatar: this.shop.avatar},
-						staffData: {name: this.currentUser.name, avatar: this.currentUser.avatar},
-						onSuccess: () => {
-							this.isOnline = true;
-						},
-						onFailed: (error) => {
-							console.log('上线失败,error:', error);
-						}
-					})
-				}
-			},
+            offline() {
+                this.csTeam.offline({
+                    onSuccess: () => {
+                        this.onlineConfig.online = false;
+                        this.onlineConfig.visible = false;
+                    },
+                    onFailed: (error) => {
+                        console.log('下线失败,error:', error);
+                    }
+                })
+            },
+            online(){
+                this.csTeam.online({
+                    teamData: {name: this.shop.name, avatar: this.shop.avatar},
+                    staffData: {name: this.currentUser.name, avatar: this.currentUser.avatar},
+                    onSuccess: () => {
+                        this.onlineConfig.online = true;
+                    },
+                    onFailed: (error) => {
+                        console.log('上线失败,error:', error);
+                    }
+                })
+            },
 			logout() {
 				this.goEasy.disconnect({
 					onSuccess: () => {
@@ -166,7 +163,7 @@
 				});
 			},
 			closeOnlinePopup() {
-				this.onlineConfigVisible = false;
+				this.onlineConfig.visible = false;
 			}
 		},
 	};
