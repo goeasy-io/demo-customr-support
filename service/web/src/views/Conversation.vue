@@ -7,7 +7,7 @@
 					<div
 							class="conversation-item"
 							v-for="(conversation, key) in pendingConversations" :key="key"
-							@click="chat(conversation.id)"
+							@click="goChatPage(conversation.id)"
 							:class="{checked:conversation.id === $route.params.id}"
 					>
 						<div class="item-head">
@@ -98,7 +98,7 @@
 			</div>
 		</div>
 		<div class="conversation-main">
-			<router-view></router-view>
+			<router-view :key="$route.params.id"></router-view>
 		</div>
 	</div>
 </template>

@@ -77,16 +77,15 @@
             </div>
         </div>
         <div class="chat-footer">
-            <!--customerStatus判断提出来-->
-            <div v-if="customerStatus && customerStatus.status==='PENDING'" class="accept-session">
+            <div v-if="customerStatus.status==='PENDING'" class="accept-session">
                 <div class="accept-info">会话已等待{{Math.ceil((Date.now()-customerStatus.time)/60000)}}分钟</div>
                 <button class="accept-btn" @click="acceptSession">立即接入</button>
             </div>
-            <div v-else-if="customerStatus && customerStatus.status==='ACCEPTED' && currentUser.uuid !== customerStatus.staff.id"
+            <div v-else-if="customerStatus.status==='ACCEPTED' && currentUser.uuid !== customerStatus.staff.id"
                  class="accept-session">
                 <div class="accept-info">{{ customerStatus.staff.data.name }}已接入</div>
             </div>
-            <div v-else-if="customerStatus && customerStatus.status==='FREE'" class="accept-session">
+            <div v-else-if="customerStatus.status==='FREE'" class="accept-session">
                 <button class="accept-btn" @click="acceptSession">发起会话</button>
             </div>
             <div v-else class="action-box">
@@ -218,7 +217,7 @@
                 csTeam: null,
 
                 customer: null,
-                customerStatus: null,
+                customerStatus: {},
 
                 to: {},//用于创建消息时传入
 
