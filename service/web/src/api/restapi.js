@@ -2,7 +2,7 @@ class RestApi {
 	//用户数据示例
 	users = [
 		{
-			uuid: '08c0a6ec-a42b-47b2-bb1e-15e0f5f9a19a',
+			uuid: '3f99d89d-99c0-44f7-96c9-e4c6ff5ac4d2',
 			name: 'Mattie',
 			password: '123',
 			avatar: '/static/images/Avatar-1.png',
@@ -10,7 +10,7 @@ class RestApi {
 			phone: '138xxxxxxxx',
 		},
 		{
-			uuid: '3bb179af-bcc5-4fe0-9dac-c05688484649',
+			uuid: '413985eb-c120-41ab-baea-93c3e751a14a',
 			name: 'Wallace',
 			password: '123',
 			avatar: '/static/images/Avatar-2.png',
@@ -18,7 +18,7 @@ class RestApi {
 			phone: '138xxxxxxxx',
 		},
 		{
-			uuid: 'fdee46b0-4b01-4590-bdba-6586d7617f95',
+			uuid: 'ce525fb0-99db-4e1a-bdac-1d09911cae7f',
 			name: 'Tracy',
 			password: '123',
 			avatar: '/static/images/Avatar-3.png',
@@ -26,7 +26,7 @@ class RestApi {
 			phone: '138xxxxxxxx',
 		},
 		{
-			uuid: '33c3693b-dbb0-4bc9-99c6-fa77b9eb763f',
+			uuid: '68663b2b-d824-46e9-983a-24cc2ab22df6',
 			name: 'Juanita',
 			password: '123',
 			avatar: '/static/images/Avatar-4.png',

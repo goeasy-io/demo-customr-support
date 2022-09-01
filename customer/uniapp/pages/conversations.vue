@@ -112,20 +112,29 @@
 				});
 			},
 			deleteConversation () {
-				this.actionPopup.visible = false;
-                let conversation = this.actionPopup.conversation;
-				this.goEasy.im.removeConversation({
-					conversation: conversation,
-					onSuccess: () => {
-						uni.showToast({
-							title: '删除成功',
-							icon: 'none'
-						});
+				uni.showModal({
+					content: '确认删除这条会话吗？',
+					success: (res) => {
+						if (res.confirm) {
+							this.actionPopup.visible = false;
+							let conversation = this.actionPopup.conversation;
+							this.goEasy.im.removeConversation({
+								conversation: conversation,
+								onSuccess: () => {
+									uni.showToast({
+										title: '删除成功',
+										icon: 'none'
+									});
+								},
+								onFailed: function (error) {
+									console.log('删除失败，error:',error);
+								},
+							});
+						} else {
+							this.actionPopup.visible = false;
+						}
 					},
-					onFailed: function (error) {
-						console.log('删除失败，error:',error);
-					},
-				});
+				})
 			},
 			navigateToChat (conversation) {
 				uni.navigateTo({
