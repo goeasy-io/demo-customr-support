@@ -178,8 +178,8 @@
 		align-items: center;
 
 	.home-container {
-		width: 900px;
-		height: 700px;
+		width: 850px;
+		height: 600px;
 		background: #FFFFFF;
 		display: flex;
 		position: relative;
