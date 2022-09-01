@@ -78,7 +78,7 @@
         </div>
         <div class="chat-footer">
             <div v-if="customerStatus.status==='PENDING'" class="accept-session">
-                <div class="accept-info">会话已等待{{Math.ceil((Date.now()-customerStatus.time)/60000)}}分钟</div>
+                <div class="accept-info">会话已等待{{(Math.ceil((Date.now()-customerStatus.time))/60000).toFixed(1)}}分钟</div>
                 <button class="accept-btn" @click="acceptSession">立即接入</button>
             </div>
             <div v-else-if="customerStatus.status==='ACCEPTED' && currentUser.uuid !== customerStatus.staff.id"
@@ -286,7 +286,7 @@
                     })
                 });
             },
-            onReceivedMessage(newMessage) {
+            async onReceivedMessage(newMessage) {
                 if (this.currentUser.shopId === newMessage.teamId && (this.customer.uuid === newMessage.senderId || this.customer.uuid === newMessage.to)) {
                     //如果该消息已存在，跳过
                     if (this.history.messages.findIndex((message) => newMessage.id === message.messageId) >= 0) {
@@ -297,7 +297,10 @@
                         //如果是一条来自其他同事的转接，需要刷新页面获取最新的消息历史
                         if (newMessage.type === 'CS_TRANSFER') {
                             this.refresh();
-                        } else {
+                        } else if (newMessage.type === 'CS_ACCEPT'&& newMessage.senderId!==this.currentUser.uuid) {
+                            // 如果其他同事已接入，需要更新一下页面状态
+                            this.customerStatus = await this.getCustomerStatus();
+												} else {
                             this.history.messages.push(newMessage);
                             this.markMessageAsRead();
                             this.scrollTo(0);
