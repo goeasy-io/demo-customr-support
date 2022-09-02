@@ -7378,6 +7378,11 @@
 	  exports.__esModule = true;
 
 	  function noop() {
+	    var params = [];
+
+	    for (var _i = 0; _i < arguments.length; _i++) {
+	      params[_i] = arguments[_i];
+	    }
 	  }
 
 	  exports["default"] = noop;
@@ -15837,6 +15842,7 @@
 	  var GoEasy_1 = GoEasy$1;
 	  var PendingConversations_1 = PendingConversations$1;
 	  var cs_message_1 = csMessage;
+	  var g_1 = g;
 
 	  var ConversationList =
 	  /** @class */
@@ -15894,8 +15900,10 @@
 	      } else {
 	        var lastMessage = conversationDTO.lastMessage;
 
-	        if (lastMessage instanceof cs_message_1.CSMessage && lastMessage.accepted) {
-	          throw new Error('pending conversation cannot be topped or removed.');
+	        if (lastMessage instanceof cs_message_1.CSMessage) {
+	          if (lastMessage.customerId() !== g_1.G.u() && lastMessage.accepted === false) {
+	            throw new Error('pending conversation cannot be topped or removed.');
+	          }
 	        }
 	      }
 	    };
