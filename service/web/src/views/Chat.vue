@@ -602,21 +602,13 @@
         .chat-main {
             display: flex;
             flex-direction: column;
-            overflow-y: scroll;
+            overflow-y: auto;
             padding: 0 15px 200px 15px;
-            scrollbar-color: transparent transparent;
-            scrollbar-track-color: transparent;
-            -ms-scrollbar-track-color: transparent;
-
-            &
-            ::-webkit-scrollbar {
-                width: 1px;
-            }
-
-            &
-            ::-webkit-scrollbar-thumb {
-                background-color: #99565600;
-            }
+			scrollbar-width: none;
+			-ms-overflow-style: none;
+			&::-webkit-scrollbar {
+				display: none;
+			}
 
             .history-loaded {
                 text-align: center;
@@ -679,14 +671,14 @@
                         }
 
                         .pending {
-                            background: url(/static/images/pending.gif) no-repeat center;
+                            background: url("../../public/static/images/pending.gif") no-repeat center;
                             background-size: 13px;
                             width: 15px;
                             height: 15px;
                         }
 
                         .send-fail {
-                            background: url(/static/images/failed.png) no-repeat center;
+                            background: url("../../public/static/images/failed.png") no-repeat center;
                             background-size: 13px;
                             width: 15px;
                             height: 15px;
@@ -759,7 +751,7 @@
                 }
 
                 .self /deep/ .play-icon {
-                    background: url("/static/images/play.gif") no-repeat center;
+                    background: url("../../public/static/images/play.gif") no-repeat center;
                     background-size: 20px;
                     -moz-transform: rotate(180deg);
                     -webkit-transform: rotate(180deg);

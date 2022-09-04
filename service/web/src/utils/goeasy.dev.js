@@ -10789,7 +10789,7 @@
 	        _this.doSend(message, to, notification, wx_mp_template_msg, accessToken, sendOptions);
 	      })["catch"](function (error) {
 	        message.status = GoEasy_1.MessageStatus.FAIL;
-	        sendOptions.onFailed({
+	        callback_utils_1.CallbackUtils.onFailed(sendOptions, {
 	          code: error.code || 400,
 	          content: error.content || error
 	        });
