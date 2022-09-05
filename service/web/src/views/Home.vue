@@ -11,28 +11,28 @@
 				<div class="menu-box">
 					<div class="menu-list">
 						<div class="menu-item">
-							<router-link to="/conversation">
+							<router-link to="/conversations">
 								<i
 										class="iconfont icon-zaixiankefu"
-										:class="{ selected: selectedTab === 'conversation'}"
+										:class="{ selected: selectedTab === 'conversations'}"
 								></i>
 							</router-link>
 							<span v-if="unreadAmount + pendingConversationAmount" class="menu-unread">{{ unreadAmount + pendingConversationAmount }}</span>
 						</div>
 						<div class="menu-item">
-							<router-link to="/contact">
+							<router-link to="/customers">
 								<i
 										class="iconfont icon-haoyou"
-										:class="{ selected: selectedTab === 'contact' }"
+										:class="{ selected: selectedTab === 'customers' }"
 								></i>
 							</router-link>
 						</div>
 					</div>
 					<div class="agent-info">
-						<img class="agent-avatar" :src="currentUser.avatar"
+						<img class="agent-avatar" :src="currentAgent.avatar"
 						     @click="onlineConfig.visible = !onlineConfig.visible"/>
 						<span :class="onlineConfig.online ?'spot online':'spot offline'"></span>
-						<div class="agent-name">{{currentUser.name}}</div>
+						<div class="agent-name">{{currentAgent.name}}</div>
 					</div>
 					<div @click.prevent="closeOnlinePopup()" class="action-wrap" v-if="onlineConfig.visible">
 						<div class="action-box" v-if="onlineConfig.visible">
@@ -77,7 +77,7 @@
 			}
 			this.shop = RestApi.findShopById(this.currentAgent.shopId);
 
-			this.csteam = this.goEasy.im.csTeam(this.currentAgent.shopId);
+			this.csteam = this.goEasy.im.csteam(this.currentAgent.shopId);
 
 			if (this.goEasy.getConnectionStatus() === 'disconnected') {
 				this.connectGoEasy();  //连接goeasy
@@ -143,7 +143,7 @@
             online(){
                 this.csteam.online({
                     teamData: {name: this.shop.name, avatar: this.shop.avatar},
-                    staffData: {name: this.currentAgent.name, avatar: this.currentAgent.avatar},
+                    agentData: {name: this.currentAgent.name, avatar: this.currentAgent.avatar},
                     onSuccess: () => {
                         this.onlineConfig.online = true;
                     },

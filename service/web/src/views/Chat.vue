@@ -24,7 +24,7 @@
                             {{message.senderData.name}}已结束
                         </div>
                         <div v-else-if="message.type === 'CS_TRANSFER'" class="accept-message">
-                            {{message.senderId === currentUser.id ? `已转接给` + message.payload.transferTo.data.name:
+                            {{message.senderId === currentAgent.id ? `已转接给` + message.payload.transferTo.data.name:
                             '已接入来自' + message.senderData.name +'的转接'}}
                         </div>
                         <div v-else class="message-item-content" :class="{ self: message.senderId !== customer.id }">
@@ -81,7 +81,7 @@
                 <div class="accept-info">会话已等待{{(Math.ceil((Date.now()-customerStatus.time))/60000).toFixed(1)}}分钟</div>
                 <button class="accept-btn" @click="acceptSession">立即接入</button>
             </div>
-            <div v-else-if="customerStatus.status==='ACCEPTED' && currentUser.id !== customerStatus.agent.id"
+            <div v-else-if="customerStatus.status==='ACCEPTED' && currentAgent.id !== customerStatus.agent.id"
                  class="accept-session">
                 <div class="accept-info">{{ customerStatus.agent.data.name }}已接入</div>
             </div>
@@ -178,7 +178,7 @@
                     </div>
                 </div>
                 <div class="transfer-content" v-else>
-                    <div>-当前无其他客服在线-</div>
+                    <div class="no-agent">-当前无其他客服在线-</div>
                 </div>
                 <div class="transfer-bottom">
                     <span class="transfer-button" v-if="transferForm.agents.length" @click="transfer()">确认</span>
@@ -213,7 +213,7 @@
                 '[傲慢]': 'emoji_8@2x.png',
             };
             return {
-                currentUser: null,
+                currentAgent: null,
                 csteam: null,
 
                 customer: null,
@@ -434,7 +434,7 @@
                     onSuccess: (result) => {
                         this.transferForm.visible = true;
                         this.transferForm.agents = result.content.filter((agent) => {
-                            return agent.id !== this.currentUser.uuid;
+                            return agent.id !== this.currentAgent.id;
                         });
                     },
                     onFailed: (error) => {
@@ -444,8 +444,8 @@
             },
             transfer() {
                 this.csteam.transfer({
-                    id: this.customer.id,
-                    to: this.transferForm.to.id,
+					customerId: this.customer.id,
+					agentId: this.transferForm.to.id,
                     onSuccess: (result) => {
                         this.transferForm.visible = false;
                         this.customerStatus = result.customerStatus;
@@ -1039,6 +1039,10 @@
                         }
 
                     }
+
+					.no-agent {
+						flex: 1;
+					}
                 }
 
                 .transfer-bottom {

@@ -7,7 +7,7 @@
 					<div
 							class="conversation-item"
 							v-for="(conversation, key) in pendingConversations" :key="key"
-							@click="goChatPage(conversation.id)"
+							@click="chat(conversation.id)"
 							:class="{checked:conversation.id === $route.params.id}"
 					>
 						<div class="item-head">
@@ -40,7 +40,7 @@
 					<div
 							class="conversation-item"
 							v-for="(conversation, key) in conversations" :key="key"
-							@click="goChatPage(conversation.id)"
+							@click="chat(conversation.id)"
 							:class="{checked:conversation.id === $route.params.id}"
 							@contextmenu.prevent.stop="e=>showMenu(e,conversation)"
 					>
@@ -85,7 +85,7 @@
 								</div>
 								<div class="item-info-message"
 								     v-else-if="conversation.lastMessage.type === 'CS_TRANSFER'">
-									{{conversation.lastMessage.senderId === currentUser.uuid ? `已转接给` +
+									{{conversation.lastMessage.senderId === currentAgent.id ? `已转接给` +
 									conversation.lastMessage.payload.transferTo.data.name: '已接入来自' +
 									conversation.lastMessage.senderData.name +'的转接'}}
 								</div>
@@ -170,7 +170,7 @@
 			},
 			chat(customerId) {
 				this.$router.push({
-					path: `/conversation/chat/${customerId}`
+					path: `/conversations/chat/${customerId}`
 				});
 			},
 			showMenu(event,conversation) {

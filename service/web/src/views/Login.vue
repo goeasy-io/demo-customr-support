@@ -50,7 +50,7 @@
 					let agent = restApi.findAgent(this.username, this.password);
 					if (agent) {
 						localStorage.setItem('currentAgent', JSON.stringify(agent));
-						this.$router.push({path: './conversation'});
+						this.$router.push({path: './conversations'});
 						return;
 					}
 				}

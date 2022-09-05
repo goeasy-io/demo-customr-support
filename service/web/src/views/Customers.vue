@@ -4,10 +4,10 @@
 			<div class="contact-tab">客户列表</div>
 			<div class="contact-list">
 				<div
-						:class="selectedCustomer && selectedCustomer.uuid === user.uuid ?'user-item checked' : 'user-item'"
+						:class="selectedCustomer && selectedCustomer.id === user.id ?'user-item checked' : 'user-item'"
 						v-for="(user, key) in customers || []"
 						:key="key"
-						@click="showContact(user)"
+						@click="showCustomer(user)"
 				>
 					<div class="user-avatar">
 						<img :src="user.avatar"/>
@@ -55,8 +55,7 @@
 			};
 		},
 		mounted() {
-			let currentAgent = JSON.parse(localStorage.getItem("currentAgent"));
-			this.customers = restApi.findAgent(currentAgent.uuid);
+			this.customers = restApi.findCustomers();
 		},
 		methods: {
 			showCustomer(customer) {
@@ -64,7 +63,7 @@
 			},
 			chat(customerId) {
 				this.$router.push({
-					path: `conversation/chat/${customerId}`
+					path: `conversations/chat/${customerId}`
 				});
 			},
 		},
