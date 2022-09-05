@@ -28,11 +28,11 @@
 							</router-link>
 						</div>
 					</div>
-					<div class="staff-info">
-						<img class="staff-avatar" :src="currentUser.avatar"
+					<div class="agent-info">
+						<img class="agent-avatar" :src="currentUser.avatar"
 						     @click="onlineConfig.visible = !onlineConfig.visible"/>
 						<span :class="onlineConfig.online ?'spot online':'spot offline'"></span>
-						<div class="staff-name">{{currentUser.name}}</div>
+						<div class="agent-name">{{currentUser.name}}</div>
 					</div>
 					<div @click.prevent="closeOnlinePopup()" class="action-wrap" v-if="onlineConfig.visible">
 						<div class="action-box" v-if="onlineConfig.visible">
@@ -57,7 +57,7 @@
 		name: 'Home',
 		data() {
 			return {
-				csTeam: null,
+				csteam: null,
 				currentUser: null,
 				shop: null,
 				selectedTab: "",
@@ -77,7 +77,7 @@
 			}
 			this.shop = RestApi.findShopById(this.currentUser.shopId);
 
-			this.csTeam = this.goEasy.im.csTeam(this.currentUser.shopId);
+			this.csteam = this.goEasy.im.csteam(this.currentUser.shopId);
 
 			if (this.goEasy.getConnectionStatus() === 'disconnected') {
 				this.connectGoEasy();  //连接goeasy
@@ -119,7 +119,7 @@
 				this.pendingConversationAmount = content.conversations.length;
 			},
 			initialOnlineStatus() {
-				this.csTeam.isOnline({
+				this.csteam.isOnline({
 					onSuccess: (result) => {
 						this.onlineConfig.online = result.content;
 					},
@@ -129,7 +129,7 @@
 				})
 			},
             offline() {
-                this.csTeam.offline({
+                this.csteam.offline({
                     onSuccess: () => {
                         this.onlineConfig.online = false;
                         this.onlineConfig.visible = false;
@@ -140,9 +140,9 @@
                 })
             },
             online(){
-                this.csTeam.online({
+                this.csteam.online({
                     teamData: {name: this.shop.name, avatar: this.shop.avatar},
-                    staffData: {name: this.currentUser.name, avatar: this.currentUser.avatar},
+					agentData: {name: this.currentUser.name, avatar: this.currentUser.avatar},
                     onSuccess: () => {
                         this.onlineConfig.online = true;
                     },
@@ -279,15 +279,15 @@
 
 	}
 
-	.staff-info:hover .staff-name {
+	.agent-info:hover .agent-name {
 		visibility: visible;
 		text-decoration: none;
 	}
 
-	.staff-info {
+	.agent-info {
 		position: relative;
 
-	.staff-avatar {
+	.agent-avatar {
 		width: 45px;
 		height: 45px;
 		border-radius: 50%;
@@ -312,7 +312,7 @@
 		background-color: #999999;
 	}
 
-	.staff-name {
+	.agent-name {
 		visibility: hidden;
 		position: absolute;
 		top: 32px;

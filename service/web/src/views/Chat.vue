@@ -81,9 +81,9 @@
                 <div class="accept-info">会话已等待{{(Math.ceil((Date.now()-customerStatus.time))/60000).toFixed(1)}}分钟</div>
                 <button class="accept-btn" @click="acceptSession">立即接入</button>
             </div>
-            <div v-else-if="customerStatus.status==='ACCEPTED' && currentUser.uuid !== customerStatus.staff.id"
+            <div v-else-if="customerStatus.status==='ACCEPTED' && currentUser.uuid !== customerStatus.agent.id"
                  class="accept-session">
-                <div class="accept-info">{{ customerStatus.staff.data.name }}已接入</div>
+                <div class="accept-info">{{ customerStatus.agent.data.name }}已接入</div>
             </div>
             <div v-else-if="customerStatus.status==='FREE'" class="accept-session">
                 <button class="accept-btn" @click="acceptSession">发起会话</button>
@@ -168,12 +168,12 @@
         <!-- 转接弹窗 -->
         <div v-if="transferForm.visible" class="transfer-popup">
             <div class="transfer-model">
-                <div class="transfer-content" v-if="transferForm.staffs.length">
-                    <div class="staff-info" v-for="(staff, index) in transferForm.staffs">
-                        <label class="staff-label">
-                            <input :name="staff.data.name" :value="staff" v-model="transferForm.to" type="radio"/>
-                            <img class="staff-avatar" :src="staff.data.avatar"/>
-                            <span class="staff-name">{{staff.data.name}}</span>
+                <div class="transfer-content" v-if="transferForm.agents.length">
+                    <div class="agent-info" v-for="(agent, index) in transferForm.agents">
+                        <label class="agent-label">
+                            <input :name="agent.data.name" :value="agent" v-model="transferForm.to" type="radio"/>
+                            <img class="agent-avatar" :src="agent.data.avatar"/>
+                            <span class="agent-name">{{agent.data.name}}</span>
                         </label>
                     </div>
                 </div>
@@ -181,7 +181,7 @@
                     <div>-当前无其他客服在线-</div>
                 </div>
                 <div class="transfer-bottom">
-                    <span class="transfer-button" v-if="transferForm.staffs.length" @click="transfer()">确认</span>
+                    <span class="transfer-button" v-if="transferForm.agents.length" @click="transfer()">确认</span>
                     <span class="transfer-button" @click="hideTransferForm()">取消</span>
                 </div>
             </div>
@@ -214,7 +214,7 @@
             };
             return {
                 currentUser: null,
-                csTeam: null,
+                csteam: null,
 
                 customer: null,
                 customerStatus: {},
@@ -244,7 +244,7 @@
                 },
                 transferForm: {
                     visible: false,
-                    staffs: [],
+                    agents: [],
                     to: {}
                 },
             }
@@ -258,7 +258,7 @@
                 data: {name: this.customer.name, avatar: this.customer.avatar},
             };
             this.currentUser = JSON.parse(localStorage.getItem("currentUser"));
-            this.csTeam = this.goEasy.im.csTeam(this.currentUser.shopId);
+            this.csteam = this.goEasy.im.csteam(this.currentUser.shopId);
 
             this.markMessageAsRead();
             this.customerStatus = await this.getCustomerStatus();
@@ -275,7 +275,7 @@
             },
             getCustomerStatus() {
                 return new Promise((resolve, reject) => {
-                    this.csTeam.customerStatus({
+                    this.csteam.customerStatus({
                         id: this.customer.uuid,
                         onSuccess: (result) => {
                             resolve(result.content);
@@ -311,7 +311,7 @@
                 }
             },
             markMessageAsRead() {
-                this.csTeam.markMessageAsRead({
+                this.csteam.markMessageAsRead({
                     type: this.GoEasy.IM_SCENE.CS,
                     id: this.customer.uuid,
                     onSuccess: function () {
@@ -337,7 +337,7 @@
                     lastMessageTimeStamp = lastMessage.timestamp;
                 }
                 let limit = 10;
-                this.csTeam.history({
+                this.csteam.history({
                     id: this.customer.uuid,
                     type: this.GoEasy.IM_SCENE.CS,
                     lastTimestamp: lastMessageTimeStamp,
@@ -402,7 +402,7 @@
                 this.imagePopup.url = url;
             },
             acceptSession() {
-                this.csTeam.accept({
+                this.csteam.accept({
                     id: this.customer.uuid,
                     onSuccess: (result) => {
                         this.customerStatus = result.customerStatus;
@@ -417,7 +417,7 @@
                 })
             },
             endSession() {
-                this.csTeam.end({
+                this.csteam.end({
                     id: this.customer.uuid,
                     onSuccess: (result) => {
                         this.customerStatus = result.customerStatus;
@@ -430,20 +430,20 @@
                 })
             },
             showTransferForm() {
-                this.csTeam.staffs({
+                this.csteam.agents({
                     onSuccess: (result) => {
                         this.transferForm.visible = true;
-                        this.transferForm.staffs = result.content.filter((staff) => {
-                            return staff.id !== this.currentUser.uuid;
+                        this.transferForm.agents = result.content.filter((agent) => {
+                            return agent.id !== this.currentUser.uuid;
                         });
                     },
                     onFailed: (error) => {
-                        console.log('query online staffs failed', error);
+                        console.log('query online agents failed', error);
                     }
                 });
             },
             transfer() {
-                this.csTeam.transfer({
+                this.csteam.transfer({
                     id: this.customer.uuid,
                     to: this.transferForm.to.id,
                     onSuccess: (result) => {
@@ -472,7 +472,7 @@
                     console.log('输入为空');
                     return
                 }
-                this.csTeam.createTextMessage({
+                this.csteam.createTextMessage({
                     text: this.text,
                     to: this.to,
                     onSuccess: (message) => {
@@ -487,7 +487,7 @@
             sendImageMessage(e) {
                 let fileList = [...e.target.files];
                 fileList.forEach((file) => {
-                    this.csTeam.createImageMessage({
+                    this.csteam.createImageMessage({
                         file: file,
                         to: this.to,
                         onProgress: function (progress) {
@@ -504,7 +504,7 @@
             },
             sendVideoMessage(e) {
                 const file = e.target.files[0];
-                this.csTeam.createVideoMessage({
+                this.csteam.createVideoMessage({
                     file: file,
                     to: this.to,
                     onProgress: function (progress) {
@@ -524,7 +524,7 @@
             },
             sendOrderMessage(order) {
                 this.orderList.visible = false;
-                this.csTeam.createCustomMessage({
+                this.csteam.createCustomMessage({
                     type: 'order',
                     payload: order,
                     to: this.to,
@@ -1016,16 +1016,16 @@
                     align-items: center;
                     flex-wrap: wrap;
 
-                    .staff-info {
+                    .agent-info {
                         width: 110px;
                         padding: 20px;
 
-                        .staff-label {
+                        .agent-label {
                             display: flex;
                             align-items: center;
                         }
 
-                        .staff-avatar {
+                        .agent-avatar {
                             width: 40px;
                             height: 40px;
                             min-width: 40px;
@@ -1033,7 +1033,7 @@
                             margin: 0 5px;
                         }
 
-                        .staff-name {
+                        .agent-name {
                             font-size: 14px;
                             word-break: break-all;
                         }

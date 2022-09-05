@@ -7578,7 +7578,7 @@
 	    RocketTypes["CS_ACCEPT"] = "CS_ACCEPT";
 	    RocketTypes["CS_END"] = "CS_END";
 	    RocketTypes["CS_TRANSFER"] = "CS_TRANSFER";
-	    RocketTypes["CS_STAFFS"] = "CS_STAFFS";
+	    RocketTypes["CS_AGENTS"] = "CS_AGENTS";
 	    RocketTypes["CS_CUSTOMER_STATUS"] = "CS_CUSTOMER_STATUS";
 	    RocketTypes["CS_IS_ONLINE"] = "CS_IS_ONLINE";
 	    RocketTypes["CS_ONLINE"] = "CS_ONLINE";
@@ -7945,29 +7945,29 @@
 	        this.userData = options.data;
 	      }
 
-	      if (Calibrator_1["default"].isObject(options.wx_mp)) {
-	        if (Calibrator_1["default"].isEmpty(options.wx_mp.appid)) {
+	      if (Calibrator_1["default"].isObject(options.wxmpId)) {
+	        if (Calibrator_1["default"].isEmpty(options.wxmpId.appid)) {
 	          throw {
 	            code: 400,
 	            content: 'wx_mp.appid is required.'
 	          };
 	        }
 
-	        if (Calibrator_1["default"].isEmpty(options.wx_mp.openid)) {
+	        if (Calibrator_1["default"].isEmpty(options.wxmpId.openid)) {
 	          throw {
 	            code: 400,
 	            content: 'wx_mp.openid is required. requires string.'
 	          };
 	        }
-	      } else if (Calibrator_1["default"].isPrimitive(options.wx_mp)) {
+	      } else if (Calibrator_1["default"].isPrimitive(options.wxmpId)) {
 	        throw {
 	          code: 400,
 	          content: 'TypeError: wx_mp requires an object.'
 	        };
 	      }
 
-	      if (Calibrator_1["default"].isDef(options.wx_mp)) {
-	        this.wx_mp = options.wx_mp;
+	      if (Calibrator_1["default"].isDef(options.wxmpId)) {
+	        this.wx_mp = options.wxmpId;
 	      }
 
 	      this.otp = options.otp || null;
@@ -8431,24 +8431,24 @@
 	      }
 	    };
 
-	    ValidatorUtils.prototype.validateWXMPTemplateMsg = function (wx_mp_template_msg) {
-	      if (Calibrator_1["default"].isObject(wx_mp_template_msg)) {
-	        if (!Calibrator_1["default"].isString(wx_mp_template_msg.template_id)) {
+	    ValidatorUtils.prototype.validateWXMPTemplateMsg = function (wxmpTemplateMsg) {
+	      if (Calibrator_1["default"].isObject(wxmpTemplateMsg)) {
+	        if (!Calibrator_1["default"].isString(wxmpTemplateMsg.template_id)) {
 	          throw {
 	            code: 400,
 	            content: 'template_id must be string.'
 	          };
 	        }
 
-	        if (!Calibrator_1["default"].isEmpty(wx_mp_template_msg.url) && !Calibrator_1["default"].isString(wx_mp_template_msg.url)) {
+	        if (!Calibrator_1["default"].isEmpty(wxmpTemplateMsg.url) && !Calibrator_1["default"].isString(wxmpTemplateMsg.url)) {
 	          throw {
 	            code: 400,
 	            content: 'url must be string'
 	          };
 	        }
 
-	        if (!Calibrator_1["default"].isEmpty(wx_mp_template_msg.miniprogram)) {
-	          if (!Calibrator_1["default"].isString(wx_mp_template_msg.miniprogram.appid) || !Calibrator_1["default"].isString(wx_mp_template_msg.miniprogram.pagepath)) {
+	        if (!Calibrator_1["default"].isEmpty(wxmpTemplateMsg.miniprogram)) {
+	          if (!Calibrator_1["default"].isString(wxmpTemplateMsg.miniprogram.appid) || !Calibrator_1["default"].isString(wxmpTemplateMsg.miniprogram.pagepath)) {
 	            throw {
 	              code: 400,
 	              content: 'miniprogram.appid and miniprogram.pagepath must be strings.'
@@ -8456,16 +8456,16 @@
 	          }
 	        }
 
-	        if (!Calibrator_1["default"].isObject(wx_mp_template_msg.data)) {
+	        if (!Calibrator_1["default"].isObject(wxmpTemplateMsg.data)) {
 	          throw {
 	            code: 400,
 	            content: 'data requires an object.'
 	          };
 	        }
-	      } else if (Calibrator_1["default"].isPrimitive(wx_mp_template_msg)) {
+	      } else if (Calibrator_1["default"].isPrimitive(wxmpTemplateMsg)) {
 	        throw {
 	          code: 400,
-	          content: 'wx_mp_template_msg must be an object.'
+	          content: 'wxmpTemplateMsg must be an object.'
 	        };
 	      }
 	    };
@@ -8549,9 +8549,9 @@
 	        guid: UUID_1["default"].get()
 	      };
 
-	      if (options.wx_mp_template_msg) {
-	        params.wx_mp_template_msg = options.wx_mp_template_msg;
-	        params.wx_mp_template_msg.data = JSON.stringify(params.wx_mp_template_msg.data); // todo:这个data需要转换成字符串吗?
+	      if (options.wxmpTemplateMsg) {
+	        params.wxmpTemplateMsg = options.wxmpTemplateMsg;
+	        params.wxmpTemplateMsg.data = JSON.stringify(params.wxmpTemplateMsg.data); // todo:这个data需要转换成字符串吗?
 	      }
 
 	      var success = function success(ack) {
@@ -8603,8 +8603,8 @@
 	        };
 	      }
 
-	      if (options.wx_mp_template_msg) {
-	        validator_utils_1["default"].validateWXMPTemplateMsg(options.wx_mp_template_msg);
+	      if (options.wxmpTemplateMsg) {
+	        validator_utils_1["default"].validateWXMPTemplateMsg(options.wxmpTemplateMsg);
 	      }
 
 	      if (options.notification) {
@@ -10573,7 +10573,7 @@
 	  var BulletMessage =
 	  /** @class */
 	  function () {
-	    function BulletMessage(message, to, notification, wx_mp_template_msg, accessToken) {
+	    function BulletMessage(message, to, notification, wxmpTemplateMsg, accessToken) {
 	      this.validate(message);
 	      this.mt = message.type;
 	      this.to = to.id.toString();
@@ -10588,10 +10588,10 @@
 	        this.at = accessToken;
 	      }
 
-	      if (wx_mp_template_msg) {
+	      if (wxmpTemplateMsg) {
 	        // @ts-ignore /todo：暂时先这样
-	        wx_mp_template_msg.data = JSON.stringify(wx_mp_template_msg.data);
-	        this.wx_mp_template_msg = wx_mp_template_msg;
+	        wxmpTemplateMsg.data = JSON.stringify(wxmpTemplateMsg.data);
+	        this.wxmpTemplateMsg = wxmpTemplateMsg;
 	      }
 
 	      var scene = to.type;
@@ -10775,7 +10775,7 @@
 	      var buildOptions = message.buildOptions;
 	      var createOptions = buildOptions.createOptions;
 	      var notification = createOptions.notification;
-	      var wx_mp_template_msg = createOptions.wx_mp_template_msg;
+	      var wxmpTemplateMsg = createOptions.wxmpTemplateMsg;
 	      var to = createOptions.to;
 
 	      if (!to.data) {
@@ -10786,7 +10786,7 @@
 	      var buildPromise = buildOptions.complete;
 	      var improvePromise = this.payloadImprover.improve(sendOptions);
 	      Promise.all([buildPromise, improvePromise]).then(function () {
-	        _this.doSend(message, to, notification, wx_mp_template_msg, accessToken, sendOptions);
+	        _this.doSend(message, to, notification, wxmpTemplateMsg, accessToken, sendOptions);
 	      })["catch"](function (error) {
 	        message.status = GoEasy_1.MessageStatus.FAIL;
 	        callback_utils_1.CallbackUtils.onFailed(sendOptions, {
@@ -10796,8 +10796,8 @@
 	      });
 	    };
 
-	    IMMessageSender.prototype.doSend = function (message, to, notification, wx_mp_template_msg, accessToken, options) {
-	      var bulletMessage = new BulletMessage_1["default"](message, to, notification, wx_mp_template_msg, accessToken);
+	    IMMessageSender.prototype.doSend = function (message, to, notification, wxmpTemplateMsg, accessToken, options) {
+	      var bulletMessage = new BulletMessage_1["default"](message, to, notification, wxmpTemplateMsg, accessToken);
 	      goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.MESSAGE_SENDING, message);
 	      var rocket = new Rocket_1["default"]({
 	        name: RocketTypes_1.RocketTypes.publishIM,
@@ -11164,7 +11164,7 @@
 	var g_1$a = g;
 	/**
 	 * target.id不同的场景表达不同的含义:
-	 *  cs场景：customer端id为teamId，staff端id为customerId
+	 *  cs场景：customer端id为teamId，agent端id为customerId
 	 *  private: id为friendId
 	 *  group：id为groupId
 	 * 注意：cs中才有teamId
@@ -11249,7 +11249,7 @@
 	          targetId = markerId;
 	        }
 	      } else {
-	        // staff mark
+	        // agent mark
 	        if (markerId === g_1$a.G.u()) {
 	          targetId = receiverId;
 	        } else {
@@ -11735,7 +11735,7 @@
 	  };
 	  /**
 	   * 当前用户是customer，返回teamId
-	   * 当前用户是staff，返回customerId
+	   * 当前用户是agent，返回customerId
 	   */
 
 
@@ -11758,7 +11758,7 @@
 	      return this.to;
 	    }
 	  }; //如果我是customer，这个发送方只要不是我，就是other
-	  //如果我是staff，这个发送方是customer，就是other
+	  //如果我是agent，这个发送方是customer，就是other
 
 
 	  CSMessage.prototype.isOtherSent = function () {
@@ -13030,7 +13030,7 @@
 	  exports["default"] = History;
 	})(History);
 
-	var staffHistory = {};
+	var agentHistory = {};
 
 	(function (exports) {
 
@@ -13215,12 +13215,12 @@
 	  var g_1 = g;
 	  var cs_message_type_1 = csMessageType;
 
-	  var StaffHistory =
+	  var AgentHistory =
 	  /** @class */
 	  function (_super) {
-	    __extends(StaffHistory, _super);
+	    __extends(AgentHistory, _super);
 
-	    function StaffHistory(target) {
+	    function AgentHistory(target) {
 	      var _this = _super.call(this, target) || this;
 
 	      _this.unread = 0;
@@ -13228,7 +13228,7 @@
 	      return _this;
 	    }
 
-	    StaffHistory.prototype.loadHistory = function (lastTimestamp, limit) {
+	    AgentHistory.prototype.loadHistory = function (lastTimestamp, limit) {
 	      return __awaiter(this, void 0, void 0, function () {
 	        return __generator(this, function (_a) {
 	          switch (_a.label) {
@@ -13254,7 +13254,7 @@
 	      });
 	    };
 
-	    StaffHistory.prototype.loadServerMessages = function (lastTimestamp, limit) {
+	    AgentHistory.prototype.loadServerMessages = function (lastTimestamp, limit) {
 	      return __awaiter(this, void 0, void 0, function () {
 	        var request, content;
 
@@ -13281,7 +13281,7 @@
 	      });
 	    };
 
-	    StaffHistory.prototype.deleteMessages = function (options) {
+	    AgentHistory.prototype.deleteMessages = function (options) {
 	      return __awaiter(this, void 0, void 0, function () {
 	        return __generator(this, function (_a) {
 	          callback_utils_1.CallbackUtils.onFailed(options, "Delete CS message is not supported yet");
@@ -13292,7 +13292,7 @@
 	      });
 	    };
 
-	    StaffHistory.prototype.recallMessage = function (options) {
+	    AgentHistory.prototype.recallMessage = function (options) {
 	      return __awaiter(this, void 0, void 0, function () {
 	        return __generator(this, function (_a) {
 	          callback_utils_1.CallbackUtils.onFailed(options, "Recall CS message is not supported yet");
@@ -13303,7 +13303,7 @@
 	      });
 	    };
 
-	    StaffHistory.prototype.initMaxMessageAndOffsets = function (message, userOffsets) {
+	    AgentHistory.prototype.initMaxMessageAndOffsets = function (message, userOffsets) {
 	      var _this = this;
 
 	      userOffsets.forEach(function (userOffset) {
@@ -13317,7 +13317,7 @@
 	      this.saveAcceptedMessage(message);
 	    };
 
-	    StaffHistory.prototype.initPendingMaxMessageAndOffsets = function (message, userOffsets) {
+	    AgentHistory.prototype.initPendingMaxMessageAndOffsets = function (message, userOffsets) {
 	      var _this = this;
 
 	      userOffsets.forEach(function (userOffset) {
@@ -13326,7 +13326,7 @@
 	      this.savePendingMessage(message);
 	    };
 
-	    StaffHistory.prototype.savePendingMessage = function (message) {
+	    AgentHistory.prototype.savePendingMessage = function (message) {
 	      if (this.pendingMaxMessage) {
 	        if (this.pendingMaxMessage.timestamp < message.timestamp) {
 	          this.pendingMaxMessage = message;
@@ -13336,7 +13336,7 @@
 	      }
 	    };
 
-	    StaffHistory.prototype.saveAcceptedMessage = function (message) {
+	    AgentHistory.prototype.saveAcceptedMessage = function (message) {
 	      if (this.acceptedMaxMessage) {
 	        if (this.acceptedMaxMessage.timestamp < message.timestamp) {
 	          this.acceptedMaxMessage = message;
@@ -13346,12 +13346,12 @@
 	      }
 	    };
 
-	    StaffHistory.prototype.onMessageSending = function (message) {
+	    AgentHistory.prototype.onMessageSending = function (message) {
 	      this.saveAcceptedMessage(message);
 	      goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.MAX_MESSAGE_CHANGED, message);
 	    };
 
-	    StaffHistory.prototype.onMessageSendSuccess = function (message) {
+	    AgentHistory.prototype.onMessageSendSuccess = function (message) {
 	      this.saveAcceptedMessage(message);
 	      this.userOffsets.updateOffset(message.senderId, message.timestamp);
 
@@ -13360,13 +13360,13 @@
 	      }
 	    };
 
-	    StaffHistory.prototype.onMessageSendFailed = function (message) {
+	    AgentHistory.prototype.onMessageSendFailed = function (message) {
 	      if (this.acceptedMaxMessage === message) {
 	        goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.MAX_MESSAGE_CHANGED, message);
 	      }
 	    };
 
-	    StaffHistory.prototype.onMessageReceived = function (message) {
+	    AgentHistory.prototype.onMessageReceived = function (message) {
 	      if (!message.accepted || message.senderId !== g_1.G.u() && message.type === cs_message_type_1.CSMessageType.ACCEPT) {
 	        this.savePendingMessage(message);
 	      } else {
@@ -13378,7 +13378,7 @@
 	      goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.MAX_MESSAGE_CHANGED, message);
 	    };
 
-	    StaffHistory.prototype.increaseUnreadAmount = function (message) {
+	    AgentHistory.prototype.increaseUnreadAmount = function (message) {
 	      if (message.sendByCustomer() || message.type === cs_message_type_1.CSMessageType.TRANSFER && message.senderId !== g_1.G.u()) {
 	        var myOffset = this.userOffsets.myOffset();
 
@@ -13388,7 +13388,7 @@
 	      }
 	    };
 
-	    StaffHistory.prototype.markRead = function () {
+	    AgentHistory.prototype.markRead = function () {
 	      return __awaiter(this, void 0, void 0, function () {
 	        var markTime;
 	        return __generator(this, function (_a) {
@@ -13417,7 +13417,7 @@
 	      });
 	    };
 
-	    StaffHistory.prototype.preMark = function (markTime) {
+	    AgentHistory.prototype.preMark = function (markTime) {
 	      var myOffset = this.userOffsets.myOffset(); //todo:如果mark时 最后一条消息如果是自己发送的，有可能导致mark了没反应，但应该不会经常出现，观察一下再看
 
 	      if (markTime > this.userOffsets.markingTime && markTime > myOffset) {
@@ -13429,7 +13429,7 @@
 	      return false;
 	    };
 
-	    StaffHistory.prototype.postMark = function (markTime) {
+	    AgentHistory.prototype.postMark = function (markTime) {
 	      if (markTime === this.userOffsets.markingTime) {
 	        //确定是同一个请求才处理
 	        this.unread -= this.markingAmount;
@@ -13439,26 +13439,26 @@
 	      }
 	    };
 
-	    StaffHistory.prototype.syncMarkedMessage = function (event) {// todo 远程同步mark不处理 do nothing
+	    AgentHistory.prototype.syncMarkedMessage = function (event) {// todo 远程同步mark不处理 do nothing
 	    };
 
-	    StaffHistory.prototype.getMaxMessage = function (accepted) {
+	    AgentHistory.prototype.getMaxMessage = function (accepted) {
 	      return accepted ? this.acceptedMaxMessage : this.pendingMaxMessage;
 	    };
 
-	    StaffHistory.prototype.unreadAmount = function (accepted) {
+	    AgentHistory.prototype.unreadAmount = function (accepted) {
 	      return accepted ? this.unread : 0;
 	    };
 
-	    StaffHistory.prototype.existsMessage = function (message) {
+	    AgentHistory.prototype.existsMessage = function (message) {
 	      return this.acceptedMaxMessage && this.acceptedMaxMessage.messageId === message.messageId || this.pendingMaxMessage && this.pendingMaxMessage.messageId === message.messageId;
 	    };
 
-	    StaffHistory.prototype.maxAcceptedMessageTime = function () {
+	    AgentHistory.prototype.maxAcceptedMessageTime = function () {
 	      return this.acceptedMaxMessage ? this.acceptedMaxMessage.timestamp : 0;
 	    };
 
-	    StaffHistory.prototype.maxTime = function (accepted) {
+	    AgentHistory.prototype.maxTime = function (accepted) {
 	      var maxMessage = this.getMaxMessage(accepted);
 
 	      if (maxMessage) {
@@ -13468,11 +13468,11 @@
 	      return 0;
 	    };
 
-	    return StaffHistory;
+	    return AgentHistory;
 	  }(History_1["default"]);
 
-	  exports["default"] = StaffHistory;
-	})(staffHistory);
+	  exports["default"] = AgentHistory;
+	})(agentHistory);
 
 	var customerHistory = {};
 
@@ -13848,7 +13848,7 @@
 	  var RemoteEvents_1 = RemoteEvents;
 	  var g_1 = g;
 	  var callback_utils_1 = callbackUtils;
-	  var staff_history_1 = staffHistory;
+	  var agent_history_1 = agentHistory;
 	  var customer_history_1 = customerHistory;
 
 	  var Histories =
@@ -14226,7 +14226,7 @@
 	          if (g_1.G.u() === target.customerId()) {
 	            history = new customer_history_1["default"](target);
 	          } else {
-	            history = new staff_history_1["default"](target);
+	            history = new agent_history_1["default"](target);
 	          }
 	        } else {
 	          history = new History_1["default"](target);
@@ -15106,7 +15106,7 @@
 	      return __generator$3(this, function (_a) {
 	        switch (_a.label) {
 	          case 0:
-	            //对于staff收到的accepted=false的消息, 或者其他staff accepted的消息，不可以更新自己的userConversation，只能更新pendingConversation
+	            //对于agent收到的accepted=false的消息, 或者其他agent accepted的消息，不可以更新自己的userConversation，只能更新pendingConversation
 	            if (message.scene() === GoEasy_1$3.Scene.CS) {
 	              csMessage = message;
 
@@ -15354,7 +15354,7 @@
 	   * 注意：
 	   *  客服消息：
 	   *      customer端暂时使用conversation
-	   *      staff端使用cs conversation
+	   *      agent端使用cs conversation
 	   *  私聊和群聊使用conversation
 	   */
 
@@ -15745,7 +15745,7 @@
 
 	  PendingConversations.prototype.convertAbbrConversation = function (abbrConversations) {
 	    return __awaiter$2(this, void 0, void 0, function () {
-	      var conversations, conversations_1, conversations_1_1, abbrConversation, customerData, lastMessage, userOffsets, data, message, target, conversation, staffHistory;
+	      var conversations, conversations_1, conversations_1_1, abbrConversation, customerData, lastMessage, userOffsets, data, message, target, conversation, agentHistory;
 
 	      var e_1, _a;
 
@@ -15773,8 +15773,8 @@
 
 	            conversation.top = false;
 	            conversation.data = data;
-	            staffHistory = histories_1$1["default"].get(target);
-	            staffHistory.initPendingMaxMessageAndOffsets(message, userOffsets);
+	            agentHistory = histories_1$1["default"].get(target);
+	            agentHistory.initPendingMaxMessageAndOffsets(message, userOffsets);
 	            this.correctPosition(conversation);
 	          }
 	        } catch (e_1_1) {
@@ -18355,8 +18355,8 @@
 	      validator_utils_1$4["default"].validateNotification(createOptions.notification);
 	    }
 
-	    if (createOptions.wx_mp_template_msg) {
-	      validator_utils_1$4["default"].validateWXMPTemplateMsg(createOptions.wx_mp_template_msg);
+	    if (createOptions.wxmpTemplateMsg) {
+	      validator_utils_1$4["default"].validateWXMPTemplateMsg(createOptions.wxmpTemplateMsg);
 	    }
 	  };
 
@@ -18943,10 +18943,10 @@
 	var CSTransferRequest =
 	/** @class */
 	function () {
-	  function CSTransferRequest(customerId, teamId, to) {
+	  function CSTransferRequest(customerId, teamId, agentId) {
 	    this.customerId = customerId;
 	    this.teamId = teamId;
-	    this.to = to;
+	    this.agentId = agentId;
 	  }
 
 	  return CSTransferRequest;
@@ -19060,8 +19060,8 @@
 	        //todo: 理论上还应该有user, team两个id/data，暂时没有，视情况要不要补充？
 	        var content = res.content;
 
-	        if (content.staff) {
-	          content.staff.data = JSON.parse(content.staff.data);
+	        if (content.agent) {
+	          content.agent.data = JSON.parse(content.agent.data);
 	        }
 
 	        callback_utils_1$2.CallbackUtils.onSuccess(options, res);
@@ -19073,10 +19073,9 @@
 	  ConversationHandler.prototype.transfer = function (teamId, options) {
 	    var _this = this;
 
-	    this.validate(options);
 	    this.validateTransfer(options);
-	    var customerId = options.id.toString();
-	    var to = options.to.toString();
+	    var customerId = options.customerId.toString();
+	    var to = options.agentId.toString();
 	    var request = new cs_transfer_request_1.CSTransferRequest(customerId, teamId, to);
 	    var rocket = new Rocket_1$1["default"]({
 	      name: RocketTypes_1$1.RocketTypes.CS_TRANSFER,
@@ -19093,8 +19092,8 @@
 	        goeasy_event_center_1$1.GoEasyEventCenter.fire(internal_events_1$1.IM_INTERNAL_EVENTS.CS_TRANSFER, transferMessage);
 	        var customerStatus = res.content.customerStatus;
 
-	        if (customerStatus.staff) {
-	          customerStatus.staff.data = JSON.parse(customerStatus.staff.data);
+	        if (customerStatus.agent) {
+	          customerStatus.agent.data = JSON.parse(customerStatus.agent.data);
 	        }
 
 	        callback_utils_1$2.CallbackUtils.onSuccess(options, {
@@ -19113,9 +19112,12 @@
 	  };
 
 	  ConversationHandler.prototype.validateTransfer = function (options) {
-	    var key = "to";
+	    var key = "agentId";
 	    var transferToId = options[key];
 	    validator_utils_1$2["default"].validateId(transferToId, key);
+	    var customerIdKey = "customerId";
+	    var customerId = options[customerIdKey];
+	    validator_utils_1$2["default"].validateId(customerId, customerIdKey);
 	  };
 
 	  return ConversationHandler;
@@ -19123,7 +19125,7 @@
 
 	conversationHandler.ConversationHandler = ConversationHandler;
 
-	var staffStatus = {};
+	var agentStatus = {};
 
 	var csIsOnlineRequest = {};
 
@@ -19150,10 +19152,10 @@
 	var CSOnlineRequest =
 	/** @class */
 	function () {
-	  function CSOnlineRequest(teamId, teamData, staffData) {
+	  function CSOnlineRequest(teamId, teamData, agentData) {
 	    this.teamId = teamId;
 	    this.teamData = JSON.stringify(teamData);
-	    this.staffData = JSON.stringify(staffData);
+	    this.agentData = JSON.stringify(agentData);
 	  }
 
 	  return CSOnlineRequest;
@@ -19178,25 +19180,25 @@
 
 	csOfflineRequest.CSOfflineRequest = CSOfflineRequest;
 
-	var csStaffsQueryRequest = {};
+	var csAgentsQueryRequest = {};
 
-	csStaffsQueryRequest.__esModule = true;
-	csStaffsQueryRequest.CSStaffsQueryRequest = void 0;
+	csAgentsQueryRequest.__esModule = true;
+	csAgentsQueryRequest.CsAgentsQueryRequest = void 0;
 
-	var CSStaffsQueryRequest =
+	var CsAgentsQueryRequest =
 	/** @class */
 	function () {
-	  function CSStaffsQueryRequest(teamId) {
+	  function CsAgentsQueryRequest(teamId) {
 	    this.teamId = teamId;
 	  }
 
-	  return CSStaffsQueryRequest;
+	  return CsAgentsQueryRequest;
 	}();
 
-	csStaffsQueryRequest.CSStaffsQueryRequest = CSStaffsQueryRequest;
+	csAgentsQueryRequest.CsAgentsQueryRequest = CsAgentsQueryRequest;
 
-	staffStatus.__esModule = true;
-	staffStatus.StaffStatus = void 0;
+	agentStatus.__esModule = true;
+	agentStatus.AgentStatus = void 0;
 	var cs_is_online_request_1 = csIsOnlineRequest;
 	var Rocket_1 = Rocket;
 	var RocketTypes_1 = RocketTypes;
@@ -19209,22 +19211,22 @@
 	var internal_events_1 = internalEvents;
 	var callback_utils_1$1 = callbackUtils;
 	var g_1 = g;
-	var cs_staffs_query_request_1 = csStaffsQueryRequest;
+	var cs_agents_query_request_1 = csAgentsQueryRequest;
 
-	var StaffStatus =
+	var AgentStatus =
 	/** @class */
 	function () {
-	  function StaffStatus() {}
+	  function AgentStatus() {}
 
-	  StaffStatus.getInstance = function () {
-	    if (!StaffStatus.instance) {
-	      StaffStatus.instance = new StaffStatus();
+	  AgentStatus.getInstance = function () {
+	    if (!AgentStatus.instance) {
+	      AgentStatus.instance = new AgentStatus();
 	    }
 
-	    return StaffStatus.instance;
+	    return AgentStatus.instance;
 	  };
 
-	  StaffStatus.prototype.isOnline = function (teamId, option) {
+	  AgentStatus.prototype.isOnline = function (teamId, option) {
 	    var request = new cs_is_online_request_1.CSIsOnlineRequest(teamId);
 	    var rocket = new Rocket_1["default"]({
 	      name: RocketTypes_1.RocketTypes.CS_IS_ONLINE,
@@ -19243,15 +19245,15 @@
 	    g_1.G.s().emit(rocket);
 	  };
 
-	  StaffStatus.prototype.online = function (teamId, option) {
-	    if (!Calibrator_1["default"].isObject(option.staffData) || !Calibrator_1["default"].isObject(option.teamData)) {
+	  AgentStatus.prototype.online = function (teamId, option) {
+	    if (!Calibrator_1["default"].isObject(option.agentData) || !Calibrator_1["default"].isObject(option.teamData)) {
 	      throw {
 	        code: 400,
-	        content: "staffData and teamData require an object"
+	        content: "agentData and teamData require an object"
 	      };
 	    }
 
-	    var request = new cs_online_request_1.CSOnlineRequest(teamId, option.teamData, option.staffData);
+	    var request = new cs_online_request_1.CSOnlineRequest(teamId, option.teamData, option.agentData);
 	    var rocket = new Rocket_1["default"]({
 	      name: RocketTypes_1.RocketTypes.CS_ONLINE,
 	      params: request,
@@ -19269,7 +19271,7 @@
 	    g_1.G.s().emit(rocket);
 	  };
 
-	  StaffStatus.prototype.offline = function (teamId, option) {
+	  AgentStatus.prototype.offline = function (teamId, option) {
 	    var request = new cs_offline_request_1.CSOfflineRequest(teamId);
 	    var rocket = new Rocket_1["default"]({
 	      name: RocketTypes_1.RocketTypes.CS_OFFLINE,
@@ -19288,10 +19290,10 @@
 	    g_1.G.s().emit(rocket);
 	  };
 
-	  StaffStatus.prototype.staffs = function (teamId, options) {
-	    var request = new cs_staffs_query_request_1.CSStaffsQueryRequest(teamId);
+	  AgentStatus.prototype.agents = function (teamId, options) {
+	    var request = new cs_agents_query_request_1.CsAgentsQueryRequest(teamId);
 	    var rocket = new Rocket_1["default"]({
-	      name: RocketTypes_1.RocketTypes.CS_STAFFS,
+	      name: RocketTypes_1.RocketTypes.CS_AGENTS,
 	      params: request,
 	      permission: Permission_1.Permission.READ,
 	      singleTimeout: SocketTimeout_1.SocketTimeout.commonQuerySingle,
@@ -19300,8 +19302,8 @@
 	        callback_utils_1$1.CallbackUtils.onFailed(options, err);
 	      },
 	      success: function success(res) {
-	        res.content.forEach(function (staff) {
-	          staff.data = JSON.parse(staff.data);
+	        res.content.forEach(function (agent) {
+	          agent.data = JSON.parse(agent.data);
 	        });
 	        callback_utils_1$1.CallbackUtils.onSuccess(options, res);
 	      }
@@ -19309,10 +19311,10 @@
 	    g_1.G.s().emit(rocket);
 	  };
 
-	  return StaffStatus;
+	  return AgentStatus;
 	}();
 
-	staffStatus.StaffStatus = StaffStatus;
+	agentStatus.AgentStatus = AgentStatus;
 
 	var messageCreator = {};
 
@@ -19364,7 +19366,7 @@
 	    this.extendProps(teamId, imMessage);
 	  };
 	  /**
-	   * staff发送的消息accepted一定为true(staff必须接入才能发送消息)
+	   * agent发送的消息accepted一定为true(agent必须接入才能发送消息)
 	   */
 
 
@@ -19530,7 +19532,7 @@
 	var callback_utils_1 = callbackUtils;
 	var im_1 = im;
 	var conversation_handler_1 = conversationHandler;
-	var staff_status_1 = staffStatus;
+	var agent_status_1 = agentStatus;
 	var message_creator_1 = messageCreator;
 
 	var Team =
@@ -19538,7 +19540,7 @@
 	function () {
 	  function Team(teamId) {
 	    this.teamId = teamId;
-	    this.staffStatus = staff_status_1.StaffStatus.getInstance();
+	    this.agentStatus = agent_status_1.AgentStatus.getInstance();
 	    this.conversationHandler = conversation_handler_1.ConversationHandler.getInstance();
 	    this.messageCreator = message_creator_1.MessageCreator.getInstance();
 	  }
@@ -19583,15 +19585,16 @@
 	    var _this = this;
 
 	    this["catch"](function () {
-	      _this.staffStatus.isOnline(_this.teamId, options);
+	      _this.agentStatus.isOnline(_this.teamId, options);
 	    }, options);
-	  };
+	  }; //agentdata
+
 
 	  Team.prototype.online = function (options) {
 	    var _this = this;
 
 	    this["catch"](function () {
-	      _this.staffStatus.online(_this.teamId, options);
+	      _this.agentStatus.online(_this.teamId, options);
 	    }, options);
 	  };
 
@@ -19599,7 +19602,7 @@
 	    var _this = this;
 
 	    this["catch"](function () {
-	      _this.staffStatus.offline(_this.teamId, options);
+	      _this.agentStatus.offline(_this.teamId, options);
 	    }, options);
 	  };
 
@@ -19667,11 +19670,11 @@
 	    }, options);
 	  };
 
-	  Team.prototype.staffs = function (options) {
+	  Team.prototype.agents = function (options) {
 	    var _this = this;
 
 	    this["catch"](function () {
-	      _this.staffStatus.staffs(_this.teamId, options);
+	      _this.agentStatus.agents(_this.teamId, options);
 	    }, options);
 	  };
 
@@ -19739,7 +19742,7 @@
 	  }();
 
 	  exports.__esModule = true;
-	  exports.CSTeam = exports.GoEasyIM = exports.GoEasyPubSub = exports.CustomerStatusQuery = exports.StaffOffline = exports.StaffOnline = exports.StaffIsOnline = exports.ConversationDTO = exports.MessageStatus = exports.Scene = exports.CallBackOptions = void 0;
+	  exports.CSTeam = exports.GoEasyIM = exports.GoEasyPubSub = exports.CustomerStatusQuery = exports.AgentOnlineOptions = exports.ConversationDTO = exports.MessageStatus = exports.Scene = exports.CallBackOptions = void 0;
 	  var NetworkStatus_1 = NetworkStatus;
 	  var GoEasySocket_1 = GoEasySocket;
 	  var Calibrator_1 = Calibrator;
@@ -19791,47 +19794,19 @@
 
 	  exports.ConversationDTO = ConversationDTO;
 
-	  var StaffIsOnline =
+	  var AgentOnlineOptions =
 	  /** @class */
 	  function (_super) {
-	    __extends(StaffIsOnline, _super);
+	    __extends(AgentOnlineOptions, _super);
 
-	    function StaffIsOnline() {
+	    function AgentOnlineOptions() {
 	      return _super !== null && _super.apply(this, arguments) || this;
 	    }
 
-	    return StaffIsOnline;
+	    return AgentOnlineOptions;
 	  }(CallBackOptions);
 
-	  exports.StaffIsOnline = StaffIsOnline;
-
-	  var StaffOnline =
-	  /** @class */
-	  function (_super) {
-	    __extends(StaffOnline, _super);
-
-	    function StaffOnline() {
-	      return _super !== null && _super.apply(this, arguments) || this;
-	    }
-
-	    return StaffOnline;
-	  }(CallBackOptions);
-
-	  exports.StaffOnline = StaffOnline;
-
-	  var StaffOffline =
-	  /** @class */
-	  function (_super) {
-	    __extends(StaffOffline, _super);
-
-	    function StaffOffline() {
-	      return _super !== null && _super.apply(this, arguments) || this;
-	    }
-
-	    return StaffOffline;
-	  }(CallBackOptions);
-
-	  exports.StaffOffline = StaffOffline;
+	  exports.AgentOnlineOptions = AgentOnlineOptions;
 
 	  var CustomerStatusQuery =
 	  /** @class */
@@ -20032,7 +20007,7 @@
 	      im_1.IM.instance.markMessageAsRead(options);
 	    };
 
-	    GoEasyIM.prototype.csTeam = function (teamId) {
+	    GoEasyIM.prototype.csteam = function (teamId) {
 	      return new CSTeam(teamId);
 	    };
 
@@ -20253,8 +20228,8 @@
 	      cs_1.CS.team(this.id).transfer(options);
 	    };
 
-	    CSTeam.prototype.staffs = function (options) {
-	      cs_1.CS.team(this.id).staffs(options);
+	    CSTeam.prototype.agents = function (options) {
+	      cs_1.CS.team(this.id).agents(options);
 	    };
 
 	    return CSTeam;
