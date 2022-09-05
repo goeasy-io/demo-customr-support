@@ -19,12 +19,12 @@
 						<div v-else-if="message.type === 'CS_TRANSFER'" class="accept-message">
 							{{message.payload.transferTo.data.name}}已接入
 						</div>
-						<view v-else class="message-item-content" :class="{'self' : message.senderId ===  currentUser.uuid}">
+						<view v-else class="message-item-content" :class="{'self' : message.senderId ===  currentCustomer.id}">
 							<view class="avatar">
-								<image :src="message.senderId === currentUser.uuid? currentUser.avatar : shop.avatar"></image>
+								<image :src="message.senderId === currentCustomer.id? currentCustomer.avatar : shop.avatar"></image>
 							</view>
 							<view class="content">
-								<view class="staff-name" v-if="message.senderId !== currentUser.uuid">{{message.senderData.name}}</view>
+								<view class="staff-name" v-if="message.senderId !== currentCustomer.id">{{message.senderData.name}}</view>
 								<view class="message-payload">
 									<b class="pending" v-if="message.status === 'sending'"></b>
 									<b class="send-fail" v-if="message.status === 'fail'"></b>
@@ -145,7 +145,7 @@
 
 			return {
 
-				currentUser: {},
+				currentCustomer: {},
 				shop: {},
 				to: {},// 作为createMessage的参数
 				text: '',
@@ -193,7 +193,7 @@
 					avatar:this.shop.avatar
 				}
 			}
-			this.currentUser = uni.getStorageSync('currentUser');
+			this.currentCustomer = uni.getStorageSync('currentCustomer');
 
 			this.loadHistoryMessage(true);
 			this.initRecorderListeners();
@@ -225,7 +225,7 @@
 				*    高度= 根据宽度等比缩放
 				* 窄 (宽度<高度)或方(宽度=高度)
 				*    设高=MAX height
-				* 
+				*
 				* @param width,height
 				* @returns number
 			*/

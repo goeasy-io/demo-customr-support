@@ -22,12 +22,12 @@
 	export default {
 		data() {
 			return {
-				shopList: restApi.getShopList()
+				shopList: restApi.findShops()
 			}
 		},
 		onShow() {
-			let currentUser = uni.getStorageSync('currentUser');
-			if(!currentUser){
+			let currentCustomer = uni.getStorageSync('currentCustomer');
+			if(!currentCustomer){
 				uni.navigateTo({url: './login'});
 				return;
 			}
@@ -37,12 +37,12 @@
 		},
 		methods: {
 			connectGoEasy () {
-				let currentUser = uni.getStorageSync('currentUser');
+				let currentCustomer = uni.getStorageSync('currentCustomer');
 				this.goEasy.connect({
-					id: currentUser.uuid,
+					id: currentCustomer.id,
 					data: {
-						name: currentUser.name,
-						avatar: currentUser.avatar
+						name: currentCustomer.name,
+						avatar: currentCustomer.avatar
 					},
 					onSuccess: () => {
 						console.log('GoEasy connect successfully.')

@@ -1,8 +1,8 @@
 <template>
     <div class="mine">
         <div class="top">
-            <image :src="currentUser && currentUser.avatar"></image>
-            <view class="name">{{currentUser && currentUser.name}}</view>
+            <image :src="currentCustomer && currentCustomer.avatar"></image>
+            <view class="name">{{currentCustomer && currentCustomer.name}}</view>
         </div>
         <div class="bottom">
             <text>欢迎体验GoEasy客服</text>
@@ -15,11 +15,11 @@
 	export default {
 		data () {
 			return {
-				currentUser : null
+				currentCustomer : null
 			}
 		},
 		onShow () {
-			this.currentUser = uni.getStorageSync('currentUser');
+			this.currentCustomer = uni.getStorageSync('currentCustomer');
 		},
 		methods : {
 			logout () {
@@ -30,7 +30,7 @@
 				this.goEasy.disconnect({
 					onSuccess: function(){
 						uni.hideLoading();
-						uni.removeStorageSync('currentUser');
+						uni.removeStorageSync('currentCustomer');
 						uni.navigateTo({url : './login'});
 					},
 					onFailed: function(error){

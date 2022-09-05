@@ -16,7 +16,7 @@
 							<view class="item-info-top_content">
 								<text v-if="conversation.lastMessage.type === 'CS_TRANSFER'">{{conversation.lastMessage.payload.transferTo.data.name}}已接入</text>
 								<view v-else>
-									<text>{{conversation.lastMessage.senderId === currentUser.uuid? '我': conversation.lastMessage.senderData.name}}:</text>
+									<text>{{conversation.lastMessage.senderId === currentCustomer.id? '我': conversation.lastMessage.senderData.name}}:</text>
 									<text v-if="conversation.lastMessage.type === 'text'">{{conversation.lastMessage.payload.text}}</text>
 									<text v-else-if="conversation.lastMessage.type === 'video'">[视频消息]</text>
 									<text v-else-if="conversation.lastMessage.type === 'audio'">[语音消息]</text>
@@ -54,11 +54,11 @@
 					conversation : null,
 					visible : false
 				},
-				currentUser: null
+				currentCustomer: null
 			}
 		},
 		onShow () {
-			this.currentUser = uni.getStorageSync('currentUser');
+			this.currentCustomer = uni.getStorageSync('currentCustomer');
 			this.loadConversations(); //加载会话列表
 			this.goEasy.im.on(this.GoEasy.IM_EVENT.CONVERSATIONS_UPDATED, this.renderConversations);
 		},
