@@ -42,8 +42,13 @@
 							v-for="(conversation, key) in conversations" :key="key"
 							@click="goChatPage(conversation.id)"
 							:class="{checked:conversation.id === $route.params.id}"
-							@contextmenu.prevent.stop="e => showAction(e,conversation)"
+							@contextmenu.prevent.stop="e=>showMenu(e,conversation)"
 					>
+						<vue-context-menu
+							:contextMenuData="contextMenuConfig"
+						  	@topConversation="topConversation"
+						  	@deleteConversation="deleteConversation"
+						></vue-context-menu>
 						<div class="item-head">
 							<img class="item-avatar" :src="conversation.data.avatar"/>
 							<span class="item-unread-num" v-if="conversation.unread">{{conversation.unread}}</span>
@@ -90,12 +95,6 @@
 					</div>
 				</div>
 			</div>
-			<div v-if="actionPopup.visible" class="action-box"
-			     :style="{'left': actionPopup.left + 'px', 'top': actionPopup.top + 'px'}">
-				<div class="action-item" @click="topConversation">{{ actionPopup.conversation.top ? '取消置顶' : '置顶' }}
-				</div>
-				<div class="action-item" @click="deleteConversation">删除聊天</div>
-			</div>
 		</div>
 		<div class="conversation-main">
 			<router-view :key="$route.params.id"></router-view>
@@ -110,19 +109,27 @@
 			return {
 				pendingConversations: [],
 				conversations: [],
-				actionPopup: {
-					conversation: null,
-					visible: false,
-					left: null,
-					right: null,
+				contextMenuConfig: {
+					axis: {//菜单显示的位置
+						x: null,
+						y: null
+					},
+					menulists: [//菜单选项
+						{
+							fnHandler: 'topConversation',
+							btnName: '置顶'
+						},
+						{
+							fnHandler: 'deleteConversation',
+							btnName: '删除聊天'
+						}
+					],
 				},
+				targetConversation: null,
 				currentUser: null
 			}
 		},
 		created() {
-			document.addEventListener('click', () => {
-				this.actionPopup.visible = false
-			});
 			this.currentUser = JSON.parse(localStorage.getItem("currentUser"));
 			this.listenConversationUpdate(); //监听会话列表变化
 			this.loadConversations(); //加载会话列表
@@ -166,18 +173,20 @@
 					path: `/conversation/chat/${id}`
 				});
 			},
-			showAction(e, conversation) {
-				this.actionPopup.conversation = conversation;
-				this.actionPopup.visible = true;
-				this.actionPopup.left = e.pageX;
-				this.actionPopup.top = e.pageY;
+			showMenu(event,conversation) {
+				this.targetConversation = conversation;
+				this.contextMenuConfig.menulists[0].btnName = conversation.top ? '取消置顶' : '置顶';
+				this.contextMenuConfig.axis = {
+					x: event.clientX,
+					y: event.clientY
+				}
 			},
 			topConversation() {
-				this.actionPopup.visible = false;
-				let conversation = this.actionPopup.conversation;
+				let conversation = this.targetConversation;
 				let description = conversation.top ? '取消置顶' : '置顶';
 				this.goEasy.im.topConversation({
-					conversation: this.actionPopup.conversation,
+					top: !this.targetConversation.top,
+					conversation: this.targetConversation,
 					onSuccess: function () {
 						console.log(description, '成功');
 					},
@@ -187,9 +196,8 @@
 				});
 			},
 			deleteConversation() {
-				this.actionPopup.visible = false;
 				this.goEasy.im.removeConversation({
-					conversation: this.actionPopup.conversation,
+					conversation: this.targetConversation,
 					onSuccess: function () {
 						console.log('删除会话成功');
 					},
@@ -223,7 +231,7 @@
       }
       .conversation-list-body {
         overflow-y: auto;
-        max-height: 250px;
+        max-height: 350px;
         &::-webkit-scrollbar { // Chrome Safari
           display: none;
         }
@@ -231,25 +239,7 @@
         -ms-overflow-style: none; // IE 10+
       }
     }
-    .action-box {
-      width: 100px;
-      height: 60px;
-      background: #ffffff;
-      border: 1px solid #cccccc;
-      position: fixed;
-      z-index: 100;
-      border-radius: 5px;
-    }
-    .action-item {
-      padding-left: 15px;
-      line-height: 30px;
-      font-size: 13px;
-      color: #262628;
-      cursor: pointer;
-      &:hover {
-        background: #dddddd;
-      }
-    }
+
     .conversation-item {
       display: flex;
       padding: 12px;
@@ -319,7 +309,7 @@
 	}
 
 	.item-info-failed {
-		background: url("/static/images/failed.png") no-repeat center;
+		background: url("../../public/static/images/failed.png") no-repeat center;
 		background-size: 12px;
 		width: 12px;
 		height: 12px;
@@ -327,7 +317,7 @@
 	}
 
 	.item-info-sending {
-		background: url("/static/images/pending.gif") no-repeat center;
+		background: url("../../public/static/images/pending.gif") no-repeat center;
 		background-size: 12px;
 		width: 12px;
 		height: 12px;
@@ -349,5 +339,7 @@
 	}
 
 	}
-
+.vue-contextmenu-listWrapper {
+	padding: 0;
+}
 </style>
