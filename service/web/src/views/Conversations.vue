@@ -42,7 +42,7 @@
 							v-for="(conversation, key) in conversations" :key="key"
 							@click="chat(conversation.id)"
 							:class="{checked:conversation.id === $route.params.id}"
-							@contextmenu.prevent.stop="e => rightClickMenu(e,conversation)"
+							@contextmenu.prevent.stop="e => showRightClickMenu(e,conversation)"
 					>
 						<div class="item-head">
 							<img class="item-avatar" :src="conversation.data.avatar"/>
@@ -110,18 +110,20 @@
 			return {
 				pendingConversations: [],
 				conversations: [],
-				actionPopup: {
+                // Conversation右键菜单
+				rightClickMenu: {
 					conversation: null,
 					visible: false,
-					left: null,
-					right: null,
+					x: null,
+					y: null,
 				},
 				currentAgent: null
 			}
 		},
 		created() {
+		    //隐藏Conversation右键菜单
 			document.addEventListener('click', () => {
-				this.actionPopup.visible = false
+				this.hideRightClickMenu();
 			});
 			this.currentAgent = JSON.parse(localStorage.getItem("currentAgent"));
 			this.listenConversationUpdate(); //监听会话列表变化
@@ -166,15 +168,19 @@
 					path: `/conversations/chat/${customerId}`
 				});
 			},
-			rightClickMenu(e,conversation) {
-				this.actionPopup.conversation = conversation;
-				this.actionPopup.visible = true;
-				this.actionPopup.left = e.pageX;
-				this.actionPopup.top = e.pageY;
+			showRightClickMenu(e,conversation) {
+				this.rightClickMenu.conversation = conversation;
+				this.rightClickMenu.visible = true;
+				this.rightClickMenu.x = e.pageX;
+				this.rightClickMenu.y = e.pageY;
 			},
+            
+            hideRightClickMenu(){
+                this.rightClickMenu.visible = false;
+            },
+            
 			topConversation() {
-				this.actionPopup.visible = false;
-				let conversation = this.actionPopup.conversation;
+				let conversation = this.rightClickMenu.conversation;
 				let description = conversation.top ? '取消置顶' : '置顶';
 				this.goEasy.im.topConversation({
 					top: !conversation.top,
@@ -188,7 +194,7 @@
 				});
 			},
 			deleteConversation() {
-				this.actionPopup.visible = false;
+				this.hideRightClickMenu();
 				this.goEasy.im.removeConversation({
 					conversation: this.actionPopup.conversation,
 					onSuccess: function () {
