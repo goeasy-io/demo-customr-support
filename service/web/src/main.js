@@ -3,8 +3,6 @@ import App from './App.vue'
 import router from './router'
 // 引入阿里字体图标
 import './assets/iconfont/iconfont.css';
-import VueContextMenu from 'vue-contextmenu'
-Vue.use(VueContextMenu)
 import GoEasy from './utils/goeasy.dev'
 
 Vue.config.productionTip = false

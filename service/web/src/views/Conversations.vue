@@ -42,13 +42,8 @@
 							v-for="(conversation, key) in conversations" :key="key"
 							@click="chat(conversation.id)"
 							:class="{checked:conversation.id === $route.params.id}"
-							@contextmenu.prevent.stop="e=>showMenu(e,conversation)"
+							@contextmenu.prevent.stop="e => rightClickMenu(e,conversation)"
 					>
-						<vue-context-menu
-							:contextMenuData="contextMenuConfig"
-						  	@topConversation="topConversation"
-						  	@deleteConversation="deleteConversation"
-						></vue-context-menu>
 						<div class="item-head">
 							<img class="item-avatar" :src="conversation.data.avatar"/>
 							<span class="item-unread-num" v-if="conversation.unread">{{conversation.unread}}</span>
@@ -95,6 +90,12 @@
 					</div>
 				</div>
 			</div>
+			<div v-if="actionPopup.visible" class="action-box"
+				 :style="{'left': actionPopup.left + 'px', 'top': actionPopup.top + 'px'}">
+				<div class="action-item" @click="topConversation">{{ actionPopup.conversation.top ? '取消置顶' : '置顶' }}
+				</div>
+				<div class="action-item" @click="deleteConversation">删除聊天</div>
+			</div>
 		</div>
 		<div class="conversation-main">
 			<router-view :key="$route.params.id"></router-view>
@@ -109,27 +110,19 @@
 			return {
 				pendingConversations: [],
 				conversations: [],
-				contextMenuConfig: {
-					axis: {//菜单显示的位置
-						x: null,
-						y: null
-					},
-					menulists: [//菜单选项
-						{
-							fnHandler: 'topConversation',
-							btnName: '置顶'
-						},
-						{
-							fnHandler: 'deleteConversation',
-							btnName: '删除聊天'
-						}
-					],
+				actionPopup: {
+					conversation: null,
+					visible: false,
+					left: null,
+					right: null,
 				},
-				targetConversation: null,
 				currentAgent: null
 			}
 		},
 		created() {
+			document.addEventListener('click', () => {
+				this.actionPopup.visible = false
+			});
 			this.currentAgent = JSON.parse(localStorage.getItem("currentAgent"));
 			this.listenConversationUpdate(); //监听会话列表变化
 			this.loadConversations(); //加载会话列表
@@ -173,20 +166,19 @@
 					path: `/conversations/chat/${customerId}`
 				});
 			},
-			showMenu(event,conversation) {
-				this.targetConversation = conversation;
-				this.contextMenuConfig.menulists[0].btnName = conversation.top ? '取消置顶' : '置顶';
-				this.contextMenuConfig.axis = {
-					x: event.clientX,
-					y: event.clientY
-				}
+			rightClickMenu(e,conversation) {
+				this.actionPopup.conversation = conversation;
+				this.actionPopup.visible = true;
+				this.actionPopup.left = e.pageX;
+				this.actionPopup.top = e.pageY;
 			},
 			topConversation() {
-				let conversation = this.targetConversation;
+				this.actionPopup.visible = false;
+				let conversation = this.actionPopup.conversation;
 				let description = conversation.top ? '取消置顶' : '置顶';
 				this.goEasy.im.topConversation({
-					top: !this.targetConversation.top,
-					conversation: this.targetConversation,
+					top: !conversation.top,
+					conversation: conversation,
 					onSuccess: function () {
 						console.log(description, '成功');
 					},
@@ -196,8 +188,9 @@
 				});
 			},
 			deleteConversation() {
+				this.actionPopup.visible = false;
 				this.goEasy.im.removeConversation({
-					conversation: this.targetConversation,
+					conversation: this.actionPopup.conversation,
 					onSuccess: function () {
 						console.log('删除会话成功');
 					},
@@ -239,6 +232,25 @@
         -ms-overflow-style: none; // IE 10+
       }
     }
+	.action-box {
+	  width: 100px;
+	  height: 60px;
+	  background: #ffffff;
+	  border: 1px solid #cccccc;
+	  position: fixed;
+	  z-index: 100;
+	  border-radius: 5px;
+	}
+	.action-item {
+	  padding-left: 15px;
+	  line-height: 30px;
+	  font-size: 13px;
+	  color: #262628;
+	  cursor: pointer;
+	  &:hover {
+		  background: #dddddd;
+	  }
+	}
 
     .conversation-item {
       display: flex;
@@ -339,7 +351,4 @@
 	}
 
 	}
-.vue-contextmenu-listWrapper {
-	padding: 0;
-}
 </style>
