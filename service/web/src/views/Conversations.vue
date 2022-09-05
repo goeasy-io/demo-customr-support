@@ -126,11 +126,11 @@
 					],
 				},
 				targetConversation: null,
-				currentUser: null
+				currentAgent: null
 			}
 		},
 		created() {
-			this.currentUser = JSON.parse(localStorage.getItem("currentUser"));
+			this.currentAgent = JSON.parse(localStorage.getItem("currentAgent"));
 			this.listenConversationUpdate(); //监听会话列表变化
 			this.loadConversations(); //加载会话列表
 		},
@@ -168,9 +168,9 @@
 			renderLatestConversations(content) {
 				this.conversations = content.conversations;
 			},
-			goChatPage(id) {
+			chat(customerId) {
 				this.$router.push({
-					path: `/conversation/chat/${id}`
+					path: `/conversation/chat/${customerId}`
 				});
 			},
 			showMenu(event,conversation) {

@@ -47,9 +47,9 @@
 		methods: {
 			login() {
 				if (this.username.trim() !== '' && this.password.trim() !== '') {
-					let user = restApi.findStaff(this.username, this.password);
-					if (user) {
-						localStorage.setItem('currentUser', JSON.stringify(user));
+					let agent = restApi.findAgent(this.username, this.password);
+					if (agent) {
+						localStorage.setItem('currentAgent', JSON.stringify(agent));
 						this.$router.push({path: './conversation'});
 						return;
 					}

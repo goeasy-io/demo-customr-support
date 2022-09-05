@@ -58,7 +58,7 @@
 		data() {
 			return {
 				csteam: null,
-				currentUser: null,
+				currentAgent: null,
 				shop: null,
 				selectedTab: "",
 				unreadAmount: 0,
@@ -71,13 +71,13 @@
 			};
 		},
 		created() {
-			this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-			if (!this.currentUser) {
+			this.currentAgent = JSON.parse(localStorage.getItem('currentAgent'));
+			if (!this.currentAgent) {
 				this.$router.push({path: '/login'});
 			}
-			this.shop = RestApi.findShopById(this.currentUser.shopId);
+			this.shop = RestApi.findShopById(this.currentAgent.shopId);
 
-			this.csteam = this.goEasy.im.csteam(this.currentUser.shopId);
+			this.csteam = this.goEasy.im.csTeam(this.currentAgent.shopId);
 
 			if (this.goEasy.getConnectionStatus() === 'disconnected') {
 				this.connectGoEasy();  //连接goeasy
@@ -98,9 +98,10 @@
 		},
 		methods: {
 			connectGoEasy() {
+				let currentAgent = this.currentAgent;
 				this.goEasy.connect({
-					id: this.currentUser.uuid,
-					data: {name: this.currentUser.name, avatar: this.currentUser.avatar},
+					id: currentAgent.id,
+					data: {name: currentAgent.name, avatar: currentAgent.avatar},
 					onSuccess: function () {  //连接成功
 						console.log("GoEasy connect successfully.") //连接成功
 					},
@@ -142,7 +143,7 @@
             online(){
                 this.csteam.online({
                     teamData: {name: this.shop.name, avatar: this.shop.avatar},
-					agentData: {name: this.currentUser.name, avatar: this.currentUser.avatar},
+                    staffData: {name: this.currentAgent.name, avatar: this.currentAgent.avatar},
                     onSuccess: () => {
                         this.onlineConfig.online = true;
                     },
@@ -154,7 +155,7 @@
 			logout() {
 				this.goEasy.disconnect({
 					onSuccess: () => {
-						localStorage.removeItem('currentUser');
+						localStorage.removeItem('currentAgent');
 						this.$router.push({path: './login'});
 					},
 					onFailed: (error) => {

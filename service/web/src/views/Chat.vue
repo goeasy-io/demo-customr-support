@@ -24,14 +24,14 @@
                             {{message.senderData.name}}已结束
                         </div>
                         <div v-else-if="message.type === 'CS_TRANSFER'" class="accept-message">
-                            {{message.senderId === currentUser.uuid ? `已转接给` + message.payload.transferTo.data.name:
+                            {{message.senderId === currentUser.id ? `已转接给` + message.payload.transferTo.data.name:
                             '已接入来自' + message.senderData.name +'的转接'}}
                         </div>
-                        <div v-else class="message-item-content" :class="{ self: message.senderId !== customer.uuid }">
+                        <div v-else class="message-item-content" :class="{ self: message.senderId !== customer.id }">
                             <div class="sender-info">
                                 <img class="sender-avatar" :src="message.senderData.avatar"/>
                                 <!--                                todo:这里为啥要判断-->
-                                <div class="sender-name" v-if="message.senderId !== customer.uuid">
+                                <div class="sender-name" v-if="message.senderId !== customer.id">
                                     {{message.senderData.name}}
                                 </div>
                             </div>
@@ -81,7 +81,7 @@
                 <div class="accept-info">会话已等待{{(Math.ceil((Date.now()-customerStatus.time))/60000).toFixed(1)}}分钟</div>
                 <button class="accept-btn" @click="acceptSession">立即接入</button>
             </div>
-            <div v-else-if="customerStatus.status==='ACCEPTED' && currentUser.uuid !== customerStatus.agent.id"
+            <div v-else-if="customerStatus.status==='ACCEPTED' && currentUser.id !== customerStatus.agent.id"
                  class="accept-session">
                 <div class="accept-info">{{ customerStatus.agent.data.name }}已接入</div>
             </div>
@@ -251,14 +251,14 @@
         },
         async created() {
             const customerId = this.$route.params.id;
-            this.customer = restApi.findUserById(customerId);
+            this.customer = restApi.findCustomerById(customerId);
             this.to = {
                 type: this.GoEasy.IM_SCENE.CS,
-                id: this.customer.uuid,
+                id: this.customer.id,
                 data: {name: this.customer.name, avatar: this.customer.avatar},
             };
-            this.currentUser = JSON.parse(localStorage.getItem("currentUser"));
-            this.csteam = this.goEasy.im.csteam(this.currentUser.shopId);
+            this.currentAgent = JSON.parse(localStorage.getItem("currentAgent"));
+            this.csteam = this.goEasy.im.csteam(this.currentAgent.shopId);
 
             this.markMessageAsRead();
             this.customerStatus = await this.getCustomerStatus();
@@ -276,7 +276,7 @@
             getCustomerStatus() {
                 return new Promise((resolve, reject) => {
                     this.csteam.customerStatus({
-                        id: this.customer.uuid,
+                        id: this.customer.id,
                         onSuccess: (result) => {
                             resolve(result.content);
                         },
@@ -287,7 +287,7 @@
                 });
             },
             async onReceivedMessage(newMessage) {
-                if (this.currentUser.shopId === newMessage.teamId && (this.customer.uuid === newMessage.senderId || this.customer.uuid === newMessage.to)) {
+                if (this.currentAgent.shopId === newMessage.teamId && (this.customer.id === newMessage.senderId || this.customer.id === newMessage.to)) {
                     //如果该消息已存在，跳过
                     if (this.history.messages.findIndex((message) => newMessage.id === message.messageId) >= 0) {
                         return;
@@ -297,7 +297,7 @@
                         //如果是一条来自其他同事的转接，需要刷新页面获取最新的消息历史
                         if (newMessage.type === 'CS_TRANSFER') {
                             this.refresh();
-                        } else if (newMessage.type === 'CS_ACCEPT'&& newMessage.senderId!==this.currentUser.uuid) {
+                        } else if (newMessage.type === 'CS_ACCEPT'&& newMessage.senderId!==this.currentAgent.id) {
                             // 如果其他同事已接入，需要更新一下页面状态
                             this.customerStatus = await this.getCustomerStatus();
 												} else {
@@ -313,7 +313,7 @@
             markMessageAsRead() {
                 this.csteam.markMessageAsRead({
                     type: this.GoEasy.IM_SCENE.CS,
-                    id: this.customer.uuid,
+                    id: this.customer.id,
                     onSuccess: function () {
                         console.log('标记已读成功');
                     },
@@ -338,7 +338,7 @@
                 }
                 let limit = 10;
                 this.csteam.history({
-                    id: this.customer.uuid,
+                    id: this.customer.id,
                     type: this.GoEasy.IM_SCENE.CS,
                     lastTimestamp: lastMessageTimeStamp,
                     limit: limit,
@@ -403,7 +403,7 @@
             },
             acceptSession() {
                 this.csteam.accept({
-                    id: this.customer.uuid,
+                    id: this.customer.id,
                     onSuccess: (result) => {
                         this.customerStatus = result.customerStatus;
                         if (this.customerStatus.sessionId === result.customerStatus.sessionId) {
@@ -418,7 +418,7 @@
             },
             endSession() {
                 this.csteam.end({
-                    id: this.customer.uuid,
+                    id: this.customer.id,
                     onSuccess: (result) => {
                         this.customerStatus = result.customerStatus;
                         this.history.messages.push(result.message);
@@ -444,7 +444,7 @@
             },
             transfer() {
                 this.csteam.transfer({
-                    id: this.customer.uuid,
+                    id: this.customer.id,
                     to: this.transferForm.to.id,
                     onSuccess: (result) => {
                         this.transferForm.visible = false;

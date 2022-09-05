@@ -4,7 +4,7 @@
 			<div class="contact-tab">客户列表</div>
 			<div class="contact-list">
 				<div
-						:class="currentContact && currentContact.uuid === user.uuid ?'user-item checked' : 'user-item'"
+						:class="selectedCustomer && selectedCustomer.uuid === user.uuid ?'user-item checked' : 'user-item'"
 						v-for="(user, key) in customers || []"
 						:key="key"
 						@click="showContact(user)"
@@ -17,26 +17,26 @@
 			</div>
 		</div>
 		<div class="contact-main">
-			<div class="profile-card" v-if="currentContact">
+			<div class="profile-card" v-if="selectedCustomer">
 				<div class="card-title">
 					<div class="profile-name">
 						<i class="iconfont icon-zhanghu"></i>
-						<div>{{ currentContact.name }}</div>
+						<div>{{ selectedCustomer.name }}</div>
 					</div>
 					<div class="profile-avatar">
-						<img :src="currentContact.avatar"/>
+						<img :src="selectedCustomer.avatar"/>
 					</div>
 				</div>
 				<div class="info-item">
 					<div class="info-name">邮 箱</div>
-					<div class="info-text">{{ currentContact.email }}</div>
+					<div class="info-text">{{ selectedCustomer.email }}</div>
 				</div>
 				<div class="info-item">
 					<div class="info-name">手 机</div>
-					<div class="info-text">{{ currentContact.phone }}</div>
+					<div class="info-text">{{ selectedCustomer.phone }}</div>
 				</div>
 				<div class="button-box">
-					<button class="card-button" @click="chat(currentContact.uuid)">发消息</button>
+					<button class="card-button" @click="chat(selectedCustomer.id)">发消息</button>
 				</div>
 			</div>
 		</div>
@@ -51,20 +51,20 @@
 		data() {
 			return {
 				customers: [],
-				currentContact: null,
+				selectedCustomer: null,
 			};
 		},
 		mounted() {
-			let currentUser = JSON.parse(localStorage.getItem("currentUser"));
-			this.customers = restApi.findCustomers(currentUser.uuid);
+			let currentAgent = JSON.parse(localStorage.getItem("currentAgent"));
+			this.customers = restApi.findAgent(currentAgent.uuid);
 		},
 		methods: {
-			showContact(contact) {
-				this.currentContact = contact;
+			showCustomer(customer) {
+				this.selectedCustomer = customer;
 			},
-			chat(userId) {
+			chat(customerId) {
 				this.$router.push({
-					path: `conversation/chat/${userId}`
+					path: `conversation/chat/${customerId}`
 				});
 			},
 		},
