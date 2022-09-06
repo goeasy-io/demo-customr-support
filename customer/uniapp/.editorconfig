@@ -10,3 +10,4 @@ tab_width = 4
 [*.vue]
 indent_size = 2
 tab_width = 2
+ij_vue_indent_children_of_top_level = template,script,style
