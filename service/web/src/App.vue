@@ -1,35 +1,35 @@
 <template>
-	<div id="app">
-		<router-view/>
-	</div>
+  <div id="app">
+    <router-view/>
+  </div>
 </template>
 
 <style lang="scss">
-	#app {
-		height: 100%;
-	}
+  #app {
+    height: 100%;
+  }
 
-	//全局样式
-	body, html {
-		margin: 0;
-		padding: 0;
-		font-size: 12px;
-		height: 100%;
-	}
+  /*全局样式*/
+  body, html {
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+    height: 100%;
+  }
 
-	p {
-		margin: 0;
-		padding: 0;
-	}
+  p {
+    margin: 0;
+    padding: 0;
+  }
 
-	a {
-		text-decoration: none;
-		outline: none;
-		font-size: 20px;
-		color: #333;
-	}
+  a {
+    text-decoration: none;
+    outline: none;
+    font-size: 20px;
+    color: #333;
+  }
 
-	ul {
-		list-style: none;
-	}
+  ul {
+    list-style: none;
+  }
 </style>
