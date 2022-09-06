@@ -1,22 +1,22 @@
 <template>
-  <div class="contact">
-    <div class="contact-left">
-      <div class="contact-tab">客户列表</div>
-      <div class="contact-list">
+  <div class="customer">
+    <div class="customer-left">
+      <div class="customer-tab">客户列表</div>
+      <div class="customer-list">
         <div
-          v-for="(user, key) in customers || []"
+          v-for="(customer, key) in customers || []"
           :key="key"
-          :class="selectedCustomer && selectedCustomer.id === user.id ?'user-item checked' : 'user-item'"
-          @click="showCustomer(user)"
+          :class="selectedCustomer && selectedCustomer.id === customer.id ?'customer-item checked' : 'customer-item'"
+          @click="showCustomer(customer)"
         >
           <div class="user-avatar">
-            <img :src="user.avatar"/>
+            <img :src="customer.avatar"/>
           </div>
-          <div class="user-info">{{ user.name }}</div>
+          <div class="user-info">{{ customer.name }}</div>
         </div>
       </div>
     </div>
-    <div class="contact-main">
+    <div class="customer-main">
       <div v-if="selectedCustomer" class="profile-card">
         <div class="card-title">
           <div class="profile-name">
@@ -47,7 +47,7 @@
   import restApi from "../api/restapi";
 
   export default {
-    name: "Contacts",
+    name: "Customers",
     data() {
       return {
         customers: [],
@@ -71,13 +71,13 @@
 </script>
 
 <style lang="scss" scoped>
-  .contact {
+  .customer {
     width: 100%;
     height: 100%;
     display: flex;
     background: #F7F7F7;
 
-    .contact-left {
+    .customer-left {
       height: 100%;
       border-right: #dbd6d6 1px solid;
       width: 260px;
@@ -85,7 +85,7 @@
       display: flex;
       flex-direction: column;
 
-      .contact-title {
+      .customer-title {
         padding: 20px;
         margin-bottom: 15px;
 
@@ -99,14 +99,14 @@
 
       }
 
-      .contact-tab {
+      .customer-tab {
         padding: 20px;
         margin-bottom: 20px;
         font-size: 18px;
         border-bottom: 1px solid #eeeeee;
       }
 
-      .contact-list {
+      .customer-list {
         display: flex;
         flex-direction: column;
         overflow-y: auto;
@@ -192,7 +192,7 @@
       }
     }
 
-    .contact-main {
+    .customer-main {
       flex: 1;
       background: #FFFFFF;
     }

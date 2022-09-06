@@ -12,14 +12,10 @@
           <div class="menu-list">
             <div class="menu-item">
               <router-link to="/conversations">
-                <i
-                  :class="{ selected: selectedTab === 'conversations'}"
-                  class="iconfont icon-zaixiankefu"
-                ></i>
+                <i :class="{ selected: selectedTab === 'conversations'}" class="iconfont icon-zaixiankefu"></i>
               </router-link>
-              <span v-if="unreadAmount + pendingConversationAmount" class="menu-unread">{{
-                  unreadAmount + pendingConversationAmount
-                }}</span>
+              <span v-if="unreadAmount + pendingConversationAmount"
+                    class="menu-unread">{{ unreadAmount + pendingConversationAmount }}</span>
             </div>
             <div class="menu-item">
               <router-link to="/customers">
@@ -135,7 +131,7 @@
         this.csteam.offline({
           onSuccess: () => {
             this.onlineConfig.online = false;
-            this.onlineConfig.visible = false;
+            console.log('已下线',this.currentAgent);
           },
           onFailed: (error) => {
             console.log('下线失败,error:', error);
@@ -148,6 +144,7 @@
           agentData: {name: this.currentAgent.name, avatar: this.currentAgent.avatar},
           onSuccess: () => {
             this.onlineConfig.online = true;
+            console.log('已上线',this.currentAgent);
           },
           onFailed: (error) => {
             console.log('上线失败,error:', error);

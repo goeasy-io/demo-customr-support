@@ -94,12 +94,9 @@
           </div>
         </div>
       </div>
-      <div v-if="actionPopup.visible" :style="{'left': actionPopup.left + 'px', 'top': actionPopup.top + 'px'}"
+      <div v-if="rightClickMenu.visible" :style="{'left': rightClickMenu.left + 'px', 'top': rightClickMenu.top + 'px'}"
            class="action-box">
-        <div class="action-item" @click="topConversation">{{
-            actionPopup.conversation.top ? '取消置顶' : '置顶'
-          }}
-        </div>
+        <div class="action-item" @click="topConversation">{{ rightClickMenu.conversation.top ? '取消置顶' : '置顶' }}</div>
         <div class="action-item" @click="deleteConversation">删除聊天</div>
       </div>
     </div>
@@ -200,9 +197,8 @@
         });
       },
       deleteConversation() {
-        this.hideRightClickMenu();
         this.goEasy.im.removeConversation({
-          conversation: this.actionPopup.conversation,
+          conversation: this.rightClickMenu.conversation,
           onSuccess: function () {
             console.log('删除会话成功');
           },

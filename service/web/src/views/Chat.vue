@@ -32,8 +32,8 @@
             <div v-else :class="{ self: message.senderId !== customer.id }" class="message-item-content">
               <div class="sender-info">
                 <img :src="message.senderData.avatar" class="sender-avatar"/>
-                <!--                                todo:这里为啥要判断-->
-                <div v-if="message.senderId !== customer.id" class="sender-name">
+                <!-- todo:这里为啥要判断-->
+                <div class="sender-name">
                   {{ message.senderData.name }}
                 </div>
               </div>
@@ -145,6 +145,7 @@
         </div>
       </div>
     </div>
+<!--    todo:这一堆代码和上边的的showImage，hideImage啥关系，再次强调不可以有写这样的click方法-->
     <div v-if="imagePopup.visible" class="image-preview">
       <img :src="imagePopup.url" alt="图片"/>
       <span class="close" @click="imagePopup.visible = false">x</span>
