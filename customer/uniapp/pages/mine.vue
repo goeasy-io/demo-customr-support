@@ -1,14 +1,14 @@
 <template>
-    <div class="mine">
-        <div class="top">
-            <image :src="currentCustomer && currentCustomer.avatar"></image>
-            <view class="name">{{currentCustomer && currentCustomer.name}}</view>
-        </div>
-        <div class="bottom">
-            <text>欢迎体验GoEasy客服</text>
-            <view @click="logout" class="logout">注销</view>
-        </div>
+  <div class="mine">
+    <div class="top">
+      <image :src="currentCustomer && currentCustomer.avatar"></image>
+      <view class="name">{{currentCustomer && currentCustomer.name}}</view>
     </div>
+    <div class="bottom">
+      <text>欢迎体验GoEasy客服</text>
+      <view @click="logout" class="logout">注销</view>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -31,7 +31,9 @@
                     onSuccess: function () {
                         uni.hideLoading();
                         uni.removeStorageSync('currentCustomer');
-                        uni.navigateTo({url: './login'});
+                        uni.navigateTo({
+                            url: './login'
+                        });
                     },
                     onFailed: function (error) {
                         uni.hideLoading();
@@ -49,45 +51,45 @@
 </script>
 
 <style>
-    .mine {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-    }
+  .mine {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
 
-    .top {
-        height: 400 rpx;
-        background: #F3F4F7;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
+  .top {
+    height: 400 rpx;
+    background: #F3F4F7;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 
-    .top image {
-        width: 156 rpx;
-        height: 156 rpx;
-        border-radius: 156 rpx;
-    }
+  .top image {
+    width: 156 rpx;
+    height: 156 rpx;
+    border-radius: 156 rpx;
+  }
 
-    .top .name {
-        line-height: 80 rpx;
-    }
+  .top .name {
+    line-height: 80 rpx;
+  }
 
-    .bottom {
-        text-align: center;
-        line-height: 200 rpx;
-    }
+  .bottom {
+    text-align: center;
+    line-height: 200 rpx;
+  }
 
-    .logout {
-        width: 266 rpx;
-        height: 76 rpx;
-        line-height: 76 rpx;
-        margin: 0 auto;
-        background-color: #d02129;
-        border-radius: 10 rpx;
-        color: #FFFFFF;
-        font-size: 32 rpx;
-    }
+  .logout {
+    width: 266 rpx;
+    height: 76 rpx;
+    line-height: 76 rpx;
+    margin: 0 auto;
+    background-color: #d02129;
+    border-radius: 10 rpx;
+    color: #FFFFFF;
+    font-size: 32 rpx;
+  }
 </style>
