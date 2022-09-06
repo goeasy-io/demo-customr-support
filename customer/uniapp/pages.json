@@ -1,93 +1,98 @@
 {
-	"pages": [
-		{
-			"path": "pages/home",
-			"style": {
-				"navigationBarTitleText": "首页",
-				"navigationBarBackgroundColor" : "#FFFFFF",
-				"navigationBarTextStyle" : "black"
-			}			
-		},
-		{
-			"path": "pages/conversations",
-			"style": {
-				"navigationBarTitleText": "消息",
-				"navigationBarBackgroundColor" : "#FFFFFF",
-				"navigationBarTextStyle" : "black",
-				"app-plus" : {
-					"titleNView" : true
-				}
-			}			
-		},
-		{
-			"path": "pages/login",
-			"style": {
-				"navigationBarTitleText": "登录",
-				"navigationBarBackgroundColor" : "#FFFFFF",
-				"navigationBarTextStyle":"white",
-				"app-plus" : {
-					"titleNView" : true
-				}	
-			}
-		},
-		{
-			"path": "pages/mine",
-			"style": {
-				"navigationBarTitleText": "我",
-				"navigationBarBackgroundColor" : "#FFFFFF",
-				"navigationBarTextStyle" : "black"
-			}			
-		},
-		{
-			"path": "pages/chat",
-			"style": {
-				"navigationBarTitleText": "聊天",
-				"navigationBarBackgroundColor" : "#FFFFFF",
-				"enablePullDownRefresh": true
-			}			
-		}  
+    "pages": [
+        {
+            "path": "pages/home",
+            "style": {
+                "navigationBarTitleText": "首页",
+                "navigationBarBackgroundColor": "#FFFFFF",
+                "navigationBarTextStyle": "black"
+            }
+        },
+        {
+            "path": "pages/conversations",
+            "style": {
+                "navigationBarTitleText": "消息",
+                "navigationBarBackgroundColor": "#FFFFFF",
+                "navigationBarTextStyle": "black",
+                "app-plus": {
+                    "titleNView": true
+                }
+            }
+        },
+        {
+            "path": "pages/login",
+            "style": {
+                "navigationBarTitleText": "登录",
+                "navigationBarBackgroundColor": "#FFFFFF",
+                "navigationBarTextStyle": "white",
+                "app-plus": {
+                    "titleNView": true
+                }
+            }
+        },
+        {
+            "path": "pages/mine",
+            "style": {
+                "navigationBarTitleText": "我",
+                "navigationBarBackgroundColor": "#FFFFFF",
+                "navigationBarTextStyle": "black"
+            }
+        },
+        {
+            "path": "pages/chat",
+            "style": {
+                "navigationBarTitleText": "聊天",
+                "navigationBarBackgroundColor": "#FFFFFF",
+                "enablePullDownRefresh": true
+            }
+        }
     ],
-	"globalStyle": {
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "",
-		"navigationBarBackgroundColor": "#FFFFFF",
-		"backgroundColor": "#F8F8F8"
-	},
-	"tabBar" : {
-		"color":"#454750",
-		"selectedColor":"#d02129",
-		"borderStyle":"black",
-		"backgroundColor":"#FFFFFF",
-		"height" : "60px",
-		"list" : [
-			{
-				"pagePath" : "pages/home",
-				"text":"",
-				"iconPath":"static/images/shop.png",
-				"selectedIconPath":"static/images/shop-active.png"
-			},
-			{
-				"pagePath" : "pages/conversations",
-				"text" : "",
-				"iconPath":"static/images/msg.png",
-				"selectedIconPath":"static/images/msg-active.png"
-			},
-			{
-				"pagePath" : "pages/mine",
-				"text" : "",
-				"iconPath":"static/images/mine.png",
-				"selectedIconPath":"static/images/mine-active.png"
-			}
-		]
-	},
-	"condition" : { //模式配置，仅开发期间生效
-		"current": 0, //当前激活的模式(list 的索引项)
-		"list": [
-			{
-				"name": "", //模式名称
-				"path": "", //启动页面，必选
-				"query": "" //启动参数，在页面的onLoad函数里面得到
-			}
-		]
-	}
+    "globalStyle": {
+        "navigationBarTextStyle": "black",
+        "navigationBarTitleText": "",
+        "navigationBarBackgroundColor": "#FFFFFF",
+        "backgroundColor": "#F8F8F8"
+    },
+    "tabBar": {
+        "color": "#454750",
+        "selectedColor": "#d02129",
+        "borderStyle": "black",
+        "backgroundColor": "#FFFFFF",
+        "height": "60px",
+        "list": [
+            {
+                "pagePath": "pages/home",
+                "text": "",
+                "iconPath": "static/images/shop.png",
+                "selectedIconPath": "static/images/shop-active.png"
+            },
+            {
+                "pagePath": "pages/conversations",
+                "text": "",
+                "iconPath": "static/images/msg.png",
+                "selectedIconPath": "static/images/msg-active.png"
+            },
+            {
+                "pagePath": "pages/mine",
+                "text": "",
+                "iconPath": "static/images/mine.png",
+                "selectedIconPath": "static/images/mine-active.png"
+            }
+        ]
+    },
+    "condition": {
+        //模式配置，仅开发期间生效
+        "current": 0,
+        //当前激活的模式(list 的索引项)
+        "list": [
+            {
+                "name": "",
+                //模式名称
+                "path": "",
+                //启动页面，必选
+                "query": ""
+                //启动参数，在页面的onLoad函数里面得到
+            }
+        ]
+    }
 }
