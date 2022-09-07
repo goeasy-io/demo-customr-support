@@ -1,0 +1,43 @@
+{
+	"pages": [
+		"pages/conversations/conversations",
+		"pages/login/login",
+		"pages/customers/customers",
+		"pages/mine/mine",
+		"pages/chat/chat"
+	],
+	"window": {
+		"backgroundTextStyle": "light",
+		"navigationBarBackgroundColor": "#fff",
+		"navigationBarTitleText": "WeChat",
+		"navigationBarTextStyle": "black"
+	},
+	"sitemapLocation": "sitemap.json",
+	"tabBar" : {
+		"color":"#454750",
+		"selectedColor":"#618DFF",
+		"borderStyle":"black",
+		"backgroundColor":"#F8F7F7",
+		"height" : "60px",
+		"list" : [
+			{
+				"pagePath" : "pages/conversations/conversations",
+				"text":"会话",
+				"iconPath":"static/images/chat.png",
+				"selectedIconPath":"static/images/chat-active.png"
+			},
+			{
+				"pagePath" : "pages/customers/customers",
+				"text" : "客户列表",
+				"iconPath":"static/images/contacts.png",
+				"selectedIconPath":"static/images/contacts-active.png"
+			},
+			{
+				"pagePath" : "pages/mine/mine",
+				"text" : "我的",
+				"iconPath":"static/images/mine.png",
+				"selectedIconPath":"static/images/mine-active.png"
+			}
+		]
+	}
+}
