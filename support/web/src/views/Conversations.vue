@@ -197,15 +197,18 @@
         });
       },
       deleteConversation() {
-        this.goEasy.im.removeConversation({
-          conversation: this.rightClickMenu.conversation,
-          onSuccess: function () {
-            console.log('删除会话成功');
-          },
-          onFailed: function (error) {
-            console.log(error);
-          },
-        });
+        let confirmResult = confirm('确认要删除这条会话吗？');
+        if (confirmResult===true) {
+          this.goEasy.im.removeConversation({
+            conversation: this.rightClickMenu.conversation,
+            onSuccess: function () {
+              console.log('删除会话成功');
+            },
+            onFailed: function (error) {
+              console.log(error);
+            },
+          });
+        }
       }
     }
   }
