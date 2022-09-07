@@ -21,7 +21,7 @@
               {{ message.senderData.name }}已接入
             </div>
             <div v-else-if="message.type === 'CS_END'" class="accept-message">
-              {{ message.senderData.name }}已结束
+              {{ message.senderData.name }}已结束会话
             </div>
             <div v-else-if="message.type === 'CS_TRANSFER'" class="accept-message">
               {{
@@ -32,7 +32,6 @@
             <div v-else :class="{ self: message.senderId !== customer.id }" class="message-item-content">
               <div class="sender-info">
                 <img :src="message.senderData.avatar" class="sender-avatar"/>
-                <!-- todo:这里为啥要判断-->
                 <div class="sender-name">
                   {{ message.senderData.name }}
                 </div>
@@ -44,7 +43,7 @@
                   <div v-if="message.type === 'text'" class="content-text"
                        v-html="renderTextMessage(message.payload.text)"></div>
                   <div v-if="message.type === 'image'" class="content-image"
-                       @click="showImage(message.payload.url)">
+                       @click="showImagePreviewPopup(message.payload.url)">
                     <img :src="message.payload.url"
                          :style="{height:getImageHeight(message.payload.width,message.payload.height)+'px'}"/>
                   </div>
@@ -117,7 +116,7 @@
             <!-- 视频 -->
             <div class="action-item">
               <label for="video-input"><i class="iconfont icon-film" title="视频"></i></label>
-              <input v-show="false" id="viudeo-input" accept="video/*" type="file"
+              <input v-show="false" id="video-input" accept="video/*" type="file"
                      @change="sendVideoMessage"/>
             </div>
             <!-- 商品链接 -->
@@ -145,10 +144,10 @@
         </div>
       </div>
     </div>
-<!--    todo:这一堆代码和上边的的showImage，hideImage啥关系，再次强调不可以有写这样的click方法-->
+    <!-- 图片预览弹窗 -->
     <div v-if="imagePopup.visible" class="image-preview">
       <img :src="imagePopup.url" alt="图片"/>
-      <span class="close" @click="imagePopup.visible = false">x</span>
+      <span class="close" @click="hideImagePreviewPopup">x</span>
     </div>
     <!-- 转接弹窗 -->
     <div v-if="transferForm.visible" class="transfer-popup">
@@ -383,9 +382,12 @@
         }
         return '';
       },
-      showImage(url) {
+      showImagePreviewPopup(url) {
         this.imagePopup.visible = true;
         this.imagePopup.url = url;
+      },
+      hideImagePreviewPopup() {
+          this.imagePopup.visible = false;
       },
       acceptSession() {
         this.csteam.accept({

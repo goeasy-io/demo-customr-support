@@ -77,16 +77,16 @@
   .item-head {
     display: flex;
     justify-content: space-between;
-    padding: 0 20 rpx;
-    margin: 16 rpx 0;
+    padding: 0 20rpx;
+    margin: 16rpx 0;
     align-items: center;
   }
 
   .item-head image {
     border-radius: 50%;
-    width: 80 rpx;
-    height: 80 rpx;
-    margin-right: 20 rpx;
+    width: 80rpx;
+    height: 80rpx;
+    margin-right: 20rpx;
   }
 
   .shop-info {
@@ -97,14 +97,14 @@
   }
 
   .consult-buton {
-    width: 100 rpx;
-    height: 50 rpx;
+    width: 100rpx;
+    height: 50rpx;
     border-radius: 20px;
     color: #d02129;
-    border: 2 rpx solid #d02129;
+    border: 2rpx solid #d02129;
     text-align: center;
-    font-size: 28 rpx;
-    line-height: 50 rpx;
+    font-size: 28rpx;
+    line-height: 50rpx;
   }
 
   .item-body {
@@ -114,8 +114,8 @@
   }
 
   .item-body image {
-    width: 180 rpx;
-    height: 180 rpx;
+    width: 180rpx;
+    height: 180rpx;
   }
 
 </style>

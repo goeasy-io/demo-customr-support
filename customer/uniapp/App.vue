@@ -14,16 +14,15 @@
 
 <style>
   .text-content {
-    padding: 16 rpx;
-    border-radius: 20 rpx;
+    padding: 16rpx;
+    border-radius: 20rpx;
     color: #000000;
     background: #EFEFEF;
     word-break: break-all;
     text-align: left;
     vertical-align: center;
-    display: block;
     display: flex;
     flex-direction: row;
-    font-size: 28 rpx;
+    font-size: 28rpx;
   }
 </style>

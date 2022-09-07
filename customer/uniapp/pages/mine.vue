@@ -59,7 +59,7 @@
   }
 
   .top {
-    height: 400 rpx;
+    height: 400rpx;
     background: #F3F4F7;
     display: flex;
     flex-direction: column;
@@ -68,28 +68,28 @@
   }
 
   .top image {
-    width: 156 rpx;
-    height: 156 rpx;
-    border-radius: 156 rpx;
+    width: 156rpx;
+    height: 156rpx;
+    border-radius: 156rpx;
   }
 
   .top .name {
-    line-height: 80 rpx;
+    line-height: 80rpx;
   }
 
   .bottom {
     text-align: center;
-    line-height: 200 rpx;
+    line-height: 200rpx;
   }
 
   .logout {
-    width: 266 rpx;
-    height: 76 rpx;
-    line-height: 76 rpx;
+    width: 266rpx;
+    height: 76rpx;
+    line-height: 76rpx;
     margin: 0 auto;
     background-color: #d02129;
-    border-radius: 10 rpx;
+    border-radius: 10rpx;
     color: #FFFFFF;
-    font-size: 32 rpx;
+    font-size: 32rpx;
   }
 </style>

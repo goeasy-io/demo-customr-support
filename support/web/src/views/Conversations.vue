@@ -94,7 +94,7 @@
           </div>
         </div>
       </div>
-      <div v-if="rightClickMenu.visible" :style="{'left': rightClickMenu.left + 'px', 'top': rightClickMenu.top + 'px'}"
+      <div v-if="rightClickMenu.visible" :style="{'left': rightClickMenu.x + 'px', 'top': rightClickMenu.y + 'px'}"
            class="action-box">
         <div class="action-item" @click="topConversation">{{ rightClickMenu.conversation.top ? '取消置顶' : '置顶' }}</div>
         <div class="action-item" @click="deleteConversation">删除聊天</div>

@@ -112,7 +112,7 @@
         overflow-y: auto;
       }
 
-      .user-item {
+      .customer-item {
         display: flex;
         padding: 5px 10px;
         cursor: pointer;

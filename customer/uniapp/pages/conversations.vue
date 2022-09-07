@@ -160,7 +160,7 @@
   }
 
   .conversations {
-    width: 750 rpx;
+    width: 750rpx;
     overflow-x: hidden;
     display: flex;
     flex-direction: column;
@@ -169,30 +169,30 @@
   }
 
   .conversations .scroll-item {
-    height: 152 rpx;
+    height: 152rpx;
     display: flex;
     align-items: center;
-    padding-left: 32 rpx;
+    padding-left: 32rpx;
   }
 
   .conversations .scroll-item .head-icon {
-    width: 100 rpx;
-    height: 100 rpx;
-    margin-right: 28 rpx;
+    width: 100rpx;
+    height: 100rpx;
+    margin-right: 28rpx;
   }
 
   .conversations .scroll-item_info {
-    height: 151 rpx;
-    width: 590 rpx;
-    padding-right: 32 rpx;
+    height: 151rpx;
+    width: 590rpx;
+    padding-right: 32rpx;
     box-sizing: border-box;
     border-bottom: 1px solid #EFEFEF;
   }
 
   .conversations .scroll-item_info .item-info-top {
-    padding-top: 20 rpx;
-    height: 60 rpx;
-    line-height: 60 rpx;
+    padding-top: 20rpx;
+    height: 60rpx;
+    line-height: 60rpx;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -200,19 +200,19 @@
   }
 
   .conversations .item-info-top_name {
-    font-size: 32 rpx;
+    font-size: 32rpx;
     color: #262628;
   }
 
   .conversations .item-info-top_time {
-    font-size: 26 rpx;
+    font-size: 26rpx;
     color: rgba(179, 179, 179, 0.8);
     font-family: Source Han Sans CN;
   }
 
   .conversations .item-info-bottom {
-    height: 40 rpx;
-    line-height: 40 rpx;
+    height: 40rpx;
+    line-height: 40rpx;
     overflow: hidden;
   }
 
@@ -222,9 +222,9 @@
   }
 
   .item-info-bottom .item-info-top_content {
-    font-size: 28 rpx;
+    font-size: 28rpx;
     color: #b3b3b3;
-    width: 520 rpx;
+    width: 520rpx;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -232,19 +232,19 @@
   }
 
   .item-info-bottom .item-info-bottom_action {
-    width: 50 rpx;
-    height: 50 rpx;
-    font-size: 20 rpx;
+    width: 50rpx;
+    height: 50rpx;
+    font-size: 20rpx;
     background: url("/static/images/action.png") no-repeat center;
-    background-size: 28 rpx 30 rpx;
+    background-size: 28rpx 30rpx;
   }
 
   .no-conversation {
     width: 100%;
     text-align: center;
-    height: 80 rpx;
-    line-height: 80 rpx;
-    font-size: 28 rpx;
+    height: 80rpx;
+    line-height: 80rpx;
+    font-size: 28rpx;
     color: #9D9D9D;
   }
 
@@ -270,19 +270,19 @@
   }
 
   .action-container .action-box {
-    width: 400 rpx;
-    height: 240 rpx;
+    width: 400rpx;
+    height: 240rpx;
     background: #ffffff;
     position: relative;
     z-index: 100;
-    border-radius: 20 rpx;
+    border-radius: 20rpx;
     overflow: hidden;
   }
 
   .action-container .action-item {
     text-align: center;
-    line-height: 120 rpx;
-    font-size: 34 rpx;
+    line-height: 120rpx;
+    font-size: 34rpx;
     color: #262628;
     border-bottom: 1px solid #EFEFEF;
   }
@@ -292,18 +292,18 @@
   }
 
   .item-head .item-head_unread {
-    padding: 6 rpx;
+    padding: 6rpx;
     background-color: #EE593C;
     color: #FFFFFF;
-    font-size: 24 rpx;
-    line-height: 28 rpx;
-    border-radius: 24 rpx;
-    min-width: 24 rpx;
-    min-height: 24 rpx;
+    font-size: 24rpx;
+    line-height: 28rpx;
+    border-radius: 24rpx;
+    min-width: 24rpx;
+    min-height: 24rpx;
     text-align: center;
     position: absolute;
     top: 0;
-    right: 15 rpx;
+    right: 15rpx;
   }
 
   .unread-text {

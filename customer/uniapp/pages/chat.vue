@@ -14,7 +14,7 @@
               {{ message.senderData.name }}已接入
             </view>
             <view v-else-if="message.type === 'CS_END'" class="accept-message">
-              {{ message.senderData.name }}已结束
+              {{ message.senderData.name }}已结束会话
             </view>
             <div v-else-if="message.type === 'CS_TRANSFER'" class="accept-message">
               {{ message.payload.transferTo.data.name }}已接入
@@ -544,18 +544,18 @@
   }
 
   .scroll-view {
-    padding-left: 20 rpx;
-    padding-right: 20 rpx;
+    padding-left: 20rpx;
+    padding-right: 20rpx;
     box-sizing: border-box;
     -webkit-overflow-scrolling: touch;
-    padding-bottom: 140 rpx;
+    padding-bottom: 140rpx;
     background-color: #FFFFFF;
   }
 
   .scroll-view .all-history-loaded {
-    font-size: 24 rpx;
-    height: 90 rpx;
-    line-height: 90 rpx;
+    font-size: 24rpx;
+    height: 90rpx;
+    line-height: 90rpx;
     width: 100%;
     text-align: center;
     color: grey;
@@ -563,11 +563,11 @@
 
   .scroll-view .message-item {
     display: flex;
-    margin: 20 rpx 0;
+    margin: 20rpx 0;
   }
 
   .scroll-view .message-item .message-item-checkbox {
-    height: 80 rpx;
+    height: 80rpx;
     display: flex;
     align-items: center;
   }
@@ -586,8 +586,8 @@
   }
 
   .scroll-view .message-item .avatar {
-    width: 80 rpx;
-    height: 80 rpx;
+    width: 80rpx;
+    height: 80rpx;
     flex-shrink: 0;
     flex-grow: 0;
   }
@@ -602,20 +602,20 @@
     width: 100%;
     text-align: center;
     color: #333333;
-    font-size: 28 rpx;
+    font-size: 28rpx;
   }
 
   .scroll-view .content {
-    font-size: 34 rpx;
-    line-height: 44 rpx;
-    margin: 0 20 rpx;
-    max-width: 520 rpx;
+    font-size: 34rpx;
+    line-height: 44rpx;
+    margin: 0 20rpx;
+    max-width: 520rpx;
     display: flex;
     flex-direction: column;
   }
 
   .scroll-view .content .staff-name {
-    font-size: 28 rpx;
+    font-size: 28rpx;
     color: #888888;
   }
 
@@ -625,33 +625,33 @@
   }
 
   .scroll-view .content .image-content {
-    border-radius: 12 rpx;
+    border-radius: 12rpx;
   }
 
   .scroll-view .content .text-content img {
-    width: 50 rpx;
-    height: 50 rpx;
+    width: 50rpx;
+    height: 50rpx;
   }
 
   .widthFixClass {
-    width: 400 rpx;
+    width: 400rpx;
   }
 
   .heightFixClass {
-    height: 300 rpx;
+    height: 300rpx;
   }
 
   .scroll-view .content .order-content {
-    border-radius: 20 rpx;
+    border-radius: 20rpx;
     background: #EFEFEF;
-    padding: 16 rpx;
+    padding: 16rpx;
     display: flex;
     flex-direction: column;
   }
 
   .scroll-view .content .order-content .order-description {
     font-weight: bold;
-    margin-bottom: 10 rpx;
+    margin-bottom: 10rpx;
   }
 
   .scroll-view .content .order-content .order-body {
@@ -663,12 +663,12 @@
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    font-size: 28 rpx;
-    padding: 25 rpx 10 rpx;
+    font-size: 28rpx;
+    padding: 25rpx 10rpx;
   }
 
   .scroll-view .content .order-content .order-info .order-name {
-    font-size: 30 rpx;
+    font-size: 30rpx;
   }
 
   .scroll-view .content .order-content .order-info .foods-price {
@@ -676,29 +676,29 @@
   }
 
   .scroll-view .content .order-content image {
-    width: 200 rpx;
-    height: 200 rpx;
+    width: 200rpx;
+    height: 200rpx;
   }
 
   .scroll-view .content .pending {
     background: url("/static/images/pending.gif") no-repeat center;
-    background-size: 30 rpx;
-    width: 30 rpx;
-    height: 30 rpx;
-    margin-right: 10 rpx;
+    background-size: 30rpx;
+    width: 30rpx;
+    height: 30rpx;
+    margin-right: 10rpx;
   }
 
   .scroll-view .content .send-fail {
     background: url("/static/images/failed.png") no-repeat center;
-    background-size: 30 rpx;
-    width: 30 rpx;
-    height: 30 rpx;
-    margin-right: 10 rpx;
+    background-size: 30rpx;
+    width: 30rpx;
+    height: 30rpx;
+    margin-right: 10rpx;
   }
 
   .action-box {
     display: flex;
-    backdrop-filter: blur(0.27 rpx);
+    backdrop-filter: blur(0.27rpx);
     width: 100%;
     position: fixed;
     bottom: 0;
@@ -709,19 +709,19 @@
 
   .action-box .action-top {
     display: flex;
-    padding-top: 20 rpx;
+    padding-top: 20rpx;
     backdrop-filter: blur(0.27rem);
-    height: 100 rpx;
+    height: 100rpx;
     width: 100%;
   }
 
   .action-box .action-top .record-icon {
     border-radius: 55%;
-    font-size: 32 rpx;
-    margin: 0 10 rpx;
-    width: 80 rpx;
-    height: 80 rpx;
-    line-height: 80 rpx;
+    font-size: 32rpx;
+    margin: 0 10rpx;
+    width: 80rpx;
+    height: 80rpx;
+    line-height: 80rpx;
     text-align: center;
     background: url("/static/images/record-appearance-icon.png") no-repeat center #FFFFFF;
     background-size: 50%;
@@ -733,9 +733,9 @@
     background-size: 70%;
     color: #9D9D9D;
     position: relative;
-    width: 80 rpx;
-    height: 80 rpx;
-    line-height: 80 rpx;
+    width: 80rpx;
+    height: 80rpx;
+    line-height: 80rpx;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   }
 
@@ -763,60 +763,60 @@
   .action-box .action-bottom .more-item {
     display: flex;
     flex-direction: column;
-    width: 150 rpx;
-    height: 150 rpx;
-    margin-right: 20 rpx;
+    width: 150rpx;
+    height: 150rpx;
+    margin-right: 20rpx;
     align-items: center;
   }
 
   .action-box .action-bottom .more-item image {
-    height: 100 rpx;
-    width: 100 rpx;
+    height: 100rpx;
+    width: 100rpx;
   }
 
   .action-box .action-bottom .more-item text {
-    font-size: 20 rpx;
+    font-size: 20rpx;
     text-align: center;
-    line-height: 50 rpx;
+    line-height: 50rpx;
   }
 
   .action-box .action-top .record-input {
-    width: 480 rpx;
-    height: 80 rpx;
-    line-height: 80 rpx;
-    border-radius: 40 rpx;
-    font-size: 28 rpx;
+    width: 480rpx;
+    height: 80rpx;
+    line-height: 80rpx;
+    border-radius: 40rpx;
+    font-size: 28rpx;
     background: #cccccc;
     color: #ffffff;
     text-align: center;
   }
 
   .action-box .action-top .message-input {
-    border-radius: 40 rpx;
+    border-radius: 40rpx;
     background: #FFFFFF;
-    height: 80 rpx;
+    height: 80rpx;
     display: flex;
   }
 
   .action-box .action-top .message-input input {
-    width: 380 rpx;
-    height: 80 rpx;
-    line-height: 80 rpx;
-    padding-left: 20 rpx;
-    font-size: 28 rpx;
+    width: 380rpx;
+    height: 80rpx;
+    line-height: 80rpx;
+    padding-left: 20rpx;
+    font-size: 28rpx;
   }
 
   .action-box .action-top .send-message-btn {
-    width: 80 rpx;
-    height: 80 rpx;
+    width: 80rpx;
+    height: 80rpx;
     background: url("/static/images/send.png") no-repeat center;
     background-size: 55%;
   }
 
   .action-bottom {
-    height: 300 rpx;
+    height: 300rpx;
     width: 100%;
-    padding: 20 rpx;
+    padding: 20rpx;
     box-sizing: border-box;
     display: flex;
   }
@@ -826,37 +826,37 @@
   }
 
   .action-bottom image {
-    width: 100 rpx;
-    height: 100 rpx;
+    width: 100rpx;
+    height: 100rpx;
   }
 
   .messageSelector-box {
     display: flex;
     justify-content: center;
     align-items: center;
-    backdrop-filter: blur(0.27 rpx);
+    backdrop-filter: blur(0.27rpx);
     width: 100%;
     position: fixed;
     bottom: 0;
     left: 0;
-    border-radius: 12 rpx;
+    border-radius: 12rpx;
     background: #EFEFEF;
-    height: 80 rpx;
-    padding: 20 rpx 0;
-    font-size: 32 rpx;
+    height: 80rpx;
+    padding: 20rpx 0;
+    font-size: 32rpx;
   }
 
   .record-loading {
     position: fixed;
     top: 50%;
     left: 50%;
-    width: 300 rpx;
-    height: 300 rpx;
-    margin: -150 rpx -150 rpx;
+    width: 300rpx;
+    height: 300rpx;
+    margin: -150rpx -150rpx;
     background: #262628;
     background: url("/static/images/recording-loading.gif") no-repeat center;
     background-size: 100%;
-    border-radius: 40 rpx;
+    border-radius: 40rpx;
   }
 
   .img-layer {
@@ -867,7 +867,7 @@
     bottom: 0;
     background: #000000;
     z-index: 9999;
-    padding: 6 rpx;
+    padding: 6rpx;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -895,7 +895,7 @@
   .orders-content {
     position: absolute;
     width: 100%;
-    height: 600 rpx;
+    height: 600rpx;
     bottom: 0;
     background: #F4F5F9;
     z-index: 200;
@@ -904,9 +904,9 @@
   .title {
     text-align: center;
     font-weight: 600;
-    font-size: 34 rpx;
+    font-size: 34rpx;
     color: #000000;
-    line-height: 80 rpx;
+    line-height: 80rpx;
   }
 
   .orders {
@@ -915,7 +915,7 @@
   }
 
   .order-item {
-    height: 80 rpx;
+    height: 80rpx;
     display: flex;
     align-items: center;
     justify-content: space-around;
@@ -927,41 +927,41 @@
   }
 
   .order-img {
-    width: 80 rpx;
-    height: 80 rpx;
+    width: 80rpx;
+    height: 80rpx;
   }
 
   .order-name {
-    width: 280 rpx;
+    width: 280rpx;
   }
 
   .action {
     display: flex;
     justify-content: space-around;
-    height: 80 rpx;
-    margin-top: 40 rpx;
+    height: 80rpx;
+    margin-top: 40rpx;
   }
 
   .send-btn {
-    width: 200 rpx;
-    height: 80 rpx;
+    width: 200rpx;
+    height: 80rpx;
     background: #d02129;
-    line-height: 80 rpx;
+    line-height: 80rpx;
     text-align: center;
-    border-radius: 10 rpx;
+    border-radius: 10rpx;
     color: #FFFFFF;
-    font-size: 32 rpx;
+    font-size: 32rpx;
   }
 
   .cancel-btn {
-    width: 200 rpx;
-    height: 80 rpx;
+    width: 200rpx;
+    height: 80rpx;
     background: #FFFFFF;
-    line-height: 80 rpx;
+    line-height: 80rpx;
     text-align: center;
-    border-radius: 10 rpx;
+    border-radius: 10rpx;
     color: #666666;
-    font-size: 32 rpx;
+    font-size: 32rpx;
     border: 1px solid grey;
     box-sizing: border-box;
   }
@@ -971,24 +971,24 @@
   }
 
   .video-snapshot video {
-    max-height: 300 rpx;
-    max-width: 400 rpx;
+    max-height: 300rpx;
+    max-width: 400rpx;
   }
 
   .video-snapshot .video-play-icon {
     position: absolute;
-    width: 40 rpx;
-    height: 40 rpx;
-    border-radius: 20 rpx;
+    width: 40rpx;
+    height: 40rpx;
+    border-radius: 20rpx;
     background: url("/static/images/play.png") no-repeat center;
     background-size: 100%;
     top: 50%;
     left: 50%;
-    margin: -20 rpx;
+    margin: -20rpx;
   }
 
   .time-lag {
-    font-size: 20 rpx;
+    font-size: 20rpx;
     text-align: center;
   }
 </style>

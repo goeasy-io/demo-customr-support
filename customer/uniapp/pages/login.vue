@@ -44,7 +44,7 @@
 
 <style>
   .login {
-    padding-top: 160 rpx;
+    padding-top: 160rpx;
     width: 100%;
     height: 100%;
     display: flex;
@@ -53,22 +53,22 @@
   }
 
   .title {
-    height: 100 rpx;
-    font-size: 70 rpx;
+    height: 100rpx;
+    font-size: 70rpx;
     text-align: center;
     font-family: Source Han Sans CN;
     font-style: normal;
     font-weight: bold;
     color: #d02129;
-    margin-bottom: 80 rpx;
+    margin-bottom: 80rpx;
   }
 
   .input-box {
-    width: 600 rpx;
-    height: 50 rpx;
-    margin-bottom: 40 rpx;
-    padding: 26 rpx;
-    font-size: 32 rpx;
+    width: 600rpx;
+    height: 50rpx;
+    margin-bottom: 40rpx;
+    padding: 26rpx;
+    font-size: 32rpx;
   }
 
   input {
@@ -88,12 +88,12 @@
   }
 
   .alert-box {
-    width: 640 rpx;
-    height: 60 rpx;
-    margin-bottom: 60 rpx;
-    padding: 0 rpx 20 rpx;
-    font-size: 32 rpx;
-    line-height: 48 rpx;
+    width: 640rpx;
+    height: 60rpx;
+    margin-bottom: 60rpx;
+    padding: 0rpx 20rpx;
+    font-size: 32rpx;
+    line-height: 48rpx;
     display: flex;
     align-content: center;
     overflow: hidden;
@@ -102,16 +102,16 @@
   }
 
   .alert-box image {
-    width: 30 rpx;
-    height: 30 rpx;
-    margin-right: 20 rpx;
+    width: 30rpx;
+    height: 30rpx;
+    margin-right: 20rpx;
   }
 
   .login-btn {
-    width: 680 rpx;
-    height: 100 rpx;
-    line-height: 100 rpx;
-    font-size: 36 rpx;
+    width: 680rpx;
+    height: 100rpx;
+    line-height: 100rpx;
+    font-size: 36rpx;
     text-align: center;
     color: #ffffff;
     background: #d02129;
@@ -121,8 +121,8 @@
 
   .login-tips {
     color: #999999;
-    font-size: 30 rpx;
+    font-size: 30rpx;
     text-align: center;
-    margin-top: 30 rpx;
+    margin-top: 30rpx;
   }
 </style>
