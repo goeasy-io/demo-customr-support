@@ -4,12 +4,12 @@
       <img :src="customer.avatar" class="chat-avatar"/>
       <div class="chat-name">{{ customer.name }}</div>
     </div>
-    <div ref="scrollView" class="chat-main" @scroll="listenScroll">
+    <div ref="scrollView" class="chat-main">
       <div ref="messageList" class="message-list">
         <div v-if="history.loading" class="history-loading">
           <img src="/static/images/pending.gif"/>
         </div>
-        <div v-else class="history-loaded" @click="loadHistoryMessage(false,0)">
+        <div v-else class="history-loaded" @click="loadHistoryMessage(false)">
           {{ history.allLoaded ? '已经没有更多的历史消息' : '获取历史消息' }}
         </div>
         <div v-for="(message, index) in history.messages" :key="index">
@@ -74,6 +74,7 @@
           </div>
         </div>
       </div>
+      <span ref="bottomView"></span>
     </div>
     <div class="chat-footer">
       <div v-if="customerStatus.status==='PENDING'" class="accept-session">
@@ -248,7 +249,7 @@
       this.markMessageAsRead();
       this.customerStatus = await this.getCustomerStatus();
       this.goEasy.im.on(this.GoEasy.IM_EVENT.CS_MESSAGE_RECEIVED, this.onReceivedMessage);
-      this.loadHistoryMessage(true, 0);
+      this.loadHistoryMessage(true);
 
     },
     beforeDestroy() {
@@ -288,7 +289,7 @@
             } else {
               this.history.messages.push(newMessage);
               this.markMessageAsRead();
-              this.scrollTo(0);
+              this.scrollToBottom();
             }
           } else {
             this.refresh();
@@ -311,10 +312,10 @@
         this.customerStatus = await this.getCustomerStatus();
         this.history.messages = [];
         this.history.allLoaded = false;
-        this.loadHistoryMessage(true, 0);
+        this.loadHistoryMessage(true);
         this.markMessageAsRead();
       },
-      loadHistoryMessage(scrollTo, offsetHeight) {
+      loadHistoryMessage(scrollToBottom) {
         this.history.loading = true;
         let lastMessageTimeStamp;
         let lastMessage = this.history.messages[0];
@@ -338,8 +339,8 @@
               } else {
                 this.history.messages = messages;
               }
-              if (scrollTo) {
-                this.scrollTo(offsetHeight);
+              if (scrollToBottom) {
+                this.scrollToBottom();
               }
             }
           },
@@ -396,7 +397,7 @@
             this.customerStatus = result.customerStatus;
             if (this.customerStatus.sessionId === result.customerStatus.sessionId) {
               this.history.messages.push(result.message);
-              this.scrollTo(0);
+              this.scrollToBottom();
             }
           },
           onFailed: (error) => {
@@ -410,7 +411,7 @@
           onSuccess: (result) => {
             this.customerStatus = result.customerStatus;
             this.history.messages.push(result.message);
-            this.scrollTo(0);
+            this.scrollToBottom();
           },
           onFailed: (error) => {
             console.log('end failed', error);
@@ -438,7 +439,7 @@
             this.transferForm.visible = false;
             this.customerStatus = result.customerStatus;
             this.history.messages.push(result.message);
-            this.scrollTo(0);
+            this.scrollToBottom();
           },
           onFailed: (error) => {
             console.log('transfer failed', error);
@@ -526,7 +527,7 @@
       },
       sendMessage(message) {
         this.history.messages.push(message);
-        this.scrollTo(0);
+        this.scrollToBottom();
         this.goEasy.im.sendMessage({
           message: message,
           onSuccess: (message) => {
@@ -541,20 +542,13 @@
           }
         });
       },
-      listenScroll(e) { // todo:命名
-        // 监听视图滚动到顶部，自动加载历史消息
-        if (e.target.scrollTop === 0 && !this.history.allLoaded) {
-          const offsetHeight = this.$refs.messageList.offsetHeight;
-          // 记录加载消息前scrollView的高度，加载历史消息之后滚动回原来的位置
-          this.loadHistoryMessage(true, offsetHeight);
-        }
-      },
-      scrollTo(offsetHeight) {
-        // offsetHeight 距底部的偏移高度，为0则表示滚动到底部
+      scrollToBottom() {
         this.$nextTick(() => {
-          this.$refs.scrollView.scrollTop = this.$refs.messageList.scrollHeight - offsetHeight;
-        });
-      },
+          if (this.$refs.bottomView) {
+            this.$refs.bottomView.scrollIntoView();
+          }
+        })
+      }
     }
 
   };
