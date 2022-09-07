@@ -68,6 +68,13 @@
         }
       };
     },
+    provide () {
+      return {
+        getAgentOnlineStatus: () => {
+          return this.onlineConfig.online;
+        },
+      };
+    },
     created() {
       this.currentAgent = JSON.parse(localStorage.getItem('currentAgent'));
       if (!this.currentAgent) {

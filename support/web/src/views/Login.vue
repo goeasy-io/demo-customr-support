@@ -3,7 +3,7 @@
     <div class="login-container">
       <div class="login-main">
         <div class="login-header">
-          <div>GoEasy-Service</div>
+          <div>GoEasy-Support</div>
         </div>
         <div ref="form" class="login-form">
           <div class="form-item">

@@ -77,7 +77,10 @@
       <span ref="bottomView"></span>
     </div>
     <div class="chat-footer">
-      <div v-if="customerStatus.status==='PENDING'" class="accept-session">
+      <div v-if="!isAgentOnline" class="accept-session">
+        <div>离线中</div>
+      </div>
+      <div v-else-if="customerStatus.status==='PENDING'" class="accept-session">
         <div class="accept-info">
           会话已等待{{ (Math.ceil((Date.now() - customerStatus.time)) / 60000).toFixed(1) }}分钟
         </div>
@@ -187,6 +190,12 @@
     components: {
       "goeasy-audio-player": GoEasyAudioPlayer,
       "goeasy-video-player": GoEasyVideoPlayer
+    },
+    inject:['getAgentOnlineStatus'],
+    computed: {
+      isAgentOnline () {
+        return this.getAgentOnlineStatus();
+      }
     },
     data() {
       const emojiUrl = 'https://imgcache.qq.com/open/qcloud/tim/assets/emoji/';

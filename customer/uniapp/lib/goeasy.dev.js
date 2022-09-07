@@ -7949,25 +7949,25 @@
 	        if (Calibrator_1["default"].isEmpty(options.wxmpId.appid)) {
 	          throw {
 	            code: 400,
-	            content: 'wx_mp.appid is required.'
+	            content: 'wxmpId.appid is required.'
 	          };
 	        }
 
 	        if (Calibrator_1["default"].isEmpty(options.wxmpId.openid)) {
 	          throw {
 	            code: 400,
-	            content: 'wx_mp.openid is required. requires string.'
+	            content: 'wxmpId.openid is required. requires string.'
 	          };
 	        }
 	      } else if (Calibrator_1["default"].isPrimitive(options.wxmpId)) {
 	        throw {
 	          code: 400,
-	          content: 'TypeError: wx_mp requires an object.'
+	          content: 'TypeError: wxmpId requires an object.'
 	        };
 	      }
 
 	      if (Calibrator_1["default"].isDef(options.wxmpId)) {
-	        this.wx_mp = options.wxmpId;
+	        this.wxmpId = options.wxmpId;
 	      }
 
 	      this.otp = options.otp || null;
@@ -8103,7 +8103,7 @@
 	        // imVersion : this.imVersion,
 	        allowNT: this.allowNotification,
 	        regId: this.regId,
-	        wx_mp: this.wx_mp,
+	        wxmpId: this.wxmpId,
 	        modules: this.modules,
 	        a: this.anonymous,
 	        z: ClientInfo_1.clientInfo.z
@@ -8451,7 +8451,7 @@
 	          if (!Calibrator_1["default"].isString(wxmpTemplateMsg.miniprogram.appid) || !Calibrator_1["default"].isString(wxmpTemplateMsg.miniprogram.pagepath)) {
 	            throw {
 	              code: 400,
-	              content: 'miniprogram.appid and miniprogram.pagepath must be strings.'
+	              content: 'wxapp.appid and wxapp.pagepath must be strings.'
 	            };
 	          }
 	        }
@@ -18988,7 +18988,7 @@
 	  ConversationHandler.prototype.accept = function (teamId, options) {
 	    var _this = this;
 
-	    this.validate(options);
+	    validator_utils_1$2["default"].validateId(options.id, "id");
 	    var id = options.id;
 	    var customerId = id.toString();
 	    var request = new cs_accept_request_1.CSAcceptRequest(customerId, teamId);
@@ -19017,7 +19017,7 @@
 	  ConversationHandler.prototype.end = function (teamId, options) {
 	    var _this = this;
 
-	    this.validate(options);
+	    validator_utils_1$2["default"].validateId(options.id, "id");
 	    var customerId = options.id.toString();
 	    var request = new cs_accept_request_1.CSAcceptRequest(customerId, teamId);
 	    var rocket = new Rocket_1$1["default"]({
@@ -19043,7 +19043,7 @@
 	  };
 
 	  ConversationHandler.prototype.queryCustomerStatus = function (teamId, options) {
-	    this.validate(options);
+	    validator_utils_1$2["default"].validateId(options.id, "id");
 	    var id = options.id;
 	    var customerId = id.toString();
 	    var request = new cs_status_query_request_1.CSStatusQueryRequest(customerId, teamId);
@@ -19073,7 +19073,8 @@
 	  ConversationHandler.prototype.transfer = function (teamId, options) {
 	    var _this = this;
 
-	    this.validateTransfer(options);
+	    validator_utils_1$2["default"].validateId(options.customerId, "customerId");
+	    validator_utils_1$2["default"].validateId(options.agentId, "agentId");
 	    var customerId = options.customerId.toString();
 	    var to = options.agentId.toString();
 	    var request = new cs_transfer_request_1.CSTransferRequest(customerId, teamId, to);
@@ -19103,21 +19104,6 @@
 	      }
 	    });
 	    g_1$1.G.s().emit(rocket);
-	  };
-
-	  ConversationHandler.prototype.validate = function (options) {
-	    var key = "id";
-	    var customerId = options[key];
-	    validator_utils_1$2["default"].validateId(customerId, key);
-	  };
-
-	  ConversationHandler.prototype.validateTransfer = function (options) {
-	    var key = "agentId";
-	    var transferToId = options[key];
-	    validator_utils_1$2["default"].validateId(transferToId, key);
-	    var customerIdKey = "customerId";
-	    var customerId = options[customerIdKey];
-	    validator_utils_1$2["default"].validateId(customerId, customerIdKey);
 	  };
 
 	  return ConversationHandler;
