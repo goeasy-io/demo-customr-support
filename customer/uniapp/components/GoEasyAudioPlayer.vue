@@ -32,17 +32,17 @@
 
 <style scoped>
   .goeasy-audio-player {
-    height: 86 rpx;
+    height: 86rpx;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   }
 
   .audio-facade {
-    min-width: 20 rpx;
-    padding: 6 rpx 10 rpx;
-    line-height: 72 rpx;
+    min-width: 20rpx;
+    padding: 6rpx 10rpx;
+    line-height: 72rpx;
     background: #EFEFEF;
-    font-size: 24 rpx;
-    border-radius: 14 rpx;
+    font-size: 24rpx;
+    border-radius: 14rpx;
     color: #000000;
     display: flex;
     flex-direction: row-reverse;
@@ -50,13 +50,13 @@
 
   .audio-facade-bg {
     background: url("/static/images/voice.png") no-repeat center;
-    background-size: 30 rpx;
-    width: 40 rpx;
+    background-size: 30rpx;
+    width: 40rpx;
     transform: rotate(180deg);
   }
 
   .audio-facade-bg.play-icon {
     background: url("/static/images/play.gif") no-repeat center;
-    background-size: 30 rpx;
+    background-size: 30rpx;
   }
 </style>
