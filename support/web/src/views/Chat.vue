@@ -267,20 +267,35 @@
           onSuccess: (status) => {
             this.customerStatus = status;
           },
-          onUpdated: (status) => {
-            if (status.status === 'PENDING') {
-              this.history.allLoaded = false;
-              this.history.messages = [];
-              this.loadHistoryMessage(true);
-              this.markMessageAsRead();
+          onUpdated: (newStatus) => {
+            //transfer
+            if (newStatus.status === 'ACCEPTED') {
+              //主动接入
+              if(this.customerStatus.status === 'FREE'){
+                this.refresh()
+              }
+              if (this.customerStatus.status === 'ACCEPTED' && this.customerStatus.agent.id !== newStatus.agent.id) {
+                this.refresh()
+              }
             }
-            this.customerStatus = status;
+            //pending
+            if (newStatus.status === 'PENDING') {
+              this.refresh()
+            }
+            this.customerStatus = newStatus;
           },
           onFailed: (error) => {
             console.log('failed to get customer status.', error);
           }
         })
       },
+      refresh() {
+        this.history.allLoaded = false;
+        this.history.messages = [];
+        this.loadHistoryMessage(true);
+        this.markMessageAsRead();
+      },
+
       async onReceivedMessage(newMessage) {
         if (this.currentAgent.shopId === newMessage.teamId && (this.customer.id === newMessage.senderId || this.customer.id === newMessage.to)) {
           //如果该消息已存在，跳过
@@ -380,6 +395,7 @@
       hideImagePreviewPopup() {
         this.imagePopup.visible = false;
       },
+      //todo:session这个名字
       acceptSession() {
         this.csteam.accept({
           id: this.customer.id,
@@ -387,6 +403,12 @@
             console.log('accept successfully.', error);
           },
           onFailed: (error) => {
+            // if (error.content === 'CUSTOMER_BUSY') {
+            //   alert('接入失败，用户正在忙')
+            // }
+            // if (error.content === 'OFFLINE_AGENT') {
+            //   alert('接入失败，请将您的状态改为上线状态，再进行操作。')
+            // }
             console.log('accept failed', error);
           }
         })
