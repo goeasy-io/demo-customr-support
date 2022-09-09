@@ -7378,11 +7378,6 @@
 	  exports.__esModule = true;
 
 	  function noop() {
-	    var params = [];
-
-	    for (var _i = 0; _i < arguments.length; _i++) {
-	      params[_i] = arguments[_i];
-	    }
 	  }
 
 	  exports["default"] = noop;
@@ -8451,7 +8446,7 @@
 	          if (!Calibrator_1["default"].isString(wxmpTemplateMsg.miniprogram.appid) || !Calibrator_1["default"].isString(wxmpTemplateMsg.miniprogram.pagepath)) {
 	            throw {
 	              code: 400,
-	              content: 'wxapp.appid and wxapp.pagepath must be strings.'
+	              content: 'miniprogram.appid and miniprogram.pagepath must be strings.'
 	            };
 	          }
 	        }
@@ -10707,9 +10702,6 @@
 	    IM_INTERNAL_EVENTS["UNREAD_AMOUNT_CHANGED"] = "IM_INTERNAL_UNREAD_MESSAGE_CHANGED";
 	    IM_INTERNAL_EVENTS["CS_ONLINE_SUCCESS"] = "CS_ONLINE_SUCCESS";
 	    IM_INTERNAL_EVENTS["CS_OFFLINE_SUCCESS"] = "CS_OFFLINE_SUCCESS";
-	    IM_INTERNAL_EVENTS["CS_ACCEPTED"] = "CS_ACCEPTED";
-	    IM_INTERNAL_EVENTS["CS_ENDED"] = "CS_ENDED";
-	    IM_INTERNAL_EVENTS["CS_TRANSFER"] = "CS_TRANSFER";
 	  })(exports.IM_INTERNAL_EVENTS || (exports.IM_INTERNAL_EVENTS = {}));
 	})(internalEvents);
 
@@ -11159,7 +11151,7 @@
 
 	Target$1.__esModule = true;
 	Target$1.Target = void 0;
-	var GoEasy_1$c = GoEasy$1;
+	var GoEasy_1$d = GoEasy$1;
 	var Calibrator_1$a = Calibrator;
 	var g_1$a = g;
 	/**
@@ -11183,7 +11175,7 @@
 	  }
 
 	  Target.prototype.toString = function () {
-	    if (GoEasy_1$c.Scene.PRIVATE === this.scene || GoEasy_1$c.Scene.GROUP === this.scene) {
+	    if (GoEasy_1$d.Scene.PRIVATE === this.scene || GoEasy_1$d.Scene.GROUP === this.scene) {
 	      return this.scene + "#" + this.id;
 	    }
 
@@ -11191,7 +11183,7 @@
 	  };
 
 	  Target.prototype.customerId = function () {
-	    if (GoEasy_1$c.Scene.CS === this.scene) {
+	    if (GoEasy_1$d.Scene.CS === this.scene) {
 	      if (this.id === this.teamId) {
 	        return g_1$a.G.u();
 	      } else {
@@ -11209,13 +11201,13 @@
 	    var id;
 	    var scene = message.scene();
 
-	    if (scene === GoEasy_1$c.Scene.PRIVATE) {
+	    if (scene === GoEasy_1$d.Scene.PRIVATE) {
 	      var senderId = message.senderId;
 	      var receiverId = message.targetId();
 	      id = g_1$a.G.u() === senderId ? receiverId : senderId;
-	    } else if (scene === GoEasy_1$c.Scene.GROUP) {
+	    } else if (scene === GoEasy_1$d.Scene.GROUP) {
 	      id = message.targetId();
-	    } else if (scene === GoEasy_1$c.Scene.CS) {
+	    } else if (scene === GoEasy_1$d.Scene.CS) {
 	      id = message.targetId();
 	      var csMessage = message;
 	      teamId = csMessage.teamId;
@@ -11236,11 +11228,11 @@
 	    var teamId = event.teamId;
 	    var targetId;
 
-	    if (scene === GoEasy_1$c.Scene.PRIVATE) {
+	    if (scene === GoEasy_1$d.Scene.PRIVATE) {
 	      targetId = g_1$a.G.u() === markerId ? receiverId : markerId;
-	    } else if (scene === GoEasy_1$c.Scene.GROUP) {
+	    } else if (scene === GoEasy_1$d.Scene.GROUP) {
 	      targetId = receiverId;
-	    } else if (scene === GoEasy_1$c.Scene.CS) {
+	    } else if (scene === GoEasy_1$d.Scene.CS) {
 	      if (receiverId === teamId) {
 	        // customer mark
 	        if (markerId === g_1$a.G.u()) {
@@ -11265,10 +11257,10 @@
 	    var scene = event.scene;
 	    var deleterId = event.deleterId;
 
-	    if (scene === GoEasy_1$c.Scene.PRIVATE) {
+	    if (scene === GoEasy_1$d.Scene.PRIVATE) {
 	      var targetId = g_1$a.G.u() === deleterId ? event.targetId : deleterId;
 	      return new Target(scene, targetId);
-	    } else if (scene === GoEasy_1$c.Scene.GROUP) {
+	    } else if (scene === GoEasy_1$d.Scene.GROUP) {
 	      return new Target(scene, event.targetId);
 	    }
 	  };
@@ -11281,7 +11273,7 @@
 	  Target.byRemoteRecallEvent = function (event) {
 	    var targetId;
 
-	    if (event.scene === GoEasy_1$c.Scene.PRIVATE) {
+	    if (event.scene === GoEasy_1$d.Scene.PRIVATE) {
 	      var ids = event.conversationId.split(":", 2);
 	      targetId = ids[0] === g_1$a.G.u() ? ids[1] : ids[0];
 	    } else {
@@ -11298,7 +11290,7 @@
 
 	DeleteMessageRequest$1.__esModule = true;
 	DeleteMessageRequest$1.DeleteMessageRequest = void 0;
-	var GoEasy_1$b = GoEasy$1;
+	var GoEasy_1$c = GoEasy$1;
 	var Target_1$3 = Target$1;
 
 	var DeleteMessageRequest =
@@ -11313,7 +11305,7 @@
 	    this.scene = target.scene;
 	    this.targetId = target.id;
 	    messages.forEach(function (message) {
-	      if (message.status === GoEasy_1$b.MessageStatus.SUCCESS) {
+	      if (message.status === GoEasy_1$c.MessageStatus.SUCCESS) {
 	        //未成功的消息，不要发到服务端
 	        _this.times.push(message.timestamp);
 	      }
@@ -11596,7 +11588,7 @@
 	PrivateMessage$1.__esModule = true;
 	PrivateMessage$1.PrivateMessage = void 0;
 	var AbstractMessage_1$2 = AbstractMessage$1;
-	var GoEasy_1$a = GoEasy$1;
+	var GoEasy_1$b = GoEasy$1;
 
 	var PrivateMessage =
 	/** @class */
@@ -11611,7 +11603,7 @@
 	  }
 
 	  PrivateMessage.prototype.scene = function () {
-	    return GoEasy_1$a.Scene.PRIVATE;
+	    return GoEasy_1$b.Scene.PRIVATE;
 	  };
 
 	  PrivateMessage.prototype.targetId = function () {
@@ -11656,7 +11648,7 @@
 	GroupMessage$1.__esModule = true;
 	GroupMessage$1.GroupMessage = void 0;
 	var AbstractMessage_1$1 = AbstractMessage$1;
-	var GoEasy_1$9 = GoEasy$1;
+	var GoEasy_1$a = GoEasy$1;
 
 	var GroupMessage =
 	/** @class */
@@ -11670,7 +11662,7 @@
 
 
 	  GroupMessage.prototype.scene = function () {
-	    return GoEasy_1$9.Scene.GROUP;
+	    return GoEasy_1$a.Scene.GROUP;
 	  };
 
 	  GroupMessage.prototype.targetId = function () {
@@ -11715,7 +11707,7 @@
 	csMessage.__esModule = true;
 	csMessage.CSMessage = void 0;
 	var AbstractMessage_1 = AbstractMessage$1;
-	var GoEasy_1$8 = GoEasy$1;
+	var GoEasy_1$9 = GoEasy$1;
 	var g_1$9 = g;
 
 	var CSMessage =
@@ -11731,7 +11723,7 @@
 	  }
 
 	  CSMessage.prototype.scene = function () {
-	    return GoEasy_1$8.Scene.CS;
+	    return GoEasy_1$9.Scene.CS;
 	  };
 	  /**
 	   * 当前用户是customer，返回teamId
@@ -11790,13 +11782,13 @@
 
 	remoteAbbrMessageBuilder.__esModule = true;
 	remoteAbbrMessageBuilder.RemoteAbbrMessageBuilder = void 0;
-	var GoEasy_1$7 = GoEasy$1;
+	var GoEasy_1$8 = GoEasy$1;
 	var PrivateMessage_1$1 = PrivateMessage$1;
 	var GroupMessage_1$1 = GroupMessage$1;
 	var cs_message_1$1 = csMessage;
 	var Calibrator_1$9 = Calibrator;
 	var g_1$8 = g;
-	var cs_message_type_1$2 = csMessageType;
+	var cs_message_type_1$3 = csMessageType;
 
 	var RemoteAbbrMessageBuilder =
 	/** @class */
@@ -11807,15 +11799,15 @@
 	    var message;
 	    var scene = remoteAbbrMessage.t;
 
-	    if (scene === GoEasy_1$7.Scene.PRIVATE) {
+	    if (scene === GoEasy_1$8.Scene.PRIVATE) {
 	      message = new PrivateMessage_1$1.PrivateMessage();
 	      message.read = false;
 	      message.receiverId = remoteAbbrMessage.r;
-	    } else if (scene === GoEasy_1$7.Scene.GROUP) {
+	    } else if (scene === GoEasy_1$8.Scene.GROUP) {
 	      message = new GroupMessage_1$1.GroupMessage();
 	      message.groupId = remoteAbbrMessage.r;
 	      message.senderData = remoteAbbrMessage.d ? JSON.parse(remoteAbbrMessage.d) : {};
-	    } else if (scene === GoEasy_1$7.Scene.CS) {
+	    } else if (scene === GoEasy_1$8.Scene.CS) {
 	      message = new cs_message_1$1.CSMessage();
 	      message.to = remoteAbbrMessage.r;
 	      message.teamId = remoteAbbrMessage.tid;
@@ -11834,7 +11826,7 @@
 	    var payload = remoteAbbrMessage.p;
 
 	    if (Calibrator_1$9["default"].isDef(payload)) {
-	      if (scene === GoEasy_1$7.Scene.CS && message.type === cs_message_type_1$2.CSMessageType.TRANSFER) {
+	      if (scene === GoEasy_1$8.Scene.CS && message.type === cs_message_type_1$3.CSMessageType.TRANSFER) {
 	        var jsonPayload = JSON.parse(payload);
 	        jsonPayload.transferTo.data = JSON.parse(jsonPayload.transferTo.data);
 	        message.payload = jsonPayload;
@@ -11844,7 +11836,7 @@
 	    }
 
 	    message.recalled = remoteAbbrMessage.rc;
-	    message.status = GoEasy_1$7.MessageStatus.SUCCESS;
+	    message.status = GoEasy_1$8.MessageStatus.SUCCESS;
 	    return message;
 	  };
 
@@ -11853,7 +11845,7 @@
 
 	remoteAbbrMessageBuilder.RemoteAbbrMessageBuilder = RemoteAbbrMessageBuilder;
 
-	var __awaiter$4 = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
+	var __awaiter$5 = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
 	  function adopt(value) {
 	    return value instanceof P ? value : new P(function (resolve) {
 	      resolve(value);
@@ -11885,7 +11877,7 @@
 	  });
 	};
 
-	var __generator$4 = commonjsGlobal && commonjsGlobal.__generator || function (thisArg, body) {
+	var __generator$5 = commonjsGlobal && commonjsGlobal.__generator || function (thisArg, body) {
 	  var _ = {
 	    label: 0,
 	    sent: function sent() {
@@ -11998,7 +11990,7 @@
 
 	remoteHistory.__esModule = true;
 	remoteHistory.RemoteHistory = void 0;
-	var GoEasy_1$6 = GoEasy$1;
+	var GoEasy_1$7 = GoEasy$1;
 	var HistoryChangeQueryRequest_1 = HistoryChangeQueryRequest;
 	var Rocket_1$2 = Rocket;
 	var RocketTypes_1$4 = RocketTypes;
@@ -12006,13 +11998,13 @@
 	var SocketTimeout_1$2 = SocketTimeout;
 	var g_1$7 = g;
 	var ReadMessageMarkRequest_1 = ReadMessageMarkRequest$1;
-	var remote_abbr_message_builder_1$2 = remoteAbbrMessageBuilder;
+	var remote_abbr_message_builder_1$1 = remoteAbbrMessageBuilder;
 
 	var RemoteHistory =
 	/** @class */
 	function () {
 	  function RemoteHistory() {
-	    this.builder = new remote_abbr_message_builder_1$2.RemoteAbbrMessageBuilder();
+	    this.builder = new remote_abbr_message_builder_1$1.RemoteAbbrMessageBuilder();
 	  }
 
 	  RemoteHistory.prototype.sync = function (scene, targetId, after, min, teamId) {
@@ -12068,11 +12060,11 @@
 	    serverMessages.forEach(function (remoteAbbrMessage) {
 	      remoteAbbrMessage.t = scene;
 
-	      if (GoEasy_1$6.Scene.PRIVATE === scene) {
+	      if (GoEasy_1$7.Scene.PRIVATE === scene) {
 	        remoteAbbrMessage.r = remoteAbbrMessage.s === g_1$7.G.u() ? targetId : g_1$7.G.u();
-	      } else if (GoEasy_1$6.Scene.GROUP === scene) {
+	      } else if (GoEasy_1$7.Scene.GROUP === scene) {
 	        remoteAbbrMessage.r = targetId;
-	      } else if (GoEasy_1$6.Scene.CS === scene) {
+	      } else if (GoEasy_1$7.Scene.CS === scene) {
 	        var customerId = target.customerId();
 	        var teamId = target.teamId;
 
@@ -12091,9 +12083,9 @@
 	  };
 
 	  RemoteHistory.prototype.updateServerOffsets = function (markTime, target) {
-	    return __awaiter$4(this, void 0, void 0, function () {
+	    return __awaiter$5(this, void 0, void 0, function () {
 	      var request;
-	      return __generator$4(this, function (_a) {
+	      return __generator$5(this, function (_a) {
 	        request = new ReadMessageMarkRequest_1.ReadMessageMarkRequest(target.id, target.scene, markTime, target.teamId);
 	        return [2
 	        /*return*/
@@ -13881,15 +13873,6 @@
 	      goeasy_event_center_1.GoEasyEventCenter.on(internal_events_1.IM_INTERNAL_EVENTS.MESSAGE_RECEIVED, function (message) {
 	        return _this.onMessageReceived(message);
 	      });
-	      goeasy_event_center_1.GoEasyEventCenter.on(internal_events_1.IM_INTERNAL_EVENTS.CS_ACCEPTED, function (message) {
-	        return _this.onCSAccepted(message);
-	      });
-	      goeasy_event_center_1.GoEasyEventCenter.on(internal_events_1.IM_INTERNAL_EVENTS.CS_ENDED, function (message) {
-	        return _this.onCSEnded(message);
-	      });
-	      goeasy_event_center_1.GoEasyEventCenter.on(internal_events_1.IM_INTERNAL_EVENTS.CS_TRANSFER, function (message) {
-	        return _this.onCSTransfer(message);
-	      });
 	      g_1.G.s().addMessageObserver(RemoteEvents_1.RemoteEvents.IM_MSG_READ, this.onRemoteMarkRead.bind(this));
 	      g_1.G.s().addMessageObserver(RemoteEvents_1.RemoteEvents.IM_MSG_DELETED, this.onRemoteMessageDeleted.bind(this));
 	      g_1.G.s().addMessageObserver(RemoteEvents_1.RemoteEvents.IM_MSG_RECALLED, this.onRemoteMessageRecalled.bind(this));
@@ -14202,19 +14185,18 @@
 	      this.map.forEach(function (history, key) {
 	        history.expire();
 	      });
-	    };
+	    }; // private onCSAccepted(message: AbstractMessage) {
+	    //     this.onMessageReceived(message);
+	    // }
+	    //
+	    // private onCSEnded(message: AbstractMessage) {
+	    //     this.onMessageReceived(message);
+	    // }
+	    //
+	    // private onCSTransfer(message: AbstractMessage) {
+	    //     this.onMessageReceived(message);
+	    // }
 
-	    Histories.prototype.onCSAccepted = function (message) {
-	      this.onMessageReceived(message);
-	    };
-
-	    Histories.prototype.onCSEnded = function (message) {
-	      this.onMessageReceived(message);
-	    };
-
-	    Histories.prototype.onCSTransfer = function (message) {
-	      this.onMessageReceived(message);
-	    };
 
 	    Histories.prototype.findOrCreateHistory = function (target) {
 	      var history = this.findHistory(target);
@@ -14293,7 +14275,7 @@
 
 	Conversation$1.__esModule = true;
 	Conversation$1.Conversation = void 0;
-	var GoEasy_1$5 = GoEasy$1;
+	var GoEasy_1$6 = GoEasy$1;
 	var histories_1$4 = histories;
 
 	var Conversation =
@@ -14309,13 +14291,13 @@
 	  Conversation.prototype.toDto = function () {
 	    var scene = this.target.scene;
 	    var targetId = this.target.id;
-	    var conversationDto = new GoEasy_1$5.ConversationDTO();
+	    var conversationDto = new GoEasy_1$6.ConversationDTO();
 
-	    if (scene === GoEasy_1$5.Scene.PRIVATE) {
+	    if (scene === GoEasy_1$6.Scene.PRIVATE) {
 	      conversationDto.userId = targetId;
-	    } else if (scene === GoEasy_1$5.Scene.GROUP) {
+	    } else if (scene === GoEasy_1$6.Scene.GROUP) {
 	      conversationDto.groupId = targetId;
-	    } else if (scene === GoEasy_1$5.Scene.CS) {
+	    } else if (scene === GoEasy_1$6.Scene.CS) {
 	      //customer
 	      conversationDto.id = this.target.teamId;
 	    }
@@ -14379,7 +14361,7 @@
 	CSConversation$1.CSConversation = void 0;
 	var Conversation_1$1 = Conversation$1;
 	var histories_1$3 = histories;
-	var GoEasy_1$4 = GoEasy$1;
+	var GoEasy_1$5 = GoEasy$1;
 
 	var CSConversation =
 	/** @class */
@@ -14394,7 +14376,7 @@
 	  }
 
 	  CSConversation.prototype.toDto = function () {
-	    var conversationDto = new GoEasy_1$4.ConversationDTO();
+	    var conversationDto = new GoEasy_1$5.ConversationDTO();
 	    var scene = this.target.scene;
 	    var customerId = this.target.id;
 	    var teamId = this.target.teamId;
@@ -14783,6 +14765,663 @@
 	  };
 	}();
 
+	var __awaiter$4 = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
+	  function adopt(value) {
+	    return value instanceof P ? value : new P(function (resolve) {
+	      resolve(value);
+	    });
+	  }
+
+	  return new (P || (P = Promise))(function (resolve, reject) {
+	    function fulfilled(value) {
+	      try {
+	        step(generator.next(value));
+	      } catch (e) {
+	        reject(e);
+	      }
+	    }
+
+	    function rejected(value) {
+	      try {
+	        step(generator["throw"](value));
+	      } catch (e) {
+	        reject(e);
+	      }
+	    }
+
+	    function step(result) {
+	      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+	    }
+
+	    step((generator = generator.apply(thisArg, _arguments || [])).next());
+	  });
+	};
+
+	var __generator$4 = commonjsGlobal && commonjsGlobal.__generator || function (thisArg, body) {
+	  var _ = {
+	    label: 0,
+	    sent: function sent() {
+	      if (t[0] & 1) throw t[1];
+	      return t[1];
+	    },
+	    trys: [],
+	    ops: []
+	  },
+	      f,
+	      y,
+	      t,
+	      g;
+	  return g = {
+	    next: verb(0),
+	    "throw": verb(1),
+	    "return": verb(2)
+	  }, typeof Symbol === "function" && (g[Symbol.iterator] = function () {
+	    return this;
+	  }), g;
+
+	  function verb(n) {
+	    return function (v) {
+	      return step([n, v]);
+	    };
+	  }
+
+	  function step(op) {
+	    if (f) throw new TypeError("Generator is already executing.");
+
+	    while (_) {
+	      try {
+	        if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+	        if (y = 0, t) op = [op[0] & 2, t.value];
+
+	        switch (op[0]) {
+	          case 0:
+	          case 1:
+	            t = op;
+	            break;
+
+	          case 4:
+	            _.label++;
+	            return {
+	              value: op[1],
+	              done: false
+	            };
+
+	          case 5:
+	            _.label++;
+	            y = op[1];
+	            op = [0];
+	            continue;
+
+	          case 7:
+	            op = _.ops.pop();
+
+	            _.trys.pop();
+
+	            continue;
+
+	          default:
+	            if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
+	              _ = 0;
+	              continue;
+	            }
+
+	            if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
+	              _.label = op[1];
+	              break;
+	            }
+
+	            if (op[0] === 6 && _.label < t[1]) {
+	              _.label = t[1];
+	              t = op;
+	              break;
+	            }
+
+	            if (t && _.label < t[2]) {
+	              _.label = t[2];
+
+	              _.ops.push(op);
+
+	              break;
+	            }
+
+	            if (t[2]) _.ops.pop();
+
+	            _.trys.pop();
+
+	            continue;
+	        }
+
+	        op = body.call(thisArg, _);
+	      } catch (e) {
+	        op = [6, e];
+	        y = 0;
+	      } finally {
+	        f = t = 0;
+	      }
+	    }
+
+	    if (op[0] & 5) throw op[1];
+	    return {
+	      value: op[0] ? op[1] : void 0,
+	      done: true
+	    };
+	  }
+	};
+
+	var __values$1 = commonjsGlobal && commonjsGlobal.__values || function (o) {
+	  var s = typeof Symbol === "function" && Symbol.iterator,
+	      m = s && o[s],
+	      i = 0;
+	  if (m) return m.call(o);
+	  if (o && typeof o.length === "number") return {
+	    next: function next() {
+	      if (o && i >= o.length) o = void 0;
+	      return {
+	        value: o && o[i++],
+	        done: !o
+	      };
+	    }
+	  };
+	  throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+	};
+
+	Conversations$1.__esModule = true;
+	Conversations$1.Conversations = void 0;
+	var Conversation_1 = Conversation$1;
+	var callback_utils_1$5 = callbackUtils;
+	var GoEasy_1$4 = GoEasy$1;
+	var remote_abbr_message_builder_1 = remoteAbbrMessageBuilder;
+	var RocketTypes_1$3 = RocketTypes;
+	var im_api_events_1$1 = imApiEvents;
+	var sorted_inserter_1 = sortedInserter;
+	var goeasy_event_center_1$3 = goeasyEventCenter;
+	var internal_events_1$3 = internalEvents;
+	var Target_1$1 = Target$1;
+	var CSConversation_1$1 = CSConversation$1;
+	var im_1$2 = im;
+	var remote_conversations_1 = remoteConversations;
+	var histories_1$2 = histories;
+	var g_1$5 = g;
+	var cs_message_type_1$2 = csMessageType;
+	var Calibrator_1$7 = Calibrator;
+
+	var Conversations =
+	/** @class */
+	function () {
+	  function Conversations() {
+	    var _this = this;
+
+	    this.list = new Array();
+	    this.builder = new remote_abbr_message_builder_1.RemoteAbbrMessageBuilder();
+	    this.remoteConversations = remote_conversations_1["default"].instance;
+	    this["synchronized"] = false;
+	    goeasy_event_center_1$3.GoEasyEventCenter.on(internal_events_1$3.IM_INTERNAL_EVENTS.MAX_MESSAGE_CHANGED, function (message) {
+	      return _this.onMaxMessageChanged(message);
+	    });
+	    goeasy_event_center_1$3.GoEasyEventCenter.on(internal_events_1$3.IM_INTERNAL_EVENTS.UNREAD_AMOUNT_CHANGED, function (target) {
+	      return _this.onUnreadMessageChanged(target);
+	    });
+	  }
+
+	  Conversations.prototype.onUnreadMessageChanged = function (target) {
+	    var conversation = this.findConversation(target);
+
+	    if (conversation) {
+	      this.fireUpdated();
+	    }
+	  };
+
+	  Conversations.prototype.fireUpdated = function () {
+	    var data = this.loadLocalConversations();
+	    var updatedEventName = this.getUpdatedEventName();
+	    im_1$2.IM.aec.fire(updatedEventName, {
+	      unreadTotal: data.content.unreadTotal,
+	      conversations: data.content.conversations
+	    });
+	  };
+
+	  Conversations.prototype.getUpdatedEventName = function () {
+	    return im_api_events_1$1.ImApiEvents.CONVERSATIONS_UPDATED;
+	  };
+
+	  Conversations.prototype.latestConversations = function (options) {
+	    return __awaiter$4(this, void 0, void 0, function () {
+	      var data;
+	      return __generator$4(this, function (_a) {
+	        switch (_a.label) {
+	          case 0:
+	            if (!!this["synchronized"]) return [3
+	            /*break*/
+	            , 2];
+	            return [4
+	            /*yield*/
+	            , this.loadServerConversations()];
+
+	          case 1:
+	            _a.sent();
+
+	            _a.label = 2;
+
+	          case 2:
+	            data = this.loadLocalConversations();
+	            callback_utils_1$5.CallbackUtils.onSuccess(options, data);
+	            return [2
+	            /*return*/
+	            ];
+	        }
+	      });
+	    });
+	  };
+
+	  Conversations.prototype.loadServerConversations = function () {
+	    return __awaiter$4(this, void 0, void 0, function () {
+	      var rocketType, data;
+	      return __generator$4(this, function (_a) {
+	        switch (_a.label) {
+	          case 0:
+	            rocketType = this.rocketName();
+	            return [4
+	            /*yield*/
+	            , this.remoteConversations.query(rocketType)];
+
+	          case 1:
+	            data = _a.sent();
+	            this.convertAbbrConversation(data.content);
+	            this["synchronized"] = true;
+	            return [2
+	            /*return*/
+	            ];
+	        }
+	      });
+	    });
+	  };
+
+	  Conversations.prototype.rocketName = function () {
+	    return RocketTypes_1$3.RocketTypes.imLastConversations;
+	  };
+
+	  Conversations.prototype.convertAbbrConversation = function (abbrConversations) {
+	    var e_1, _a;
+
+	    var conversations = abbrConversations;
+
+	    try {
+	      for (var conversations_1 = __values$1(conversations), conversations_1_1 = conversations_1.next(); !conversations_1_1.done; conversations_1_1 = conversations_1.next()) {
+	        var abbrConversation = conversations_1_1.value;
+	        var scene = abbrConversation.t;
+	        var top_1 = abbrConversation.top;
+	        var data = abbrConversation.d ? JSON.parse(abbrConversation.d) : {};
+	        var userOffsets = abbrConversation.userOffsets;
+	        abbrConversation.lmsg.t = scene;
+	        var lastMessage = abbrConversation.lmsg;
+	        var message = this.builder.build(lastMessage);
+	        var target = Target_1$1.Target.byIMMessage(message);
+	        var conversation = this.findConversation(target);
+
+	        if (Calibrator_1$7["default"].isUndef(conversation)) {
+	          conversation = this.buildByAbbr(abbrConversation, message);
+	          this.insertOne(conversation);
+	        } else {
+	          conversation.top = top_1;
+	          conversation.data = data;
+	        }
+
+	        histories_1$2["default"].get(target).initMaxMessageAndOffsets(message, userOffsets);
+	        this.correctPosition(conversation);
+	      }
+	    } catch (e_1_1) {
+	      e_1 = {
+	        error: e_1_1
+	      };
+	    } finally {
+	      try {
+	        if (conversations_1_1 && !conversations_1_1.done && (_a = conversations_1["return"])) _a.call(conversations_1);
+	      } finally {
+	        if (e_1) throw e_1.error;
+	      }
+	    }
+	  };
+
+	  Conversations.prototype.onMaxMessageChanged = function (message) {
+	    return __awaiter$4(this, void 0, void 0, function () {
+	      var csMessage;
+	      return __generator$4(this, function (_a) {
+	        switch (_a.label) {
+	          case 0:
+	            //对于agent收到的accepted=false的消息, 或者其他agent accepted的消息，不可以更新自己的userConversation，只能更新pendingConversation
+	            if (message.scene() === GoEasy_1$4.Scene.CS) {
+	              csMessage = message;
+
+	              if (g_1$5.G.u() != csMessage.customerId()) {
+	                if (csMessage.accepted === false || csMessage.type === cs_message_type_1$2.CSMessageType.ACCEPT && csMessage.senderId != g_1$5.G.u()) {
+	                  return [2
+	                  /*return*/
+	                  ];
+	                }
+	              }
+	            }
+
+	            return [4
+	            /*yield*/
+	            , this.saveOrUpdateConversation(message)];
+
+	          case 1:
+	            _a.sent();
+
+	            return [2
+	            /*return*/
+	            ];
+	        }
+	      });
+	    });
+	  };
+
+	  Conversations.prototype.saveOrUpdateConversation = function (message) {
+	    return __awaiter$4(this, void 0, void 0, function () {
+	      var status, target, conversation, _a;
+
+	      return __generator$4(this, function (_b) {
+	        switch (_b.label) {
+	          case 0:
+	            status = message.status;
+	            target = Target_1$1.Target.byIMMessage(message);
+	            conversation = this.findConversation(target);
+	            if (!(Calibrator_1$7["default"].isUndef(conversation) && status !== GoEasy_1$4.MessageStatus.FAIL)) return [3
+	            /*break*/
+	            , 2];
+	            conversation = this.buildByMessage(message);
+	            this.insertOne(conversation);
+	            if (!(status === GoEasy_1$4.MessageStatus.SUCCESS)) return [3
+	            /*break*/
+	            , 2];
+	            _a = conversation;
+	            return [4
+	            /*yield*/
+	            , this.remoteConversations.loadData(target)];
+
+	          case 1:
+	            _a.data = _b.sent();
+	            conversation.dataLoaded = true;
+	            _b.label = 2;
+
+	          case 2:
+	            if (status === GoEasy_1$4.MessageStatus.SENDING) {
+	              conversation.data = message.getToData();
+	              conversation.dataLoaded = true;
+	            }
+
+	            if (conversation && conversation.dataLoaded) {
+	              this.correctPosition(conversation);
+	              this.fireUpdated();
+	            }
+
+	            return [2
+	            /*return*/
+	            ];
+	        }
+	      });
+	    });
+	  };
+
+	  Conversations.prototype.loadLocalConversations = function () {
+	    var e_2, _a;
+
+	    var unreadTotal = 0;
+	    var conversations = new Array();
+
+	    try {
+	      for (var _b = __values$1(this.list), _c = _b.next(); !_c.done; _c = _b.next()) {
+	        var conversation = _c.value;
+
+	        if (conversation.dataLoaded && conversation.getMaxMessage()) {
+	          unreadTotal += conversation.getUnreadAmount();
+	          var conversationDTO = conversation.toDto();
+	          conversations.push(conversationDTO);
+	        }
+	      }
+	    } catch (e_2_1) {
+	      e_2 = {
+	        error: e_2_1
+	      };
+	    } finally {
+	      try {
+	        if (_c && !_c.done && (_a = _b["return"])) _a.call(_b);
+	      } finally {
+	        if (e_2) throw e_2.error;
+	      }
+	    }
+
+	    return {
+	      code: 200,
+	      content: {
+	        unreadTotal: unreadTotal,
+	        conversations: conversations
+	      }
+	    };
+	  };
+
+	  Conversations.prototype.findConversationIndex = function (target) {
+	    return this.list.findIndex(function (item) {
+	      return target.toString() === item.target.toString();
+	    });
+	  };
+
+	  Conversations.prototype.findConversation = function (target) {
+	    var index = this.findConversationIndex(target);
+	    return this.list[index];
+	  };
+
+	  Conversations.prototype.removeLocalConversation = function (conversation) {
+	    var index = this.findConversationIndex(conversation.target);
+	    this.list.splice(index, 1);
+	  };
+
+	  Conversations.prototype.insertOne = function (conversation) {
+	    Conversations.sortedInserter.insert(this.list, conversation);
+
+	    if (this.list.length > Conversations.CONVERSATIONS_MAX_LENGTH) {
+	      this.list = this.list.slice(0, Conversations.CONVERSATIONS_MAX_LENGTH);
+	    }
+	  };
+
+	  Conversations.prototype.correctPosition = function (conversation) {
+	    this.removeLocalConversation(conversation);
+	    this.insertOne(conversation);
+	  };
+
+	  Conversations.prototype.removeConversation = function (message) {
+	    var target = Target_1$1.Target.byIMMessage(message);
+	    var conversation = this.findConversation(target);
+
+	    if (conversation) {
+	      this.removeLocalConversation(conversation);
+	      this.fireUpdated();
+	    }
+	  };
+
+	  Conversations.prototype.top = function (target, top, options) {
+	    return __awaiter$4(this, void 0, void 0, function () {
+	      var conversation;
+	      return __generator$4(this, function (_a) {
+	        switch (_a.label) {
+	          case 0:
+	            if (!Calibrator_1$7["default"].isBoolean(top)) {
+	              throw new Error('top must be boolean.');
+	            }
+
+	            conversation = this.findConversation(target);
+
+	            if (!conversation) {
+	              throw new Error('conversation does not exist.');
+	            }
+
+	            if (!(conversation.top != top)) return [3
+	            /*break*/
+	            , 2];
+	            return [4
+	            /*yield*/
+	            , this.remoteConversations.top(target, top)];
+
+	          case 1:
+	            _a.sent();
+
+	            conversation.top = top;
+	            this.correctPosition(conversation);
+	            _a.label = 2;
+
+	          case 2:
+	            this.fireUpdated();
+	            callback_utils_1$5.CallbackUtils.onSuccess(options);
+	            return [2
+	            /*return*/
+	            ];
+	        }
+	      });
+	    });
+	  };
+
+	  Conversations.prototype.remove = function (target, options) {
+	    return __awaiter$4(this, void 0, void 0, function () {
+	      var conversation;
+	      return __generator$4(this, function (_a) {
+	        switch (_a.label) {
+	          case 0:
+	            conversation = this.findConversation(target);
+
+	            if (!conversation) {
+	              throw new Error('conversation does not exist.');
+	            }
+
+	            return [4
+	            /*yield*/
+	            , this.remoteConversations.remove(target)];
+
+	          case 1:
+	            _a.sent();
+
+	            this.removeLocalConversation(conversation);
+	            this.fireUpdated();
+	            callback_utils_1$5.CallbackUtils.onSuccess(options);
+	            return [2
+	            /*return*/
+	            ];
+	        }
+	      });
+	    });
+	  };
+
+	  Conversations.prototype.buildByAbbr = function (abbrConversation, message) {
+	    var conversation;
+	    var target = Target_1$1.Target.byIMMessage(message);
+
+	    if (abbrConversation.t === GoEasy_1$4.Scene.CS) {
+	      var csMessage = message;
+
+	      if (g_1$5.G.u() === csMessage.customerId()) {
+	        conversation = new Conversation_1.Conversation(target);
+	      } else {
+	        conversation = new CSConversation_1$1.CSConversation(target);
+	        conversation.accepted = csMessage.accepted;
+	      }
+	    } else {
+	      conversation = new Conversation_1.Conversation(target);
+	    }
+
+	    conversation.dataLoaded = true;
+	    conversation.top = abbrConversation.top;
+	    conversation.data = abbrConversation.d ? JSON.parse(abbrConversation.d) : {};
+	    return conversation;
+	  };
+	  /**
+	   * 注意：
+	   *  客服消息：
+	   *      customer端暂时使用conversation
+	   *      agent端使用cs conversation
+	   *  私聊和群聊使用conversation
+	   */
+
+
+	  Conversations.prototype.buildByMessage = function (message) {
+	    var conversation;
+	    var target = Target_1$1.Target.byIMMessage(message);
+
+	    if (message.scene() === GoEasy_1$4.Scene.CS) {
+	      var csMessage = message;
+
+	      if (g_1$5.G.u() === csMessage.customerId()) {
+	        conversation = new Conversation_1.Conversation(target);
+	      } else {
+	        conversation = new CSConversation_1$1.CSConversation(target);
+	        conversation.accepted = csMessage.accepted;
+	      }
+	    } else {
+	      conversation = new Conversation_1.Conversation(target);
+	    }
+
+	    return conversation;
+	  };
+
+	  Conversations.CONVERSATIONS_MAX_LENGTH = 200;
+	  Conversations.sortedInserter = new (
+	  /** @class */
+	  function (_super) {
+	    __extends$8(class_1, _super);
+
+	    function class_1() {
+	      return _super !== null && _super.apply(this, arguments) || this;
+	    }
+
+	    class_1.prototype.compare = function (a, b) {
+	      var c;
+
+	      if (a.top == b.top) {
+	        var aScore = a.maxMessageTime();
+	        var bScore = b.maxMessageTime();
+	        c = bScore - aScore;
+	      } else {
+	        c = a.top ? -1 : 1;
+	      }
+
+	      return c === 0 ? 0 : c > 0 ? 1 : -1;
+	    };
+
+	    return class_1;
+	  }(sorted_inserter_1.SortedInserter))();
+	  return Conversations;
+	}();
+
+	Conversations$1.Conversations = Conversations;
+
+	var PendingConversations$1 = {};
+
+	var __extends$7 = commonjsGlobal && commonjsGlobal.__extends || function () {
+	  var _extendStatics = function extendStatics(d, b) {
+	    _extendStatics = Object.setPrototypeOf || {
+	      __proto__: []
+	    } instanceof Array && function (d, b) {
+	      d.__proto__ = b;
+	    } || function (d, b) {
+	      for (var p in b) {
+	        if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
+	      }
+	    };
+
+	    return _extendStatics(d, b);
+	  };
+
+	  return function (d, b) {
+	    if (typeof b !== "function" && b !== null) throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+
+	    _extendStatics(d, b);
+
+	    function __() {
+	      this.constructor = d;
+	    }
+
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	  };
+	}();
+
 	var __awaiter$3 = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
 	  function adopt(value) {
 	    return value instanceof P ? value : new P(function (resolve) {
@@ -14926,663 +15565,6 @@
 	  }
 	};
 
-	var __values$1 = commonjsGlobal && commonjsGlobal.__values || function (o) {
-	  var s = typeof Symbol === "function" && Symbol.iterator,
-	      m = s && o[s],
-	      i = 0;
-	  if (m) return m.call(o);
-	  if (o && typeof o.length === "number") return {
-	    next: function next() {
-	      if (o && i >= o.length) o = void 0;
-	      return {
-	        value: o && o[i++],
-	        done: !o
-	      };
-	    }
-	  };
-	  throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
-	};
-
-	Conversations$1.__esModule = true;
-	Conversations$1.Conversations = void 0;
-	var Conversation_1 = Conversation$1;
-	var callback_utils_1$5 = callbackUtils;
-	var GoEasy_1$3 = GoEasy$1;
-	var remote_abbr_message_builder_1$1 = remoteAbbrMessageBuilder;
-	var RocketTypes_1$3 = RocketTypes;
-	var im_api_events_1$1 = imApiEvents;
-	var sorted_inserter_1 = sortedInserter;
-	var goeasy_event_center_1$3 = goeasyEventCenter;
-	var internal_events_1$3 = internalEvents;
-	var Target_1$1 = Target$1;
-	var CSConversation_1$1 = CSConversation$1;
-	var im_1$2 = im;
-	var remote_conversations_1 = remoteConversations;
-	var histories_1$2 = histories;
-	var g_1$5 = g;
-	var cs_message_type_1$1 = csMessageType;
-	var Calibrator_1$7 = Calibrator;
-
-	var Conversations =
-	/** @class */
-	function () {
-	  function Conversations() {
-	    var _this = this;
-
-	    this.list = new Array();
-	    this.builder = new remote_abbr_message_builder_1$1.RemoteAbbrMessageBuilder();
-	    this.remoteConversations = remote_conversations_1["default"].instance;
-	    this["synchronized"] = false;
-	    goeasy_event_center_1$3.GoEasyEventCenter.on(internal_events_1$3.IM_INTERNAL_EVENTS.MAX_MESSAGE_CHANGED, function (message) {
-	      return _this.onMaxMessageChanged(message);
-	    });
-	    goeasy_event_center_1$3.GoEasyEventCenter.on(internal_events_1$3.IM_INTERNAL_EVENTS.UNREAD_AMOUNT_CHANGED, function (target) {
-	      return _this.onUnreadMessageChanged(target);
-	    });
-	  }
-
-	  Conversations.prototype.onUnreadMessageChanged = function (target) {
-	    var conversation = this.findConversation(target);
-
-	    if (conversation) {
-	      this.fireUpdated();
-	    }
-	  };
-
-	  Conversations.prototype.fireUpdated = function () {
-	    var data = this.loadLocalConversations();
-	    var updatedEventName = this.getUpdatedEventName();
-	    im_1$2.IM.aec.fire(updatedEventName, {
-	      unreadTotal: data.content.unreadTotal,
-	      conversations: data.content.conversations
-	    });
-	  };
-
-	  Conversations.prototype.getUpdatedEventName = function () {
-	    return im_api_events_1$1.ImApiEvents.CONVERSATIONS_UPDATED;
-	  };
-
-	  Conversations.prototype.latestConversations = function (options) {
-	    return __awaiter$3(this, void 0, void 0, function () {
-	      var data;
-	      return __generator$3(this, function (_a) {
-	        switch (_a.label) {
-	          case 0:
-	            if (!!this["synchronized"]) return [3
-	            /*break*/
-	            , 2];
-	            return [4
-	            /*yield*/
-	            , this.loadServerConversations()];
-
-	          case 1:
-	            _a.sent();
-
-	            _a.label = 2;
-
-	          case 2:
-	            data = this.loadLocalConversations();
-	            callback_utils_1$5.CallbackUtils.onSuccess(options, data);
-	            return [2
-	            /*return*/
-	            ];
-	        }
-	      });
-	    });
-	  };
-
-	  Conversations.prototype.loadServerConversations = function () {
-	    return __awaiter$3(this, void 0, void 0, function () {
-	      var rocketType, data;
-	      return __generator$3(this, function (_a) {
-	        switch (_a.label) {
-	          case 0:
-	            rocketType = this.rocketName();
-	            return [4
-	            /*yield*/
-	            , this.remoteConversations.query(rocketType)];
-
-	          case 1:
-	            data = _a.sent();
-	            this.convertAbbrConversation(data.content);
-	            this["synchronized"] = true;
-	            return [2
-	            /*return*/
-	            ];
-	        }
-	      });
-	    });
-	  };
-
-	  Conversations.prototype.rocketName = function () {
-	    return RocketTypes_1$3.RocketTypes.imLastConversations;
-	  };
-
-	  Conversations.prototype.convertAbbrConversation = function (abbrConversations) {
-	    var e_1, _a;
-
-	    var conversations = abbrConversations;
-
-	    try {
-	      for (var conversations_1 = __values$1(conversations), conversations_1_1 = conversations_1.next(); !conversations_1_1.done; conversations_1_1 = conversations_1.next()) {
-	        var abbrConversation = conversations_1_1.value;
-	        var scene = abbrConversation.t;
-	        var top_1 = abbrConversation.top;
-	        var data = abbrConversation.d ? JSON.parse(abbrConversation.d) : {};
-	        var userOffsets = abbrConversation.userOffsets;
-	        abbrConversation.lmsg.t = scene;
-	        var lastMessage = abbrConversation.lmsg;
-	        var message = this.builder.build(lastMessage);
-	        var target = Target_1$1.Target.byIMMessage(message);
-	        var conversation = this.findConversation(target);
-
-	        if (Calibrator_1$7["default"].isUndef(conversation)) {
-	          conversation = this.buildByAbbr(abbrConversation, message);
-	          this.insertOne(conversation);
-	        } else {
-	          conversation.top = top_1;
-	          conversation.data = data;
-	        }
-
-	        histories_1$2["default"].get(target).initMaxMessageAndOffsets(message, userOffsets);
-	        this.correctPosition(conversation);
-	      }
-	    } catch (e_1_1) {
-	      e_1 = {
-	        error: e_1_1
-	      };
-	    } finally {
-	      try {
-	        if (conversations_1_1 && !conversations_1_1.done && (_a = conversations_1["return"])) _a.call(conversations_1);
-	      } finally {
-	        if (e_1) throw e_1.error;
-	      }
-	    }
-	  };
-
-	  Conversations.prototype.onMaxMessageChanged = function (message) {
-	    return __awaiter$3(this, void 0, void 0, function () {
-	      var csMessage;
-	      return __generator$3(this, function (_a) {
-	        switch (_a.label) {
-	          case 0:
-	            //对于agent收到的accepted=false的消息, 或者其他agent accepted的消息，不可以更新自己的userConversation，只能更新pendingConversation
-	            if (message.scene() === GoEasy_1$3.Scene.CS) {
-	              csMessage = message;
-
-	              if (g_1$5.G.u() != csMessage.customerId()) {
-	                if (csMessage.accepted === false || csMessage.type === cs_message_type_1$1.CSMessageType.ACCEPT && csMessage.senderId != g_1$5.G.u()) {
-	                  return [2
-	                  /*return*/
-	                  ];
-	                }
-	              }
-	            }
-
-	            return [4
-	            /*yield*/
-	            , this.saveOrUpdateConversation(message)];
-
-	          case 1:
-	            _a.sent();
-
-	            return [2
-	            /*return*/
-	            ];
-	        }
-	      });
-	    });
-	  };
-
-	  Conversations.prototype.saveOrUpdateConversation = function (message) {
-	    return __awaiter$3(this, void 0, void 0, function () {
-	      var status, target, conversation, _a;
-
-	      return __generator$3(this, function (_b) {
-	        switch (_b.label) {
-	          case 0:
-	            status = message.status;
-	            target = Target_1$1.Target.byIMMessage(message);
-	            conversation = this.findConversation(target);
-	            if (!(Calibrator_1$7["default"].isUndef(conversation) && status !== GoEasy_1$3.MessageStatus.FAIL)) return [3
-	            /*break*/
-	            , 2];
-	            conversation = this.buildByMessage(message);
-	            this.insertOne(conversation);
-	            if (!(status === GoEasy_1$3.MessageStatus.SUCCESS)) return [3
-	            /*break*/
-	            , 2];
-	            _a = conversation;
-	            return [4
-	            /*yield*/
-	            , this.remoteConversations.loadData(target)];
-
-	          case 1:
-	            _a.data = _b.sent();
-	            conversation.dataLoaded = true;
-	            _b.label = 2;
-
-	          case 2:
-	            if (status === GoEasy_1$3.MessageStatus.SENDING) {
-	              conversation.data = message.getToData();
-	              conversation.dataLoaded = true;
-	            }
-
-	            if (conversation && conversation.dataLoaded) {
-	              this.correctPosition(conversation);
-	              this.fireUpdated();
-	            }
-
-	            return [2
-	            /*return*/
-	            ];
-	        }
-	      });
-	    });
-	  };
-
-	  Conversations.prototype.loadLocalConversations = function () {
-	    var e_2, _a;
-
-	    var unreadTotal = 0;
-	    var conversations = new Array();
-
-	    try {
-	      for (var _b = __values$1(this.list), _c = _b.next(); !_c.done; _c = _b.next()) {
-	        var conversation = _c.value;
-
-	        if (conversation.dataLoaded && conversation.getMaxMessage()) {
-	          unreadTotal += conversation.getUnreadAmount();
-	          var conversationDTO = conversation.toDto();
-	          conversations.push(conversationDTO);
-	        }
-	      }
-	    } catch (e_2_1) {
-	      e_2 = {
-	        error: e_2_1
-	      };
-	    } finally {
-	      try {
-	        if (_c && !_c.done && (_a = _b["return"])) _a.call(_b);
-	      } finally {
-	        if (e_2) throw e_2.error;
-	      }
-	    }
-
-	    return {
-	      code: 200,
-	      content: {
-	        unreadTotal: unreadTotal,
-	        conversations: conversations
-	      }
-	    };
-	  };
-
-	  Conversations.prototype.findConversationIndex = function (target) {
-	    return this.list.findIndex(function (item) {
-	      return target.toString() === item.target.toString();
-	    });
-	  };
-
-	  Conversations.prototype.findConversation = function (target) {
-	    var index = this.findConversationIndex(target);
-	    return this.list[index];
-	  };
-
-	  Conversations.prototype.removeLocalConversation = function (conversation) {
-	    var index = this.findConversationIndex(conversation.target);
-	    this.list.splice(index, 1);
-	  };
-
-	  Conversations.prototype.insertOne = function (conversation) {
-	    Conversations.sortedInserter.insert(this.list, conversation);
-
-	    if (this.list.length > Conversations.CONVERSATIONS_MAX_LENGTH) {
-	      this.list = this.list.slice(0, Conversations.CONVERSATIONS_MAX_LENGTH);
-	    }
-	  };
-
-	  Conversations.prototype.correctPosition = function (conversation) {
-	    this.removeLocalConversation(conversation);
-	    this.insertOne(conversation);
-	  };
-
-	  Conversations.prototype.removeConversation = function (message) {
-	    var target = Target_1$1.Target.byIMMessage(message);
-	    var conversation = this.findConversation(target);
-
-	    if (conversation) {
-	      this.removeLocalConversation(conversation);
-	      this.fireUpdated();
-	    }
-	  };
-
-	  Conversations.prototype.top = function (target, top, options) {
-	    return __awaiter$3(this, void 0, void 0, function () {
-	      var conversation;
-	      return __generator$3(this, function (_a) {
-	        switch (_a.label) {
-	          case 0:
-	            if (!Calibrator_1$7["default"].isBoolean(top)) {
-	              throw new Error('top must be boolean.');
-	            }
-
-	            conversation = this.findConversation(target);
-
-	            if (!conversation) {
-	              throw new Error('conversation does not exist.');
-	            }
-
-	            if (!(conversation.top != top)) return [3
-	            /*break*/
-	            , 2];
-	            return [4
-	            /*yield*/
-	            , this.remoteConversations.top(target, top)];
-
-	          case 1:
-	            _a.sent();
-
-	            conversation.top = top;
-	            this.correctPosition(conversation);
-	            _a.label = 2;
-
-	          case 2:
-	            this.fireUpdated();
-	            callback_utils_1$5.CallbackUtils.onSuccess(options);
-	            return [2
-	            /*return*/
-	            ];
-	        }
-	      });
-	    });
-	  };
-
-	  Conversations.prototype.remove = function (target, options) {
-	    return __awaiter$3(this, void 0, void 0, function () {
-	      var conversation;
-	      return __generator$3(this, function (_a) {
-	        switch (_a.label) {
-	          case 0:
-	            conversation = this.findConversation(target);
-
-	            if (!conversation) {
-	              throw new Error('conversation does not exist.');
-	            }
-
-	            return [4
-	            /*yield*/
-	            , this.remoteConversations.remove(target)];
-
-	          case 1:
-	            _a.sent();
-
-	            this.removeLocalConversation(conversation);
-	            this.fireUpdated();
-	            callback_utils_1$5.CallbackUtils.onSuccess(options);
-	            return [2
-	            /*return*/
-	            ];
-	        }
-	      });
-	    });
-	  };
-
-	  Conversations.prototype.buildByAbbr = function (abbrConversation, message) {
-	    var conversation;
-	    var target = Target_1$1.Target.byIMMessage(message);
-
-	    if (abbrConversation.t === GoEasy_1$3.Scene.CS) {
-	      var csMessage = message;
-
-	      if (g_1$5.G.u() === csMessage.customerId()) {
-	        conversation = new Conversation_1.Conversation(target);
-	      } else {
-	        conversation = new CSConversation_1$1.CSConversation(target);
-	        conversation.accepted = csMessage.accepted;
-	      }
-	    } else {
-	      conversation = new Conversation_1.Conversation(target);
-	    }
-
-	    conversation.dataLoaded = true;
-	    conversation.top = abbrConversation.top;
-	    conversation.data = abbrConversation.d ? JSON.parse(abbrConversation.d) : {};
-	    return conversation;
-	  };
-	  /**
-	   * 注意：
-	   *  客服消息：
-	   *      customer端暂时使用conversation
-	   *      agent端使用cs conversation
-	   *  私聊和群聊使用conversation
-	   */
-
-
-	  Conversations.prototype.buildByMessage = function (message) {
-	    var conversation;
-	    var target = Target_1$1.Target.byIMMessage(message);
-
-	    if (message.scene() === GoEasy_1$3.Scene.CS) {
-	      var csMessage = message;
-
-	      if (g_1$5.G.u() === csMessage.customerId()) {
-	        conversation = new Conversation_1.Conversation(target);
-	      } else {
-	        conversation = new CSConversation_1$1.CSConversation(target);
-	        conversation.accepted = csMessage.accepted;
-	      }
-	    } else {
-	      conversation = new Conversation_1.Conversation(target);
-	    }
-
-	    return conversation;
-	  };
-
-	  Conversations.CONVERSATIONS_MAX_LENGTH = 200;
-	  Conversations.sortedInserter = new (
-	  /** @class */
-	  function (_super) {
-	    __extends$8(class_1, _super);
-
-	    function class_1() {
-	      return _super !== null && _super.apply(this, arguments) || this;
-	    }
-
-	    class_1.prototype.compare = function (a, b) {
-	      var c;
-
-	      if (a.top == b.top) {
-	        var aScore = a.maxMessageTime();
-	        var bScore = b.maxMessageTime();
-	        c = bScore - aScore;
-	      } else {
-	        c = a.top ? -1 : 1;
-	      }
-
-	      return c === 0 ? 0 : c > 0 ? 1 : -1;
-	    };
-
-	    return class_1;
-	  }(sorted_inserter_1.SortedInserter))();
-	  return Conversations;
-	}();
-
-	Conversations$1.Conversations = Conversations;
-
-	var PendingConversations$1 = {};
-
-	var __extends$7 = commonjsGlobal && commonjsGlobal.__extends || function () {
-	  var _extendStatics = function extendStatics(d, b) {
-	    _extendStatics = Object.setPrototypeOf || {
-	      __proto__: []
-	    } instanceof Array && function (d, b) {
-	      d.__proto__ = b;
-	    } || function (d, b) {
-	      for (var p in b) {
-	        if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
-	      }
-	    };
-
-	    return _extendStatics(d, b);
-	  };
-
-	  return function (d, b) {
-	    if (typeof b !== "function" && b !== null) throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-
-	    _extendStatics(d, b);
-
-	    function __() {
-	      this.constructor = d;
-	    }
-
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	  };
-	}();
-
-	var __awaiter$2 = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
-	  function adopt(value) {
-	    return value instanceof P ? value : new P(function (resolve) {
-	      resolve(value);
-	    });
-	  }
-
-	  return new (P || (P = Promise))(function (resolve, reject) {
-	    function fulfilled(value) {
-	      try {
-	        step(generator.next(value));
-	      } catch (e) {
-	        reject(e);
-	      }
-	    }
-
-	    function rejected(value) {
-	      try {
-	        step(generator["throw"](value));
-	      } catch (e) {
-	        reject(e);
-	      }
-	    }
-
-	    function step(result) {
-	      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
-	    }
-
-	    step((generator = generator.apply(thisArg, _arguments || [])).next());
-	  });
-	};
-
-	var __generator$2 = commonjsGlobal && commonjsGlobal.__generator || function (thisArg, body) {
-	  var _ = {
-	    label: 0,
-	    sent: function sent() {
-	      if (t[0] & 1) throw t[1];
-	      return t[1];
-	    },
-	    trys: [],
-	    ops: []
-	  },
-	      f,
-	      y,
-	      t,
-	      g;
-	  return g = {
-	    next: verb(0),
-	    "throw": verb(1),
-	    "return": verb(2)
-	  }, typeof Symbol === "function" && (g[Symbol.iterator] = function () {
-	    return this;
-	  }), g;
-
-	  function verb(n) {
-	    return function (v) {
-	      return step([n, v]);
-	    };
-	  }
-
-	  function step(op) {
-	    if (f) throw new TypeError("Generator is already executing.");
-
-	    while (_) {
-	      try {
-	        if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-	        if (y = 0, t) op = [op[0] & 2, t.value];
-
-	        switch (op[0]) {
-	          case 0:
-	          case 1:
-	            t = op;
-	            break;
-
-	          case 4:
-	            _.label++;
-	            return {
-	              value: op[1],
-	              done: false
-	            };
-
-	          case 5:
-	            _.label++;
-	            y = op[1];
-	            op = [0];
-	            continue;
-
-	          case 7:
-	            op = _.ops.pop();
-
-	            _.trys.pop();
-
-	            continue;
-
-	          default:
-	            if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
-	              _ = 0;
-	              continue;
-	            }
-
-	            if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
-	              _.label = op[1];
-	              break;
-	            }
-
-	            if (op[0] === 6 && _.label < t[1]) {
-	              _.label = t[1];
-	              t = op;
-	              break;
-	            }
-
-	            if (t && _.label < t[2]) {
-	              _.label = t[2];
-
-	              _.ops.push(op);
-
-	              break;
-	            }
-
-	            if (t[2]) _.ops.pop();
-
-	            _.trys.pop();
-
-	            continue;
-	        }
-
-	        op = body.call(thisArg, _);
-	      } catch (e) {
-	        op = [6, e];
-	        y = 0;
-	      } finally {
-	        f = t = 0;
-	      }
-	    }
-
-	    if (op[0] & 5) throw op[1];
-	    return {
-	      value: op[0] ? op[1] : void 0,
-	      done: true
-	    };
-	  }
-	};
-
 	var __values = commonjsGlobal && commonjsGlobal.__values || function (o) {
 	  var s = typeof Symbol === "function" && Symbol.iterator,
 	      m = s && o[s],
@@ -15603,13 +15585,13 @@
 	PendingConversations$1.__esModule = true;
 	PendingConversations$1.PendingConversations = void 0;
 	var Conversations_1 = Conversations$1;
-	var GoEasy_1$2 = GoEasy$1;
+	var GoEasy_1$3 = GoEasy$1;
 	var RocketTypes_1$2 = RocketTypes;
 	var Target_1 = Target$1;
 	var goeasy_event_center_1$2 = goeasyEventCenter;
 	var internal_events_1$2 = internalEvents;
 	var im_api_events_1 = imApiEvents;
-	var cs_message_type_1 = csMessageType;
+	var cs_message_type_1$1 = csMessageType;
 	var histories_1$1 = histories;
 	var CSConversation_1 = CSConversation$1;
 	var g_1$4 = g;
@@ -15636,22 +15618,22 @@
 	  }
 
 	  PendingConversations.prototype.onMaxMessageChanged = function (message) {
-	    return __awaiter$2(this, void 0, void 0, function () {
+	    return __awaiter$3(this, void 0, void 0, function () {
 	      var csMessage;
-	      return __generator$2(this, function (_a) {
+	      return __generator$3(this, function (_a) {
 	        switch (_a.label) {
 	          case 0:
-	            if (!(message.scene() === GoEasy_1$2.Scene.CS)) return [3
+	            if (!(message.scene() === GoEasy_1$3.Scene.CS)) return [3
 	            /*break*/
 	            , 3];
 	            csMessage = message;
 	            if (!(csMessage.customerId() != g_1$4.G.u())) return [3
 	            /*break*/
 	            , 3];
-	            if (!(csMessage.accepted === false || csMessage.type === cs_message_type_1.CSMessageType.ACCEPT)) return [3
+	            if (!(csMessage.accepted === false || csMessage.type === cs_message_type_1$1.CSMessageType.ACCEPT)) return [3
 	            /*break*/
 	            , 3];
-	            if (!(cs_message_type_1.CSMessageType.ACCEPT === message.type)) return [3
+	            if (!(cs_message_type_1$1.CSMessageType.ACCEPT === message.type)) return [3
 	            /*break*/
 	            , 1];
 	            this.removeConversation(message);
@@ -15679,10 +15661,10 @@
 	  };
 
 	  PendingConversations.prototype.latestConversations = function (options) {
-	    return __awaiter$2(this, void 0, void 0, function () {
+	    return __awaiter$3(this, void 0, void 0, function () {
 	      var _synchronized;
 
-	      return __generator$2(this, function (_a) {
+	      return __generator$3(this, function (_a) {
 	        switch (_a.label) {
 	          case 0:
 	            _synchronized = this["synchronized"];
@@ -15710,8 +15692,8 @@
 	  };
 
 	  PendingConversations.prototype.onCSOnlineSuccess = function () {
-	    return __awaiter$2(this, void 0, void 0, function () {
-	      return __generator$2(this, function (_a) {
+	    return __awaiter$3(this, void 0, void 0, function () {
+	      return __generator$3(this, function (_a) {
 	        switch (_a.label) {
 	          case 0:
 	            return [4
@@ -15744,18 +15726,18 @@
 	  };
 
 	  PendingConversations.prototype.convertAbbrConversation = function (abbrConversations) {
-	    return __awaiter$2(this, void 0, void 0, function () {
+	    return __awaiter$3(this, void 0, void 0, function () {
 	      var conversations, conversations_1, conversations_1_1, abbrConversation, customerData, lastMessage, userOffsets, data, message, target, conversation, agentHistory;
 
 	      var e_1, _a;
 
-	      return __generator$2(this, function (_b) {
+	      return __generator$3(this, function (_b) {
 	        conversations = abbrConversations;
 
 	        try {
 	          for (conversations_1 = __values(conversations), conversations_1_1 = conversations_1.next(); !conversations_1_1.done; conversations_1_1 = conversations_1.next()) {
 	            abbrConversation = conversations_1_1.value;
-	            abbrConversation.lastMessage.t = GoEasy_1$2.Scene.CS;
+	            abbrConversation.lastMessage.t = GoEasy_1$3.Scene.CS;
 	            customerData = abbrConversation.customerData;
 	            lastMessage = abbrConversation.lastMessage;
 	            userOffsets = abbrConversation.userOffsets;
@@ -15801,8 +15783,8 @@
 	  };
 
 	  PendingConversations.prototype.onConnected = function () {
-	    return __awaiter$2(this, void 0, void 0, function () {
-	      return __generator$2(this, function (_a) {
+	    return __awaiter$3(this, void 0, void 0, function () {
+	      return __generator$3(this, function (_a) {
 	        switch (_a.label) {
 	          case 0:
 	            if (!this.expired) return [3
@@ -18227,7 +18209,7 @@
 	var LocalIMMessageBuildOptions_1 = LocalIMMessageBuildOptions$1;
 	var UUID_1 = UUID;
 	var Calibrator_1$2 = Calibrator;
-	var GoEasy_1$1 = GoEasy$1;
+	var GoEasy_1$2 = GoEasy$1;
 	var GroupMessage_1 = GroupMessage$1;
 	var PrivateMessage_1 = PrivateMessage$1;
 	var validator_utils_1$4 = validatorUtils;
@@ -18294,15 +18276,15 @@
 	    this.validate(createOptions);
 	    var message;
 
-	    if (scene === GoEasy_1$1.Scene.GROUP) {
+	    if (scene === GoEasy_1$2.Scene.GROUP) {
 	      message = new GroupMessage_1.GroupMessage();
 	      message.groupId = to.id.toString();
 	      message.senderData = g_1$3.G.ud();
-	    } else if (scene === GoEasy_1$1.Scene.PRIVATE) {
+	    } else if (scene === GoEasy_1$2.Scene.PRIVATE) {
 	      message = new PrivateMessage_1.PrivateMessage();
 	      message.read = false;
 	      message.receiverId = to.id.toString();
-	    } else if (scene === GoEasy_1$1.Scene.CS) {
+	    } else if (scene === GoEasy_1$2.Scene.CS) {
 	      message = new cs_message_1.CSMessage();
 	      message.to = to.id.toString();
 	      message.teamId = to.id.toString();
@@ -18315,7 +18297,7 @@
 	    message.timestamp = Date.now();
 	    message.type = type;
 	    message.recalled = false;
-	    message.status = GoEasy_1$1.MessageStatus.NEW;
+	    message.status = GoEasy_1$2.MessageStatus.NEW;
 	    message.buildOptions = buildOptions;
 	    return message;
 	  };
@@ -18335,7 +18317,7 @@
 	      throw new Error("TypeError: to.data requires an object.");
 	    }
 
-	    if (!to.type || to.type !== GoEasy_1$1.Scene.GROUP && to.type !== GoEasy_1$1.Scene.PRIVATE && to.type !== GoEasy_1$1.Scene.CS) {
+	    if (!to.type || to.type !== GoEasy_1$2.Scene.GROUP && to.type !== GoEasy_1$2.Scene.PRIVATE && to.type !== GoEasy_1$2.Scene.CS) {
 	      throw new Error("message require property to.type");
 	    }
 
@@ -18365,7 +18347,7 @@
 
 	IMMessageBuilder$1.IMMessageBuilder = IMMessageBuilder;
 
-	var __awaiter$1 = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
+	var __awaiter$2 = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
 	  function adopt(value) {
 	    return value instanceof P ? value : new P(function (resolve) {
 	      resolve(value);
@@ -18397,7 +18379,7 @@
 	  });
 	};
 
-	var __generator$1 = commonjsGlobal && commonjsGlobal.__generator || function (thisArg, body) {
+	var __generator$2 = commonjsGlobal && commonjsGlobal.__generator || function (thisArg, body) {
 	  var _ = {
 	    label: 0,
 	    sent: function sent() {
@@ -18572,9 +18554,9 @@
 	  };
 
 	  IM.prototype["catch"] = function (functionObj, callbackOptions) {
-	    return __awaiter$1(this, void 0, void 0, function () {
+	    return __awaiter$2(this, void 0, void 0, function () {
 	      var err_1;
-	      return __generator$1(this, function (_a) {
+	      return __generator$2(this, function (_a) {
 	        switch (_a.label) {
 	          case 0:
 	            _a.trys.push([0, 2,, 3]);
@@ -18675,8 +18657,8 @@
 	    var _this = this;
 
 	    this["catch"](function () {
-	      return __awaiter$1(_this, void 0, void 0, function () {
-	        return __generator$1(this, function (_a) {
+	      return __awaiter$2(_this, void 0, void 0, function () {
+	        return __generator$2(this, function (_a) {
 	          switch (_a.label) {
 	            case 0:
 	              return [4
@@ -18699,8 +18681,8 @@
 	    var _this = this;
 
 	    this["catch"](function () {
-	      return __awaiter$1(_this, void 0, void 0, function () {
-	        return __generator$1(this, function (_a) {
+	      return __awaiter$2(_this, void 0, void 0, function () {
+	        return __generator$2(this, function (_a) {
 	          switch (_a.label) {
 	            case 0:
 	              return [4
@@ -18723,8 +18705,8 @@
 	    var _this = this;
 
 	    this["catch"](function () {
-	      return __awaiter$1(_this, void 0, void 0, function () {
-	        return __generator$1(this, function (_a) {
+	      return __awaiter$2(_this, void 0, void 0, function () {
+	        return __generator$2(this, function (_a) {
 	          switch (_a.label) {
 	            case 0:
 	              return [4
@@ -18954,6 +18936,167 @@
 
 	csTransferRequest.CSTransferRequest = CSTransferRequest;
 
+	var customerStatus = {};
+
+	customerStatus.__esModule = true;
+	customerStatus.CustomerStatus = void 0;
+
+	var CustomerStatus =
+	/** @class */
+	function () {
+	  function CustomerStatus(id, teamId) {
+	    this.id = id;
+	    this.teamId = teamId;
+	  }
+
+	  return CustomerStatus;
+	}();
+
+	customerStatus.CustomerStatus = CustomerStatus;
+
+	var __awaiter$1 = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
+	  function adopt(value) {
+	    return value instanceof P ? value : new P(function (resolve) {
+	      resolve(value);
+	    });
+	  }
+
+	  return new (P || (P = Promise))(function (resolve, reject) {
+	    function fulfilled(value) {
+	      try {
+	        step(generator.next(value));
+	      } catch (e) {
+	        reject(e);
+	      }
+	    }
+
+	    function rejected(value) {
+	      try {
+	        step(generator["throw"](value));
+	      } catch (e) {
+	        reject(e);
+	      }
+	    }
+
+	    function step(result) {
+	      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+	    }
+
+	    step((generator = generator.apply(thisArg, _arguments || [])).next());
+	  });
+	};
+
+	var __generator$1 = commonjsGlobal && commonjsGlobal.__generator || function (thisArg, body) {
+	  var _ = {
+	    label: 0,
+	    sent: function sent() {
+	      if (t[0] & 1) throw t[1];
+	      return t[1];
+	    },
+	    trys: [],
+	    ops: []
+	  },
+	      f,
+	      y,
+	      t,
+	      g;
+	  return g = {
+	    next: verb(0),
+	    "throw": verb(1),
+	    "return": verb(2)
+	  }, typeof Symbol === "function" && (g[Symbol.iterator] = function () {
+	    return this;
+	  }), g;
+
+	  function verb(n) {
+	    return function (v) {
+	      return step([n, v]);
+	    };
+	  }
+
+	  function step(op) {
+	    if (f) throw new TypeError("Generator is already executing.");
+
+	    while (_) {
+	      try {
+	        if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+	        if (y = 0, t) op = [op[0] & 2, t.value];
+
+	        switch (op[0]) {
+	          case 0:
+	          case 1:
+	            t = op;
+	            break;
+
+	          case 4:
+	            _.label++;
+	            return {
+	              value: op[1],
+	              done: false
+	            };
+
+	          case 5:
+	            _.label++;
+	            y = op[1];
+	            op = [0];
+	            continue;
+
+	          case 7:
+	            op = _.ops.pop();
+
+	            _.trys.pop();
+
+	            continue;
+
+	          default:
+	            if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
+	              _ = 0;
+	              continue;
+	            }
+
+	            if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
+	              _.label = op[1];
+	              break;
+	            }
+
+	            if (op[0] === 6 && _.label < t[1]) {
+	              _.label = t[1];
+	              t = op;
+	              break;
+	            }
+
+	            if (t && _.label < t[2]) {
+	              _.label = t[2];
+
+	              _.ops.push(op);
+
+	              break;
+	            }
+
+	            if (t[2]) _.ops.pop();
+
+	            _.trys.pop();
+
+	            continue;
+	        }
+
+	        op = body.call(thisArg, _);
+	      } catch (e) {
+	        op = [6, e];
+	        y = 0;
+	      } finally {
+	        f = t = 0;
+	      }
+	    }
+
+	    if (op[0] & 5) throw op[1];
+	    return {
+	      value: op[0] ? op[1] : void 0,
+	      done: true
+	    };
+	  }
+	};
+
 	conversationHandler.__esModule = true;
 	conversationHandler.ConversationHandler = void 0;
 	var cs_status_query_request_1 = csStatusQueryRequest;
@@ -18963,31 +19106,28 @@
 	var RocketTypes_1$1 = RocketTypes;
 	var Permission_1$1 = Permission;
 	var SocketTimeout_1$1 = SocketTimeout;
+	var GoEasy_1$1 = GoEasy$1;
 	var callback_utils_1$2 = callbackUtils;
 	var g_1$1 = g;
 	var goeasy_event_center_1$1 = goeasyEventCenter;
 	var internal_events_1$1 = internalEvents;
-	var remote_abbr_message_builder_1 = remoteAbbrMessageBuilder;
 	var cs_transfer_request_1 = csTransferRequest;
+	var cs_message_type_1 = csMessageType;
+	var customer_status_1 = customerStatus;
 
 	var ConversationHandler =
 	/** @class */
 	function () {
-	  function ConversationHandler() {
-	    this.builder = new remote_abbr_message_builder_1.RemoteAbbrMessageBuilder();
-	  }
-
-	  ConversationHandler.getInstance = function () {
-	    if (!ConversationHandler.instance) {
-	      ConversationHandler.instance = new ConversationHandler();
-	    }
-
-	    return ConversationHandler.instance;
-	  };
-
-	  ConversationHandler.prototype.accept = function (teamId, options) {
+	  function ConversationHandler(teamId) {
 	    var _this = this;
 
+	    this.teamId = teamId;
+	    goeasy_event_center_1$1.GoEasyEventCenter.on(internal_events_1$1.IM_INTERNAL_EVENTS.MESSAGE_RECEIVED, function (message) {
+	      return _this.onMessageReceived(message);
+	    });
+	  }
+
+	  ConversationHandler.prototype.accept = function (teamId, options) {
 	    validator_utils_1$2["default"].validateId(options.id, "id");
 	    var id = options.id;
 	    var customerId = id.toString();
@@ -19002,21 +19142,13 @@
 	        callback_utils_1$2.CallbackUtils.onFailed(options, err);
 	      },
 	      success: function success(res) {
-	        var acceptedMessage = _this.builder.build(res.content.message);
-
-	        goeasy_event_center_1$1.GoEasyEventCenter.fire(internal_events_1$1.IM_INTERNAL_EVENTS.CS_ACCEPTED, acceptedMessage);
-	        callback_utils_1$2.CallbackUtils.onSuccess(options, {
-	          message: acceptedMessage,
-	          customerStatus: res.content.customerStatus
-	        });
+	        callback_utils_1$2.CallbackUtils.onSuccess(options);
 	      }
 	    });
 	    g_1$1.G.s().emit(rocket);
 	  };
 
 	  ConversationHandler.prototype.end = function (teamId, options) {
-	    var _this = this;
-
 	    validator_utils_1$2["default"].validateId(options.id, "id");
 	    var customerId = options.id.toString();
 	    var request = new cs_accept_request_1.CSAcceptRequest(customerId, teamId);
@@ -19030,49 +19162,67 @@
 	        callback_utils_1$2.CallbackUtils.onFailed(options, err);
 	      },
 	      success: function success(res) {
-	        var endedMessage = _this.builder.build(res.content.message);
-
-	        goeasy_event_center_1$1.GoEasyEventCenter.fire(internal_events_1$1.IM_INTERNAL_EVENTS.CS_ENDED, endedMessage);
-	        callback_utils_1$2.CallbackUtils.onSuccess(options, {
-	          message: endedMessage,
-	          customerStatus: res.content.customerStatus
-	        });
+	        callback_utils_1$2.CallbackUtils.onSuccess(options);
 	      }
 	    });
 	    g_1$1.G.s().emit(rocket);
 	  };
 
 	  ConversationHandler.prototype.queryCustomerStatus = function (teamId, options) {
-	    validator_utils_1$2["default"].validateId(options.id, "id");
-	    var id = options.id;
+	    return __awaiter$1(this, void 0, void 0, function () {
+	      var customerStatus;
+	      return __generator$1(this, function (_a) {
+	        switch (_a.label) {
+	          case 0:
+	            validator_utils_1$2["default"].validateId(options.id, "id");
+	            return [4
+	            /*yield*/
+	            , this.doCustomerStatus(teamId, options.id)];
+
+	          case 1:
+	            customerStatus = _a.sent();
+	            customerStatus.id = options.id;
+	            customerStatus.teamId = teamId;
+	            this.activeCustomerStatus = customerStatus;
+	            this.activeCustomerStatusOptions = options;
+	            callback_utils_1$2.CallbackUtils.onSuccess(options, customerStatus);
+	            return [2
+	            /*return*/
+	            ];
+	        }
+	      });
+	    });
+	  };
+
+	  ConversationHandler.prototype.doCustomerStatus = function (teamId, id) {
 	    var customerId = id.toString();
 	    var request = new cs_status_query_request_1.CSStatusQueryRequest(customerId, teamId);
-	    var rocket = new Rocket_1$1["default"]({
-	      name: RocketTypes_1$1.RocketTypes.CS_CUSTOMER_STATUS,
-	      params: request,
-	      permission: Permission_1$1.Permission.READ,
-	      singleTimeout: SocketTimeout_1$1.SocketTimeout.commonQuerySingle,
-	      totalTimeout: SocketTimeout_1$1.SocketTimeout.commonQueryTotal,
-	      fail: function fail(err) {
-	        callback_utils_1$2.CallbackUtils.onFailed(options, err);
-	      },
-	      success: function success(res) {
-	        //todo: 理论上还应该有user, team两个id/data，暂时没有，视情况要不要补充？
-	        var content = res.content;
+	    return new Promise(function (resolve, reject) {
+	      var rocket = new Rocket_1$1["default"]({
+	        name: RocketTypes_1$1.RocketTypes.CS_CUSTOMER_STATUS,
+	        params: request,
+	        permission: Permission_1$1.Permission.READ,
+	        singleTimeout: SocketTimeout_1$1.SocketTimeout.commonQuerySingle,
+	        totalTimeout: SocketTimeout_1$1.SocketTimeout.commonQueryTotal,
+	        fail: function fail(error) {
+	          reject(error);
+	        },
+	        success: function success(res) {
+	          //todo: 理论上还应该有user, team两个id/data，暂时没有，视情况要不要补充？
+	          var content = res.content;
 
-	        if (content.agent) {
-	          content.agent.data = JSON.parse(content.agent.data);
+	          if (content.agent) {
+	            content.agent.data = JSON.parse(content.agent.data);
+	          }
+
+	          resolve(content);
 	        }
-
-	        callback_utils_1$2.CallbackUtils.onSuccess(options, res);
-	      }
+	      });
+	      g_1$1.G.s().emit(rocket);
 	    });
-	    g_1$1.G.s().emit(rocket);
 	  };
 
 	  ConversationHandler.prototype.transfer = function (teamId, options) {
-	    var _this = this;
-
 	    validator_utils_1$2["default"].validateId(options.customerId, "customerId");
 	    validator_utils_1$2["default"].validateId(options.agentId, "agentId");
 	    var customerId = options.customerId.toString();
@@ -19088,22 +19238,60 @@
 	        callback_utils_1$2.CallbackUtils.onFailed(options, err);
 	      },
 	      success: function success(res) {
-	        var transferMessage = _this.builder.build(res.content.message);
-
-	        goeasy_event_center_1$1.GoEasyEventCenter.fire(internal_events_1$1.IM_INTERNAL_EVENTS.CS_TRANSFER, transferMessage);
-	        var customerStatus = res.content.customerStatus;
-
-	        if (customerStatus.agent) {
-	          customerStatus.agent.data = JSON.parse(customerStatus.agent.data);
-	        }
-
-	        callback_utils_1$2.CallbackUtils.onSuccess(options, {
-	          message: transferMessage,
-	          customerStatus: customerStatus
-	        });
+	        callback_utils_1$2.CallbackUtils.onSuccess(options);
 	      }
 	    });
 	    g_1$1.G.s().emit(rocket);
+	  };
+
+	  ConversationHandler.prototype.onMessageReceived = function (message) {
+	    if (this.activeCustomerStatusOptions && message.scene() === GoEasy_1$1.Scene.CS) {
+	      var csMessage = message;
+	      var customerId = this.activeCustomerStatusOptions.id;
+
+	      if (csMessage.customerId() === customerId) {
+	        var newStatus = void 0;
+	        var newSessionId = csMessage.sessionId;
+
+	        switch (csMessage.type) {
+	          case cs_message_type_1.CSMessageType.ACCEPT:
+	            newStatus = new customer_status_1.CustomerStatus(customerId, this.teamId);
+	            newStatus.status = 'ACCEPTED';
+	            newStatus.start = csMessage.payload.sessionStart;
+	            newStatus.sessionId = newSessionId;
+	            newStatus.agent = new GoEasy_1$1.User(csMessage.senderId, csMessage.senderData);
+	            break;
+
+	          case cs_message_type_1.CSMessageType.END:
+	            newStatus = new customer_status_1.CustomerStatus(customerId, this.teamId);
+	            newStatus.status = 'FREE';
+	            break;
+
+	          case cs_message_type_1.CSMessageType.TRANSFER:
+	            newStatus = new customer_status_1.CustomerStatus(customerId, this.teamId);
+	            newStatus.status = 'ACCEPTED';
+	            newStatus.start = csMessage.payload.sessionStart;
+	            newStatus.sessionId = newSessionId;
+	            newStatus.agent = csMessage.payload.transferTo;
+	            break;
+
+	          default:
+	            if (!this.activeCustomerStatus.sessionId || this.activeCustomerStatus.sessionId < newSessionId) {
+	              newStatus = new customer_status_1.CustomerStatus(customerId, this.teamId);
+	              newStatus.status = 'PENDING';
+	              newStatus.start = csMessage.timestamp;
+	              newStatus.sessionId = newSessionId;
+	            }
+
+	            break;
+	        }
+
+	        if (newStatus) {
+	          this.activeCustomerStatus = newStatus;
+	          this.activeCustomerStatusOptions.onUpdated(newStatus);
+	        }
+	      }
+	    }
 	  };
 
 	  return ConversationHandler;
@@ -19527,7 +19715,7 @@
 	  function Team(teamId) {
 	    this.teamId = teamId;
 	    this.agentStatus = agent_status_1.AgentStatus.getInstance();
-	    this.conversationHandler = conversation_handler_1.ConversationHandler.getInstance();
+	    this.conversationHandler = new conversation_handler_1.ConversationHandler(teamId);
 	    this.messageCreator = message_creator_1.MessageCreator.getInstance();
 	  }
 
@@ -19728,7 +19916,7 @@
 	  }();
 
 	  exports.__esModule = true;
-	  exports.CSTeam = exports.GoEasyIM = exports.GoEasyPubSub = exports.CustomerStatusQuery = exports.AgentOnlineOptions = exports.ConversationDTO = exports.MessageStatus = exports.Scene = exports.CallBackOptions = void 0;
+	  exports.CSTeam = exports.GoEasyIM = exports.GoEasyPubSub = exports.CustomerStatusOptions = exports.User = exports.AgentOnlineOptions = exports.ConversationDTO = exports.MessageStatus = exports.Scene = exports.CallBackOptions = void 0;
 	  var NetworkStatus_1 = NetworkStatus;
 	  var GoEasySocket_1 = GoEasySocket;
 	  var Calibrator_1 = Calibrator;
@@ -19794,19 +19982,32 @@
 
 	  exports.AgentOnlineOptions = AgentOnlineOptions;
 
-	  var CustomerStatusQuery =
+	  var User =
+	  /** @class */
+	  function () {
+	    function User(id, data) {
+	      this.id = id;
+	      this.data = data;
+	    }
+
+	    return User;
+	  }();
+
+	  exports.User = User;
+
+	  var CustomerStatusOptions =
 	  /** @class */
 	  function (_super) {
-	    __extends(CustomerStatusQuery, _super);
+	    __extends(CustomerStatusOptions, _super);
 
-	    function CustomerStatusQuery() {
+	    function CustomerStatusOptions() {
 	      return _super !== null && _super.apply(this, arguments) || this;
 	    }
 
-	    return CustomerStatusQuery;
+	    return CustomerStatusOptions;
 	  }(CallBackOptions);
 
-	  exports.CustomerStatusQuery = CustomerStatusQuery;
+	  exports.CustomerStatusOptions = CustomerStatusOptions;
 	  /**
 	   * @description PubSub 类
 	   */

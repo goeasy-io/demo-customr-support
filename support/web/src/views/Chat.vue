@@ -82,7 +82,7 @@
       </div>
       <div v-else-if="customerStatus.status==='PENDING'" class="accept-session">
         <div class="accept-info">
-          会话已等待{{ (Math.ceil((Date.now() - customerStatus.time)) / 60000).toFixed(1) }}分钟
+          会话已等待{{ (Math.ceil((Date.now() - customerStatus.start)) / 60000).toFixed(1) }}分钟
         </div>
         <button class="accept-btn" @click="acceptSession">立即接入</button>
       </div>
@@ -252,7 +252,6 @@
       this.initialCustomerStatus();
       this.goEasy.im.on(this.GoEasy.IM_EVENT.CS_MESSAGE_RECEIVED, this.onReceivedMessage);
       this.loadHistoryMessage(true);
-
     },
     beforeDestroy() {
       this.goEasy.im.off(this.GoEasy.IM_EVENT.CS_MESSAGE_RECEIVED, this.onReceivedMessage);
@@ -295,8 +294,7 @@
         this.loadHistoryMessage(true);
         this.markMessageAsRead();
       },
-
-      async onReceivedMessage(newMessage) {
+      onReceivedMessage(newMessage) {
         if (this.currentAgent.shopId === newMessage.teamId && (this.customer.id === newMessage.senderId || this.customer.id === newMessage.to)) {
           //如果该消息已存在，跳过
           if (this.history.messages.findIndex((message) => newMessage.id === message.messageId) >= 0) {
@@ -319,7 +317,6 @@
           }
         });
       },
-
       loadHistoryMessage(scrollToBottom) {
         this.history.loading = true;
         let lastMessageTimeStamp;
@@ -399,8 +396,8 @@
       acceptSession() {
         this.csteam.accept({
           id: this.customer.id,
-          onSuccess: (result) => {
-            console.log('accept successfully.', error);
+          onSuccess: () => {
+            console.log('accept successfully.');
           },
           onFailed: (error) => {
             // if (error.content === 'CUSTOMER_BUSY') {
@@ -416,8 +413,8 @@
       endSession() {
         this.csteam.end({
           id: this.customer.id,
-          onSuccess: (result) => {
-            console.log('end successfully.', error);
+          onSuccess: () => {
+            console.log('end successfully.');
           },
           onFailed: (error) => {
             console.log('end failed', error);
@@ -442,7 +439,8 @@
           customerId: this.customer.id,
           agentId: this.transferForm.to.id,
           onSuccess: () => {
-            console.log('transfer successfully.', error);
+            this.transferForm.visible = false;
+            console.log('transfer successfully.');
           },
           onFailed: (error) => {
             console.log('transfer failed', error);
