@@ -77,7 +77,7 @@
       <span ref="bottomView"></span>
     </div>
     <div class="chat-footer">
-      <div v-if="!isAgentOnline" class="accept-session">
+      <div v-if="customerStatus==null" class="accept-session">
         <div>离线中</div>
       </div>
       <div v-else-if="customerStatus.status==='PENDING'" class="accept-session">
@@ -191,12 +191,6 @@
       "goeasy-audio-player": GoEasyAudioPlayer,
       "goeasy-video-player": GoEasyVideoPlayer
     },
-    inject:['getAgentOnlineStatus'],
-    computed: {
-      isAgentOnline () {
-        return this.getAgentOnlineStatus();
-      }
-    },
     data() {
       const emojiUrl = 'https://imgcache.qq.com/open/qcloud/tim/assets/emoji/';
       const emojiMap = {
@@ -210,9 +204,8 @@
       return {
         currentAgent: null,
         csteam: null,
-
         customer: null,
-        customerStatus: {},
+        customerStatus: null,
 
         to: {},//用于创建消息时传入
 
@@ -256,7 +249,7 @@
       this.csteam = this.goEasy.im.csteam(this.currentAgent.shopId);
 
       this.markMessageAsRead();
-      this.customerStatus = await this.getCustomerStatus();
+      this.initialCustomerStatus();
       this.goEasy.im.on(this.GoEasy.IM_EVENT.CS_MESSAGE_RECEIVED, this.onReceivedMessage);
       this.loadHistoryMessage(true);
 
@@ -268,18 +261,25 @@
       renderTextMessage(text) {
         return this.emoji.decoder.decode(text);
       },
-      getCustomerStatus() {
-        return new Promise((resolve, reject) => {
-          this.csteam.customerStatus({
-            id: this.customer.id,
-            onSuccess: (result) => {
-              resolve(result.content);
-            },
-            onFailed: (error) => {
-              reject(error);
+      initialCustomerStatus() {
+        this.csteam.customerStatus({
+          id: this.customer.id,
+          onSuccess: (status) => {
+            this.customerStatus = status;
+          },
+          onUpdated: (status) => {
+            if (status.status === 'PENDING') {
+              this.history.allLoaded = false;
+              this.history.messages = [];
+              this.loadHistoryMessage(true);
+              this.markMessageAsRead();
             }
-          })
-        });
+            this.customerStatus = status;
+          },
+          onFailed: (error) => {
+            console.log('failed to get customer status.', error);
+          }
+        })
       },
       async onReceivedMessage(newMessage) {
         if (this.currentAgent.shopId === newMessage.teamId && (this.customer.id === newMessage.senderId || this.customer.id === newMessage.to)) {
@@ -287,22 +287,9 @@
           if (this.history.messages.findIndex((message) => newMessage.id === message.messageId) >= 0) {
             return;
           }
-          //只接收同一个session的消息
-          if (this.customerStatus.sessionId === newMessage.sessionId) {
-            //如果是一条来自其他同事的转接，需要刷新页面获取最新的消息历史
-            if (newMessage.type === 'CS_TRANSFER') {
-              this.refresh();
-            } else if (newMessage.type === 'CS_ACCEPT' && newMessage.senderId !== this.currentAgent.id) {
-              // 如果其他同事已接入，需要更新一下页面状态
-              this.customerStatus = await this.getCustomerStatus();
-            } else {
-              this.history.messages.push(newMessage);
-              this.markMessageAsRead();
-              this.scrollToBottom();
-            }
-          } else {
-            this.refresh();
-          }
+          this.history.messages.push(newMessage);
+          this.markMessageAsRead();
+          this.scrollToBottom();
         }
       },
       markMessageAsRead() {
@@ -317,13 +304,7 @@
           }
         });
       },
-      async refresh() {
-        this.customerStatus = await this.getCustomerStatus();
-        this.history.messages = [];
-        this.history.allLoaded = false;
-        this.loadHistoryMessage(true);
-        this.markMessageAsRead();
-      },
+
       loadHistoryMessage(scrollToBottom) {
         this.history.loading = true;
         let lastMessageTimeStamp;
@@ -397,17 +378,13 @@
         this.imagePopup.url = url;
       },
       hideImagePreviewPopup() {
-          this.imagePopup.visible = false;
+        this.imagePopup.visible = false;
       },
       acceptSession() {
         this.csteam.accept({
           id: this.customer.id,
           onSuccess: (result) => {
-            this.customerStatus = result.customerStatus;
-            if (this.customerStatus.sessionId === result.customerStatus.sessionId) {
-              this.history.messages.push(result.message);
-              this.scrollToBottom();
-            }
+            console.log('accept successfully.', error);
           },
           onFailed: (error) => {
             console.log('accept failed', error);
@@ -418,9 +395,7 @@
         this.csteam.end({
           id: this.customer.id,
           onSuccess: (result) => {
-            this.customerStatus = result.customerStatus;
-            this.history.messages.push(result.message);
-            this.scrollToBottom();
+            console.log('end successfully.', error);
           },
           onFailed: (error) => {
             console.log('end failed', error);
@@ -444,11 +419,8 @@
         this.csteam.transfer({
           customerId: this.customer.id,
           agentId: this.transferForm.to.id,
-          onSuccess: (result) => {
-            this.transferForm.visible = false;
-            this.customerStatus = result.customerStatus;
-            this.history.messages.push(result.message);
-            this.scrollToBottom();
+          onSuccess: () => {
+            console.log('transfer successfully.', error);
           },
           onFailed: (error) => {
             console.log('transfer failed', error);
