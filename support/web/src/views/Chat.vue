@@ -249,61 +249,41 @@
       this.csteam = this.goEasy.im.csteam(this.currentAgent.shopId);
 
       this.markMessageAsRead();
-      this.initialCustomerStatus();
-      this.goEasy.im.on(this.GoEasy.IM_EVENT.CS_MESSAGE_RECEIVED, this.onReceivedMessage);
+      this.liveSession();
       this.loadHistoryMessage(true);
     },
     beforeDestroy() {
-      this.goEasy.im.off(this.GoEasy.IM_EVENT.CS_MESSAGE_RECEIVED, this.onReceivedMessage);
+      this.csteam.quietLiveSession();//todo:如何让它卡起，没有退出不允许离开？
     },
     methods: {
       renderTextMessage(text) {
         return this.emoji.decoder.decode(text);
       },
-      initialCustomerStatus() {
-        this.csteam.customerStatus({
-          id: this.customer.id,
-          onSuccess: (status) => {
-            this.customerStatus = status;
-          },
-          onUpdated: (newStatus) => {
-            //transfer
-            if (newStatus.status === 'ACCEPTED') {
-              //主动接入
-              if(this.customerStatus.status === 'FREE'){
-                this.refresh()
-              }
-              if (this.customerStatus.status === 'ACCEPTED' && this.customerStatus.agent.id !== newStatus.agent.id) {
-                this.refresh()
-              }
-            }
-            //pending
-            if (newStatus.status === 'PENDING') {
-              this.refresh()
-            }
-            this.customerStatus = newStatus;
+      liveSession() {
+        this.csteam.liveSession({
+          customerId: this.customer.id,
+          onSuccess: () => {
+            console.log('failed to get customer status.', error);
           },
           onFailed: (error) => {
             console.log('failed to get customer status.', error);
-          }
+          },
+          onStatusUpdated: (status) => {
+            this.customerStatus = status;
+          },
+          onNewMessage: (message) => {
+            this.onReceivedMessage(message);
+          },
         })
       },
-      refresh() {
-        this.history.allLoaded = false;
-        this.history.messages = [];
-        this.loadHistoryMessage(true);
-        this.markMessageAsRead();
-      },
       onReceivedMessage(newMessage) {
-        if (this.currentAgent.shopId === newMessage.teamId && (this.customer.id === newMessage.senderId || this.customer.id === newMessage.to)) {
-          //如果该消息已存在，跳过
-          if (this.history.messages.findIndex((message) => newMessage.id === message.messageId) >= 0) {
-            return;
-          }
-          this.history.messages.push(newMessage);
-          this.markMessageAsRead();
-          this.scrollToBottom();
+        //如果该消息已存在，跳过
+        if (this.history.messages.findIndex((message) => newMessage.id === message.messageId) >= 0) {
+          return;
         }
+        this.history.messages.push(newMessage);
+        this.markMessageAsRead();
+        this.scrollToBottom();
       },
       markMessageAsRead() {
         this.csteam.markMessageAsRead({
