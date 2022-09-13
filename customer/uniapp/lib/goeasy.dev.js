@@ -7562,6 +7562,8 @@
 	    RocketTypes["IM_HISTORY"] = "IM_HISTORY";
 	    RocketTypes["IM_HISTORY_CHANGE"] = "IM_HISTORY_CHANGE";
 	    RocketTypes["IM_RECALL_MESSAGE"] = "IM_RECALL_MESSAGE";
+	    RocketTypes["IM_MARK_AS_READ"] = "IM_MARK_AS_READ";
+	    RocketTypes["IM_PENDING_CONVERSATION"] = "IM_PENDING_CONVERSATION";
 	    RocketTypes["RTC_ASK_NEW_TOKEN"] = "RTC_ASK_NEW_TOKEN";
 	    RocketTypes["RTC_DIAL"] = "RTC_DIAL";
 	    RocketTypes["RTC_ACCEPT"] = "RTC_ACCEPT";
@@ -7578,8 +7580,8 @@
 	    RocketTypes["CS_IS_ONLINE"] = "CS_IS_ONLINE";
 	    RocketTypes["CS_ONLINE"] = "CS_ONLINE";
 	    RocketTypes["CS_OFFLINE"] = "CS_OFFLINE";
-	    RocketTypes["MARK_AS_READ"] = "MARK_AS_READ";
-	    RocketTypes["PENDING_CONVERSATION"] = "PENDING_CONVERSATION";
+	    RocketTypes["CS_LIVE_SESSION"] = "CS_LIVE_SESSION";
+	    RocketTypes["CS_QUITE_LIVE"] = "CS_QUITE_LIVE";
 	  })(exports.RocketTypes || (exports.RocketTypes = {}));
 	})(RocketTypes);
 
@@ -8665,15 +8667,15 @@
 	Subscriber$1.Subscriber = void 0;
 	var noop_1$3 = noop;
 	var Calibrator_1$g = Calibrator;
-	var Rocket_1$6 = Rocket;
-	var Permission_1$6 = Permission;
+	var Rocket_1$7 = Rocket;
+	var Permission_1$7 = Permission;
 	var Subscription_1 = Subscription$1;
-	var SocketTimeout_1$6 = SocketTimeout;
-	var RocketTypes_1$8 = RocketTypes;
+	var SocketTimeout_1$7 = SocketTimeout;
+	var RocketTypes_1$9 = RocketTypes;
 	var RemoteEvents_1$1 = RemoteEvents;
-	var validator_utils_1$8 = validatorUtils;
+	var validator_utils_1$9 = validatorUtils;
 	var GNS_1 = GNS$1;
-	var g_1$g = g;
+	var g_1$h = g;
 
 	var Subscriber =
 	/** @class */
@@ -8701,8 +8703,8 @@
 	  }
 
 	  Subscriber.prototype.initialGoEasySocket = function () {
-	    g_1$g.G.s().addMessageObserver(RemoteEvents_1$1.RemoteEvents.message, this.onNewMessage.bind(this));
-	    g_1$g.G.s().addExpiredReconnectedObserver(this.onExpiredReconnected.bind(this));
+	    g_1$h.G.s().addMessageObserver(RemoteEvents_1$1.RemoteEvents.message, this.onNewMessage.bind(this));
+	    g_1$h.G.s().addExpiredReconnectedObserver(this.onExpiredReconnected.bind(this));
 	  };
 
 	  Subscriber.prototype.resubscribe = function () {
@@ -8731,7 +8733,7 @@
 	    console.log('Subscriber -> onNewMessage: ', message); //收到消息
 
 	    if (message.a) {
-	      g_1$g.G.s().sendAck('ack', {
+	      g_1$h.G.s().sendAck('ack', {
 	        "publishGuid": message.i
 	      });
 	    }
@@ -8791,7 +8793,7 @@
 	  Subscriber.prototype.subscribe = function (options) {
 	    var _this = this;
 
-	    validator_utils_1$8["default"].validateChannelAndChannels(options.channel, options.channels);
+	    validator_utils_1$9["default"].validateChannelAndChannels(options.channel, options.channels);
 	    this.formatOptions(options);
 
 	    var success = function success() {
@@ -8818,11 +8820,11 @@
 	      });
 	    };
 
-	    var rocket = new Rocket_1$6["default"]({
-	      name: RocketTypes_1$8.RocketTypes.subscribe,
-	      permission: Permission_1$6.Permission.READ,
-	      singleTimeout: SocketTimeout_1$6.SocketTimeout.commonInfiniteSingle,
-	      totalTimeout: SocketTimeout_1$6.SocketTimeout.commonInfiniteTotal,
+	    var rocket = new Rocket_1$7["default"]({
+	      name: RocketTypes_1$9.RocketTypes.subscribe,
+	      permission: Permission_1$7.Permission.READ,
+	      singleTimeout: SocketTimeout_1$7.SocketTimeout.commonInfiniteSingle,
+	      totalTimeout: SocketTimeout_1$7.SocketTimeout.commonInfiniteTotal,
 	      params: {
 	        channels: options.channels,
 	        accessToken: options.accessToken
@@ -8830,14 +8832,14 @@
 	      success: success,
 	      fail: fail
 	    });
-	    g_1$g.G.s().emit(rocket);
+	    g_1$h.G.s().emit(rocket);
 	  }; //取消订阅
 
 
 	  Subscriber.prototype.unsubscribe = function (options) {
 	    var _this = this;
 
-	    validator_utils_1$8["default"].validateChannel(options.channel, 'channel');
+	    validator_utils_1$9["default"].validateChannel(options.channel, 'channel');
 	    options.channel = options.channel.toString();
 
 	    if (!this.findSubscriptionByChannel(options.channel)) {
@@ -8864,18 +8866,18 @@
 	      });
 	    };
 
-	    var rocket = new Rocket_1$6["default"]({
-	      name: RocketTypes_1$8.RocketTypes.unsubscribe,
+	    var rocket = new Rocket_1$7["default"]({
+	      name: RocketTypes_1$9.RocketTypes.unsubscribe,
 	      params: {
 	        channel: options.channel
 	      },
-	      permission: Permission_1$6.Permission.READ,
-	      singleTimeout: SocketTimeout_1$6.SocketTimeout.commonRequestSingle,
-	      totalTimeout: SocketTimeout_1$6.SocketTimeout.commonRequestTotal,
+	      permission: Permission_1$7.Permission.READ,
+	      singleTimeout: SocketTimeout_1$7.SocketTimeout.commonRequestSingle,
+	      totalTimeout: SocketTimeout_1$7.SocketTimeout.commonRequestTotal,
 	      success: success,
 	      fail: fail
 	    });
-	    g_1$g.G.s().emit(rocket);
+	    g_1$h.G.s().emit(rocket);
 	  };
 
 	  Subscriber.prototype.removeChannel = function (channel) {
@@ -8923,12 +8925,12 @@
 	History$2.History = void 0;
 	var noop_1$2 = noop;
 	var Calibrator_1$f = Calibrator;
-	var Rocket_1$5 = Rocket;
-	var Permission_1$5 = Permission;
-	var SocketTimeout_1$5 = SocketTimeout;
-	var RocketTypes_1$7 = RocketTypes;
-	var validator_utils_1$7 = validatorUtils;
-	var g_1$f = g;
+	var Rocket_1$6 = Rocket;
+	var Permission_1$6 = Permission;
+	var SocketTimeout_1$6 = SocketTimeout;
+	var RocketTypes_1$8 = RocketTypes;
+	var validator_utils_1$8 = validatorUtils;
+	var g_1$g = g;
 
 	var History$1 =
 	/** @class */
@@ -8944,7 +8946,7 @@
 	      options.onFailed = noop_1$2["default"];
 	    }
 
-	    validator_utils_1$7["default"].validateChannel(options.channel, 'channel');
+	    validator_utils_1$8["default"].validateChannel(options.channel, 'channel');
 	    options.channel = options.channel.toString();
 
 	    var ackCallback = function ackCallback(ack) {
@@ -8961,16 +8963,16 @@
 	      });
 	    };
 
-	    var rocket = new Rocket_1$5["default"]({
-	      name: RocketTypes_1$7.RocketTypes.historyMessages,
-	      permission: Permission_1$5.Permission.READ,
+	    var rocket = new Rocket_1$6["default"]({
+	      name: RocketTypes_1$8.RocketTypes.historyMessages,
+	      permission: Permission_1$6.Permission.READ,
 	      params: options,
-	      singleTimeout: SocketTimeout_1$5.SocketTimeout.commonQuerySingle,
-	      totalTimeout: SocketTimeout_1$5.SocketTimeout.commonQueryTotal,
+	      singleTimeout: SocketTimeout_1$6.SocketTimeout.commonQuerySingle,
+	      totalTimeout: SocketTimeout_1$6.SocketTimeout.commonQueryTotal,
 	      success: ackCallback,
 	      fail: failCallback
 	    });
-	    g_1$f.G.s().emit(rocket);
+	    g_1$g.G.s().emit(rocket);
 	  };
 
 	  return History;
@@ -9004,14 +9006,14 @@
 	PresenceSubscriber$1.PresenceSubscriber = void 0;
 	var noop_1$1 = noop;
 	var Calibrator_1$e = Calibrator;
-	var Rocket_1$4 = Rocket;
-	var Permission_1$4 = Permission;
-	var SocketTimeout_1$4 = SocketTimeout;
+	var Rocket_1$5 = Rocket;
+	var Permission_1$5 = Permission;
+	var SocketTimeout_1$5 = SocketTimeout;
 	var PresenceSubscription_1 = PresenceSubscription$1;
-	var RocketTypes_1$6 = RocketTypes;
+	var RocketTypes_1$7 = RocketTypes;
 	var RemoteEvents_1 = RemoteEvents;
-	var validator_utils_1$6 = validatorUtils;
-	var g_1$e = g;
+	var validator_utils_1$7 = validatorUtils;
+	var g_1$f = g;
 
 	var PresenceSubscriber =
 	/** @class */
@@ -9021,8 +9023,8 @@
 	  }
 
 	  PresenceSubscriber.prototype.initialGoEasySocket = function () {
-	    g_1$e.G.s().addMessageObserver(RemoteEvents_1.RemoteEvents.message, this.onNewMessage.bind(this));
-	    g_1$e.G.s().addExpiredReconnectedObserver(this.onExpiredReconnected.bind(this));
+	    g_1$f.G.s().addMessageObserver(RemoteEvents_1.RemoteEvents.message, this.onNewMessage.bind(this));
+	    g_1$f.G.s().addExpiredReconnectedObserver(this.onExpiredReconnected.bind(this));
 	  };
 
 	  PresenceSubscriber.prototype.resubscribe = function () {
@@ -9097,7 +9099,7 @@
 	  PresenceSubscriber.prototype.subscribePresence = function (options) {
 	    var _this = this;
 
-	    validator_utils_1$6["default"].validateChannelAndChannels(options.channel, options.channels);
+	    validator_utils_1$7["default"].validateChannelAndChannels(options.channel, options.channels);
 	    this.formatOptions(options);
 
 	    if (Array.isArray(options.channels)) {
@@ -9130,18 +9132,18 @@
 	      });
 	    };
 
-	    var rocket = new Rocket_1$4["default"]({
-	      name: RocketTypes_1$6.RocketTypes.subscribe,
-	      permission: Permission_1$4.Permission.READ,
-	      singleTimeout: SocketTimeout_1$4.SocketTimeout.commonInfiniteSingle,
-	      totalTimeout: SocketTimeout_1$4.SocketTimeout.commonInfiniteTotal,
+	    var rocket = new Rocket_1$5["default"]({
+	      name: RocketTypes_1$7.RocketTypes.subscribe,
+	      permission: Permission_1$5.Permission.READ,
+	      singleTimeout: SocketTimeout_1$5.SocketTimeout.commonInfiniteSingle,
+	      totalTimeout: SocketTimeout_1$5.SocketTimeout.commonInfiniteTotal,
 	      params: {
 	        channels: options.channels
 	      },
 	      success: success,
 	      fail: fail
 	    });
-	    g_1$e.G.s().emit(rocket);
+	    g_1$f.G.s().emit(rocket);
 	  };
 
 	  PresenceSubscriber.prototype.unsubscribePresence = function (options) {
@@ -9167,14 +9169,14 @@
 	      return;
 	    }
 
-	    var rocket = new Rocket_1$4["default"]({
-	      name: RocketTypes_1$6.RocketTypes.unsubscribe,
+	    var rocket = new Rocket_1$5["default"]({
+	      name: RocketTypes_1$7.RocketTypes.unsubscribe,
 	      params: {
 	        channel: options.channel
 	      },
-	      permission: Permission_1$4.Permission.READ,
-	      singleTimeout: SocketTimeout_1$4.SocketTimeout.commonRequestSingle,
-	      totalTimeout: SocketTimeout_1$4.SocketTimeout.commonRequestTotal,
+	      permission: Permission_1$5.Permission.READ,
+	      singleTimeout: SocketTimeout_1$5.SocketTimeout.commonRequestSingle,
+	      totalTimeout: SocketTimeout_1$5.SocketTimeout.commonRequestTotal,
 	      success: function success() {
 	        options.onSuccess({
 	          code: 200,
@@ -9190,7 +9192,7 @@
 	        });
 	      }
 	    });
-	    g_1$e.G.s().emit(rocket);
+	    g_1$f.G.s().emit(rocket);
 	  };
 
 	  PresenceSubscriber.prototype.removeChannel = function (channel) {
@@ -9238,12 +9240,12 @@
 	HereNow$1.HereNow = void 0;
 	var noop_1 = noop;
 	var Calibrator_1$d = Calibrator;
-	var Rocket_1$3 = Rocket;
-	var Permission_1$3 = Permission;
-	var SocketTimeout_1$3 = SocketTimeout;
-	var RocketTypes_1$5 = RocketTypes;
-	var validator_utils_1$5 = validatorUtils;
-	var g_1$d = g;
+	var Rocket_1$4 = Rocket;
+	var Permission_1$4 = Permission;
+	var SocketTimeout_1$4 = SocketTimeout;
+	var RocketTypes_1$6 = RocketTypes;
+	var validator_utils_1$6 = validatorUtils;
+	var g_1$e = g;
 
 	var HereNow =
 	/** @class */
@@ -9265,7 +9267,7 @@
 	      options.onFailed = noop_1["default"];
 	    }
 
-	    validator_utils_1$5["default"].validateChannelArray(options.channels, 'channels');
+	    validator_utils_1$6["default"].validateChannelArray(options.channels, 'channels');
 	    params.channels = options.channels.toString().split(','); // 转换为字符串数组
 
 	    params.includeUsers = options.includeUsers || false;
@@ -9301,16 +9303,16 @@
 	      });
 	    };
 
-	    var rocket = new Rocket_1$3["default"]({
-	      name: RocketTypes_1$5.RocketTypes.hereNow,
-	      permission: Permission_1$3.Permission.READ,
+	    var rocket = new Rocket_1$4["default"]({
+	      name: RocketTypes_1$6.RocketTypes.hereNow,
+	      permission: Permission_1$4.Permission.READ,
 	      params: params,
-	      singleTimeout: SocketTimeout_1$3.SocketTimeout.commonQuerySingle,
-	      totalTimeout: SocketTimeout_1$3.SocketTimeout.commonQueryTotal,
+	      singleTimeout: SocketTimeout_1$4.SocketTimeout.commonQuerySingle,
+	      totalTimeout: SocketTimeout_1$4.SocketTimeout.commonQueryTotal,
 	      success: ackCallback,
 	      fail: failCallback
 	    });
-	    g_1$d.G.s().emit(rocket);
+	    g_1$e.G.s().emit(rocket);
 	  };
 
 	  HereNow.prototype.byUserId = function (options) {
@@ -9327,7 +9329,7 @@
 	      options.onFailed = noop_1["default"];
 	    }
 
-	    validator_utils_1$5["default"].validateIdArray(options.userIds, 'userIds');
+	    validator_utils_1$6["default"].validateIdArray(options.userIds, 'userIds');
 	    params.userIds = options.userIds.toString().split(',');
 
 	    if (options.distinct == false) {
@@ -9356,16 +9358,16 @@
 	      });
 	    };
 
-	    var rocket = new Rocket_1$3["default"]({
-	      name: RocketTypes_1$5.RocketTypes.hereNowByUserIds,
-	      permission: Permission_1$3.Permission.READ,
+	    var rocket = new Rocket_1$4["default"]({
+	      name: RocketTypes_1$6.RocketTypes.hereNowByUserIds,
+	      permission: Permission_1$4.Permission.READ,
 	      params: params,
-	      singleTimeout: SocketTimeout_1$3.SocketTimeout.commonQuerySingle,
-	      totalTimeout: SocketTimeout_1$3.SocketTimeout.commonQueryTotal,
+	      singleTimeout: SocketTimeout_1$4.SocketTimeout.commonQuerySingle,
+	      totalTimeout: SocketTimeout_1$4.SocketTimeout.commonQueryTotal,
 	      success: ackCallback,
 	      fail: failCallback
 	    });
-	    g_1$d.G.s().emit(rocket);
+	    g_1$e.G.s().emit(rocket);
 	  };
 
 	  return HereNow;
@@ -9410,10 +9412,10 @@
 	var History_1 = History$2;
 	var PresenceSubscriber_1 = PresenceSubscriber$1;
 	var HereNow_1 = HereNow$1;
-	var callback_utils_1$6 = callbackUtils;
+	var callback_utils_1$7 = callbackUtils;
 	var NetworkStatus_1 = NetworkStatus;
 	var ModuleTypes_1$1 = ModuleTypes;
-	var g_1$c = g;
+	var g_1$d = g;
 
 	var PubSub =
 	/** @class */
@@ -9445,13 +9447,13 @@
 	      this.validateOptions();
 	      functionObj();
 	    } catch (err) {
-	      callback_utils_1$6.CallbackUtils.onFailed(callbackOptions, err);
+	      callback_utils_1$7.CallbackUtils.onFailed(callbackOptions, err);
 	    }
 	  }; // todo: 方法名
 
 
 	  PubSub.prototype.validateOptions = function () {
-	    if (!g_1$c.G.s() || g_1$c.G.s().getStatus() !== NetworkStatus_1.NetworkStatus.CONNECTED) {
+	    if (!g_1$d.G.s() || g_1$d.G.s().getStatus() !== NetworkStatus_1.NetworkStatus.CONNECTED) {
 	      throw Error('Please call connect() first.');
 	    }
 
@@ -10702,6 +10704,9 @@
 	    IM_INTERNAL_EVENTS["UNREAD_AMOUNT_CHANGED"] = "IM_INTERNAL_UNREAD_MESSAGE_CHANGED";
 	    IM_INTERNAL_EVENTS["CS_ONLINE_SUCCESS"] = "CS_ONLINE_SUCCESS";
 	    IM_INTERNAL_EVENTS["CS_OFFLINE_SUCCESS"] = "CS_OFFLINE_SUCCESS";
+	    IM_INTERNAL_EVENTS["CS_ACCEPTED"] = "CS_ACCEPTED";
+	    IM_INTERNAL_EVENTS["CS_ENDED"] = "CS_ENDED";
+	    IM_INTERNAL_EVENTS["CS_TRANSFER"] = "CS_TRANSFER";
 	  })(exports.IM_INTERNAL_EVENTS || (exports.IM_INTERNAL_EVENTS = {}));
 	})(internalEvents);
 
@@ -10709,7 +10714,7 @@
 
 	AbstractMessage$1.__esModule = true;
 	AbstractMessage$1.AbstractMessage = void 0;
-	var g_1$b = g;
+	var g_1$c = g;
 
 	var AbstractMessage =
 	/** @class */
@@ -10721,7 +10726,7 @@
 	  };
 
 	  AbstractMessage.prototype.isOtherSent = function () {
-	    return this.senderId !== g_1$b.G.u();
+	    return this.senderId !== g_1$c.G.u();
 	  };
 
 	  AbstractMessage.prototype.getToData = function () {
@@ -11153,7 +11158,7 @@
 	Target$1.Target = void 0;
 	var GoEasy_1$d = GoEasy$1;
 	var Calibrator_1$a = Calibrator;
-	var g_1$a = g;
+	var g_1$b = g;
 	/**
 	 * target.id不同的场景表达不同的含义:
 	 *  cs场景：customer端id为teamId，agent端id为customerId
@@ -11185,7 +11190,7 @@
 	  Target.prototype.customerId = function () {
 	    if (GoEasy_1$d.Scene.CS === this.scene) {
 	      if (this.id === this.teamId) {
-	        return g_1$a.G.u();
+	        return g_1$b.G.u();
 	      } else {
 	        return this.id;
 	      }
@@ -11204,7 +11209,7 @@
 	    if (scene === GoEasy_1$d.Scene.PRIVATE) {
 	      var senderId = message.senderId;
 	      var receiverId = message.targetId();
-	      id = g_1$a.G.u() === senderId ? receiverId : senderId;
+	      id = g_1$b.G.u() === senderId ? receiverId : senderId;
 	    } else if (scene === GoEasy_1$d.Scene.GROUP) {
 	      id = message.targetId();
 	    } else if (scene === GoEasy_1$d.Scene.CS) {
@@ -11229,20 +11234,20 @@
 	    var targetId;
 
 	    if (scene === GoEasy_1$d.Scene.PRIVATE) {
-	      targetId = g_1$a.G.u() === markerId ? receiverId : markerId;
+	      targetId = g_1$b.G.u() === markerId ? receiverId : markerId;
 	    } else if (scene === GoEasy_1$d.Scene.GROUP) {
 	      targetId = receiverId;
 	    } else if (scene === GoEasy_1$d.Scene.CS) {
 	      if (receiverId === teamId) {
 	        // customer mark
-	        if (markerId === g_1$a.G.u()) {
+	        if (markerId === g_1$b.G.u()) {
 	          targetId = teamId;
 	        } else {
 	          targetId = markerId;
 	        }
 	      } else {
 	        // agent mark
-	        if (markerId === g_1$a.G.u()) {
+	        if (markerId === g_1$b.G.u()) {
 	          targetId = receiverId;
 	        } else {
 	          targetId = teamId;
@@ -11258,7 +11263,7 @@
 	    var deleterId = event.deleterId;
 
 	    if (scene === GoEasy_1$d.Scene.PRIVATE) {
-	      var targetId = g_1$a.G.u() === deleterId ? event.targetId : deleterId;
+	      var targetId = g_1$b.G.u() === deleterId ? event.targetId : deleterId;
 	      return new Target(scene, targetId);
 	    } else if (scene === GoEasy_1$d.Scene.GROUP) {
 	      return new Target(scene, event.targetId);
@@ -11275,7 +11280,7 @@
 
 	    if (event.scene === GoEasy_1$d.Scene.PRIVATE) {
 	      var ids = event.conversationId.split(":", 2);
-	      targetId = ids[0] === g_1$a.G.u() ? ids[1] : ids[0];
+	      targetId = ids[0] === g_1$b.G.u() ? ids[1] : ids[0];
 	    } else {
 	      targetId = event.conversationId;
 	    }
@@ -11708,7 +11713,7 @@
 	csMessage.CSMessage = void 0;
 	var AbstractMessage_1 = AbstractMessage$1;
 	var GoEasy_1$9 = GoEasy$1;
-	var g_1$9 = g;
+	var g_1$a = g;
 
 	var CSMessage =
 	/** @class */
@@ -11732,7 +11737,7 @@
 
 
 	  CSMessage.prototype.targetId = function () {
-	    if (g_1$9.G.u() === this.customerId()) {
+	    if (g_1$a.G.u() === this.customerId()) {
 	      return this.teamId;
 	    } else {
 	      return this.customerId();
@@ -11754,8 +11759,8 @@
 
 
 	  CSMessage.prototype.isOtherSent = function () {
-	    if (g_1$9.G.u() === this.customerId()) {
-	      return this.senderId !== g_1$9.G.u();
+	    if (g_1$a.G.u() === this.customerId()) {
+	      return this.senderId !== g_1$a.G.u();
 	    } else {
 	      return this.senderId === this.customerId();
 	    }
@@ -11787,7 +11792,7 @@
 	var GroupMessage_1$1 = GroupMessage$1;
 	var cs_message_1$1 = csMessage;
 	var Calibrator_1$9 = Calibrator;
-	var g_1$8 = g;
+	var g_1$9 = g;
 	var cs_message_type_1$3 = csMessageType;
 
 	var RemoteAbbrMessageBuilder =
@@ -11814,7 +11819,7 @@
 	      message.senderData = remoteAbbrMessage.d ? JSON.parse(remoteAbbrMessage.d) : {};
 	      message.accepted = remoteAbbrMessage.accepted;
 
-	      if (message.customerId() !== g_1$8.G.u()) {
+	      if (message.customerId() !== g_1$9.G.u()) {
 	        message.sessionId = remoteAbbrMessage.sessionId;
 	      }
 	    }
@@ -11992,30 +11997,30 @@
 	remoteHistory.RemoteHistory = void 0;
 	var GoEasy_1$7 = GoEasy$1;
 	var HistoryChangeQueryRequest_1 = HistoryChangeQueryRequest;
-	var Rocket_1$2 = Rocket;
-	var RocketTypes_1$4 = RocketTypes;
-	var Permission_1$2 = Permission;
-	var SocketTimeout_1$2 = SocketTimeout;
-	var g_1$7 = g;
+	var Rocket_1$3 = Rocket;
+	var RocketTypes_1$5 = RocketTypes;
+	var Permission_1$3 = Permission;
+	var SocketTimeout_1$3 = SocketTimeout;
+	var g_1$8 = g;
 	var ReadMessageMarkRequest_1 = ReadMessageMarkRequest$1;
-	var remote_abbr_message_builder_1$1 = remoteAbbrMessageBuilder;
+	var remote_abbr_message_builder_1$2 = remoteAbbrMessageBuilder;
 
 	var RemoteHistory =
 	/** @class */
 	function () {
 	  function RemoteHistory() {
-	    this.builder = new remote_abbr_message_builder_1$1.RemoteAbbrMessageBuilder();
+	    this.builder = new remote_abbr_message_builder_1$2.RemoteAbbrMessageBuilder();
 	  }
 
 	  RemoteHistory.prototype.sync = function (scene, targetId, after, min, teamId) {
 	    var request = new HistoryChangeQueryRequest_1["default"](scene, targetId, after, min, teamId);
 	    return new Promise(function (resolve, reject) {
-	      var rocket = new Rocket_1$2["default"]({
-	        name: RocketTypes_1$4.RocketTypes.IM_HISTORY_CHANGE,
+	      var rocket = new Rocket_1$3["default"]({
+	        name: RocketTypes_1$5.RocketTypes.IM_HISTORY_CHANGE,
 	        params: request,
-	        permission: Permission_1$2.Permission.READ,
-	        singleTimeout: SocketTimeout_1$2.SocketTimeout.commonQuerySingle,
-	        totalTimeout: SocketTimeout_1$2.SocketTimeout.commonQueryTotal,
+	        permission: Permission_1$3.Permission.READ,
+	        singleTimeout: SocketTimeout_1$3.SocketTimeout.commonQuerySingle,
+	        totalTimeout: SocketTimeout_1$3.SocketTimeout.commonQueryTotal,
 	        fail: function fail(err) {
 	          reject(err);
 	        },
@@ -12024,7 +12029,7 @@
 	          resolve(content);
 	        }
 	      });
-	      g_1$7.G.s().emit(rocket);
+	      g_1$8.G.s().emit(rocket);
 	    });
 	  };
 
@@ -12032,12 +12037,12 @@
 	    var _this = this;
 
 	    return new Promise(function (resolve, reject) {
-	      var rocket = new Rocket_1$2["default"]({
-	        name: RocketTypes_1$4.RocketTypes.IM_HISTORY,
+	      var rocket = new Rocket_1$3["default"]({
+	        name: RocketTypes_1$5.RocketTypes.IM_HISTORY,
 	        params: request,
-	        permission: Permission_1$2.Permission.READ,
-	        singleTimeout: SocketTimeout_1$2.SocketTimeout.commonQuerySingle,
-	        totalTimeout: SocketTimeout_1$2.SocketTimeout.commonQueryTotal,
+	        permission: Permission_1$3.Permission.READ,
+	        singleTimeout: SocketTimeout_1$3.SocketTimeout.commonQuerySingle,
+	        totalTimeout: SocketTimeout_1$3.SocketTimeout.commonQueryTotal,
 	        fail: function fail(err) {
 	          reject(err);
 	        },
@@ -12047,7 +12052,7 @@
 	          resolve(content);
 	        }
 	      });
-	      g_1$7.G.s().emit(rocket);
+	      g_1$8.G.s().emit(rocket);
 	    });
 	  };
 
@@ -12061,14 +12066,14 @@
 	      remoteAbbrMessage.t = scene;
 
 	      if (GoEasy_1$7.Scene.PRIVATE === scene) {
-	        remoteAbbrMessage.r = remoteAbbrMessage.s === g_1$7.G.u() ? targetId : g_1$7.G.u();
+	        remoteAbbrMessage.r = remoteAbbrMessage.s === g_1$8.G.u() ? targetId : g_1$8.G.u();
 	      } else if (GoEasy_1$7.Scene.GROUP === scene) {
 	        remoteAbbrMessage.r = targetId;
 	      } else if (GoEasy_1$7.Scene.CS === scene) {
 	        var customerId = target.customerId();
 	        var teamId = target.teamId;
 
-	        if (customerId === g_1$7.G.u()) {
+	        if (customerId === g_1$8.G.u()) {
 	          remoteAbbrMessage.r = teamId;
 	        } else {
 	          remoteAbbrMessage.r = customerId;
@@ -12090,12 +12095,12 @@
 	        return [2
 	        /*return*/
 	        , new Promise(function (resolve, reject) {
-	          var rocket = new Rocket_1$2["default"]({
-	            name: RocketTypes_1$4.RocketTypes.MARK_AS_READ,
+	          var rocket = new Rocket_1$3["default"]({
+	            name: RocketTypes_1$5.RocketTypes.IM_MARK_AS_READ,
 	            params: request,
-	            permission: Permission_1$2.Permission.WRITE,
-	            singleTimeout: SocketTimeout_1$2.SocketTimeout.commonRequestSingle,
-	            totalTimeout: SocketTimeout_1$2.SocketTimeout.commonRequestTotal,
+	            permission: Permission_1$3.Permission.WRITE,
+	            singleTimeout: SocketTimeout_1$3.SocketTimeout.commonRequestSingle,
+	            totalTimeout: SocketTimeout_1$3.SocketTimeout.commonRequestTotal,
 	            success: function success(res) {
 	              resolve(res);
 	            },
@@ -12103,7 +12108,7 @@
 	              reject(err);
 	            }
 	          });
-	          g_1$7.G.s().emit(rocket);
+	          g_1$8.G.s().emit(rocket);
 	        })];
 	      });
 	    });
@@ -12120,7 +12125,7 @@
 	UserOffsets$1.__esModule = true;
 	UserOffsets$1.UserOffsets = void 0;
 	var Calibrator_1$8 = Calibrator;
-	var g_1$6 = g;
+	var g_1$7 = g;
 
 	var UserOffsets =
 	/** @class */
@@ -12130,7 +12135,7 @@
 
 	    this.markingTime = 0; // 用于mark异步请求(是否多次mark)
 
-	    this.userId = g_1$6.G.u();
+	    this.userId = g_1$7.G.u();
 	  }
 
 	  UserOffsets.prototype.updateOffset = function (userId, offset) {
@@ -12210,8 +12215,8 @@
 
 	unreadamountMaxmessageChangeDetector.__esModule = true;
 	unreadamountMaxmessageChangeDetector.UnreadAmountMaxMessageChangeDetector = void 0;
-	var goeasy_event_center_1$4 = goeasyEventCenter;
-	var internal_events_1$4 = internalEvents;
+	var goeasy_event_center_1$5 = goeasyEventCenter;
+	var internal_events_1$5 = internalEvents;
 
 	var UnreadAmountMaxMessageChangeDetector =
 	/** @class */
@@ -12264,9 +12269,9 @@
 	    }
 
 	    if (this.oldLastMessage !== newLastMessage || this.oldLastMessageRead !== newLastMessageRead || this.oldLastMessageRecalled !== newLastMessageRecalled || this.oldLastMessageStatus !== newLastMessageStatus) {
-	      goeasy_event_center_1$4.GoEasyEventCenter.fire(internal_events_1$4.IM_INTERNAL_EVENTS.MAX_MESSAGE_CHANGED, newLastMessage);
+	      goeasy_event_center_1$5.GoEasyEventCenter.fire(internal_events_1$5.IM_INTERNAL_EVENTS.MAX_MESSAGE_CHANGED, newLastMessage);
 	    } else if (this.oldUnreadAmount !== newUnreadAmount) {
-	      goeasy_event_center_1$4.GoEasyEventCenter.fire(internal_events_1$4.IM_INTERNAL_EVENTS.UNREAD_AMOUNT_CHANGED, this.history.target);
+	      goeasy_event_center_1$5.GoEasyEventCenter.fire(internal_events_1$5.IM_INTERNAL_EVENTS.UNREAD_AMOUNT_CHANGED, this.history.target);
 	    }
 	  };
 
@@ -13873,6 +13878,15 @@
 	      goeasy_event_center_1.GoEasyEventCenter.on(internal_events_1.IM_INTERNAL_EVENTS.MESSAGE_RECEIVED, function (message) {
 	        return _this.onMessageReceived(message);
 	      });
+	      goeasy_event_center_1.GoEasyEventCenter.on(internal_events_1.IM_INTERNAL_EVENTS.CS_ACCEPTED, function (message) {
+	        return _this.onMessageReceived(message);
+	      });
+	      goeasy_event_center_1.GoEasyEventCenter.on(internal_events_1.IM_INTERNAL_EVENTS.CS_ENDED, function (message) {
+	        return _this.onMessageReceived(message);
+	      });
+	      goeasy_event_center_1.GoEasyEventCenter.on(internal_events_1.IM_INTERNAL_EVENTS.CS_TRANSFER, function (message) {
+	        return _this.onMessageReceived(message);
+	      });
 	      g_1.G.s().addMessageObserver(RemoteEvents_1.RemoteEvents.IM_MSG_READ, this.onRemoteMarkRead.bind(this));
 	      g_1.G.s().addMessageObserver(RemoteEvents_1.RemoteEvents.IM_MSG_DELETED, this.onRemoteMessageDeleted.bind(this));
 	      g_1.G.s().addMessageObserver(RemoteEvents_1.RemoteEvents.IM_MSG_RECALLED, this.onRemoteMessageRecalled.bind(this));
@@ -14928,20 +14942,20 @@
 	Conversations$1.__esModule = true;
 	Conversations$1.Conversations = void 0;
 	var Conversation_1 = Conversation$1;
-	var callback_utils_1$5 = callbackUtils;
+	var callback_utils_1$6 = callbackUtils;
 	var GoEasy_1$4 = GoEasy$1;
-	var remote_abbr_message_builder_1 = remoteAbbrMessageBuilder;
-	var RocketTypes_1$3 = RocketTypes;
+	var remote_abbr_message_builder_1$1 = remoteAbbrMessageBuilder;
+	var RocketTypes_1$4 = RocketTypes;
 	var im_api_events_1$1 = imApiEvents;
 	var sorted_inserter_1 = sortedInserter;
-	var goeasy_event_center_1$3 = goeasyEventCenter;
-	var internal_events_1$3 = internalEvents;
+	var goeasy_event_center_1$4 = goeasyEventCenter;
+	var internal_events_1$4 = internalEvents;
 	var Target_1$1 = Target$1;
 	var CSConversation_1$1 = CSConversation$1;
 	var im_1$2 = im;
 	var remote_conversations_1 = remoteConversations;
 	var histories_1$2 = histories;
-	var g_1$5 = g;
+	var g_1$6 = g;
 	var cs_message_type_1$2 = csMessageType;
 	var Calibrator_1$7 = Calibrator;
 
@@ -14952,13 +14966,13 @@
 	    var _this = this;
 
 	    this.list = new Array();
-	    this.builder = new remote_abbr_message_builder_1.RemoteAbbrMessageBuilder();
+	    this.builder = new remote_abbr_message_builder_1$1.RemoteAbbrMessageBuilder();
 	    this.remoteConversations = remote_conversations_1["default"].instance;
 	    this["synchronized"] = false;
-	    goeasy_event_center_1$3.GoEasyEventCenter.on(internal_events_1$3.IM_INTERNAL_EVENTS.MAX_MESSAGE_CHANGED, function (message) {
+	    goeasy_event_center_1$4.GoEasyEventCenter.on(internal_events_1$4.IM_INTERNAL_EVENTS.MAX_MESSAGE_CHANGED, function (message) {
 	      return _this.onMaxMessageChanged(message);
 	    });
-	    goeasy_event_center_1$3.GoEasyEventCenter.on(internal_events_1$3.IM_INTERNAL_EVENTS.UNREAD_AMOUNT_CHANGED, function (target) {
+	    goeasy_event_center_1$4.GoEasyEventCenter.on(internal_events_1$4.IM_INTERNAL_EVENTS.UNREAD_AMOUNT_CHANGED, function (target) {
 	      return _this.onUnreadMessageChanged(target);
 	    });
 	  }
@@ -15004,7 +15018,7 @@
 
 	          case 2:
 	            data = this.loadLocalConversations();
-	            callback_utils_1$5.CallbackUtils.onSuccess(options, data);
+	            callback_utils_1$6.CallbackUtils.onSuccess(options, data);
 	            return [2
 	            /*return*/
 	            ];
@@ -15037,7 +15051,7 @@
 	  };
 
 	  Conversations.prototype.rocketName = function () {
-	    return RocketTypes_1$3.RocketTypes.imLastConversations;
+	    return RocketTypes_1$4.RocketTypes.imLastConversations;
 	  };
 
 	  Conversations.prototype.convertAbbrConversation = function (abbrConversations) {
@@ -15092,8 +15106,8 @@
 	            if (message.scene() === GoEasy_1$4.Scene.CS) {
 	              csMessage = message;
 
-	              if (g_1$5.G.u() != csMessage.customerId()) {
-	                if (csMessage.accepted === false || csMessage.type === cs_message_type_1$2.CSMessageType.ACCEPT && csMessage.senderId != g_1$5.G.u()) {
+	              if (g_1$6.G.u() != csMessage.customerId()) {
+	                if (csMessage.accepted === false || csMessage.type === cs_message_type_1$2.CSMessageType.ACCEPT && csMessage.senderId != g_1$6.G.u()) {
 	                  return [2
 	                  /*return*/
 	                  ];
@@ -15271,7 +15285,7 @@
 
 	          case 2:
 	            this.fireUpdated();
-	            callback_utils_1$5.CallbackUtils.onSuccess(options);
+	            callback_utils_1$6.CallbackUtils.onSuccess(options);
 	            return [2
 	            /*return*/
 	            ];
@@ -15301,7 +15315,7 @@
 
 	            this.removeLocalConversation(conversation);
 	            this.fireUpdated();
-	            callback_utils_1$5.CallbackUtils.onSuccess(options);
+	            callback_utils_1$6.CallbackUtils.onSuccess(options);
 	            return [2
 	            /*return*/
 	            ];
@@ -15317,7 +15331,7 @@
 	    if (abbrConversation.t === GoEasy_1$4.Scene.CS) {
 	      var csMessage = message;
 
-	      if (g_1$5.G.u() === csMessage.customerId()) {
+	      if (g_1$6.G.u() === csMessage.customerId()) {
 	        conversation = new Conversation_1.Conversation(target);
 	      } else {
 	        conversation = new CSConversation_1$1.CSConversation(target);
@@ -15348,7 +15362,7 @@
 	    if (message.scene() === GoEasy_1$4.Scene.CS) {
 	      var csMessage = message;
 
-	      if (g_1$5.G.u() === csMessage.customerId()) {
+	      if (g_1$6.G.u() === csMessage.customerId()) {
 	        conversation = new Conversation_1.Conversation(target);
 	      } else {
 	        conversation = new CSConversation_1$1.CSConversation(target);
@@ -15586,15 +15600,15 @@
 	PendingConversations$1.PendingConversations = void 0;
 	var Conversations_1 = Conversations$1;
 	var GoEasy_1$3 = GoEasy$1;
-	var RocketTypes_1$2 = RocketTypes;
+	var RocketTypes_1$3 = RocketTypes;
 	var Target_1 = Target$1;
-	var goeasy_event_center_1$2 = goeasyEventCenter;
-	var internal_events_1$2 = internalEvents;
+	var goeasy_event_center_1$3 = goeasyEventCenter;
+	var internal_events_1$3 = internalEvents;
 	var im_api_events_1 = imApiEvents;
 	var cs_message_type_1$1 = csMessageType;
 	var histories_1$1 = histories;
 	var CSConversation_1 = CSConversation$1;
-	var g_1$4 = g;
+	var g_1$5 = g;
 	var Calibrator_1$6 = Calibrator;
 
 	var PendingConversations =
@@ -15606,14 +15620,14 @@
 	    var _this = _super.call(this) || this;
 
 	    _this.expired = false;
-	    goeasy_event_center_1$2.GoEasyEventCenter.on(internal_events_1$2.IM_INTERNAL_EVENTS.CS_ONLINE_SUCCESS, function () {
+	    goeasy_event_center_1$3.GoEasyEventCenter.on(internal_events_1$3.IM_INTERNAL_EVENTS.CS_ONLINE_SUCCESS, function () {
 	      return _this.onCSOnlineSuccess();
 	    });
-	    goeasy_event_center_1$2.GoEasyEventCenter.on(internal_events_1$2.IM_INTERNAL_EVENTS.CS_OFFLINE_SUCCESS, function () {
+	    goeasy_event_center_1$3.GoEasyEventCenter.on(internal_events_1$3.IM_INTERNAL_EVENTS.CS_OFFLINE_SUCCESS, function () {
 	      return _this.onCSOfflineSuccess();
 	    });
-	    g_1$4.G.s().addDisconnectedObserver(_this.onDisconnected.bind(_this));
-	    g_1$4.G.s().addConnectedObserver(_this.onConnected.bind(_this));
+	    g_1$5.G.s().addDisconnectedObserver(_this.onDisconnected.bind(_this));
+	    g_1$5.G.s().addConnectedObserver(_this.onConnected.bind(_this));
 	    return _this;
 	  }
 
@@ -15627,7 +15641,7 @@
 	            /*break*/
 	            , 3];
 	            csMessage = message;
-	            if (!(csMessage.customerId() != g_1$4.G.u())) return [3
+	            if (!(csMessage.customerId() != g_1$5.G.u())) return [3
 	            /*break*/
 	            , 3];
 	            if (!(csMessage.accepted === false || csMessage.type === cs_message_type_1$1.CSMessageType.ACCEPT)) return [3
@@ -15722,7 +15736,7 @@
 	  };
 
 	  PendingConversations.prototype.rocketName = function () {
-	    return RocketTypes_1$2.RocketTypes.PENDING_CONVERSATION;
+	    return RocketTypes_1$3.RocketTypes.IM_PENDING_CONVERSATION;
 	  };
 
 	  PendingConversations.prototype.convertAbbrConversation = function (abbrConversations) {
@@ -15970,7 +15984,11 @@
 	        } else if (scene === GoEasy_1.Scene.GROUP) {
 	          im_1.IM.aec.fire(im_api_events_1.ImApiEvents.GROUP_MESSAGE_RECEIVED, receivedMessage);
 	        } else if (scene === GoEasy_1.Scene.CS) {
-	          im_1.IM.aec.fire(im_api_events_1.ImApiEvents.CS_MESSAGE_RECEIVED, receivedMessage);
+	          var csMessage = receivedMessage;
+
+	          if (csMessage.customerId() === g_1.G.u()) {
+	            im_1.IM.aec.fire(im_api_events_1.ImApiEvents.CS_MESSAGE_RECEIVED, receivedMessage);
+	          }
 	        }
 	      }
 	    };
@@ -17708,6 +17726,7 @@
 	      filePayload.name = file.name;
 	      filePayload.size = file.size;
 	      filePayload.contentType = file.type;
+	      buildOptions.complete = Promise.resolve();
 	    };
 
 	    HTMLFilePayloadBuilder.prototype.validate = function (createOptions) {
@@ -18212,10 +18231,10 @@
 	var GoEasy_1$2 = GoEasy$1;
 	var GroupMessage_1 = GroupMessage$1;
 	var PrivateMessage_1 = PrivateMessage$1;
-	var validator_utils_1$4 = validatorUtils;
+	var validator_utils_1$5 = validatorUtils;
 	var cs_message_1 = csMessage;
-	var callback_utils_1$4 = callbackUtils;
-	var g_1$3 = g;
+	var callback_utils_1$5 = callbackUtils;
+	var g_1$4 = g;
 
 	var IMMessageBuilder =
 	/** @class */
@@ -18260,9 +18279,9 @@
 
 	    var message = this.build(buildOptions);
 	    buildOptions.complete.then(function () {
-	      callback_utils_1$4.CallbackUtils.onSuccess(createOptions, message);
+	      callback_utils_1$5.CallbackUtils.onSuccess(createOptions, message);
 	    })["catch"](function (e) {
-	      callback_utils_1$4.CallbackUtils.onFailed(createOptions, e);
+	      callback_utils_1$5.CallbackUtils.onFailed(createOptions, e);
 	    });
 	    return message;
 	  };
@@ -18279,7 +18298,7 @@
 	    if (scene === GoEasy_1$2.Scene.GROUP) {
 	      message = new GroupMessage_1.GroupMessage();
 	      message.groupId = to.id.toString();
-	      message.senderData = g_1$3.G.ud();
+	      message.senderData = g_1$4.G.ud();
 	    } else if (scene === GoEasy_1$2.Scene.PRIVATE) {
 	      message = new PrivateMessage_1.PrivateMessage();
 	      message.read = false;
@@ -18288,10 +18307,10 @@
 	      message = new cs_message_1.CSMessage();
 	      message.to = to.id.toString();
 	      message.teamId = to.id.toString();
-	      message.senderData = g_1$3.G.ud();
+	      message.senderData = g_1$4.G.ud();
 	    }
 
-	    message.senderId = g_1$3.G.u();
+	    message.senderId = g_1$4.G.u();
 	    message.messageId = UUID_1["default"].get();
 	    message.payload = payload;
 	    message.timestamp = Date.now();
@@ -18329,16 +18348,16 @@
 	      throw new Error("to.id should be a string or number.");
 	    }
 
-	    if (g_1$3.G.u() === to.id) {
+	    if (g_1$4.G.u() === to.id) {
 	      throw new Error("to.id can not be the same as your id.");
 	    }
 
 	    if (createOptions.notification) {
-	      validator_utils_1$4["default"].validateNotification(createOptions.notification);
+	      validator_utils_1$5["default"].validateNotification(createOptions.notification);
 	    }
 
 	    if (createOptions.wxmpTemplateMsg) {
-	      validator_utils_1$4["default"].validateWXMPTemplateMsg(createOptions.wxmpTemplateMsg);
+	      validator_utils_1$5["default"].validateWXMPTemplateMsg(createOptions.wxmpTemplateMsg);
 	    }
 	  };
 
@@ -18505,12 +18524,12 @@
 	var UserHereNow_1 = UserHereNow;
 	var Calibrator_1$1 = Calibrator;
 	var ModuleTypes_1 = ModuleTypes;
-	var validator_utils_1$3 = validatorUtils;
-	var callback_utils_1$3 = callbackUtils;
+	var validator_utils_1$4 = validatorUtils;
+	var callback_utils_1$4 = callbackUtils;
 	var IMMessageBuilder_1 = IMMessageBuilder$1;
 	var MessageType_1 = MessageType;
 	var histories_1 = histories;
-	var g_1$2 = g;
+	var g_1$3 = g;
 
 	var IM =
 	/** @class */
@@ -18544,7 +18563,7 @@
 
 
 	  IM.prototype.validateModules = function () {
-	    if (Calibrator_1$1["default"].isUndef(g_1$2.G.s())) {
+	    if (Calibrator_1$1["default"].isUndef(g_1$3.G.s())) {
 	      throw Error('Please call connect() first.');
 	    }
 
@@ -18562,7 +18581,7 @@
 	            _a.trys.push([0, 2,, 3]);
 
 	            this.validateModules();
-	            validator_utils_1$3["default"].validateCallbackOptions(callbackOptions);
+	            validator_utils_1$4["default"].validateCallbackOptions(callbackOptions);
 	            return [4
 	            /*yield*/
 	            , functionObj()];
@@ -18576,7 +18595,7 @@
 
 	          case 2:
 	            err_1 = _a.sent();
-	            callback_utils_1$3.CallbackUtils.onFailed(callbackOptions, err_1);
+	            callback_utils_1$4.CallbackUtils.onFailed(callbackOptions, err_1);
 	            return [3
 	            /*break*/
 	            , 3];
@@ -18936,24 +18955,6 @@
 
 	csTransferRequest.CSTransferRequest = CSTransferRequest;
 
-	var customerStatus = {};
-
-	customerStatus.__esModule = true;
-	customerStatus.CustomerStatus = void 0;
-
-	var CustomerStatus =
-	/** @class */
-	function () {
-	  function CustomerStatus(id, teamId) {
-	    this.id = id;
-	    this.teamId = teamId;
-	  }
-
-	  return CustomerStatus;
-	}();
-
-	customerStatus.CustomerStatus = CustomerStatus;
-
 	var __awaiter$1 = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
 	  function adopt(value) {
 	    return value instanceof P ? value : new P(function (resolve) {
@@ -19101,71 +19102,75 @@
 	conversationHandler.ConversationHandler = void 0;
 	var cs_status_query_request_1 = csStatusQueryRequest;
 	var cs_accept_request_1 = csAcceptRequest;
-	var validator_utils_1$2 = validatorUtils;
-	var Rocket_1$1 = Rocket;
-	var RocketTypes_1$1 = RocketTypes;
-	var Permission_1$1 = Permission;
-	var SocketTimeout_1$1 = SocketTimeout;
-	var GoEasy_1$1 = GoEasy$1;
-	var callback_utils_1$2 = callbackUtils;
-	var g_1$1 = g;
-	var goeasy_event_center_1$1 = goeasyEventCenter;
-	var internal_events_1$1 = internalEvents;
+	var validator_utils_1$3 = validatorUtils;
+	var Rocket_1$2 = Rocket;
+	var RocketTypes_1$2 = RocketTypes;
+	var Permission_1$2 = Permission;
+	var SocketTimeout_1$2 = SocketTimeout;
+	var callback_utils_1$3 = callbackUtils;
+	var g_1$2 = g;
 	var cs_transfer_request_1 = csTransferRequest;
-	var cs_message_type_1 = csMessageType;
-	var customer_status_1 = customerStatus;
+	var goeasy_event_center_1$2 = goeasyEventCenter;
+	var internal_events_1$2 = internalEvents;
+	var remote_abbr_message_builder_1 = remoteAbbrMessageBuilder;
 
 	var ConversationHandler =
 	/** @class */
 	function () {
 	  function ConversationHandler(teamId) {
-	    var _this = this;
-
+	    this.builder = new remote_abbr_message_builder_1.RemoteAbbrMessageBuilder();
 	    this.teamId = teamId;
-	    goeasy_event_center_1$1.GoEasyEventCenter.on(internal_events_1$1.IM_INTERNAL_EVENTS.MESSAGE_RECEIVED, function (message) {
-	      return _this.onMessageReceived(message);
-	    });
 	  }
 
 	  ConversationHandler.prototype.accept = function (teamId, options) {
-	    validator_utils_1$2["default"].validateId(options.id, "id");
+	    var _this = this;
+
+	    validator_utils_1$3["default"].validateId(options.id, "id");
 	    var id = options.id;
 	    var customerId = id.toString();
 	    var request = new cs_accept_request_1.CSAcceptRequest(customerId, teamId);
-	    var rocket = new Rocket_1$1["default"]({
-	      name: RocketTypes_1$1.RocketTypes.CS_ACCEPT,
+	    var rocket = new Rocket_1$2["default"]({
+	      name: RocketTypes_1$2.RocketTypes.CS_ACCEPT,
 	      params: request,
-	      permission: Permission_1$1.Permission.WRITE,
-	      singleTimeout: SocketTimeout_1$1.SocketTimeout.commonRequestSingle,
-	      totalTimeout: SocketTimeout_1$1.SocketTimeout.commonRequestTotal,
+	      permission: Permission_1$2.Permission.WRITE,
+	      singleTimeout: SocketTimeout_1$2.SocketTimeout.commonRequestSingle,
+	      totalTimeout: SocketTimeout_1$2.SocketTimeout.commonRequestTotal,
 	      fail: function fail(err) {
-	        callback_utils_1$2.CallbackUtils.onFailed(options, err);
+	        callback_utils_1$3.CallbackUtils.onFailed(options, err);
 	      },
 	      success: function success(res) {
-	        callback_utils_1$2.CallbackUtils.onSuccess(options);
+	        var acceptedMessage = _this.builder.build(res.content.message);
+
+	        goeasy_event_center_1$2.GoEasyEventCenter.fire(internal_events_1$2.IM_INTERNAL_EVENTS.CS_ACCEPTED, acceptedMessage);
+	        callback_utils_1$3.CallbackUtils.onSuccess(options);
 	      }
 	    });
-	    g_1$1.G.s().emit(rocket);
+	    g_1$2.G.s().emit(rocket);
 	  };
 
 	  ConversationHandler.prototype.end = function (teamId, options) {
-	    validator_utils_1$2["default"].validateId(options.id, "id");
+	    var _this = this;
+
+	    validator_utils_1$3["default"].validateId(options.id, "id");
 	    var customerId = options.id.toString();
 	    var request = new cs_accept_request_1.CSAcceptRequest(customerId, teamId);
-	    var rocket = new Rocket_1$1["default"]({
-	      name: RocketTypes_1$1.RocketTypes.CS_END,
+	    var rocket = new Rocket_1$2["default"]({
+	      name: RocketTypes_1$2.RocketTypes.CS_END,
 	      params: request,
-	      permission: Permission_1$1.Permission.WRITE,
-	      singleTimeout: SocketTimeout_1$1.SocketTimeout.commonRequestSingle,
-	      totalTimeout: SocketTimeout_1$1.SocketTimeout.commonRequestTotal,
+	      permission: Permission_1$2.Permission.WRITE,
+	      singleTimeout: SocketTimeout_1$2.SocketTimeout.commonRequestSingle,
+	      totalTimeout: SocketTimeout_1$2.SocketTimeout.commonRequestTotal,
 	      fail: function fail(err) {
-	        callback_utils_1$2.CallbackUtils.onFailed(options, err);
+	        callback_utils_1$3.CallbackUtils.onFailed(options, err);
 	      },
 	      success: function success(res) {
-	        callback_utils_1$2.CallbackUtils.onSuccess(options);
+	        var endedMessage = _this.builder.build(res.content.message);
+
+	        goeasy_event_center_1$2.GoEasyEventCenter.fire(internal_events_1$2.IM_INTERNAL_EVENTS.CS_ENDED, endedMessage);
+	        callback_utils_1$3.CallbackUtils.onSuccess(options);
 	      }
 	    });
-	    g_1$1.G.s().emit(rocket);
+	    g_1$2.G.s().emit(rocket);
 	  };
 
 	  ConversationHandler.prototype.queryCustomerStatus = function (teamId, options) {
@@ -19174,18 +19179,16 @@
 	      return __generator$1(this, function (_a) {
 	        switch (_a.label) {
 	          case 0:
-	            validator_utils_1$2["default"].validateId(options.id, "id");
+	            validator_utils_1$3["default"].validateId(options.id, "id");
 	            return [4
 	            /*yield*/
 	            , this.doCustomerStatus(teamId, options.id)];
 
 	          case 1:
 	            customerStatus = _a.sent();
-	            customerStatus.id = options.id;
-	            customerStatus.teamId = teamId;
 	            this.activeCustomerStatus = customerStatus;
 	            this.activeCustomerStatusOptions = options;
-	            callback_utils_1$2.CallbackUtils.onSuccess(options, customerStatus);
+	            callback_utils_1$3.CallbackUtils.onSuccess(options, customerStatus);
 	            return [2
 	            /*return*/
 	            ];
@@ -19198,12 +19201,12 @@
 	    var customerId = id.toString();
 	    var request = new cs_status_query_request_1.CSStatusQueryRequest(customerId, teamId);
 	    return new Promise(function (resolve, reject) {
-	      var rocket = new Rocket_1$1["default"]({
-	        name: RocketTypes_1$1.RocketTypes.CS_CUSTOMER_STATUS,
+	      var rocket = new Rocket_1$2["default"]({
+	        name: RocketTypes_1$2.RocketTypes.CS_CUSTOMER_STATUS,
 	        params: request,
-	        permission: Permission_1$1.Permission.READ,
-	        singleTimeout: SocketTimeout_1$1.SocketTimeout.commonQuerySingle,
-	        totalTimeout: SocketTimeout_1$1.SocketTimeout.commonQueryTotal,
+	        permission: Permission_1$2.Permission.READ,
+	        singleTimeout: SocketTimeout_1$2.SocketTimeout.commonQuerySingle,
+	        totalTimeout: SocketTimeout_1$2.SocketTimeout.commonQueryTotal,
 	        fail: function fail(error) {
 	          reject(error);
 	        },
@@ -19218,80 +19221,35 @@
 	          resolve(content);
 	        }
 	      });
-	      g_1$1.G.s().emit(rocket);
+	      g_1$2.G.s().emit(rocket);
 	    });
 	  };
 
 	  ConversationHandler.prototype.transfer = function (teamId, options) {
-	    validator_utils_1$2["default"].validateId(options.customerId, "customerId");
-	    validator_utils_1$2["default"].validateId(options.agentId, "agentId");
+	    var _this = this;
+
+	    validator_utils_1$3["default"].validateId(options.customerId, "customerId");
+	    validator_utils_1$3["default"].validateId(options.agentId, "agentId");
 	    var customerId = options.customerId.toString();
 	    var to = options.agentId.toString();
 	    var request = new cs_transfer_request_1.CSTransferRequest(customerId, teamId, to);
-	    var rocket = new Rocket_1$1["default"]({
-	      name: RocketTypes_1$1.RocketTypes.CS_TRANSFER,
+	    var rocket = new Rocket_1$2["default"]({
+	      name: RocketTypes_1$2.RocketTypes.CS_TRANSFER,
 	      params: request,
-	      permission: Permission_1$1.Permission.WRITE,
-	      singleTimeout: SocketTimeout_1$1.SocketTimeout.commonRequestSingle,
-	      totalTimeout: SocketTimeout_1$1.SocketTimeout.commonRequestTotal,
+	      permission: Permission_1$2.Permission.WRITE,
+	      singleTimeout: SocketTimeout_1$2.SocketTimeout.commonRequestSingle,
+	      totalTimeout: SocketTimeout_1$2.SocketTimeout.commonRequestTotal,
 	      fail: function fail(err) {
-	        callback_utils_1$2.CallbackUtils.onFailed(options, err);
+	        callback_utils_1$3.CallbackUtils.onFailed(options, err);
 	      },
 	      success: function success(res) {
-	        callback_utils_1$2.CallbackUtils.onSuccess(options);
+	        var transferMessage = _this.builder.build(res.content.message);
+
+	        goeasy_event_center_1$2.GoEasyEventCenter.fire(internal_events_1$2.IM_INTERNAL_EVENTS.CS_TRANSFER, transferMessage);
+	        callback_utils_1$3.CallbackUtils.onSuccess(options);
 	      }
 	    });
-	    g_1$1.G.s().emit(rocket);
-	  };
-
-	  ConversationHandler.prototype.onMessageReceived = function (message) {
-	    if (this.activeCustomerStatusOptions && message.scene() === GoEasy_1$1.Scene.CS) {
-	      var csMessage = message;
-	      var customerId = this.activeCustomerStatusOptions.id;
-
-	      if (csMessage.customerId() === customerId) {
-	        var newStatus = void 0;
-	        var newSessionId = csMessage.sessionId;
-
-	        switch (csMessage.type) {
-	          case cs_message_type_1.CSMessageType.ACCEPT:
-	            newStatus = new customer_status_1.CustomerStatus(customerId, this.teamId);
-	            newStatus.status = 'ACCEPTED';
-	            newStatus.start = csMessage.payload.sessionStart;
-	            newStatus.sessionId = newSessionId;
-	            newStatus.agent = new GoEasy_1$1.User(csMessage.senderId, csMessage.senderData);
-	            break;
-
-	          case cs_message_type_1.CSMessageType.END:
-	            newStatus = new customer_status_1.CustomerStatus(customerId, this.teamId);
-	            newStatus.status = 'FREE';
-	            break;
-
-	          case cs_message_type_1.CSMessageType.TRANSFER:
-	            newStatus = new customer_status_1.CustomerStatus(customerId, this.teamId);
-	            newStatus.status = 'ACCEPTED';
-	            newStatus.start = csMessage.payload.sessionStart;
-	            newStatus.sessionId = newSessionId;
-	            newStatus.agent = csMessage.payload.transferTo;
-	            break;
-
-	          default:
-	            if (!this.activeCustomerStatus.sessionId || this.activeCustomerStatus.sessionId < newSessionId) {
-	              newStatus = new customer_status_1.CustomerStatus(customerId, this.teamId);
-	              newStatus.status = 'PENDING';
-	              newStatus.start = csMessage.timestamp;
-	              newStatus.sessionId = newSessionId;
-	            }
-
-	            break;
-	        }
-
-	        if (newStatus) {
-	          this.activeCustomerStatus = newStatus;
-	          this.activeCustomerStatusOptions.onUpdated(newStatus);
-	        }
-	      }
-	    }
+	    g_1$2.G.s().emit(rocket);
 	  };
 
 	  return ConversationHandler;
@@ -19374,17 +19332,17 @@
 	agentStatus.__esModule = true;
 	agentStatus.AgentStatus = void 0;
 	var cs_is_online_request_1 = csIsOnlineRequest;
-	var Rocket_1 = Rocket;
-	var RocketTypes_1 = RocketTypes;
-	var Permission_1 = Permission;
-	var SocketTimeout_1 = SocketTimeout;
+	var Rocket_1$1 = Rocket;
+	var RocketTypes_1$1 = RocketTypes;
+	var Permission_1$1 = Permission;
+	var SocketTimeout_1$1 = SocketTimeout;
 	var Calibrator_1 = Calibrator;
 	var cs_online_request_1 = csOnlineRequest;
 	var cs_offline_request_1 = csOfflineRequest;
-	var goeasy_event_center_1 = goeasyEventCenter;
-	var internal_events_1 = internalEvents;
-	var callback_utils_1$1 = callbackUtils;
-	var g_1 = g;
+	var goeasy_event_center_1$1 = goeasyEventCenter;
+	var internal_events_1$1 = internalEvents;
+	var callback_utils_1$2 = callbackUtils;
+	var g_1$1 = g;
 	var cs_agents_query_request_1 = csAgentsQueryRequest;
 
 	var AgentStatus =
@@ -19402,21 +19360,21 @@
 
 	  AgentStatus.prototype.isOnline = function (teamId, option) {
 	    var request = new cs_is_online_request_1.CSIsOnlineRequest(teamId);
-	    var rocket = new Rocket_1["default"]({
-	      name: RocketTypes_1.RocketTypes.CS_IS_ONLINE,
+	    var rocket = new Rocket_1$1["default"]({
+	      name: RocketTypes_1$1.RocketTypes.CS_IS_ONLINE,
 	      params: request,
-	      permission: Permission_1.Permission.READ,
-	      singleTimeout: SocketTimeout_1.SocketTimeout.commonQuerySingle,
-	      totalTimeout: SocketTimeout_1.SocketTimeout.commonQueryTotal,
+	      permission: Permission_1$1.Permission.READ,
+	      singleTimeout: SocketTimeout_1$1.SocketTimeout.commonQuerySingle,
+	      totalTimeout: SocketTimeout_1$1.SocketTimeout.commonQueryTotal,
 	      fail: function fail(err) {
-	        callback_utils_1$1.CallbackUtils.onFailed(option, err);
+	        callback_utils_1$2.CallbackUtils.onFailed(option, err);
 	      },
 	      success: function success(res) {
 	        // todo 这里抛错如何捕获?
-	        callback_utils_1$1.CallbackUtils.onSuccess(option, res);
+	        callback_utils_1$2.CallbackUtils.onSuccess(option, res);
 	      }
 	    });
-	    g_1.G.s().emit(rocket);
+	    g_1$1.G.s().emit(rocket);
 	  };
 
 	  AgentStatus.prototype.online = function (teamId, option) {
@@ -19428,61 +19386,61 @@
 	    }
 
 	    var request = new cs_online_request_1.CSOnlineRequest(teamId, option.teamData, option.agentData);
-	    var rocket = new Rocket_1["default"]({
-	      name: RocketTypes_1.RocketTypes.CS_ONLINE,
+	    var rocket = new Rocket_1$1["default"]({
+	      name: RocketTypes_1$1.RocketTypes.CS_ONLINE,
 	      params: request,
-	      permission: Permission_1.Permission.WRITE,
-	      singleTimeout: SocketTimeout_1.SocketTimeout.commonRequestSingle,
-	      totalTimeout: SocketTimeout_1.SocketTimeout.commonRequestTotal,
+	      permission: Permission_1$1.Permission.WRITE,
+	      singleTimeout: SocketTimeout_1$1.SocketTimeout.commonRequestSingle,
+	      totalTimeout: SocketTimeout_1$1.SocketTimeout.commonRequestTotal,
 	      fail: function fail(err) {
-	        callback_utils_1$1.CallbackUtils.onFailed(option, err);
+	        callback_utils_1$2.CallbackUtils.onFailed(option, err);
 	      },
 	      success: function success(res) {
-	        callback_utils_1$1.CallbackUtils.onSuccess(option);
-	        goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.CS_ONLINE_SUCCESS);
+	        callback_utils_1$2.CallbackUtils.onSuccess(option);
+	        goeasy_event_center_1$1.GoEasyEventCenter.fire(internal_events_1$1.IM_INTERNAL_EVENTS.CS_ONLINE_SUCCESS);
 	      }
 	    });
-	    g_1.G.s().emit(rocket);
+	    g_1$1.G.s().emit(rocket);
 	  };
 
 	  AgentStatus.prototype.offline = function (teamId, option) {
 	    var request = new cs_offline_request_1.CSOfflineRequest(teamId);
-	    var rocket = new Rocket_1["default"]({
-	      name: RocketTypes_1.RocketTypes.CS_OFFLINE,
+	    var rocket = new Rocket_1$1["default"]({
+	      name: RocketTypes_1$1.RocketTypes.CS_OFFLINE,
 	      params: request,
-	      permission: Permission_1.Permission.WRITE,
-	      singleTimeout: SocketTimeout_1.SocketTimeout.commonRequestSingle,
-	      totalTimeout: SocketTimeout_1.SocketTimeout.commonRequestTotal,
+	      permission: Permission_1$1.Permission.WRITE,
+	      singleTimeout: SocketTimeout_1$1.SocketTimeout.commonRequestSingle,
+	      totalTimeout: SocketTimeout_1$1.SocketTimeout.commonRequestTotal,
 	      fail: function fail(err) {
-	        callback_utils_1$1.CallbackUtils.onFailed(option, err);
+	        callback_utils_1$2.CallbackUtils.onFailed(option, err);
 	      },
 	      success: function success(res) {
-	        callback_utils_1$1.CallbackUtils.onSuccess(option);
-	        goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.CS_OFFLINE_SUCCESS);
+	        callback_utils_1$2.CallbackUtils.onSuccess(option);
+	        goeasy_event_center_1$1.GoEasyEventCenter.fire(internal_events_1$1.IM_INTERNAL_EVENTS.CS_OFFLINE_SUCCESS);
 	      }
 	    });
-	    g_1.G.s().emit(rocket);
+	    g_1$1.G.s().emit(rocket);
 	  };
 
 	  AgentStatus.prototype.agents = function (teamId, options) {
 	    var request = new cs_agents_query_request_1.CsAgentsQueryRequest(teamId);
-	    var rocket = new Rocket_1["default"]({
-	      name: RocketTypes_1.RocketTypes.CS_AGENTS,
+	    var rocket = new Rocket_1$1["default"]({
+	      name: RocketTypes_1$1.RocketTypes.CS_AGENTS,
 	      params: request,
-	      permission: Permission_1.Permission.READ,
-	      singleTimeout: SocketTimeout_1.SocketTimeout.commonQuerySingle,
-	      totalTimeout: SocketTimeout_1.SocketTimeout.commonQueryTotal,
+	      permission: Permission_1$1.Permission.READ,
+	      singleTimeout: SocketTimeout_1$1.SocketTimeout.commonQuerySingle,
+	      totalTimeout: SocketTimeout_1$1.SocketTimeout.commonQueryTotal,
 	      fail: function fail(err) {
-	        callback_utils_1$1.CallbackUtils.onFailed(options, err);
+	        callback_utils_1$2.CallbackUtils.onFailed(options, err);
 	      },
 	      success: function success(res) {
 	        res.content.forEach(function (agent) {
 	          agent.data = JSON.parse(agent.data);
 	        });
-	        callback_utils_1$1.CallbackUtils.onSuccess(options, res);
+	        callback_utils_1$2.CallbackUtils.onSuccess(options, res);
 	      }
 	    });
-	    g_1.G.s().emit(rocket);
+	    g_1$1.G.s().emit(rocket);
 	  };
 
 	  return AgentStatus;
@@ -19494,7 +19452,7 @@
 
 	messageCreator.__esModule = true;
 	messageCreator.MessageCreator = void 0;
-	var GoEasy_1 = GoEasy$1;
+	var GoEasy_1$1 = GoEasy$1;
 	var im_1$1 = im;
 
 	var MessageCreator =
@@ -19545,7 +19503,7 @@
 
 
 	  MessageCreator.prototype.extendProps = function (teamId, imMessage) {
-	    if (imMessage.scene() === GoEasy_1.Scene.CS) {
+	    if (imMessage.scene() === GoEasy_1$1.Scene.CS) {
 	      var csMessage = imMessage;
 	      csMessage.teamId = teamId;
 	      csMessage.accepted = true;
@@ -19556,6 +19514,193 @@
 	}();
 
 	messageCreator.MessageCreator = MessageCreator;
+
+	var liveSession = {};
+
+	var liveSessionRequest = {};
+
+	liveSessionRequest.__esModule = true;
+	liveSessionRequest.LiveSessionRequest = void 0;
+
+	var LiveSessionRequest =
+	/** @class */
+	function () {
+	  function LiveSessionRequest(teamId, customerId) {
+	    this.teamId = teamId;
+	    this.customerId = customerId;
+	  }
+
+	  return LiveSessionRequest;
+	}();
+
+	liveSessionRequest.LiveSessionRequest = LiveSessionRequest;
+
+	var customerStatus = {};
+
+	customerStatus.__esModule = true;
+	customerStatus.CustomerStatus = void 0;
+
+	var CustomerStatus =
+	/** @class */
+	function () {
+	  function CustomerStatus() {}
+
+	  return CustomerStatus;
+	}();
+
+	customerStatus.CustomerStatus = CustomerStatus;
+
+	liveSession.__esModule = true;
+	liveSession.LiveSession = void 0;
+	var GoEasy_1 = GoEasy$1;
+	var live_session_request_1 = liveSessionRequest;
+	var validator_utils_1$2 = validatorUtils;
+	var Rocket_1 = Rocket;
+	var RocketTypes_1 = RocketTypes;
+	var Permission_1 = Permission;
+	var SocketTimeout_1 = SocketTimeout;
+	var callback_utils_1$1 = callbackUtils;
+	var g_1 = g;
+	var goeasy_event_center_1 = goeasyEventCenter;
+	var internal_events_1 = internalEvents;
+	var customer_status_1 = customerStatus;
+	var cs_message_type_1 = csMessageType;
+
+	var LiveSession =
+	/** @class */
+	function () {
+	  function LiveSession(teamId) {
+	    var _this = this;
+
+	    this.teamId = teamId;
+	    goeasy_event_center_1.GoEasyEventCenter.on(internal_events_1.IM_INTERNAL_EVENTS.MESSAGE_RECEIVED, function (message) {
+	      return _this.onMessageReceived(message);
+	    });
+	    goeasy_event_center_1.GoEasyEventCenter.on(internal_events_1.IM_INTERNAL_EVENTS.CS_ACCEPTED, function (message) {
+	      return _this.onMessageReceived(message);
+	    });
+	    goeasy_event_center_1.GoEasyEventCenter.on(internal_events_1.IM_INTERNAL_EVENTS.CS_ENDED, function (message) {
+	      return _this.onMessageReceived(message);
+	    });
+	    goeasy_event_center_1.GoEasyEventCenter.on(internal_events_1.IM_INTERNAL_EVENTS.CS_TRANSFER, function (message) {
+	      return _this.onMessageReceived(message);
+	    });
+	  }
+
+	  LiveSession.prototype.live = function (options) {
+	    var _this = this;
+
+	    var customerId = options.customerId;
+	    validator_utils_1$2["default"].validateId(customerId, "customerId");
+	    var request = new live_session_request_1.LiveSessionRequest(this.teamId, customerId);
+	    var rocket = new Rocket_1["default"]({
+	      name: RocketTypes_1.RocketTypes.CS_LIVE_SESSION,
+	      params: request,
+	      permission: Permission_1.Permission.WRITE,
+	      singleTimeout: SocketTimeout_1.SocketTimeout.commonRequestSingle,
+	      totalTimeout: SocketTimeout_1.SocketTimeout.commonRequestTotal,
+	      fail: function fail(err) {
+	        callback_utils_1$1.CallbackUtils.onFailed(options, err);
+	      },
+	      success: function success(res) {
+	        _this.liveOptions = options;
+	        _this.status = res.content.customerStatus;
+
+	        _this.liveOptions.onStatusUpdated(_this.status);
+
+	        callback_utils_1$1.CallbackUtils.onSuccess(options);
+	      }
+	    });
+	    g_1.G.s().emit(rocket);
+	  };
+
+	  LiveSession.prototype.quite = function (options) {
+	    var _this = this;
+
+	    console.log("this.liveOptions:", this.liveOptions);
+	    var customerId = this.liveOptions.customerId;
+	    validator_utils_1$2["default"].validateId(customerId, "customerId");
+	    var request = new live_session_request_1.LiveSessionRequest(this.teamId, customerId);
+	    var rocket = new Rocket_1["default"]({
+	      name: RocketTypes_1.RocketTypes.CS_QUITE_LIVE,
+	      params: request,
+	      permission: Permission_1.Permission.WRITE,
+	      singleTimeout: SocketTimeout_1.SocketTimeout.commonRequestSingle,
+	      totalTimeout: SocketTimeout_1.SocketTimeout.commonRequestTotal,
+	      fail: function fail(err) {
+	        callback_utils_1$1.CallbackUtils.onFailed(options, err);
+	      },
+	      success: function success(res) {
+	        _this.liveOptions = null;
+	        _this.status = null;
+	        callback_utils_1$1.CallbackUtils.onSuccess(options);
+	      }
+	    });
+	    g_1.G.s().emit(rocket);
+	  };
+
+	  LiveSession.prototype.onMessageReceived = function (message) {
+	    if (message.scene() === GoEasy_1.Scene.CS && this.liveOptions) {
+	      var csMessage = message;
+	      var customerId = this.liveOptions.customerId;
+
+	      if (this.teamId === csMessage.teamId && csMessage.customerId() === customerId) {
+	        this.tryUpdateStatus(csMessage);
+	        this.liveOptions.onNewMessage(csMessage);
+	      }
+	    }
+	  };
+
+	  LiveSession.prototype.tryUpdateStatus = function (message) {
+	    if (this.status.status !== 'FREE' && this.status.sessionId > message.sessionId) {
+	      return;
+	    }
+
+	    var newStatus;
+
+	    switch (message.type) {
+	      case cs_message_type_1.CSMessageType.ACCEPT:
+	        newStatus = new customer_status_1.CustomerStatus();
+	        newStatus.status = 'ACCEPTED';
+	        newStatus.start = message.payload.sessionStart;
+	        newStatus.sessionId = message.sessionId;
+	        newStatus.agent = new GoEasy_1.User(message.senderId, message.senderData);
+	        break;
+
+	      case cs_message_type_1.CSMessageType.END:
+	        newStatus = new customer_status_1.CustomerStatus();
+	        newStatus.status = 'FREE';
+	        break;
+
+	      case cs_message_type_1.CSMessageType.TRANSFER:
+	        newStatus = new customer_status_1.CustomerStatus();
+	        newStatus.status = 'ACCEPTED';
+	        newStatus.start = message.payload.sessionStart;
+	        newStatus.sessionId = message.sessionId;
+	        newStatus.agent = message.payload.transferTo;
+	        break;
+
+	      default:
+	        if (this.status.status === 'FREE') {
+	          newStatus = new customer_status_1.CustomerStatus();
+	          newStatus.status = 'PENDING';
+	          newStatus.start = message.timestamp;
+	          newStatus.sessionId = message.sessionId;
+	        }
+
+	        break;
+	    }
+
+	    if (newStatus) {
+	      this.status = newStatus;
+	      this.liveOptions.onStatusUpdated(newStatus);
+	    }
+	  };
+
+	  return LiveSession;
+	}();
+
+	liveSession.LiveSession = LiveSession;
 
 	var __awaiter = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
 	  function adopt(value) {
@@ -19708,6 +19853,7 @@
 	var conversation_handler_1 = conversationHandler;
 	var agent_status_1 = agentStatus;
 	var message_creator_1 = messageCreator;
+	var live_session_1 = liveSession;
 
 	var Team =
 	/** @class */
@@ -19717,6 +19863,7 @@
 	    this.agentStatus = agent_status_1.AgentStatus.getInstance();
 	    this.conversationHandler = new conversation_handler_1.ConversationHandler(teamId);
 	    this.messageCreator = message_creator_1.MessageCreator.getInstance();
+	    this._liveSession = new live_session_1.LiveSession(teamId);
 	  }
 
 	  Team.prototype["catch"] = function (functionObj, callbackOptions) {
@@ -19849,6 +19996,22 @@
 
 	    this["catch"](function () {
 	      _this.agentStatus.agents(_this.teamId, options);
+	    }, options);
+	  };
+
+	  Team.prototype.liveSession = function (options) {
+	    var _this = this;
+
+	    this["catch"](function () {
+	      _this._liveSession.live(options);
+	    }, options);
+	  };
+
+	  Team.prototype.quiteLiveSession = function (options) {
+	    var _this = this;
+
+	    this["catch"](function () {
+	      _this._liveSession.quite(options);
 	    }, options);
 	  };
 
@@ -20417,6 +20580,14 @@
 
 	    CSTeam.prototype.agents = function (options) {
 	      cs_1.CS.team(this.id).agents(options);
+	    };
+
+	    CSTeam.prototype.liveSession = function (options) {
+	      cs_1.CS.team(this.id).liveSession(options);
+	    };
+
+	    CSTeam.prototype.quiteLiveSession = function (options) {
+	      cs_1.CS.team(this.id).quiteLiveSession(options);
 	    };
 
 	    return CSTeam;

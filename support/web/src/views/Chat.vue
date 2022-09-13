@@ -253,7 +253,7 @@
       this.loadHistoryMessage(true);
     },
     beforeDestroy() {
-      this.csteam.quietLiveSession();//todo:如何让它卡起，没有退出不允许离开？
+      this.csteam.quiteLiveSession();//todo:如何让它卡起，没有退出不允许离开？
     },
     methods: {
       renderTextMessage(text) {
@@ -263,10 +263,10 @@
         this.csteam.liveSession({
           customerId: this.customer.id,
           onSuccess: () => {
-            console.log('failed to get customer status.', error);
+            console.log('get successfully customer status');
           },
           onFailed: (error) => {
-            console.log('failed to get customer status.', error);
+            console.log('failed to get customer status:', error);
           },
           onStatusUpdated: (status) => {
             this.customerStatus = status;
