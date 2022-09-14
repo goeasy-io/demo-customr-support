@@ -81,14 +81,6 @@
           onSuccess: (result) => {
             let content = result.content;
             this.renderConversations(content);
-            if (content.unreadTotal > 0) {
-              uni.setTabBarBadge({
-                index: 1,
-                text: content.unreadTotal.toString()
-              });
-            } else {
-              uni.removeTabBarBadge({index: 1});
-            }
           },
           onFailed: (error) => {
             console.log('获取最新会话列表失败, error:', error);
@@ -97,6 +89,14 @@
       },
       renderConversations(content) {
         this.conversations = content.conversations;
+        if (content.unreadTotal > 0) {
+          uni.setTabBarBadge({
+            index: 1,
+            text: content.unreadTotal.toString()
+          });
+        } else {
+          uni.removeTabBarBadge({index: 1});
+        }
       },
       showAction(conversation) {
         this.actionPopup.conversation = conversation;
@@ -146,8 +146,13 @@
         })
       },
       chat(conversation) {
+        const shop = {
+          id:conversation.id,
+          name:conversation.data.name,
+          avatar:conversation.data.avatar
+        }
         uni.navigateTo({
-          url: './chat?to=' + conversation.id
+          url: './chat?to=' + JSON.stringify(shop)
         });
       }
     }

@@ -195,8 +195,7 @@
       }
     },
     onLoad(options) {
-      let shopId = options.to;
-      this.shop = restApi.findShopById(shopId);
+      this.shop = JSON.parse(options.to);
       this.to = {
         id: this.shop.id,
         type: this.GoEasy.IM_SCENE.CS,
