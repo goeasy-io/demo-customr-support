@@ -91,7 +91,7 @@
                class="emoji-item" @click="chooseEmoji(emojiKey)"></image>
       </view>
       <!--其他类型消息面板-->
-      <view v-if="otherTypesMessagePanelVisible" class="action-bottom">
+      <view v-if="moreTypesVisible" class="action-bottom">
         <view class="more-item" @click="sendImageMessage">
           <image src="/static/images/tupian.png"></image>
           <text>图片</text>
@@ -169,7 +169,7 @@
           decoder: new EmojiDecoder(emojiUrl, emojiMap),
         },
         //是否展示‘其他消息类型面板’
-        otherTypesMessagePanelVisible: false,
+        moreTypesVisible: false,
         orderList: {
           orders: [],
           visible: false,
@@ -218,7 +218,7 @@
       });
     },
     onShow() {
-      this.otherTypesMessagePanelVisible = false;
+      this.moreTypesVisible = false;
       this.emoji.visible = false;
     },
     onPullDownRefresh(e) {
@@ -304,15 +304,15 @@
         }
       },
       messageInputFocusin() {
-        this.otherTypesMessagePanelVisible = false;
+        this.moreTypesVisible = false;
         this.emoji.visible = false;
       },
       showEmoji() {
         this.emoji.visible = !this.emoji.visible;
-        this.otherTypesMessagePanelVisible = false;
+        this.moreTypesVisible = false;
       },
       showOtherTypesMessagePanel() {
-        this.otherTypesMessagePanelVisible = !this.otherTypesMessagePanelVisible;
+        this.moreTypesVisible = !this.moreTypesVisible;
         this.emoji.visible = false;
       },
       chooseEmoji(emojiKey) {
