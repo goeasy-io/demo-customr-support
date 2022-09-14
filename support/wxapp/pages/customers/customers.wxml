@@ -1,0 +1,15 @@
+<!--contacts.wxml-->
+<view class="contacts">
+	<view class="contacts-container">
+		<view class="user-list">
+			<view class="user-list-item" wx:for="{{customers || []}}" wx:for-item="customer" bindtap="chat" data-customer="{{customer}}" wx:key="key">
+				<view class="user-item-avatar">
+					<image src="{{customer.avatar}}"></image>
+				</view>
+				<view class="user-item-info">
+					<text class="user-item-info__name">{{customer.name}}</text>
+				</view>
+			</view>
+		</view>
+	</view>
+</view>
