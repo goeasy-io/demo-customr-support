@@ -12,7 +12,7 @@ Page({
 		if (username.trim() !== '' && password.trim() !== '') {
 			let agent = restApi.findAgent(username, password);
 			if (agent) {
-				wx.setStorageSync('currentAgent', JSON.stringify(agent));
+				wx.setStorageSync('currentAgent', agent);
 				// 页面跳转
 				wx.switchTab({
 					url:'../conversations/conversations'
