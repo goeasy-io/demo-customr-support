@@ -127,7 +127,7 @@
       initialOnlineStatus() {
         this.csteam.isOnline({
           onSuccess: (result) => {
-            this.onlineConfig.online = result.content;
+            this.onlineConfig.online = result;
           },
           onFailed: (error) => {
             console.log('获取在线状态失败，error:', error)

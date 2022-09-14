@@ -253,7 +253,14 @@
       this.loadHistoryMessage(true);
     },
     beforeDestroy() {
-      this.csteam.quiteLiveSession();//todo:如何让它卡起，没有退出不允许离开？
+      this.csteam.quitLiveSession({
+        onSuccess: () => {
+          console.log('quit successfully ');
+        },
+        onFailed: (error) => {
+          console.log('failed to quit:', error);
+        },
+      });
     },
     methods: {
       renderTextMessage(text) {
