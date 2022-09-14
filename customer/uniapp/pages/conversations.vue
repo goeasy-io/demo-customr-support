@@ -89,14 +89,6 @@
       },
       renderConversations(content) {
         this.conversations = content.conversations;
-        if (content.unreadTotal > 0) {
-          uni.setTabBarBadge({
-            index: 1,
-            text: content.unreadTotal.toString()
-          });
-        } else {
-          uni.removeTabBarBadge({index: 1});
-        }
       },
       showAction(conversation) {
         this.actionPopup.conversation = conversation;

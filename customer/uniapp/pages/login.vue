@@ -1,14 +1,52 @@
 <template>
   <view class="login">
     <view class="title">GoEasy Customer</view>
-    <input v-model="username" class="input-box" placeholder="请输入账号" type="text">
-    <input v-model="password" class="input-box" placeholder="请输入密码" type="password">
+
+    <view class="customer-selector">
+      <view class="selected-area" @click="switchSelectorVisible">
+        <view class="selected-content">
+          <image v-if="customerSelector.selectedCustomer" :src="customerSelector.selectedCustomer.avatar"></image>
+          <text>{{ customerSelector.selectedCustomer ? customerSelector.selectedCustomer.name : '请选择用户' }}</text>
+        </view>
+        <image
+          :class="customerSelector.visible ? 'selected-icon' : 'selected-icon rotate'"
+          src="/static/images/up.png"
+        ></image>
+      </view>
+      <view v-if="customerSelector.visible" class="dialog-area">
+        <view class="dialog-list">
+          <view
+            class="dialog-list-item"
+            v-for="(customer, index) in customerSelector.customers"
+            :key="index"
+            @click="selectCustomer(customer)">
+              <image class="dialog-list-item-avatar" :src="customer.avatar"></image>
+              <text :class="customerSelector.selectedCustomer === customer ? 'selected' : ''">{{ customer.name }}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="password-box">
+      <input
+        v-model="password.value"
+        class="password-input"
+        placeholder="请输入密码"
+        :password="!password.visible"
+        type="number"
+      >
+      <image
+        class="password-image"
+        @click="switchPasswordVisible"
+        :src="password.visible?'/static/images/invisible.png':'/static/images/visible.png'"
+      ></image>
+    </view>
+
     <div v-show="showError" class="alert-box">
       <image src="/static/images/login-alert-icon.png"></image>
       <span>请输入正确的用户名和密码</span>
     </div>
     <button class="login-btn" @click="login">登录</button>
-    <div class="login-tips">登录所需用户名和密码见 restapi.js</div>
   </view>
 </template>
 
@@ -19,15 +57,36 @@
     name: 'Login',
     data() {
       return {
-        username: '',
-        password: '',
+        customerSelector: {
+          customers: [],
+          visible: false,
+          index: 0,
+          selectedCustomer: null
+        },
+        password: {
+          visible: false,
+          value: '123'
+        },
         showError: false
       }
     },
+    onLoad() {
+      this.customerSelector.customers = restApi.findCustomers();
+    },
     methods: {
+      switchSelectorVisible() {
+        this.customerSelector.visible = !this.customerSelector.visible;
+      },
+      selectCustomer(customer) {
+        this.customerSelector.visible = false;
+        this.customerSelector.selectedCustomer = customer;
+      },
+      switchPasswordVisible() {
+        this.password.visible = !this.password.visible;
+      },
       login() {
-        if (this.username.trim() !== '' && this.password.trim() !== '') {
-          let customer = restApi.findCustomer(this.username, this.password);
+        if (this.customerSelector.selectedCustomer !== null && this.password.value.trim() !== '') {
+          let customer = restApi.findCustomer(this.customerSelector.selectedCustomer.name, this.password.value);
           if (customer) {
             uni.setStorageSync('currentCustomer', customer);
             uni.switchTab({
@@ -63,30 +122,6 @@
     margin-bottom: 80rpx;
   }
 
-  .input-box {
-    width: 600rpx;
-    height: 50rpx;
-    margin-bottom: 40rpx;
-    padding: 26rpx;
-    font-size: 32rpx;
-  }
-
-  input {
-    border: 1px solid #E0E0E0;
-  }
-
-  input::-webkit-input-placeholder {
-    color: #999999;
-  }
-
-  input::-moz-placeholder {
-    color: #999999;
-  }
-
-  input::-ms-input-placeholder {
-    color: #999999;
-  }
-
   .alert-box {
     width: 640rpx;
     height: 60rpx;
@@ -119,10 +154,101 @@
     border: 0;
   }
 
-  .login-tips {
-    color: #999999;
-    font-size: 30rpx;
-    text-align: center;
-    margin-top: 30rpx;
+  .password-box {
+    position: relative;
+  }
+
+  .password-input {
+    width: 620rpx;
+    padding: 28rpx;
+    border: 1px solid #cccccc;
+    margin-bottom: 40rpx;
+    font-size: 32rpx;
+  }
+
+  .password-image {
+    width: 50rpx;
+    height: 50rpx;
+    position: absolute;
+    top: 28rpx;
+    right: 28rpx;
+  }
+
+  .customer-selector {
+    width: 700rpx;
+    margin-bottom: 40rpx;
+  }
+
+  .selected-area {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 96%;
+    height: 100rpx;
+    border: 1px solid #cccccc;
+    box-sizing: border-box;
+    margin: 0 auto;
+    padding: 0 26rpx;
+  }
+
+  .selected-content {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+  }
+
+  .selected-content image {
+    width: 80rpx;
+    height: 80rpx;
+    margin-right: 30rpx;
+    border-radius: 50%;
+  }
+
+  .selected-icon {
+    width: 40rpx;
+    height: 40rpx;
+    margin-right: 10rpx;
+  }
+
+  .selected-icon.rotate {
+    transform-origin: center;
+    transform: rotate(180deg);
+  }
+
+  .dialog-area {
+    position: absolute;
+    width: 100%;
+    background: #E5E5E5;
+  }
+
+  .dialog-list {
+    position: absolute;
+    left: 10rpx;
+    top: 8rpx;
+    width: 674rpx;
+    border: 1px solid #cccccc;
+    background: #ffffff;
+    box-shadow: 8rpx 8rpx 10rpx #e1e1e1;
+    padding: 30rpx 0;
+    z-index: 99;
+  }
+
+  .dialog-list-item {
+    width: 100%;
+    margin: 25rpx 0;
+    padding-left: 40rpx;
+    display: flex;
+    align-items: center;
+  }
+
+  .dialog-list-item .selected {
+    font-weight: bold;
+  }
+
+  .dialog-list-item-avatar {
+    width: 80rpx;
+    height: 80rpx;
+    margin-right: 30rpx;
+    border-radius: 50%;
   }
 </style>
