@@ -27,9 +27,9 @@
     methods: {
       login() {
         if (this.username.trim() !== '' && this.password.trim() !== '') {
-          let user = restApi.findCustomer(this.username, this.password);
-          if (user) {
-            uni.setStorageSync('currentCustomer', user);
+          let customer = restApi.findCustomer(this.username, this.password);
+          if (customer) {
+            uni.setStorageSync('currentCustomer', customer);
             uni.switchTab({
               url: './home'
             });

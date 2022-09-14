@@ -6,7 +6,7 @@
           <image :src="conversation.data.avatar" class="head-icon"></image>
           <view v-if="conversation.unread" class="item-head_unread">{{ conversation.unread }}</view>
         </view>
-        <view class="scroll-item_info" @click="navigateToChat(conversation)">
+        <view class="scroll-item_info" @click="chat(conversation)">
           <view class="item-info-top">
             <text class="item-info-top_name">{{ conversation.data.name }}</text>
             <view class="item-info-top_time">{{ formatDate(conversation.lastMessage.timestamp) }}</view>
@@ -145,7 +145,7 @@
           },
         })
       },
-      navigateToChat(conversation) {
+      chat(conversation) {
         uni.navigateTo({
           url: './chat?to=' + conversation.id
         });

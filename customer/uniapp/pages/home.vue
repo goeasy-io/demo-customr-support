@@ -7,7 +7,7 @@
             <image :src="shop.avatar"></image>
             <view>{{ shop.name }}</view>
           </view>
-          <view class="consult-buton" @click="consult(shop.id)">咨询</view>
+          <view class="consult-buton" @click="chat(shop.id)">咨询</view>
         </view>
         <view class="item-body">
           <image v-for="(good, index) in shop.goods" :key="index" :src="good"></image>
@@ -56,7 +56,7 @@
           }
         });
       },
-      consult(id) {
+      chat(id) {
         uni.navigateTo({url: './chat?to=' + id});
       }
     }

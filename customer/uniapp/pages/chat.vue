@@ -206,7 +206,7 @@
         }
       };
       this.currentCustomer = uni.getStorageSync('currentCustomer');
-
+      this.markMessageAsRead();
       this.loadHistoryMessage(true);
       this.initRecorderListeners();
       this.goEasy.im.on(this.GoEasy.IM_EVENT.CS_MESSAGE_RECEIVED, this.onMessageReceived);
@@ -393,8 +393,7 @@
               this.history.messages = messages.concat(this.history.messages);
               if (scrollToBottom) {
                 this.scrollToBottom();
-                //收到的消息设置为已读
-                this.markMessageAsRead();
+
               }
             }
           },
