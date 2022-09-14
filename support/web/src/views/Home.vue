@@ -68,13 +68,6 @@
         }
       };
     },
-    provide () {
-      return {
-        getAgentOnlineStatus: () => {
-          return this.onlineConfig.online;
-        },
-      };
-    },
     created() {
       this.currentAgent = JSON.parse(localStorage.getItem('currentAgent'));
       if (!this.currentAgent) {
@@ -98,7 +91,6 @@
           let urls = path.split("/");
           this.selectedTab = urls[1];
         },
-        immediate: true,
       }
     },
     methods: {

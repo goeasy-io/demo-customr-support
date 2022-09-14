@@ -238,8 +238,11 @@
       }
     },
     async created() {
-      const customerId = this.$route.params.id;
-      this.customer = restApi.findCustomerById(customerId);
+      this.customer = {
+        id: this.$route.query.id,
+        name: this.$route.query.name,
+        avatar: this.$route.query.avatar,
+      };
       this.to = {
         type: this.GoEasy.IM_SCENE.CS,
         id: this.customer.id,

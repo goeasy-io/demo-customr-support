@@ -6,7 +6,7 @@
         <div class="conversation-list-body">
           <div
             v-for="(conversation, key) in pendingConversations"
-            :key="key" :class="{checked:conversation.id === $route.params.id}"
+            :key="key" :class="{checked:conversation.id === $route.query.id}"
             class="conversation-item"
             @click="chat(conversation.id)"
           >
@@ -40,9 +40,9 @@
         <div v-if="conversations.length" class="conversation-list-body">
           <div
             v-for="(conversation, key) in conversations"
-            :key="key" :class="{checked:conversation.id === $route.params.id}"
+            :key="key" :class="{checked:conversation.id === $route.query.id}"
             class="conversation-item"
-            @click="chat(conversation.id)"
+            @click="chat(conversation)"
             @contextmenu.prevent.stop="e => showRightClickMenu(e,conversation)"
           >
             <div class="item-head">
@@ -101,7 +101,7 @@
       </div>
     </div>
     <div class="conversation-main">
-      <router-view :key="$route.params.id"></router-view>
+      <router-view :key="$route.query.id"></router-view>
     </div>
   </div>
 </template>
@@ -166,10 +166,14 @@
       renderLatestConversations(content) {
         this.conversations = content.conversations;
       },
-      chat(customerId) {
+      chat(conversation) {
         this.$router.push({
-          name: 'chat',
-          params: { id: customerId }
+          path: '/conversations/chat',
+          query: {
+            id: conversation.id,
+            name: conversation.data.name,
+            avatar: conversation.data.avatar
+          }
         });
       },
       showRightClickMenu(e, conversation) {

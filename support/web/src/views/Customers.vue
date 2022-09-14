@@ -36,7 +36,7 @@
           <div class="info-text">{{ selectedCustomer.phone }}</div>
         </div>
         <div class="button-box">
-          <button class="card-button" @click="chat(selectedCustomer.id)">发消息</button>
+          <button class="card-button" @click="chat(selectedCustomer)">发消息</button>
         </div>
       </div>
     </div>
@@ -61,10 +61,14 @@
       showCustomer(customer) {
         this.selectedCustomer = customer;
       },
-      chat(customerId) {
+      chat(customer) {
         this.$router.push({
-          name: 'chat',
-          params: { id: customerId }
+          path: '/conversations/chat',
+          query: {
+            id: customer.id,
+            name: customer.name,
+            avatar: customer.avatar
+          }
         });
       },
     },
