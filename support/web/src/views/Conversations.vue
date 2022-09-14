@@ -168,7 +168,8 @@
       },
       chat(customerId) {
         this.$router.push({
-          path: `/conversations/chat/${customerId}`
+          name: 'chat',
+          params: { id: customerId }
         });
       },
       showRightClickMenu(e, conversation) {

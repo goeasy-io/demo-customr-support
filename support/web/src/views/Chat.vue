@@ -63,7 +63,7 @@
                       <img :src="message.payload.url"/>
                       <div class="order-info">
                         <div class="order-name">{{ message.payload.name }}</div>
-                        <div>月销17</div>
+                        <div>月销{{ message.payload.sales }}</div>
                         <div>{{ message.payload.price }}</div>
                       </div>
                     </div>
