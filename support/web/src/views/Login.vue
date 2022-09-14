@@ -5,12 +5,41 @@
         <div class="login-header">
           <div>GoEasy-Support</div>
         </div>
-        <div ref="form" class="login-form">
+        <div class="login-form">
           <div class="form-item">
-            <input ref="username" v-model="username" class="form-item-input" placeholder="请输入账号"/>
+            <div class="selected-area" @click="switchSelectorVisible">
+              <div class="selected-content">
+                <img v-if="agentSelector.selectedAgent" :src="agentSelector.selectedAgent.shop.avatar"/>
+                <div>{{
+                    agentSelector.selectedAgent ? agentSelector.selectedAgent.shop.name + ' - ' + agentSelector.selectedAgent.name : '请选择用户'
+                  }}
+                </div>
+              </div>
+              <img
+                :class="agentSelector.visible ? 'selected-icon' : 'selected-icon rotate'"
+                src="/static/images/up.png"
+              />
+            </div>
+            <div v-if="agentSelector.visible" class="dialog-area">
+              <div class="dialog-list">
+                <div
+                  class="dialog-list-item"
+                  v-for="(agent, index) in agentSelector.agents"
+                  :key="index"
+                  @click="selectAgent(agent)">
+                  <i  mg class="dialog-list-item-avatar" :src="agent.shop.avatar"/>
+                  <div :class="agentSelector.selectedAgent === agent ? 'selected' : ''">
+                    {{ agent.shop.name + ' - ' + agent.name }}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="form-item">
-            <input v-model="password" class="form-item-input" placeholder="请输入密码" type="password"/>
+            <input v-model="password.value" class="password-input" placeholder="请输入密码"
+                   :type="password.visible ? 'number':'password'"/>
+            <img class="password-image" @click="switchPasswordVisible"
+                 :src="password.visible?'/static/images/invisible.png':'/static/images/visible.png'"/>
           </div>
           <div class="form-item">
             <button class="form-item-btn" @click="login">登录</button>
@@ -29,15 +58,36 @@
     name: 'Login',
     data() {
       return {
-        username: '',
-        password: '',
+        agentSelector: {
+          agents: [],
+          visible: false,
+          index: 0,
+          selectedAgent: null
+        },
+        password: {
+          visible: false,
+          value: '123'
+        },
         errorVisible: false,
       };
     },
+    created() {
+      this.agentSelector.agents = restApi.findAgents();
+    },
     methods: {
+      switchSelectorVisible() {
+        this.agentSelector.visible = !this.agentSelector.visible;
+      },
+      selectAgent(agent) {
+        this.agentSelector.visible = false;
+        this.agentSelector.selectedAgent = agent;
+      },
+      switchPasswordVisible() {
+        this.password.visible = !this.password.visible;
+      },
       login() {
-        if (this.username.trim() !== '' && this.password.trim() !== '') {
-          let agent = restApi.findAgent(this.username, this.password);
+        if (this.agentSelector.selectedAgent !== null && this.password.value.trim() !== '') {
+          let agent = restApi.findAgent(this.agentSelector.selectedAgent.name, this.password.value);
           if (agent) {
             localStorage.setItem('currentAgent', JSON.stringify(agent));
             this.$router.push({path: './conversations'});
@@ -83,31 +133,94 @@
         .login-form {
           width: 300px;
 
-          .login-form /deep/ .el-input__inner:focus {
-            border-color: #DCDFE6;
-          }
-
           .form-item {
+            position: relative;
             margin: 30px 0;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
 
-            .form-item-input {
-              background-color: #FFF;
-              background-image: none;
-              border-radius: 4px;
+            .selected-area {
+              width: 280px;
+              display: flex;
+              align-items: center;
+              padding: 5px 10px;
               border: 1px solid #DCDFE6;
-              box-sizing: border-box;
-              color: #606266;
-              display: inline-block;
-              font-size: inherit;
-              height: 40px;
-              line-height: 40px;
-              outline: 0;
-              padding: 0 15px;
-              width: 100%;
+              border-radius: 4px;
+
+              .selected-content {
+                display: flex;
+                align-items: center;
+                flex-grow: 1;
+                height: 37px;
+
+                img {
+                  width: 35px;
+                  height: 35px;
+                  margin-right: 15px;
+                  border-radius: 50%;
+                }
+              }
+
+              .selected-icon {
+                width: 20px;
+                height: 20px;
+                margin-right: 5px;
+              }
+
+              .rotate {
+                transform-origin: center;
+                transform: rotate(180deg);
+              }
+
+            }
+
+            .dialog-area {
+              position: absolute;
+              top: 55px;
+              left: 0;
+              width: 300px;
+              background: #FFFFFF;
+              border: 1px solid #DCDFE6;
+              z-index: 99;
+
+              .dialog-list-item {
+                width: 100%;
+                margin: 15px 0;
+                padding-left: 10px;
+                display: flex;
+                align-items: center;
+              }
+
+              .selected {
+                font-weight: bold;
+              }
+
+              .dialog-list-item-avatar {
+                width: 35px;
+                height: 35px;
+                margin-right: 15px;
+                border-radius: 50%;
+              }
+            }
+
+            .password-input {
+              width: 280px;
+              height: 37px;
+              display: flex;
+              align-items: center;
+              padding: 5px 10px;
+              border: 1px solid #DCDFE6;
+              border-radius: 4px;
+            }
+
+            .password-image {
+              width: 25px;
+              height: 25px;
+              position: absolute;
+              top: 15px;
+              right: 15px;
             }
 
             .form-item-btn {

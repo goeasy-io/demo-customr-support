@@ -42,7 +42,7 @@
       ></image>
     </view>
 
-    <div v-show="showError" class="alert-box">
+    <div v-show="errorVisible" class="alert-box">
       <image src="/static/images/login-alert-icon.png"></image>
       <span>请输入正确的用户名和密码</span>
     </div>
@@ -67,7 +67,7 @@
           visible: false,
           value: '123'
         },
-        showError: false
+        errorVisible: false
       }
     },
     onLoad() {
@@ -95,7 +95,7 @@
             return
           }
         }
-        this.showError = true;
+        this.errorVisible = true;
       }
     }
   }
