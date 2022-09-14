@@ -26,7 +26,6 @@ const routes = [
                     default: Conversations
                 },
                 children: [{
-                    name: 'chat',
                     path: 'chat',
                     components: {
                         default: Chat
