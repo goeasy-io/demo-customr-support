@@ -107,6 +107,7 @@
 </template>
 
 <script>
+  import {formatDate} from '../utils/utils.js'
   export default {
     name: 'Conversation',
     data() {
@@ -137,6 +138,7 @@
       this.goEasy.im.off(this.GoEasy.IM_EVENT.PENDING_CONVERSATIONS_UPDATED, this.renderPendingConversations);
     },
     methods: {
+      formatDate,
       loadConversations() {
         this.goEasy.im.pendingConversations({
           onSuccess: (result) => {

@@ -17,16 +17,4 @@ App({
     onHide: () => {
         console.log('onHide')
     },
-    formatDate: function(time) {
-        const date = new Date(time);
-        const month = date.getMonth() + 1;
-        const day = date.getDate();
-        const hour = date.getHours();
-        const minute = date.getMinutes();
-        return [month, day].map(this.formatNumber).join('-') + ' ' + [hour, minute].map(this.formatNumber).join(':');
-    },
-    formatNumber:function(n) {
-        n = n.toString();
-        return n[1] ? n : '0' + n;
-    }
 })

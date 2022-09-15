@@ -1,5 +1,6 @@
 const app = getApp();
 import restApi from '../../static/lib/restapi';
+import {formatDate} from '../../static/lib/utils';
 Page({
 	data : {
         csteam: null,
@@ -135,7 +136,7 @@ Page({
 		let conversations = content.conversations;
 		conversations && conversations.map((item) => {
 			// 格式化时间格式
-			item.lastMessage.date = app.formatDate(item.lastMessage.timestamp)
+			item.lastMessage.date = formatDate(item.lastMessage.timestamp)
 		});
 		this.setData({
 			conversations : conversations,

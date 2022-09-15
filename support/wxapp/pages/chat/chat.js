@@ -1,5 +1,6 @@
 import EmojiDecoder from '../../static/lib/EmojiDecoder';
 import restApi from '../../static/lib/restapi';
+import {formatDate} from '../../static/lib/utils';
 
 let emojiUrl = 'https://imgcache.qq.com/open/qcloud/tim/assets/emoji/';
 let emojiMap = {
@@ -394,11 +395,11 @@ Page({
         messages.forEach((message, index) => {
             if (index === 0) {
                 // 当页面只有一条消息时，显示发送时间
-                message.showTime = app.formatDate(message.timestamp);
+                message.showTime = formatDate(message.timestamp);
             } else {
                 // 当前消息与上条消息的发送时间进行比对，超过5分钟则显示当前消息的发送时间
                 if (message.timestamp - messages[index - 1].timestamp > 5 * 60 * 1000) {
-                    message.showTime = app.formatDate(message.timestamp);
+                    message.showTime = formatDate(message.timestamp);
                 }
             }
             if (message.type === 'text') {
