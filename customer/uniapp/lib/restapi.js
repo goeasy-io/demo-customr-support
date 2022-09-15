@@ -55,7 +55,7 @@ class RestApi {
             goods: ['/static/images/goods3-1.jpg', '/static/images/goods3-2.jpg', '/static/images/goods3-3.jpg',]
         }
     ];
-    // 客服
+    // 客服代表
     agents = [
         {
             id: '6ec2c1df-24f4-4c33-a16c-d0c9de69ac09',
@@ -147,6 +147,10 @@ class RestApi {
     }
 
     findAgents() {
+        this.agents.forEach((agent) => {
+            let shop = this.shops.find((shop) => shop.id === agent.shopId);
+            agent.shop = shop;
+        })
         return this.agents;
     }
 

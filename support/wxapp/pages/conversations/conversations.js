@@ -19,15 +19,15 @@ Page({
 		}
 	},
 	onShow () {
-        let currentAgent = JSON.parse(wx.getStorageSync('currentAgent'));
-		if(!currentAgent){
+		if(!wx.getStorageSync('currentAgent')){
 			wx.redirectTo({
 				url : '../login/login'
 			});
 			return;
         }
-        let csteam = wx.goEasy.im.csteam(currentAgent.shopId);
-        let shop = restApi.findShopById(currentAgent.shopId);
+        const currentAgent = JSON.parse(wx.getStorageSync('currentAgent'));
+        const csteam = wx.goEasy.im.csteam(currentAgent.shopId);
+        const shop = restApi.findShopById(currentAgent.shopId);
 		this.setData({
             csteam: csteam,
             currentAgent : currentAgent,
@@ -184,26 +184,31 @@ Page({
 		this.closeMask();
 	},
 	removeConversation(){
-		// todo:confirm
-		wx.showLoading({title: '加载中...',mask: true});
-		let failedDescription = '删除失败';
-        let conversation = this.data.actionPopup.conversation;
-		wx.goEasy.im.removeConversation({
-			conversation: conversation,
-			onSuccess: function () {
-				wx.hideLoading();
-				console.log('删除会话成功');
-			},
-			onFailed: function (error) {
-                wx.hideLoading();
-                wx.showToast({
-                    title: failedDescription,
-                    duration: 3000,
-                    icon: 'none'
+        wx.showModal({
+            content: '确定要删除这条会话吗？',
+            success: (res) => {
+              if (res.confirm) {
+                wx.showLoading({title: '加载中...',mask: true});
+                let conversation = this.data.actionPopup.conversation;
+                wx.goEasy.im.removeConversation({
+                    conversation: conversation,
+                    onSuccess: function () {
+                        wx.hideLoading();
+                        console.log('删除会话成功');
+                    },
+                    onFailed: function (error) {
+                        wx.hideLoading();
+                        wx.showToast({
+                            title: '删除失败',
+                            duration: 3000,
+                            icon: 'none'
+                        });
+                    },
                 });
-			},
-		});
-		this.closeMask();
+              }
+            }
+        })
+        this.closeMask();
 	},
 	chat (e) {
         const conversation = e.currentTarget.dataset.conversation;

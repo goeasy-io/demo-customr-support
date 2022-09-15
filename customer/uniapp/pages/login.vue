@@ -42,10 +42,10 @@
       ></image>
     </view>
 
-    <div v-show="errorVisible" class="alert-box">
+    <view v-show="errorVisible" class="alert-box">
       <image src="/static/images/login-alert-icon.png"></image>
       <span>请输入正确的用户名和密码</span>
-    </div>
+    </view>
     <button class="login-btn" @click="login">登录</button>
   </view>
 </template>
@@ -85,8 +85,10 @@
         this.password.visible = !this.password.visible;
       },
       login() {
-        if (this.customerSelector.selectedCustomer !== null && this.password.value.trim() !== '') {
-          let customer = restApi.findCustomer(this.customerSelector.selectedCustomer.name, this.password.value);
+        const selectedCustomer = this.customerSelector.selectedCustomer;
+        const password = this.password.value;
+        if (selectedCustomer && password.trim() !== '') {
+          let customer = restApi.findCustomer(selectedCustomer.name, password);
           if (customer) {
             uni.setStorageSync('currentCustomer', customer);
             uni.switchTab({

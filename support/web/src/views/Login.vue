@@ -86,8 +86,10 @@
         this.password.visible = !this.password.visible;
       },
       login() {
-        if (this.agentSelector.selectedAgent !== null && this.password.value.trim() !== '') {
-          let agent = restApi.findAgent(this.agentSelector.selectedAgent.name, this.password.value);
+        const selectedAgent = this.agentSelector.selectedAgent;
+        const password = this.password.value;
+        if (selectedAgent !== null && password.trim() !== '') {
+          let agent = restApi.findAgent(selectedAgent.name, password);
           if (agent) {
             localStorage.setItem('currentAgent', JSON.stringify(agent));
             this.$router.push({path: './conversations'});

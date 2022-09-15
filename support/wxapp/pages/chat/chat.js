@@ -68,7 +68,6 @@ Page({
         });
         wx.setNavigationBarTitle({title: customer.name});
 
-        this.markMessageAsRead();
         this.liveSession();
         this.loadHistoryMessage(true);
     },
@@ -86,10 +85,11 @@ Page({
         this.data.csteam.liveSession({
             customerId: this.data.customer.id,
             onSuccess: () => {
-                console.log('get successfully customer status');
+                console.log('live successfully');
+                this.markMessageAsRead();
             },
             onFailed: (error) => {
-                console.log('failed to get customer status:', error);
+                console.log('failed to live session:', error);
             },
             onStatusUpdated: (status) => {
                 this.setData({
