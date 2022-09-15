@@ -7378,11 +7378,6 @@
 	  exports.__esModule = true;
 
 	  function noop() {
-	    var params = [];
-
-	    for (var _i = 0; _i < arguments.length; _i++) {
-	      params[_i] = arguments[_i];
-	    }
 	  }
 
 	  exports["default"] = noop;
@@ -8680,7 +8675,7 @@
 	var RemoteEvents_1$2 = RemoteEvents;
 	var validator_utils_1$9 = validatorUtils;
 	var GNS_1 = GNS$1;
-	var g_1$h = g;
+	var g_1$i = g;
 
 	var Subscriber =
 	/** @class */
@@ -8708,8 +8703,8 @@
 	  }
 
 	  Subscriber.prototype.initialGoEasySocket = function () {
-	    g_1$h.G.s().addMessageObserver(RemoteEvents_1$2.RemoteEvents.message, this.onNewMessage.bind(this));
-	    g_1$h.G.s().addExpiredReconnectedObserver(this.onExpiredReconnected.bind(this));
+	    g_1$i.G.s().addMessageObserver(RemoteEvents_1$2.RemoteEvents.message, this.onNewMessage.bind(this));
+	    g_1$i.G.s().addExpiredReconnectedObserver(this.onExpiredReconnected.bind(this));
 	  };
 
 	  Subscriber.prototype.resubscribe = function () {
@@ -8738,7 +8733,7 @@
 	    console.log('Subscriber -> onNewMessage: ', message); //收到消息
 
 	    if (message.a) {
-	      g_1$h.G.s().sendAck('ack', {
+	      g_1$i.G.s().sendAck('ack', {
 	        "publishGuid": message.i
 	      });
 	    }
@@ -8837,7 +8832,7 @@
 	      success: success,
 	      fail: fail
 	    });
-	    g_1$h.G.s().emit(rocket);
+	    g_1$i.G.s().emit(rocket);
 	  }; //取消订阅
 
 
@@ -8882,7 +8877,7 @@
 	      success: success,
 	      fail: fail
 	    });
-	    g_1$h.G.s().emit(rocket);
+	    g_1$i.G.s().emit(rocket);
 	  };
 
 	  Subscriber.prototype.removeChannel = function (channel) {
@@ -8935,7 +8930,7 @@
 	var SocketTimeout_1$6 = SocketTimeout;
 	var RocketTypes_1$8 = RocketTypes;
 	var validator_utils_1$8 = validatorUtils;
-	var g_1$g = g;
+	var g_1$h = g;
 
 	var History$1 =
 	/** @class */
@@ -8977,7 +8972,7 @@
 	      success: ackCallback,
 	      fail: failCallback
 	    });
-	    g_1$g.G.s().emit(rocket);
+	    g_1$h.G.s().emit(rocket);
 	  };
 
 	  return History;
@@ -9018,7 +9013,7 @@
 	var RocketTypes_1$7 = RocketTypes;
 	var RemoteEvents_1$1 = RemoteEvents;
 	var validator_utils_1$7 = validatorUtils;
-	var g_1$f = g;
+	var g_1$g = g;
 
 	var PresenceSubscriber =
 	/** @class */
@@ -9028,8 +9023,8 @@
 	  }
 
 	  PresenceSubscriber.prototype.initialGoEasySocket = function () {
-	    g_1$f.G.s().addMessageObserver(RemoteEvents_1$1.RemoteEvents.message, this.onNewMessage.bind(this));
-	    g_1$f.G.s().addExpiredReconnectedObserver(this.onExpiredReconnected.bind(this));
+	    g_1$g.G.s().addMessageObserver(RemoteEvents_1$1.RemoteEvents.message, this.onNewMessage.bind(this));
+	    g_1$g.G.s().addExpiredReconnectedObserver(this.onExpiredReconnected.bind(this));
 	  };
 
 	  PresenceSubscriber.prototype.resubscribe = function () {
@@ -9148,7 +9143,7 @@
 	      success: success,
 	      fail: fail
 	    });
-	    g_1$f.G.s().emit(rocket);
+	    g_1$g.G.s().emit(rocket);
 	  };
 
 	  PresenceSubscriber.prototype.unsubscribePresence = function (options) {
@@ -9197,7 +9192,7 @@
 	        });
 	      }
 	    });
-	    g_1$f.G.s().emit(rocket);
+	    g_1$g.G.s().emit(rocket);
 	  };
 
 	  PresenceSubscriber.prototype.removeChannel = function (channel) {
@@ -9250,7 +9245,7 @@
 	var SocketTimeout_1$4 = SocketTimeout;
 	var RocketTypes_1$6 = RocketTypes;
 	var validator_utils_1$6 = validatorUtils;
-	var g_1$e = g;
+	var g_1$f = g;
 
 	var HereNow =
 	/** @class */
@@ -9317,7 +9312,7 @@
 	      success: ackCallback,
 	      fail: failCallback
 	    });
-	    g_1$e.G.s().emit(rocket);
+	    g_1$f.G.s().emit(rocket);
 	  };
 
 	  HereNow.prototype.byUserId = function (options) {
@@ -9372,7 +9367,7 @@
 	      success: ackCallback,
 	      fail: failCallback
 	    });
-	    g_1$e.G.s().emit(rocket);
+	    g_1$f.G.s().emit(rocket);
 	  };
 
 	  return HereNow;
@@ -9420,7 +9415,7 @@
 	var callback_utils_1$7 = callbackUtils;
 	var NetworkStatus_1 = NetworkStatus;
 	var ModuleTypes_1$1 = ModuleTypes;
-	var g_1$d = g;
+	var g_1$e = g;
 
 	var PubSub =
 	/** @class */
@@ -9458,7 +9453,7 @@
 
 
 	  PubSub.prototype.validateOptions = function () {
-	    if (!g_1$d.G.s() || g_1$d.G.s().getStatus() !== NetworkStatus_1.NetworkStatus.CONNECTED) {
+	    if (!g_1$e.G.s() || g_1$e.G.s().getStatus() !== NetworkStatus_1.NetworkStatus.CONNECTED) {
 	      throw Error('Please call connect() first.');
 	    }
 
@@ -9582,7 +9577,7 @@
 
 	apiEventCenter.__esModule = true;
 	apiEventCenter.ApiEventCenter = void 0;
-	var im_api_events_1$2 = imApiEvents;
+	var im_api_events_1$3 = imApiEvents;
 	var rtc_api_events_1 = rtcApiEvents;
 	var Emitter$1 = componentEmitter.exports;
 	var Calibrator_1$b = Calibrator;
@@ -9600,7 +9595,7 @@
 	      throw Error('event require a string.');
 	    }
 
-	    if (!Calibrator_1$b["default"].isDef(im_api_events_1$2.ImApiEvents[apiEvent]) && !Calibrator_1$b["default"].isDef(rtc_api_events_1.RTCApiEvents[apiEvent])) {
+	    if (!Calibrator_1$b["default"].isDef(im_api_events_1$3.ImApiEvents[apiEvent]) && !Calibrator_1$b["default"].isDef(rtc_api_events_1.RTCApiEvents[apiEvent])) {
 	      throw Error('An event that is not defined');
 	    }
 
@@ -9651,7 +9646,7 @@
 	  exports["default"] = AbstractFileUploader;
 	})(AbstractFileUploader);
 
-	var __extends$j = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$k = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -9686,7 +9681,7 @@
 	var UniAppFileUploader =
 	/** @class */
 	function (_super) {
-	  __extends$j(UniAppFileUploader, _super);
+	  __extends$k(UniAppFileUploader, _super);
 
 	  function UniAppFileUploader() {
 	    return _super.call(this) || this;
@@ -9754,7 +9749,7 @@
 
 	var WXFileUploader$1 = {};
 
-	var __extends$i = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$j = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -9789,7 +9784,7 @@
 	var WXFileUploader =
 	/** @class */
 	function (_super) {
-	  __extends$i(WXFileUploader, _super);
+	  __extends$j(WXFileUploader, _super);
 
 	  function WXFileUploader() {
 	    return _super !== null && _super.apply(this, arguments) || this;
@@ -9855,7 +9850,7 @@
 
 	var HtmlFileUploader$1 = {};
 
-	var __extends$h = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$i = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -9890,7 +9885,7 @@
 	var HtmlFileUploader =
 	/** @class */
 	function (_super) {
-	  __extends$h(HtmlFileUploader, _super);
+	  __extends$i(HtmlFileUploader, _super);
 
 	  function HtmlFileUploader() {
 	    return _super.call(this) || this;
@@ -10075,7 +10070,7 @@
 	  })(exports.MessageType || (exports.MessageType = {}));
 	})(MessageType);
 
-	var __extends$g = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$h = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -10112,7 +10107,7 @@
 	var AliYunOSSRequestBuilder =
 	/** @class */
 	function (_super) {
-	  __extends$g(AliYunOSSRequestBuilder, _super);
+	  __extends$h(AliYunOSSRequestBuilder, _super);
 
 	  function AliYunOSSRequestBuilder() {
 	    return _super.call(this) || this;
@@ -10161,7 +10156,7 @@
 
 	var QiNiuYunOSSRequestBuilder$1 = {};
 
-	var __extends$f = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$g = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -10197,7 +10192,7 @@
 	var QiNiuYunOSSRequestBuilder =
 	/** @class */
 	function (_super) {
-	  __extends$f(QiNiuYunOSSRequestBuilder, _super);
+	  __extends$g(QiNiuYunOSSRequestBuilder, _super);
 
 	  function QiNiuYunOSSRequestBuilder() {
 	    return _super.call(this) || this;
@@ -10389,7 +10384,7 @@
 
 	AbstractPayloadImprover$1.AbstractPayloadImprover = AbstractPayloadImprover;
 
-	var __extends$e = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$f = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -10426,7 +10421,7 @@
 	var FileMessagePayloadImprover =
 	/** @class */
 	function (_super) {
-	  __extends$e(FileMessagePayloadImprover, _super);
+	  __extends$f(FileMessagePayloadImprover, _super);
 
 	  function FileMessagePayloadImprover() {
 	    var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -10479,7 +10474,7 @@
 
 	var VideoMessagePayloadImprover$1 = {};
 
-	var __extends$d = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$e = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -10514,7 +10509,7 @@
 	var VideoMessagePayloadImprover =
 	/** @class */
 	function (_super) {
-	  __extends$d(VideoMessagePayloadImprover, _super);
+	  __extends$e(VideoMessagePayloadImprover, _super);
 
 	  function VideoMessagePayloadImprover() {
 	    return _super !== null && _super.apply(this, arguments) || this;
@@ -10680,6 +10675,10 @@
 	    this.eventDriver.on(eventname, callback);
 	  };
 
+	  GoEasyEventCenter.off = function (eventname, callback) {
+	    this.eventDriver.off(eventname, callback);
+	  };
+
 	  GoEasyEventCenter.once = function (eventname, callback) {
 	    this.eventDriver.once(eventname, callback);
 	  };
@@ -10712,6 +10711,7 @@
 	    IM_INTERNAL_EVENTS["CS_ACCEPTED"] = "CS_ACCEPTED";
 	    IM_INTERNAL_EVENTS["CS_ENDED"] = "CS_ENDED";
 	    IM_INTERNAL_EVENTS["CS_TRANSFER"] = "CS_TRANSFER";
+	    IM_INTERNAL_EVENTS["CS_AGENT_MESSAGE_RECEIVED"] = "CS_AGENT_MESSAGE_RECEIVED";
 	  })(exports.IM_INTERNAL_EVENTS || (exports.IM_INTERNAL_EVENTS = {}));
 	})(internalEvents);
 
@@ -10719,7 +10719,7 @@
 
 	AbstractMessage$1.__esModule = true;
 	AbstractMessage$1.AbstractMessage = void 0;
-	var g_1$c = g;
+	var g_1$d = g;
 
 	var AbstractMessage =
 	/** @class */
@@ -10731,7 +10731,7 @@
 	  };
 
 	  AbstractMessage.prototype.isOtherSent = function () {
-	    return this.senderId !== g_1$c.G.u();
+	    return this.senderId !== g_1$d.G.u();
 	  };
 
 	  AbstractMessage.prototype.getToData = function () {
@@ -11161,9 +11161,9 @@
 
 	Target$1.__esModule = true;
 	Target$1.Target = void 0;
-	var GoEasy_1$d = GoEasy$1;
+	var GoEasy_1$e = GoEasy$1;
 	var Calibrator_1$a = Calibrator;
-	var g_1$b = g;
+	var g_1$c = g;
 	/**
 	 * target.id不同的场景表达不同的含义:
 	 *  cs场景：customer端id为teamId，agent端id为customerId
@@ -11185,7 +11185,7 @@
 	  }
 
 	  Target.prototype.toString = function () {
-	    if (GoEasy_1$d.Scene.PRIVATE === this.scene || GoEasy_1$d.Scene.GROUP === this.scene) {
+	    if (GoEasy_1$e.Scene.PRIVATE === this.scene || GoEasy_1$e.Scene.GROUP === this.scene) {
 	      return this.scene + "#" + this.id;
 	    }
 
@@ -11193,9 +11193,9 @@
 	  };
 
 	  Target.prototype.customerId = function () {
-	    if (GoEasy_1$d.Scene.CS === this.scene) {
+	    if (GoEasy_1$e.Scene.CS === this.scene) {
 	      if (this.id === this.teamId) {
-	        return g_1$b.G.u();
+	        return g_1$c.G.u();
 	      } else {
 	        return this.id;
 	      }
@@ -11211,13 +11211,13 @@
 	    var id;
 	    var scene = message.scene();
 
-	    if (scene === GoEasy_1$d.Scene.PRIVATE) {
+	    if (scene === GoEasy_1$e.Scene.PRIVATE) {
 	      var senderId = message.senderId;
 	      var receiverId = message.targetId();
-	      id = g_1$b.G.u() === senderId ? receiverId : senderId;
-	    } else if (scene === GoEasy_1$d.Scene.GROUP) {
+	      id = g_1$c.G.u() === senderId ? receiverId : senderId;
+	    } else if (scene === GoEasy_1$e.Scene.GROUP) {
 	      id = message.targetId();
-	    } else if (scene === GoEasy_1$d.Scene.CS) {
+	    } else if (scene === GoEasy_1$e.Scene.CS) {
 	      id = message.targetId();
 	      var csMessage = message;
 	      teamId = csMessage.teamId;
@@ -11238,21 +11238,21 @@
 	    var teamId = event.teamId;
 	    var targetId;
 
-	    if (scene === GoEasy_1$d.Scene.PRIVATE) {
-	      targetId = g_1$b.G.u() === markerId ? receiverId : markerId;
-	    } else if (scene === GoEasy_1$d.Scene.GROUP) {
+	    if (scene === GoEasy_1$e.Scene.PRIVATE) {
+	      targetId = g_1$c.G.u() === markerId ? receiverId : markerId;
+	    } else if (scene === GoEasy_1$e.Scene.GROUP) {
 	      targetId = receiverId;
-	    } else if (scene === GoEasy_1$d.Scene.CS) {
+	    } else if (scene === GoEasy_1$e.Scene.CS) {
 	      if (receiverId === teamId) {
 	        // customer mark
-	        if (markerId === g_1$b.G.u()) {
+	        if (markerId === g_1$c.G.u()) {
 	          targetId = teamId;
 	        } else {
 	          targetId = markerId;
 	        }
 	      } else {
 	        // agent mark
-	        if (markerId === g_1$b.G.u()) {
+	        if (markerId === g_1$c.G.u()) {
 	          targetId = receiverId;
 	        } else {
 	          targetId = teamId;
@@ -11267,10 +11267,10 @@
 	    var scene = event.scene;
 	    var deleterId = event.deleterId;
 
-	    if (scene === GoEasy_1$d.Scene.PRIVATE) {
-	      var targetId = g_1$b.G.u() === deleterId ? event.targetId : deleterId;
+	    if (scene === GoEasy_1$e.Scene.PRIVATE) {
+	      var targetId = g_1$c.G.u() === deleterId ? event.targetId : deleterId;
 	      return new Target(scene, targetId);
-	    } else if (scene === GoEasy_1$d.Scene.GROUP) {
+	    } else if (scene === GoEasy_1$e.Scene.GROUP) {
 	      return new Target(scene, event.targetId);
 	    }
 	  };
@@ -11283,9 +11283,9 @@
 	  Target.byRemoteRecallEvent = function (event) {
 	    var targetId;
 
-	    if (event.scene === GoEasy_1$d.Scene.PRIVATE) {
+	    if (event.scene === GoEasy_1$e.Scene.PRIVATE) {
 	      var ids = event.conversationId.split(":", 2);
-	      targetId = ids[0] === g_1$b.G.u() ? ids[1] : ids[0];
+	      targetId = ids[0] === g_1$c.G.u() ? ids[1] : ids[0];
 	    } else {
 	      targetId = event.conversationId;
 	    }
@@ -11300,8 +11300,8 @@
 
 	DeleteMessageRequest$1.__esModule = true;
 	DeleteMessageRequest$1.DeleteMessageRequest = void 0;
-	var GoEasy_1$c = GoEasy$1;
-	var Target_1$3 = Target$1;
+	var GoEasy_1$d = GoEasy$1;
+	var Target_1$4 = Target$1;
 
 	var DeleteMessageRequest =
 	/** @class */
@@ -11311,11 +11311,11 @@
 
 	    this.times = new Array();
 	    var message = messages[0];
-	    var target = Target_1$3.Target.byIMMessage(message);
+	    var target = Target_1$4.Target.byIMMessage(message);
 	    this.scene = target.scene;
 	    this.targetId = target.id;
 	    messages.forEach(function (message) {
-	      if (message.status === GoEasy_1$c.MessageStatus.SUCCESS) {
+	      if (message.status === GoEasy_1$d.MessageStatus.SUCCESS) {
 	        //未成功的消息，不要发到服务端
 	        _this.times.push(message.timestamp);
 	      }
@@ -11403,7 +11403,7 @@
 
 	RecallMessageRequest$1.__esModule = true;
 	RecallMessageRequest$1.RecallMessageRequest = void 0;
-	var Target_1$2 = Target$1;
+	var Target_1$3 = Target$1;
 
 	var RecallMessageRequest =
 	/** @class */
@@ -11413,7 +11413,7 @@
 
 	    this.times = new Array();
 	    var message = messages[0];
-	    var target = Target_1$2.Target.byIMMessage(message);
+	    var target = Target_1$3.Target.byIMMessage(message);
 	    this.scene = target.scene;
 	    this.targetId = target.id;
 	    messages.forEach(function (message) {
@@ -11567,7 +11567,7 @@
 
 	var PrivateMessage$1 = {};
 
-	var __extends$c = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$d = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -11598,12 +11598,12 @@
 	PrivateMessage$1.__esModule = true;
 	PrivateMessage$1.PrivateMessage = void 0;
 	var AbstractMessage_1$2 = AbstractMessage$1;
-	var GoEasy_1$b = GoEasy$1;
+	var GoEasy_1$c = GoEasy$1;
 
 	var PrivateMessage =
 	/** @class */
 	function (_super) {
-	  __extends$c(PrivateMessage, _super);
+	  __extends$d(PrivateMessage, _super);
 
 	  function PrivateMessage() {
 	    var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -11613,7 +11613,7 @@
 	  }
 
 	  PrivateMessage.prototype.scene = function () {
-	    return GoEasy_1$b.Scene.PRIVATE;
+	    return GoEasy_1$c.Scene.PRIVATE;
 	  };
 
 	  PrivateMessage.prototype.targetId = function () {
@@ -11627,7 +11627,7 @@
 
 	var GroupMessage$1 = {};
 
-	var __extends$b = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$c = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -11658,12 +11658,12 @@
 	GroupMessage$1.__esModule = true;
 	GroupMessage$1.GroupMessage = void 0;
 	var AbstractMessage_1$1 = AbstractMessage$1;
-	var GoEasy_1$a = GoEasy$1;
+	var GoEasy_1$b = GoEasy$1;
 
 	var GroupMessage =
 	/** @class */
 	function (_super) {
-	  __extends$b(GroupMessage, _super);
+	  __extends$c(GroupMessage, _super);
 
 	  function GroupMessage() {
 	    return _super !== null && _super.apply(this, arguments) || this;
@@ -11672,7 +11672,7 @@
 
 
 	  GroupMessage.prototype.scene = function () {
-	    return GoEasy_1$a.Scene.GROUP;
+	    return GoEasy_1$b.Scene.GROUP;
 	  };
 
 	  GroupMessage.prototype.targetId = function () {
@@ -11686,7 +11686,7 @@
 
 	var csMessage = {};
 
-	var __extends$a = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$b = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -11717,13 +11717,13 @@
 	csMessage.__esModule = true;
 	csMessage.CSMessage = void 0;
 	var AbstractMessage_1 = AbstractMessage$1;
-	var GoEasy_1$9 = GoEasy$1;
-	var g_1$a = g;
+	var GoEasy_1$a = GoEasy$1;
+	var g_1$b = g;
 
 	var CSMessage =
 	/** @class */
 	function (_super) {
-	  __extends$a(CSMessage, _super);
+	  __extends$b(CSMessage, _super);
 
 	  function CSMessage() {
 	    var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -11733,7 +11733,7 @@
 	  }
 
 	  CSMessage.prototype.scene = function () {
-	    return GoEasy_1$9.Scene.CS;
+	    return GoEasy_1$a.Scene.CS;
 	  };
 	  /**
 	   * 当前用户是customer，返回teamId
@@ -11742,7 +11742,7 @@
 
 
 	  CSMessage.prototype.targetId = function () {
-	    if (g_1$a.G.u() === this.customerId()) {
+	    if (g_1$b.G.u() === this.customerId()) {
 	      return this.teamId;
 	    } else {
 	      return this.customerId();
@@ -11764,8 +11764,8 @@
 
 
 	  CSMessage.prototype.isOtherSent = function () {
-	    if (g_1$a.G.u() === this.customerId()) {
-	      return this.senderId !== g_1$a.G.u();
+	    if (g_1$b.G.u() === this.customerId()) {
+	      return this.senderId !== g_1$b.G.u();
 	    } else {
 	      return this.senderId === this.customerId();
 	    }
@@ -11792,12 +11792,12 @@
 
 	remoteAbbrMessageBuilder.__esModule = true;
 	remoteAbbrMessageBuilder.RemoteAbbrMessageBuilder = void 0;
-	var GoEasy_1$8 = GoEasy$1;
+	var GoEasy_1$9 = GoEasy$1;
 	var PrivateMessage_1$1 = PrivateMessage$1;
 	var GroupMessage_1$1 = GroupMessage$1;
 	var cs_message_1$1 = csMessage;
 	var Calibrator_1$9 = Calibrator;
-	var g_1$9 = g;
+	var g_1$a = g;
 	var cs_message_type_1$3 = csMessageType;
 
 	var RemoteAbbrMessageBuilder =
@@ -11809,22 +11809,22 @@
 	    var message;
 	    var scene = remoteAbbrMessage.t;
 
-	    if (scene === GoEasy_1$8.Scene.PRIVATE) {
+	    if (scene === GoEasy_1$9.Scene.PRIVATE) {
 	      message = new PrivateMessage_1$1.PrivateMessage();
 	      message.read = false;
 	      message.receiverId = remoteAbbrMessage.r;
-	    } else if (scene === GoEasy_1$8.Scene.GROUP) {
+	    } else if (scene === GoEasy_1$9.Scene.GROUP) {
 	      message = new GroupMessage_1$1.GroupMessage();
 	      message.groupId = remoteAbbrMessage.r;
 	      message.senderData = remoteAbbrMessage.d ? JSON.parse(remoteAbbrMessage.d) : {};
-	    } else if (scene === GoEasy_1$8.Scene.CS) {
+	    } else if (scene === GoEasy_1$9.Scene.CS) {
 	      message = new cs_message_1$1.CSMessage();
 	      message.to = remoteAbbrMessage.r;
 	      message.teamId = remoteAbbrMessage.tid;
 	      message.senderData = remoteAbbrMessage.d ? JSON.parse(remoteAbbrMessage.d) : {};
 	      message.accepted = remoteAbbrMessage.accepted;
 
-	      if (message.customerId() !== g_1$9.G.u()) {
+	      if (message.customerId() !== g_1$a.G.u()) {
 	        message.sessionId = remoteAbbrMessage.sessionId;
 	      }
 	    }
@@ -11836,7 +11836,7 @@
 	    var payload = remoteAbbrMessage.p;
 
 	    if (Calibrator_1$9["default"].isDef(payload)) {
-	      if (scene === GoEasy_1$8.Scene.CS && message.type === cs_message_type_1$3.CSMessageType.TRANSFER) {
+	      if (scene === GoEasy_1$9.Scene.CS && message.type === cs_message_type_1$3.CSMessageType.TRANSFER) {
 	        var jsonPayload = JSON.parse(payload);
 	        jsonPayload.transferTo.data = JSON.parse(jsonPayload.transferTo.data);
 	        message.payload = jsonPayload;
@@ -11846,7 +11846,7 @@
 	    }
 
 	    message.recalled = remoteAbbrMessage.rc;
-	    message.status = GoEasy_1$8.MessageStatus.SUCCESS;
+	    message.status = GoEasy_1$9.MessageStatus.SUCCESS;
 	    return message;
 	  };
 
@@ -12000,13 +12000,13 @@
 
 	remoteHistory.__esModule = true;
 	remoteHistory.RemoteHistory = void 0;
-	var GoEasy_1$7 = GoEasy$1;
+	var GoEasy_1$8 = GoEasy$1;
 	var HistoryChangeQueryRequest_1 = HistoryChangeQueryRequest;
 	var Rocket_1$3 = Rocket;
 	var RocketTypes_1$5 = RocketTypes;
 	var Permission_1$3 = Permission;
 	var SocketTimeout_1$3 = SocketTimeout;
-	var g_1$8 = g;
+	var g_1$9 = g;
 	var ReadMessageMarkRequest_1 = ReadMessageMarkRequest$1;
 	var remote_abbr_message_builder_1$2 = remoteAbbrMessageBuilder;
 
@@ -12034,7 +12034,7 @@
 	          resolve(content);
 	        }
 	      });
-	      g_1$8.G.s().emit(rocket);
+	      g_1$9.G.s().emit(rocket);
 	    });
 	  };
 
@@ -12057,7 +12057,7 @@
 	          resolve(content);
 	        }
 	      });
-	      g_1$8.G.s().emit(rocket);
+	      g_1$9.G.s().emit(rocket);
 	    });
 	  };
 
@@ -12070,15 +12070,15 @@
 	    serverMessages.forEach(function (remoteAbbrMessage) {
 	      remoteAbbrMessage.t = scene;
 
-	      if (GoEasy_1$7.Scene.PRIVATE === scene) {
-	        remoteAbbrMessage.r = remoteAbbrMessage.s === g_1$8.G.u() ? targetId : g_1$8.G.u();
-	      } else if (GoEasy_1$7.Scene.GROUP === scene) {
+	      if (GoEasy_1$8.Scene.PRIVATE === scene) {
+	        remoteAbbrMessage.r = remoteAbbrMessage.s === g_1$9.G.u() ? targetId : g_1$9.G.u();
+	      } else if (GoEasy_1$8.Scene.GROUP === scene) {
 	        remoteAbbrMessage.r = targetId;
-	      } else if (GoEasy_1$7.Scene.CS === scene) {
+	      } else if (GoEasy_1$8.Scene.CS === scene) {
 	        var customerId = target.customerId();
 	        var teamId = target.teamId;
 
-	        if (customerId === g_1$8.G.u()) {
+	        if (customerId === g_1$9.G.u()) {
 	          remoteAbbrMessage.r = teamId;
 	        } else {
 	          remoteAbbrMessage.r = customerId;
@@ -12113,7 +12113,7 @@
 	              reject(err);
 	            }
 	          });
-	          g_1$8.G.s().emit(rocket);
+	          g_1$9.G.s().emit(rocket);
 	        })];
 	      });
 	    });
@@ -12130,7 +12130,7 @@
 	UserOffsets$1.__esModule = true;
 	UserOffsets$1.UserOffsets = void 0;
 	var Calibrator_1$8 = Calibrator;
-	var g_1$7 = g;
+	var g_1$8 = g;
 
 	var UserOffsets =
 	/** @class */
@@ -12140,7 +12140,7 @@
 
 	    this.markingTime = 0; // 用于mark异步请求(是否多次mark)
 
-	    this.userId = g_1$7.G.u();
+	    this.userId = g_1$8.G.u();
 	  }
 
 	  UserOffsets.prototype.updateOffset = function (userId, offset) {
@@ -12220,8 +12220,8 @@
 
 	unreadamountMaxmessageChangeDetector.__esModule = true;
 	unreadamountMaxmessageChangeDetector.UnreadAmountMaxMessageChangeDetector = void 0;
-	var goeasy_event_center_1$5 = goeasyEventCenter;
-	var internal_events_1$5 = internalEvents;
+	var goeasy_event_center_1$6 = goeasyEventCenter;
+	var internal_events_1$6 = internalEvents;
 
 	var UnreadAmountMaxMessageChangeDetector =
 	/** @class */
@@ -12274,9 +12274,9 @@
 	    }
 
 	    if (this.oldLastMessage !== newLastMessage || this.oldLastMessageRead !== newLastMessageRead || this.oldLastMessageRecalled !== newLastMessageRecalled || this.oldLastMessageStatus !== newLastMessageStatus) {
-	      goeasy_event_center_1$5.GoEasyEventCenter.fire(internal_events_1$5.IM_INTERNAL_EVENTS.MAX_MESSAGE_CHANGED, newLastMessage);
+	      goeasy_event_center_1$6.GoEasyEventCenter.fire(internal_events_1$6.IM_INTERNAL_EVENTS.MAX_MESSAGE_CHANGED, newLastMessage);
 	    } else if (this.oldUnreadAmount !== newUnreadAmount) {
-	      goeasy_event_center_1$5.GoEasyEventCenter.fire(internal_events_1$5.IM_INTERNAL_EVENTS.UNREAD_AMOUNT_CHANGED, this.history.target);
+	      goeasy_event_center_1$6.GoEasyEventCenter.fire(internal_events_1$6.IM_INTERNAL_EVENTS.UNREAD_AMOUNT_CHANGED, this.history.target);
 	    }
 	  };
 
@@ -13276,10 +13276,10 @@
 	var Calibrator_1$7 = Calibrator;
 	var cs_online_request_1 = csOnlineRequest;
 	var cs_offline_request_1 = csOfflineRequest;
-	var goeasy_event_center_1$4 = goeasyEventCenter;
-	var internal_events_1$4 = internalEvents;
+	var goeasy_event_center_1$5 = goeasyEventCenter;
+	var internal_events_1$5 = internalEvents;
 	var callback_utils_1$6 = callbackUtils;
-	var g_1$6 = g;
+	var g_1$7 = g;
 	var cs_agents_query_request_1 = csAgentsQueryRequest;
 	var RemoteEvents_1 = RemoteEvents;
 
@@ -13287,11 +13287,10 @@
 	/** @class */
 	function () {
 	  function AgentStatus() {
-	    this["synchronized"] = false;
-	    this.expired = true;
-	    g_1$6.G.s().addDisconnectedObserver(this.onDisconnected.bind(this));
-	    g_1$6.G.s().addConnectedObserver(this.onConnected.bind(this));
-	    g_1$6.G.s().addMessageObserver(RemoteEvents_1.RemoteEvents.CS_ONLINE_CHANGED, this.onlineChanged.bind(this));
+	    this["synchronized"] = true;
+	    g_1$7.G.s().addDisconnectedObserver(this.onDisconnected.bind(this));
+	    g_1$7.G.s().addConnectedObserver(this.onConnected.bind(this));
+	    g_1$7.G.s().addMessageObserver(RemoteEvents_1.RemoteEvents.CS_ONLINE_CHANGED, this.onlineChanged.bind(this));
 	  }
 
 	  AgentStatus.getInstance = function () {
@@ -13305,37 +13304,37 @@
 	  AgentStatus.prototype.queryTeams = function () {
 	    var _this = this;
 
-	    if (this.expired === false && this["synchronized"] === true) {
-	      return;
+	    if (!this.queryMyTeamPromise) {
+	      this.queryMyTeamPromise = new Promise(function (resolve, reject) {
+	        console.log('start query team.');
+	        var rocket = new Rocket_1$2["default"]({
+	          name: RocketTypes_1$4.RocketTypes.CS_MY_TEAMS,
+	          params: {},
+	          permission: Permission_1$2.Permission.READ,
+	          singleTimeout: SocketTimeout_1$2.SocketTimeout.commonQuerySingle,
+	          totalTimeout: SocketTimeout_1$2.SocketTimeout.commonQueryTotal,
+	          fail: function fail(err) {
+	            reject(err);
+	          },
+	          success: function success(res) {
+	            _this.teamIds = new Set(res.content);
+	            _this["synchronized"] = true;
+	            resolve(_this.teamIds);
+	          }
+	        });
+	        g_1$7.G.s().emit(rocket);
+	      });
 	    }
 
-	    return new Promise(function (resolve, reject) {
-	      var rocket = new Rocket_1$2["default"]({
-	        name: RocketTypes_1$4.RocketTypes.CS_MY_TEAMS,
-	        params: {},
-	        permission: Permission_1$2.Permission.READ,
-	        singleTimeout: SocketTimeout_1$2.SocketTimeout.commonQuerySingle,
-	        totalTimeout: SocketTimeout_1$2.SocketTimeout.commonQueryTotal,
-	        fail: function fail(err) {
-	          reject(err);
-	        },
-	        success: function success(res) {
-	          _this.teamIds = new Set(res.content);
-	          _this["synchronized"] = true;
-	          _this.expired = false;
-	          resolve();
-	        }
-	      });
-	      g_1$6.G.s().emit(rocket);
-	    });
+	    return this.queryMyTeamPromise;
 	  };
 
 	  AgentStatus.prototype.myTeams = function () {
-	    if (this.expired || this["synchronized"] === false) {
-	      throw 'teams is unavailable.';
+	    if (this["synchronized"] && this.queryMyTeamPromise) {
+	      return this.teamIds;
+	    } else {
+	      throw 'please query team first.';
 	    }
-
-	    return this.teamIds;
 	  };
 
 	  AgentStatus.prototype.isOnline = function (teamId, option) {
@@ -13350,7 +13349,7 @@
 	          case 1:
 	            _a.sent();
 
-	            callback_utils_1$6.CallbackUtils.onSuccess(option, this.myTeams().has(teamId));
+	            callback_utils_1$6.CallbackUtils.onSuccess(option, this.teamIds.has(teamId));
 	            return [2
 	            /*return*/
 	            ];
@@ -13383,10 +13382,10 @@
 	        _this.teamIds.add(teamId);
 
 	        callback_utils_1$6.CallbackUtils.onSuccess(option);
-	        goeasy_event_center_1$4.GoEasyEventCenter.fire(internal_events_1$4.IM_INTERNAL_EVENTS.CS_ONLINE_SUCCESS);
+	        goeasy_event_center_1$5.GoEasyEventCenter.fire(internal_events_1$5.IM_INTERNAL_EVENTS.CS_ONLINE_SUCCESS);
 	      }
 	    });
-	    g_1$6.G.s().emit(rocket);
+	    g_1$7.G.s().emit(rocket);
 	  };
 
 	  AgentStatus.prototype.offline = function (teamId, option) {
@@ -13406,10 +13405,10 @@
 	        _this.teamIds["delete"](teamId);
 
 	        callback_utils_1$6.CallbackUtils.onSuccess(option);
-	        goeasy_event_center_1$4.GoEasyEventCenter.fire(internal_events_1$4.IM_INTERNAL_EVENTS.CS_OFFLINE_SUCCESS);
+	        goeasy_event_center_1$5.GoEasyEventCenter.fire(internal_events_1$5.IM_INTERNAL_EVENTS.CS_OFFLINE_SUCCESS);
 	      }
 	    });
-	    g_1$6.G.s().emit(rocket);
+	    g_1$7.G.s().emit(rocket);
 	  };
 
 	  AgentStatus.prototype.agents = function (teamId, options) {
@@ -13430,7 +13429,7 @@
 	        callback_utils_1$6.CallbackUtils.onSuccess(options, res);
 	      }
 	    });
-	    g_1$6.G.s().emit(rocket);
+	    g_1$7.G.s().emit(rocket);
 	  };
 
 	  AgentStatus.prototype.onlineChanged = function (event) {
@@ -13442,36 +13441,16 @@
 	  };
 
 	  AgentStatus.prototype.onDisconnected = function () {
-	    this.expired = true;
-	    this.teamIds = new Set();
+	    this.queryMyTeamPromise = null;
+	    this.teamIds = null;
 	  }; //todo:类似的实现，比如PendingConversation会不会自动加载
 
 
 	  AgentStatus.prototype.onConnected = function () {
-	    return __awaiter$6(this, void 0, void 0, function () {
-	      return __generator$6(this, function (_a) {
-	        switch (_a.label) {
-	          case 0:
-	            if (!(this["synchronized"] && this.expired)) return [3
-	            /*break*/
-	            , 2];
-	            return [4
-	            /*yield*/
-	            , this.queryTeams()];
-
-	          case 1:
-	            _a.sent();
-
-	            this.expired = false;
-	            _a.label = 2;
-
-	          case 2:
-	            return [2
-	            /*return*/
-	            ];
-	        }
-	      });
-	    });
+	    if (this["synchronized"]) {
+	      //至少查询过一次，断网重连的时候，才有必要重新拉去
+	      this.queryMyTeamPromise = this.queryTeams();
+	    }
 	  };
 
 	  return AgentStatus;
@@ -13624,7 +13603,7 @@
 
 	liveSession.__esModule = true;
 	liveSession.LiveSession = void 0;
-	var GoEasy_1$6 = GoEasy$1;
+	var GoEasy_1$7 = GoEasy$1;
 	var live_session_request_1 = liveSessionRequest;
 	var validator_utils_1$5 = validatorUtils;
 	var Rocket_1$1 = Rocket;
@@ -13632,32 +13611,22 @@
 	var Permission_1$1 = Permission;
 	var SocketTimeout_1$1 = SocketTimeout;
 	var callback_utils_1$5 = callbackUtils;
-	var g_1$5 = g;
-	var goeasy_event_center_1$3 = goeasyEventCenter;
-	var internal_events_1$3 = internalEvents;
+	var g_1$6 = g;
+	var goeasy_event_center_1$4 = goeasyEventCenter;
+	var internal_events_1$4 = internalEvents;
 	var customer_status_1 = customerStatus;
 	var cs_message_type_1$2 = csMessageType;
-	var agent_status_1$1 = agentStatus;
+	var agent_status_1$2 = agentStatus;
 
 	var LiveSession =
 	/** @class */
 	function () {
 	  function LiveSession(teamId) {
-	    var _this = this;
-
 	    this.teamId = teamId;
-	    goeasy_event_center_1$3.GoEasyEventCenter.on(internal_events_1$3.IM_INTERNAL_EVENTS.MESSAGE_RECEIVED, function (message) {
-	      return _this.onMessageReceived(message);
-	    });
-	    goeasy_event_center_1$3.GoEasyEventCenter.on(internal_events_1$3.IM_INTERNAL_EVENTS.CS_ACCEPTED, function (message) {
-	      return _this.onMessageReceived(message);
-	    });
-	    goeasy_event_center_1$3.GoEasyEventCenter.on(internal_events_1$3.IM_INTERNAL_EVENTS.CS_ENDED, function (message) {
-	      return _this.onMessageReceived(message);
-	    });
-	    goeasy_event_center_1$3.GoEasyEventCenter.on(internal_events_1$3.IM_INTERNAL_EVENTS.CS_TRANSFER, function (message) {
-	      return _this.onMessageReceived(message);
-	    });
+	    goeasy_event_center_1$4.GoEasyEventCenter.on(internal_events_1$4.IM_INTERNAL_EVENTS.CS_AGENT_MESSAGE_RECEIVED, this.onMessageReceived);
+	    goeasy_event_center_1$4.GoEasyEventCenter.on(internal_events_1$4.IM_INTERNAL_EVENTS.CS_ACCEPTED, this.onMessageReceived);
+	    goeasy_event_center_1$4.GoEasyEventCenter.on(internal_events_1$4.IM_INTERNAL_EVENTS.CS_ENDED, this.onMessageReceived);
+	    goeasy_event_center_1$4.GoEasyEventCenter.on(internal_events_1$4.IM_INTERNAL_EVENTS.CS_TRANSFER, this.onMessageReceived);
 	  }
 
 	  LiveSession.live = function (teamId, options) {
@@ -13675,7 +13644,7 @@
 	            request = new live_session_request_1.LiveSessionRequest(teamId, customerId);
 	            return [4
 	            /*yield*/
-	            , agent_status_1$1.AgentStatus.getInstance().queryTeams()];
+	            , agent_status_1$2.AgentStatus.getInstance().queryTeams()];
 
 	          case 1:
 	            _a.sent();
@@ -13690,6 +13659,7 @@
 	                callback_utils_1$5.CallbackUtils.onFailed(options, err);
 	              },
 	              success: function success(res) {
+	                LiveSession.destroy();
 	                _this.session = new LiveSession(teamId);
 	                _this.session.liveOptions = options;
 	                _this.session.status = res.content.customerStatus;
@@ -13699,7 +13669,7 @@
 	                callback_utils_1$5.CallbackUtils.onSuccess(options);
 	              }
 	            });
-	            g_1$5.G.s().emit(rocket);
+	            g_1$6.G.s().emit(rocket);
 	            return [2
 	            /*return*/
 	            ];
@@ -13725,22 +13695,36 @@
 	          callback_utils_1$5.CallbackUtils.onFailed(options, err);
 	        },
 	        success: function success(res) {
-	          LiveSession.session = null;
+	          LiveSession.destroy();
 	          callback_utils_1$5.CallbackUtils.onSuccess(options);
 	        }
 	      });
-	      g_1$5.G.s().emit(rocket);
+	      g_1$6.G.s().emit(rocket);
+	    }
+	  };
+
+	  LiveSession.destroy = function () {
+	    var session = LiveSession.session;
+
+	    if (session) {
+	      goeasy_event_center_1$4.GoEasyEventCenter.off(internal_events_1$4.IM_INTERNAL_EVENTS.CS_AGENT_MESSAGE_RECEIVED, session.onMessageReceived);
+	      goeasy_event_center_1$4.GoEasyEventCenter.off(internal_events_1$4.IM_INTERNAL_EVENTS.CS_ACCEPTED, session.onMessageReceived);
+	      goeasy_event_center_1$4.GoEasyEventCenter.off(internal_events_1$4.IM_INTERNAL_EVENTS.CS_ENDED, session.onMessageReceived);
+	      goeasy_event_center_1$4.GoEasyEventCenter.off(internal_events_1$4.IM_INTERNAL_EVENTS.CS_TRANSFER, session.onMessageReceived);
+	      LiveSession.session = null;
 	    }
 	  };
 
 	  LiveSession.prototype.onMessageReceived = function (message) {
-	    if (message.scene() === GoEasy_1$6.Scene.CS && this.liveOptions) {
-	      var csMessage = message;
-	      var customerId = this.liveOptions.customerId;
+	    var self = LiveSession.session;
 
-	      if (this.teamId === csMessage.teamId && csMessage.customerId() === customerId) {
-	        this.tryUpdateStatus(csMessage);
-	        this.liveOptions.onNewMessage(csMessage);
+	    if (message.scene() === GoEasy_1$7.Scene.CS && self.liveOptions) {
+	      var csMessage = message;
+	      var customerId = self.liveOptions.customerId;
+
+	      if (self.teamId === csMessage.teamId && csMessage.customerId() === customerId) {
+	        self.tryUpdateStatus(csMessage);
+	        self.liveOptions.onNewMessage(csMessage);
 	      }
 	    }
 	  };
@@ -13758,7 +13742,7 @@
 	        newStatus.status = 'ACCEPTED';
 	        newStatus.start = message.payload.sessionStart;
 	        newStatus.sessionId = message.sessionId;
-	        newStatus.agent = new GoEasy_1$6.User(message.senderId, message.senderData);
+	        newStatus.agent = new GoEasy_1$7.User(message.senderId, message.senderData);
 	        break;
 
 	      case cs_message_type_1$2.CSMessageType.END:
@@ -14153,25 +14137,17 @@
 	    };
 
 	    AgentHistory.prototype.onMessageReceived = function (message) {
-	      return __awaiter(this, void 0, void 0, function () {
-	        return __generator(this, function (_a) {
-	          if (this.isMyTeam()) {
-	            if (!message.accepted || message.senderId !== g_1.G.u() && message.type === cs_message_type_1.CSMessageType.ACCEPT) {
-	              this.savePendingMessage(message);
-	            } else {
-	              this.saveAcceptedMessage(message);
-	            }
+	      if (this.isMyTeam()) {
+	        if (!message.accepted || message.senderId !== g_1.G.u() && message.type === cs_message_type_1.CSMessageType.ACCEPT) {
+	          this.savePendingMessage(message);
+	        } else {
+	          this.saveAcceptedMessage(message);
+	        }
 
-	            this.userOffsets.updateOffset(message.senderId, message.timestamp);
-	            this.increaseUnreadAmount(message);
-	            goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.MAX_MESSAGE_CHANGED, message);
-	          }
-
-	          return [2
-	          /*return*/
-	          ];
-	        });
-	      });
+	        this.userOffsets.updateOffset(message.senderId, message.timestamp);
+	        this.increaseUnreadAmount(message);
+	        goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.MAX_MESSAGE_CHANGED, message);
+	      }
 	    };
 
 	    AgentHistory.prototype.increaseUnreadAmount = function (message) {
@@ -14677,6 +14653,9 @@
 	      goeasy_event_center_1.GoEasyEventCenter.on(internal_events_1.IM_INTERNAL_EVENTS.MESSAGE_RECEIVED, function (message) {
 	        return _this.onMessageReceived(message);
 	      });
+	      goeasy_event_center_1.GoEasyEventCenter.on(internal_events_1.IM_INTERNAL_EVENTS.CS_AGENT_MESSAGE_RECEIVED, function (message) {
+	        return _this.onMessageReceived(message);
+	      });
 	      goeasy_event_center_1.GoEasyEventCenter.on(internal_events_1.IM_INTERNAL_EVENTS.CS_ACCEPTED, function (message) {
 	        return _this.onMessageReceived(message);
 	      });
@@ -14686,9 +14665,6 @@
 	      goeasy_event_center_1.GoEasyEventCenter.on(internal_events_1.IM_INTERNAL_EVENTS.CS_TRANSFER, function (message) {
 	        return _this.onMessageReceived(message);
 	      });
-	    };
-
-	    Histories.prototype.afterConnect = function () {
 	      g_1.G.s().addMessageObserver(RemoteEvents_1.RemoteEvents.IM_MSG_READ, this.onRemoteMarkRead.bind(this));
 	      g_1.G.s().addMessageObserver(RemoteEvents_1.RemoteEvents.IM_MSG_DELETED, this.onRemoteMessageDeleted.bind(this));
 	      g_1.G.s().addMessageObserver(RemoteEvents_1.RemoteEvents.IM_MSG_RECALLED, this.onRemoteMessageRecalled.bind(this));
@@ -15080,8 +15056,8 @@
 
 	Conversation$1.__esModule = true;
 	Conversation$1.Conversation = void 0;
-	var GoEasy_1$5 = GoEasy$1;
-	var histories_1$4 = histories;
+	var GoEasy_1$6 = GoEasy$1;
+	var histories_1$5 = histories;
 
 	var Conversation =
 	/** @class */
@@ -15096,13 +15072,13 @@
 	  Conversation.prototype.toDto = function () {
 	    var scene = this.target.scene;
 	    var targetId = this.target.id;
-	    var conversationDto = new GoEasy_1$5.ConversationDTO();
+	    var conversationDto = new GoEasy_1$6.ConversationDTO();
 
-	    if (scene === GoEasy_1$5.Scene.PRIVATE) {
+	    if (scene === GoEasy_1$6.Scene.PRIVATE) {
 	      conversationDto.userId = targetId;
-	    } else if (scene === GoEasy_1$5.Scene.GROUP) {
+	    } else if (scene === GoEasy_1$6.Scene.GROUP) {
 	      conversationDto.groupId = targetId;
-	    } else if (scene === GoEasy_1$5.Scene.CS) {
+	    } else if (scene === GoEasy_1$6.Scene.CS) {
 	      //customer
 	      conversationDto.id = this.target.teamId;
 	    }
@@ -15116,15 +15092,15 @@
 	  };
 
 	  Conversation.prototype.getMaxMessage = function () {
-	    return histories_1$4["default"].get(this.target).getMaxMessage();
+	    return histories_1$5["default"].get(this.target).getMaxMessage();
 	  };
 
 	  Conversation.prototype.getUnreadAmount = function () {
-	    return histories_1$4["default"].get(this.target).unreadAmount();
+	    return histories_1$5["default"].get(this.target).unreadAmount();
 	  };
 
 	  Conversation.prototype.maxMessageTime = function () {
-	    return histories_1$4["default"].get(this.target).maxTime();
+	    return histories_1$5["default"].get(this.target).maxTime();
 	  };
 
 	  return Conversation;
@@ -15134,7 +15110,7 @@
 
 	var CSConversation$1 = {};
 
-	var __extends$9 = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$a = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -15165,13 +15141,13 @@
 	CSConversation$1.__esModule = true;
 	CSConversation$1.CSConversation = void 0;
 	var Conversation_1$1 = Conversation$1;
-	var histories_1$3 = histories;
-	var GoEasy_1$4 = GoEasy$1;
+	var histories_1$4 = histories;
+	var GoEasy_1$5 = GoEasy$1;
 
 	var CSConversation =
 	/** @class */
 	function (_super) {
-	  __extends$9(CSConversation, _super);
+	  __extends$a(CSConversation, _super);
 
 	  function CSConversation(target) {
 	    var _this = _super.call(this, target) || this;
@@ -15181,7 +15157,7 @@
 	  }
 
 	  CSConversation.prototype.toDto = function () {
-	    var conversationDto = new GoEasy_1$4.ConversationDTO();
+	    var conversationDto = new GoEasy_1$5.ConversationDTO();
 	    var scene = this.target.scene;
 	    var customerId = this.target.id;
 	    var teamId = this.target.teamId;
@@ -15196,15 +15172,15 @@
 	  };
 
 	  CSConversation.prototype.getMaxMessage = function () {
-	    return histories_1$3["default"].get(this.target).getMaxMessage(this.accepted);
+	    return histories_1$4["default"].get(this.target).getMaxMessage(this.accepted);
 	  };
 
 	  CSConversation.prototype.getUnreadAmount = function () {
-	    return histories_1$3["default"].get(this.target).unreadAmount(this.accepted);
+	    return histories_1$4["default"].get(this.target).unreadAmount(this.accepted);
 	  };
 
 	  CSConversation.prototype.maxMessageTime = function () {
-	    return histories_1$3["default"].get(this.target).maxTime(this.accepted);
+	    return histories_1$4["default"].get(this.target).maxTime(this.accepted);
 	  };
 
 	  return CSConversation;
@@ -15542,7 +15518,7 @@
 	  exports["default"] = RemoteConversations;
 	})(remoteConversations);
 
-	var __extends$8 = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$9 = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -15734,19 +15710,19 @@
 	Conversations$1.Conversations = void 0;
 	var Conversation_1 = Conversation$1;
 	var callback_utils_1$4 = callbackUtils;
-	var GoEasy_1$3 = GoEasy$1;
+	var GoEasy_1$4 = GoEasy$1;
 	var remote_abbr_message_builder_1$1 = remoteAbbrMessageBuilder;
 	var RocketTypes_1$2 = RocketTypes;
-	var im_api_events_1$1 = imApiEvents;
+	var im_api_events_1$2 = imApiEvents;
 	var sorted_inserter_1 = sortedInserter;
-	var goeasy_event_center_1$2 = goeasyEventCenter;
-	var internal_events_1$2 = internalEvents;
-	var Target_1$1 = Target$1;
+	var goeasy_event_center_1$3 = goeasyEventCenter;
+	var internal_events_1$3 = internalEvents;
+	var Target_1$2 = Target$1;
 	var CSConversation_1$1 = CSConversation$1;
-	var im_1$2 = im;
+	var im_1$3 = im;
 	var remote_conversations_1 = remoteConversations;
-	var histories_1$2 = histories;
-	var g_1$4 = g;
+	var histories_1$3 = histories;
+	var g_1$5 = g;
 	var cs_message_type_1$1 = csMessageType;
 	var Calibrator_1$6 = Calibrator;
 
@@ -15760,10 +15736,10 @@
 	    this.builder = new remote_abbr_message_builder_1$1.RemoteAbbrMessageBuilder();
 	    this.remoteConversations = remote_conversations_1["default"].instance;
 	    this["synchronized"] = false;
-	    goeasy_event_center_1$2.GoEasyEventCenter.on(internal_events_1$2.IM_INTERNAL_EVENTS.MAX_MESSAGE_CHANGED, function (message) {
+	    goeasy_event_center_1$3.GoEasyEventCenter.on(internal_events_1$3.IM_INTERNAL_EVENTS.MAX_MESSAGE_CHANGED, function (message) {
 	      return _this.onMaxMessageChanged(message);
 	    });
-	    goeasy_event_center_1$2.GoEasyEventCenter.on(internal_events_1$2.IM_INTERNAL_EVENTS.UNREAD_AMOUNT_CHANGED, function (target) {
+	    goeasy_event_center_1$3.GoEasyEventCenter.on(internal_events_1$3.IM_INTERNAL_EVENTS.UNREAD_AMOUNT_CHANGED, function (target) {
 	      return _this.onUnreadMessageChanged(target);
 	    });
 	  }
@@ -15779,14 +15755,14 @@
 	  Conversations.prototype.fireUpdated = function () {
 	    var data = this.loadLocalConversations();
 	    var updatedEventName = this.getUpdatedEventName();
-	    im_1$2.IM.aec.fire(updatedEventName, {
+	    im_1$3.IM.aec.fire(updatedEventName, {
 	      unreadTotal: data.content.unreadTotal,
 	      conversations: data.content.conversations
 	    });
 	  };
 
 	  Conversations.prototype.getUpdatedEventName = function () {
-	    return im_api_events_1$1.ImApiEvents.CONVERSATIONS_UPDATED;
+	    return im_api_events_1$2.ImApiEvents.CONVERSATIONS_UPDATED;
 	  };
 
 	  Conversations.prototype.latestConversations = function (options) {
@@ -15860,7 +15836,7 @@
 	        abbrConversation.lmsg.t = scene;
 	        var lastMessage = abbrConversation.lmsg;
 	        var message = this.builder.build(lastMessage);
-	        var target = Target_1$1.Target.byIMMessage(message);
+	        var target = Target_1$2.Target.byIMMessage(message);
 	        var conversation = this.findConversation(target);
 
 	        if (Calibrator_1$6["default"].isUndef(conversation)) {
@@ -15871,7 +15847,7 @@
 	          conversation.data = data;
 	        }
 
-	        histories_1$2["default"].get(target).initMaxMessageAndOffsets(message, userOffsets);
+	        histories_1$3["default"].get(target).initMaxMessageAndOffsets(message, userOffsets);
 	        this.correctPosition(conversation);
 	      }
 	    } catch (e_1_1) {
@@ -15894,11 +15870,11 @@
 	        switch (_a.label) {
 	          case 0:
 	            //对于agent收到的accepted=false的消息, 或者其他agent accepted的消息，不可以更新自己的userConversation，只能更新pendingConversation
-	            if (message.scene() === GoEasy_1$3.Scene.CS) {
+	            if (message.scene() === GoEasy_1$4.Scene.CS) {
 	              csMessage = message;
 
-	              if (g_1$4.G.u() != csMessage.customerId()) {
-	                if (csMessage.accepted === false || csMessage.type === cs_message_type_1$1.CSMessageType.ACCEPT && csMessage.senderId != g_1$4.G.u()) {
+	              if (g_1$5.G.u() != csMessage.customerId()) {
+	                if (csMessage.accepted === false || csMessage.type === cs_message_type_1$1.CSMessageType.ACCEPT && csMessage.senderId != g_1$5.G.u()) {
 	                  return [2
 	                  /*return*/
 	                  ];
@@ -15929,14 +15905,15 @@
 	        switch (_b.label) {
 	          case 0:
 	            status = message.status;
-	            target = Target_1$1.Target.byIMMessage(message);
+	            target = Target_1$2.Target.byIMMessage(message);
 	            conversation = this.findConversation(target);
-	            if (!(Calibrator_1$6["default"].isUndef(conversation) && status !== GoEasy_1$3.MessageStatus.FAIL)) return [3
+	            if (!(Calibrator_1$6["default"].isUndef(conversation) && status !== GoEasy_1$4.MessageStatus.FAIL)) return [3
 	            /*break*/
 	            , 2];
-	            conversation = this.buildByMessage(message);
+	            conversation = this.buildByMessage(message); //todo:可以参考queryteams的方式避免多次请求，和卡主逻辑链
+
 	            this.insertOne(conversation);
-	            if (!(status === GoEasy_1$3.MessageStatus.SUCCESS)) return [3
+	            if (!(status === GoEasy_1$4.MessageStatus.SUCCESS)) return [3
 	            /*break*/
 	            , 2];
 	            _a = conversation;
@@ -15950,7 +15927,7 @@
 	            _b.label = 2;
 
 	          case 2:
-	            if (status === GoEasy_1$3.MessageStatus.SENDING) {
+	            if (status === GoEasy_1$4.MessageStatus.SENDING) {
 	              conversation.data = message.getToData();
 	              conversation.dataLoaded = true;
 	            }
@@ -16035,7 +16012,7 @@
 	  };
 
 	  Conversations.prototype.removeConversation = function (message) {
-	    var target = Target_1$1.Target.byIMMessage(message);
+	    var target = Target_1$2.Target.byIMMessage(message);
 	    var conversation = this.findConversation(target);
 
 	    if (conversation) {
@@ -16117,12 +16094,12 @@
 
 	  Conversations.prototype.buildByAbbr = function (abbrConversation, message) {
 	    var conversation;
-	    var target = Target_1$1.Target.byIMMessage(message);
+	    var target = Target_1$2.Target.byIMMessage(message);
 
-	    if (abbrConversation.t === GoEasy_1$3.Scene.CS) {
+	    if (abbrConversation.t === GoEasy_1$4.Scene.CS) {
 	      var csMessage = message;
 
-	      if (g_1$4.G.u() === csMessage.customerId()) {
+	      if (g_1$5.G.u() === csMessage.customerId()) {
 	        conversation = new Conversation_1.Conversation(target);
 	      } else {
 	        conversation = new CSConversation_1$1.CSConversation(target);
@@ -16148,12 +16125,12 @@
 
 	  Conversations.prototype.buildByMessage = function (message) {
 	    var conversation;
-	    var target = Target_1$1.Target.byIMMessage(message);
+	    var target = Target_1$2.Target.byIMMessage(message);
 
-	    if (message.scene() === GoEasy_1$3.Scene.CS) {
+	    if (message.scene() === GoEasy_1$4.Scene.CS) {
 	      var csMessage = message;
 
-	      if (g_1$4.G.u() === csMessage.customerId()) {
+	      if (g_1$5.G.u() === csMessage.customerId()) {
 	        conversation = new Conversation_1.Conversation(target);
 	      } else {
 	        conversation = new CSConversation_1$1.CSConversation(target);
@@ -16170,7 +16147,7 @@
 	  Conversations.sortedInserter = new (
 	  /** @class */
 	  function (_super) {
-	    __extends$8(class_1, _super);
+	    __extends$9(class_1, _super);
 
 	    function class_1() {
 	      return _super !== null && _super.apply(this, arguments) || this;
@@ -16199,7 +16176,7 @@
 
 	var PendingConversations$1 = {};
 
-	var __extends$7 = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$8 = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -16390,35 +16367,35 @@
 	PendingConversations$1.__esModule = true;
 	PendingConversations$1.PendingConversations = void 0;
 	var Conversations_1 = Conversations$1;
-	var GoEasy_1$2 = GoEasy$1;
+	var GoEasy_1$3 = GoEasy$1;
 	var RocketTypes_1$1 = RocketTypes;
-	var Target_1 = Target$1;
-	var goeasy_event_center_1$1 = goeasyEventCenter;
-	var internal_events_1$1 = internalEvents;
-	var im_api_events_1 = imApiEvents;
+	var Target_1$1 = Target$1;
+	var goeasy_event_center_1$2 = goeasyEventCenter;
+	var internal_events_1$2 = internalEvents;
+	var im_api_events_1$1 = imApiEvents;
 	var cs_message_type_1 = csMessageType;
-	var histories_1$1 = histories;
+	var histories_1$2 = histories;
 	var CSConversation_1 = CSConversation$1;
-	var g_1$3 = g;
+	var g_1$4 = g;
 	var Calibrator_1$5 = Calibrator;
 
 	var PendingConversations =
 	/** @class */
 	function (_super) {
-	  __extends$7(PendingConversations, _super);
+	  __extends$8(PendingConversations, _super);
 
 	  function PendingConversations() {
 	    var _this = _super.call(this) || this;
 
 	    _this.expired = false;
-	    goeasy_event_center_1$1.GoEasyEventCenter.on(internal_events_1$1.IM_INTERNAL_EVENTS.CS_ONLINE_SUCCESS, function () {
+	    goeasy_event_center_1$2.GoEasyEventCenter.on(internal_events_1$2.IM_INTERNAL_EVENTS.CS_ONLINE_SUCCESS, function () {
 	      return _this.onCSOnlineSuccess();
 	    });
-	    goeasy_event_center_1$1.GoEasyEventCenter.on(internal_events_1$1.IM_INTERNAL_EVENTS.CS_OFFLINE_SUCCESS, function () {
+	    goeasy_event_center_1$2.GoEasyEventCenter.on(internal_events_1$2.IM_INTERNAL_EVENTS.CS_OFFLINE_SUCCESS, function () {
 	      return _this.onCSOfflineSuccess();
 	    });
-	    g_1$3.G.s().addDisconnectedObserver(_this.onDisconnected.bind(_this));
-	    g_1$3.G.s().addConnectedObserver(_this.onConnected.bind(_this));
+	    g_1$4.G.s().addDisconnectedObserver(_this.onDisconnected.bind(_this));
+	    g_1$4.G.s().addConnectedObserver(_this.onConnected.bind(_this));
 	    return _this;
 	  }
 
@@ -16428,11 +16405,11 @@
 	      return __generator$3(this, function (_a) {
 	        switch (_a.label) {
 	          case 0:
-	            if (!(message.scene() === GoEasy_1$2.Scene.CS)) return [3
+	            if (!(message.scene() === GoEasy_1$3.Scene.CS)) return [3
 	            /*break*/
 	            , 3];
 	            csMessage = message;
-	            if (!(csMessage.customerId() != g_1$3.G.u())) return [3
+	            if (!(csMessage.customerId() != g_1$4.G.u())) return [3
 	            /*break*/
 	            , 3];
 	            if (!(csMessage.accepted === false || csMessage.type === cs_message_type_1.CSMessageType.ACCEPT)) return [3
@@ -16523,7 +16500,7 @@
 	  };
 
 	  PendingConversations.prototype.getUpdatedEventName = function () {
-	    return im_api_events_1.ImApiEvents.PENDING_CONVERSATIONS_UPDATED;
+	    return im_api_events_1$1.ImApiEvents.PENDING_CONVERSATIONS_UPDATED;
 	  };
 
 	  PendingConversations.prototype.rocketName = function () {
@@ -16542,13 +16519,13 @@
 	        try {
 	          for (conversations_1 = __values(conversations), conversations_1_1 = conversations_1.next(); !conversations_1_1.done; conversations_1_1 = conversations_1.next()) {
 	            abbrConversation = conversations_1_1.value;
-	            abbrConversation.lastMessage.t = GoEasy_1$2.Scene.CS;
+	            abbrConversation.lastMessage.t = GoEasy_1$3.Scene.CS;
 	            customerData = abbrConversation.customerData;
 	            lastMessage = abbrConversation.lastMessage;
 	            userOffsets = abbrConversation.userOffsets;
 	            data = customerData ? JSON.parse(customerData) : {};
 	            message = this.builder.build(lastMessage);
-	            target = Target_1.Target.byIMMessage(message);
+	            target = Target_1$1.Target.byIMMessage(message);
 	            conversation = this.findConversation(target);
 
 	            if (Calibrator_1$5["default"].isUndef(conversation)) {
@@ -16560,7 +16537,7 @@
 
 	            conversation.top = false;
 	            conversation.data = data;
-	            agentHistory = histories_1$1["default"].get(target);
+	            agentHistory = histories_1$2["default"].get(target);
 	            agentHistory.initPendingMaxMessageAndOffsets(message, userOffsets);
 	            this.correctPosition(conversation);
 	          }
@@ -16758,27 +16735,23 @@
 	      g_1.G.s().addMessageObserver(RemoteEvents_1.RemoteEvents.imMessage, this.onMessageReceived.bind(this));
 	    };
 
-	    IMReceiver.prototype.onMessageReceived = function (message) {
-	      console.log('IMReceiver -> onMessageReceived:', message);
-	      var receivedMessage = this.builder.build(message);
-	      this.sendAck(receivedMessage);
-	      var target = Target_1.Target.byIMMessage(receivedMessage);
-	      var history = histories_1["default"].get(target);
-
-	      if (!history.existsMessage(receivedMessage)) {
-	        this.createNotification(message);
-	        goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.MESSAGE_RECEIVED, receivedMessage);
+	    IMReceiver.prototype.onMessageReceived = function (abbrMessage) {
+	      if (abbrMessage.t !== GoEasy_1.Scene.CS) {
+	        console.log('IMReceiver -> onMessageReceived:', abbrMessage);
+	        var receivedMessage = this.builder.build(abbrMessage);
+	        this.sendAck(receivedMessage);
+	        var target = Target_1.Target.byIMMessage(receivedMessage);
 	        var scene = target.scene;
+	        var history_1 = histories_1["default"].get(target);
 
-	        if (scene === GoEasy_1.Scene.PRIVATE) {
-	          im_1.IM.aec.fire(im_api_events_1.ImApiEvents.PRIVATE_MESSAGE_RECEIVED, receivedMessage);
-	        } else if (scene === GoEasy_1.Scene.GROUP) {
-	          im_1.IM.aec.fire(im_api_events_1.ImApiEvents.GROUP_MESSAGE_RECEIVED, receivedMessage);
-	        } else if (scene === GoEasy_1.Scene.CS) {
-	          var csMessage = receivedMessage;
+	        if (!history_1.existsMessage(receivedMessage)) {
+	          this.createNotification(abbrMessage);
+	          goeasy_event_center_1.GoEasyEventCenter.fire(internal_events_1.IM_INTERNAL_EVENTS.MESSAGE_RECEIVED, receivedMessage);
 
-	          if (csMessage.customerId() === g_1.G.u()) {
-	            im_1.IM.aec.fire(im_api_events_1.ImApiEvents.CS_MESSAGE_RECEIVED, receivedMessage);
+	          if (scene === GoEasy_1.Scene.PRIVATE) {
+	            im_1.IM.aec.fire(im_api_events_1.ImApiEvents.PRIVATE_MESSAGE_RECEIVED, receivedMessage);
+	          } else if (scene === GoEasy_1.Scene.GROUP) {
+	            im_1.IM.aec.fire(im_api_events_1.ImApiEvents.GROUP_MESSAGE_RECEIVED, receivedMessage);
 	          }
 	        }
 	      }
@@ -17336,7 +17309,7 @@
 
 	AbstractMessagePayload$1.AbstractMessagePayload = AbstractMessagePayload;
 
-	var __extends$6 = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$7 = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -17371,7 +17344,7 @@
 	var FileMessagePayload =
 	/** @class */
 	function (_super) {
-	  __extends$6(FileMessagePayload, _super);
+	  __extends$7(FileMessagePayload, _super);
 
 	  function FileMessagePayload() {
 	    var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -17388,7 +17361,7 @@
 
 	FileMessagePayload$1.FileMessagePayload = FileMessagePayload;
 
-	var __extends$5 = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$6 = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -17423,7 +17396,7 @@
 	var ImageMessagePayload =
 	/** @class */
 	function (_super) {
-	  __extends$5(ImageMessagePayload, _super);
+	  __extends$6(ImageMessagePayload, _super);
 
 	  function ImageMessagePayload() {
 	    var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -17628,7 +17601,7 @@
 
 	var AudioMessagePayload$1 = {};
 
-	var __extends$4 = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$5 = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -17663,7 +17636,7 @@
 	var AudioMessagePayload =
 	/** @class */
 	function (_super) {
-	  __extends$4(AudioMessagePayload, _super);
+	  __extends$5(AudioMessagePayload, _super);
 
 	  function AudioMessagePayload() {
 	    var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -17758,7 +17731,7 @@
 
 	var TextMessagePayload$1 = {};
 
-	var __extends$3 = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$4 = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -17793,7 +17766,7 @@
 	var TextMessagePayload =
 	/** @class */
 	function (_super) {
-	  __extends$3(TextMessagePayload, _super);
+	  __extends$4(TextMessagePayload, _super);
 
 	  function TextMessagePayload() {
 	    var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -17807,7 +17780,7 @@
 
 	TextMessagePayload$1.TextMessagePayload = TextMessagePayload;
 
-	var __extends$2 = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$3 = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -17844,7 +17817,7 @@
 	var TextPayloadBuilder =
 	/** @class */
 	function (_super) {
-	  __extends$2(TextPayloadBuilder, _super);
+	  __extends$3(TextPayloadBuilder, _super);
 
 	  function TextPayloadBuilder() {
 	    return _super !== null && _super.apply(this, arguments) || this;
@@ -17900,7 +17873,7 @@
 
 	var VideoMessagePayload$1 = {};
 
-	var __extends$1 = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$2 = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -17935,7 +17908,7 @@
 	var VideoMessagePayload =
 	/** @class */
 	function (_super) {
-	  __extends$1(VideoMessagePayload, _super);
+	  __extends$2(VideoMessagePayload, _super);
 
 	  function VideoMessagePayload() {
 	    var _this = _super !== null && _super.apply(this, arguments) || this;
@@ -18901,7 +18874,7 @@
 	  exports["default"] = CustomMessagePayload;
 	})(CustomMessagePayload);
 
-	var __extends = commonjsGlobal && commonjsGlobal.__extends || function () {
+	var __extends$1 = commonjsGlobal && commonjsGlobal.__extends || function () {
 	  var _extendStatics = function extendStatics(d, b) {
 	    _extendStatics = Object.setPrototypeOf || {
 	      __proto__: []
@@ -18938,7 +18911,7 @@
 	var CustomPayloadBuilder =
 	/** @class */
 	function (_super) {
-	  __extends(CustomPayloadBuilder, _super);
+	  __extends$1(CustomPayloadBuilder, _super);
 
 	  function CustomPayloadBuilder() {
 	    return _super !== null && _super.apply(this, arguments) || this;
@@ -19019,13 +18992,13 @@
 	var LocalIMMessageBuildOptions_1 = LocalIMMessageBuildOptions$1;
 	var UUID_1 = UUID;
 	var Calibrator_1$1 = Calibrator;
-	var GoEasy_1$1 = GoEasy$1;
+	var GoEasy_1$2 = GoEasy$1;
 	var GroupMessage_1 = GroupMessage$1;
 	var PrivateMessage_1 = PrivateMessage$1;
 	var validator_utils_1$4 = validatorUtils;
 	var cs_message_1 = csMessage;
 	var callback_utils_1$3 = callbackUtils;
-	var g_1$2 = g;
+	var g_1$3 = g;
 
 	var IMMessageBuilder =
 	/** @class */
@@ -19086,28 +19059,28 @@
 	    this.validate(createOptions);
 	    var message;
 
-	    if (scene === GoEasy_1$1.Scene.GROUP) {
+	    if (scene === GoEasy_1$2.Scene.GROUP) {
 	      message = new GroupMessage_1.GroupMessage();
 	      message.groupId = to.id.toString();
-	      message.senderData = g_1$2.G.ud();
-	    } else if (scene === GoEasy_1$1.Scene.PRIVATE) {
+	      message.senderData = g_1$3.G.ud();
+	    } else if (scene === GoEasy_1$2.Scene.PRIVATE) {
 	      message = new PrivateMessage_1.PrivateMessage();
 	      message.read = false;
 	      message.receiverId = to.id.toString();
-	    } else if (scene === GoEasy_1$1.Scene.CS) {
+	    } else if (scene === GoEasy_1$2.Scene.CS) {
 	      message = new cs_message_1.CSMessage();
 	      message.to = to.id.toString();
 	      message.teamId = to.id.toString();
-	      message.senderData = g_1$2.G.ud();
+	      message.senderData = g_1$3.G.ud();
 	    }
 
-	    message.senderId = g_1$2.G.u();
+	    message.senderId = g_1$3.G.u();
 	    message.messageId = UUID_1["default"].get();
 	    message.payload = payload;
 	    message.timestamp = Date.now();
 	    message.type = type;
 	    message.recalled = false;
-	    message.status = GoEasy_1$1.MessageStatus.NEW;
+	    message.status = GoEasy_1$2.MessageStatus.NEW;
 	    message.buildOptions = buildOptions;
 	    return message;
 	  };
@@ -19127,7 +19100,7 @@
 	      throw new Error("TypeError: to.data requires an object.");
 	    }
 
-	    if (!to.type || to.type !== GoEasy_1$1.Scene.GROUP && to.type !== GoEasy_1$1.Scene.PRIVATE && to.type !== GoEasy_1$1.Scene.CS) {
+	    if (!to.type || to.type !== GoEasy_1$2.Scene.GROUP && to.type !== GoEasy_1$2.Scene.PRIVATE && to.type !== GoEasy_1$2.Scene.CS) {
 	      throw new Error("message require property to.type");
 	    }
 
@@ -19139,7 +19112,7 @@
 	      throw new Error("to.id should be a string or number.");
 	    }
 
-	    if (g_1$2.G.u() === to.id) {
+	    if (g_1$3.G.u() === to.id) {
 	      throw new Error("to.id can not be the same as your id.");
 	    }
 
@@ -19156,6 +19129,88 @@
 	}();
 
 	IMMessageBuilder$1.IMMessageBuilder = IMMessageBuilder;
+
+	var csMessageReceiver = {};
+
+	var __extends = commonjsGlobal && commonjsGlobal.__extends || function () {
+	  var _extendStatics = function extendStatics(d, b) {
+	    _extendStatics = Object.setPrototypeOf || {
+	      __proto__: []
+	    } instanceof Array && function (d, b) {
+	      d.__proto__ = b;
+	    } || function (d, b) {
+	      for (var p in b) {
+	        if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
+	      }
+	    };
+
+	    return _extendStatics(d, b);
+	  };
+
+	  return function (d, b) {
+	    if (typeof b !== "function" && b !== null) throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+
+	    _extendStatics(d, b);
+
+	    function __() {
+	      this.constructor = d;
+	    }
+
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	  };
+	}();
+
+	csMessageReceiver.__esModule = true;
+	csMessageReceiver.CsMessageReceiver = void 0;
+	var goeasy_event_center_1$1 = goeasyEventCenter;
+	var internal_events_1$1 = internalEvents;
+	var agent_status_1$1 = agentStatus;
+	var g_1$2 = g;
+	var im_1$2 = im;
+	var im_api_events_1 = imApiEvents;
+	var IMReceiver_1$1 = IMReceiver;
+	var Target_1 = Target$1;
+	var histories_1$1 = histories;
+	var GoEasy_1$1 = GoEasy$1;
+
+	var CsMessageReceiver =
+	/** @class */
+	function (_super) {
+	  __extends(CsMessageReceiver, _super);
+
+	  function CsMessageReceiver() {
+	    return _super !== null && _super.apply(this, arguments) || this;
+	  }
+
+	  CsMessageReceiver.prototype.onMessageReceived = function (abbrMessage) {
+	    if (abbrMessage.t === GoEasy_1$1.Scene.CS) {
+	      var receivedMessage_1 = this.builder.build(abbrMessage);
+	      this.sendAck(receivedMessage_1);
+	      var target = Target_1.Target.byIMMessage(receivedMessage_1);
+	      var history_1 = histories_1$1["default"].get(target);
+
+	      if (!history_1.existsMessage(receivedMessage_1)) {
+	        var csMessage = receivedMessage_1;
+
+	        if (csMessage.customerId() === g_1$2.G.u()) {
+	          this.createNotification(abbrMessage);
+	          goeasy_event_center_1$1.GoEasyEventCenter.fire(internal_events_1$1.IM_INTERNAL_EVENTS.MESSAGE_RECEIVED, receivedMessage_1);
+	          im_1$2.IM.aec.fire(im_api_events_1.ImApiEvents.CS_MESSAGE_RECEIVED, receivedMessage_1);
+	        } else {
+	          var promise = agent_status_1$1.AgentStatus.getInstance().queryTeams();
+	          promise.then(function () {
+	            //todo: agent端也需要notification
+	            goeasy_event_center_1$1.GoEasyEventCenter.fire(internal_events_1$1.IM_INTERNAL_EVENTS.CS_AGENT_MESSAGE_RECEIVED, receivedMessage_1);
+	          });
+	        }
+	      }
+	    }
+	  };
+
+	  return CsMessageReceiver;
+	}(IMReceiver_1$1["default"]);
+
+	csMessageReceiver.CsMessageReceiver = CsMessageReceiver;
 
 	var __awaiter$2 = commonjsGlobal && commonjsGlobal.__awaiter || function (thisArg, _arguments, P, generator) {
 	  function adopt(value) {
@@ -19321,12 +19376,14 @@
 	var MessageType_1 = MessageType;
 	var histories_1 = histories;
 	var g_1$1 = g;
+	var cs_message_receiver_1 = csMessageReceiver;
 
 	var IM =
 	/** @class */
 	function () {
 	  function IM(options) {
 	    this._iMReceiver = new IMReceiver_1["default"]();
+	    this.csMessageReceiver = new cs_message_receiver_1.CsMessageReceiver();
 	    this.options = options;
 	    IM.aec = new api_event_center_1.ApiEventCenter();
 	    this._userHereNow = new UserHereNow_1["default"]();
@@ -19334,8 +19391,6 @@
 	    this._groupHereNow = new GroupHereNow_1["default"]();
 	    this._groupOnlineCount = new GroupOnlineCount_1["default"]();
 	    this.groupMessageSubscriber = new GroupMessageSubscriber_1["default"]();
-	    this.histories = histories_1["default"].init();
-	    this.histories.initialListeners();
 	  }
 
 	  IM.init = function (options) {
@@ -19345,9 +19400,11 @@
 	  IM.prototype.afterConnect = function () {
 	    this._iMReceiver.initialGoEasySocket();
 
+	    this.csMessageReceiver.initialGoEasySocket();
 	    this.messageBuilder = new IMMessageBuilder_1.IMMessageBuilder();
 	    this.messageSender = new IMMessageSender_1["default"]();
-	    this.histories.afterConnect();
+	    this.histories = histories_1["default"].init();
+	    this.histories.initialListeners();
 	    this.conversations = new conversation_list_1["default"]();
 	    this._groupPresenceSubscriber = new GroupPresenceSubscriber_1["default"]();
 	    this._userPresenceSubscriber = new UserPresenceSubscriber_1["default"]();
@@ -20802,7 +20859,6 @@
 
 	      this.validateOptions(options);
 	      this.options = options;
-	      goeasy_event_center_1.GoEasyEventCenter.initial();
 	      GNS_1.GNS.init(options.allowNotification);
 	      this.pubsub = new GoEasyPubSub(this.options);
 	      this.im = new GoEasyIM(this.options); // this.rtc = new GoEasyRTC();
@@ -20829,6 +20885,8 @@
 	      }
 
 	      this.confirmUserId(options);
+	      goeasy_event_center_1.GoEasyEventCenter.initial(); //很重要确保之前执行的监听器都要被删除
+
 	      this.pubsub.initialBeforeConnect();
 	      this.goEasySocket = new GoEasySocket_1["default"](this.options, options);
 	      this.goEasySocket.connect();
