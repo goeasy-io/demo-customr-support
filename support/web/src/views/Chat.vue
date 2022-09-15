@@ -237,7 +237,7 @@
         },
       }
     },
-    async created() {
+    created() {
       this.customer = {
         id: this.$route.query.id,
         name: this.$route.query.name,
@@ -251,7 +251,6 @@
       this.currentAgent = JSON.parse(localStorage.getItem("currentAgent"));
       this.csteam = this.goEasy.im.csteam(this.currentAgent.shopId);
 
-      this.markMessageAsRead();
       this.liveSession();
       this.loadHistoryMessage(true);
     },
@@ -273,10 +272,11 @@
         this.csteam.liveSession({
           customerId: this.customer.id,
           onSuccess: () => {
-            console.log('get successfully customer status');
+            console.log('live successfully');
+            this.markMessageAsRead();
           },
           onFailed: (error) => {
-            console.log('failed to get customer status:', error);
+            console.log('failed to live session:', error);
           },
           onStatusUpdated: (status) => {
             this.customerStatus = status;

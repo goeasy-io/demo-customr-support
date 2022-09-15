@@ -8,7 +8,7 @@
             v-for="(conversation, key) in pendingConversations"
             :key="key" :class="{checked:conversation.id === $route.query.id}"
             class="conversation-item"
-            @click="chat(conversation.id)"
+            @click="chat(conversation)"
           >
             <div class="item-head">
               <img :src="conversation.data.avatar" class="item-avatar"/>
