@@ -82,6 +82,14 @@
         this.goEasy.im.latestConversations({
           onSuccess: (result) => {
             let content = result.content;
+            if(content.unreadTotal > 0) {
+              uni.setTabBarBadge({
+                index: 1,
+                text: content.unreadTotal.toString()
+              });
+            }else{
+              uni.removeTabBarBadge({index: 1});
+            }
             this.renderConversations(content);
           },
           onFailed: (error) => {
