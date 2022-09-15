@@ -7378,6 +7378,11 @@
 	  exports.__esModule = true;
 
 	  function noop() {
+	    var params = [];
+
+	    for (var _i = 0; _i < arguments.length; _i++) {
+	      params[_i] = arguments[_i];
+	    }
 	  }
 
 	  exports["default"] = noop;
@@ -13662,7 +13667,13 @@
 	                LiveSession.destroy();
 	                _this.session = new LiveSession(teamId);
 	                _this.session.liveOptions = options;
-	                _this.session.status = res.content.customerStatus;
+	                var customerStatus = res.content.customerStatus;
+
+	                if (customerStatus.status === 'ACCEPTED') {
+	                  customerStatus.agent.data = JSON.parse(customerStatus.agent.data);
+	                }
+
+	                _this.session.status = customerStatus;
 
 	                _this.session.liveOptions.onStatusUpdated(_this.session.status);
 
@@ -13676,6 +13687,23 @@
 	        }
 	      });
 	    });
+	  };
+
+	  LiveSession.prototype.customerId = function () {
+	    return this.liveOptions.customerId;
+	  };
+
+	  LiveSession.isMyCustomer = function (target) {
+	    var session = LiveSession.session; //先看这个客户是不是正在围观的,围观才意味着有可能是一个吃瓜客户，否则一定是自己的客户
+
+	    if (session && session.teamId === target.teamId && session.customerId() === target.customerId()) {
+	      var myTeams = agent_status_1$2.AgentStatus.getInstance().myTeams();
+	      var agent = session.status.agent; //必须是我的team, agent为空就是pending和free, 或agent是我自己， 否则就是找一个吃瓜消息
+
+	      return myTeams.has(target.teamId) && (!agent || agent.id === g_1$6.G.u());
+	    }
+
+	    return true;
 	  };
 
 	  LiveSession.quit = function (options) {
@@ -13963,7 +13991,6 @@
 	  var g_1 = g;
 	  var cs_message_type_1 = csMessageType;
 	  var live_session_1 = liveSession;
-	  var agent_status_1 = agentStatus;
 
 	  var AgentHistory =
 	  /** @class */
@@ -14116,28 +14143,8 @@
 	      }
 	    };
 
-	    AgentHistory.prototype.isMyTeam = function () {
-	      var session = live_session_1.LiveSession.session;
-
-	      if (session) {
-	        var teamIds = agent_status_1.AgentStatus.getInstance().myTeams();
-
-	        if (teamIds.has(this.target.teamId)) {
-	          if (session.status.agent && session.status.agent.id !== g_1.G.u()) {
-	            return false;
-	          }
-
-	          return true;
-	        } else {
-	          return false;
-	        }
-	      }
-
-	      return true;
-	    };
-
 	    AgentHistory.prototype.onMessageReceived = function (message) {
-	      if (this.isMyTeam()) {
+	      if (live_session_1.LiveSession.isMyCustomer(this.target)) {
 	        if (!message.accepted || message.senderId !== g_1.G.u() && message.type === cs_message_type_1.CSMessageType.ACCEPT) {
 	          this.savePendingMessage(message);
 	        } else {
@@ -14167,7 +14174,7 @@
 	          switch (_a.label) {
 	            case 0:
 	              markTime = this.maxAcceptedMessageTime();
-	              if (!(this.isMyTeam() && this.preMark(markTime))) return [3
+	              if (!(live_session_1.LiveSession.isMyCustomer(this.target) && this.preMark(markTime))) return [3
 	              /*break*/
 	              , 2];
 	              return [4
@@ -19172,6 +19179,7 @@
 	var Target_1 = Target$1;
 	var histories_1$1 = histories;
 	var GoEasy_1$1 = GoEasy$1;
+	var live_session_1$1 = liveSession;
 
 	var CsMessageReceiver =
 	/** @class */
@@ -19183,11 +19191,13 @@
 	  }
 
 	  CsMessageReceiver.prototype.onMessageReceived = function (abbrMessage) {
+	    var _this = this;
+
 	    if (abbrMessage.t === GoEasy_1$1.Scene.CS) {
 	      var receivedMessage_1 = this.builder.build(abbrMessage);
 	      this.sendAck(receivedMessage_1);
-	      var target = Target_1.Target.byIMMessage(receivedMessage_1);
-	      var history_1 = histories_1$1["default"].get(target);
+	      var target_1 = Target_1.Target.byIMMessage(receivedMessage_1);
+	      var history_1 = histories_1$1["default"].get(target_1);
 
 	      if (!history_1.existsMessage(receivedMessage_1)) {
 	        var csMessage = receivedMessage_1;
@@ -19199,7 +19209,10 @@
 	        } else {
 	          var promise = agent_status_1$1.AgentStatus.getInstance().queryTeams();
 	          promise.then(function () {
-	            //todo: agent端也需要notification
+	            if (live_session_1$1.LiveSession.isMyCustomer(target_1)) {
+	              _this.createNotification(abbrMessage);
+	            }
+
 	            goeasy_event_center_1$1.GoEasyEventCenter.fire(internal_events_1$1.IM_INTERNAL_EVENTS.CS_AGENT_MESSAGE_RECEIVED, receivedMessage_1);
 	          });
 	        }

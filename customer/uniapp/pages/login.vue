@@ -33,7 +33,7 @@
         class="password-input"
         placeholder="请输入密码"
         :password="!password.visible"
-        type="number"
+        type="text"
       >
       <image
         class="password-image"
@@ -63,10 +63,13 @@
           index: 0,
           selectedCustomer: null
         },
+
+        username:'',
         password: {
           visible: false,
           value: '123'
         },
+
         errorVisible: false
       }
     },
@@ -80,15 +83,14 @@
       selectCustomer(customer) {
         this.customerSelector.visible = false;
         this.customerSelector.selectedCustomer = customer;
+        this.username= customer.name;
       },
       switchPasswordVisible() {
         this.password.visible = !this.password.visible;
       },
       login() {
-        const selectedCustomer = this.customerSelector.selectedCustomer;
-        const password = this.password.value;
-        if (selectedCustomer && password.trim() !== '') {
-          let customer = restApi.findCustomer(selectedCustomer.name, password);
+        if (this.username.trim() !== ''&& this.password.value.trim() !== '') {
+          let customer = restApi.findCustomer(this.username, this.password.value);
           if (customer) {
             uni.setStorageSync('currentCustomer', customer);
             uni.switchTab({
