@@ -27,7 +27,7 @@
                   v-for="(agent, index) in agentSelector.agents"
                   :key="index"
                   @click="selectAgent(agent)">
-                  <i  mg class="dialog-list-item-avatar" :src="agent.shop.avatar"/>
+                  <img class="dialog-list-item-avatar" :src="agent.shop.avatar"/>
                   <div :class="agentSelector.selectedAgent === agent ? 'selected' : ''">
                     {{ agent.shop.name + ' - ' + agent.name }}
                   </div>
