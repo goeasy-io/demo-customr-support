@@ -91,7 +91,7 @@
         <div class="accept-info">{{ customerStatus.agent.data.name }}已接入</div>
       </div>
       <div v-else-if="customerStatus.status==='FREE'" class="accept-session">
-        <button class="accept-btn" @click="acceptSession">发起会话</button>
+        <button class="accept-btn" @click="acceptSession">主动接入</button>
       </div>
       <div v-else class="action-box">
         <div class="action-bar">
@@ -382,23 +382,36 @@
       hideImagePreviewPopup() {
         this.imagePopup.visible = false;
       },
-      //todo:session这个名字
-      acceptSession() {
-        this.csteam.accept({
-          id: this.customer.id,
-          onSuccess: () => {
-            console.log('accept successfully.');
-          },
-          onFailed: (error) => {
-            // if (error.content === 'CUSTOMER_BUSY') {
-            //   alert('接入失败，用户正在忙')
-            // }
-            // if (error.content === 'OFFLINE_AGENT') {
-            //   alert('接入失败，请将您的状态改为上线状态，再进行操作。')
-            // }
-            console.log('accept failed', error);
-          }
+
+      isOnline() {
+        return new Promise((resolve, reject) => {
+          this.csteam.isOnline({
+            onSuccess: (result) => {
+              resolve(result);
+            },
+            onFailed: (error) => {
+              console.log('获取在线状态失败，error:', error)
+              reject(error);
+            }
+          })
         })
+      },
+
+
+      async acceptSession() {
+        if (await this.isOnline()) {
+          this.csteam.accept({
+            id: this.customer.id,
+            onSuccess: () => {
+              console.log('accept successfully.');
+            },
+            onFailed: (error) => {
+              console.log('accept failed', error);
+            }
+          });
+        } else {
+          alert('您还不是一名该团队的在线客服，请点击左下角头像进行上线操作')
+        }
       },
       endSession() {
         this.csteam.end({

@@ -37,7 +37,7 @@
           </div>
           <div class="form-item">
             <input v-model="password.value" class="password-input" placeholder="请输入密码"
-                   :type="password.visible ? 'number':'password'"/>
+                   :type="password.visible ? 'text':'password'"/>
             <img class="password-image" @click="switchPasswordVisible"
                  :src="password.visible?'/static/images/invisible.png':'/static/images/visible.png'"/>
           </div>
@@ -64,10 +64,13 @@
           index: 0,
           selectedAgent: null
         },
+
+        username:'',
         password: {
           visible: false,
           value: '123'
         },
+
         errorVisible: false,
       };
     },
@@ -81,15 +84,16 @@
       selectAgent(agent) {
         this.agentSelector.visible = false;
         this.agentSelector.selectedAgent = agent;
+        this.username= agent.name;
       },
       switchPasswordVisible() {
         this.password.visible = !this.password.visible;
       },
+
+
       login() {
-        const selectedAgent = this.agentSelector.selectedAgent;
-        const password = this.password.value;
-        if (selectedAgent !== null && password.trim() !== '') {
-          let agent = restApi.findAgent(selectedAgent.name, password);
+        if (this.username.trim() !== '' && this.password.value.trim() !== '') {
+          let agent = restApi.findAgent(this.username, this.password);
           if (agent) {
             localStorage.setItem('currentAgent', JSON.stringify(agent));
             this.$router.push({path: './conversations'});
