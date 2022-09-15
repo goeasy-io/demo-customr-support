@@ -54,6 +54,7 @@
 </template>
 
 <script>
+  import { formatDate } from '../lib/utils';
   export default {
     name: 'conversation',
     data() {
@@ -75,6 +76,7 @@
       this.goEasy.im.off(this.GoEasy.IM_EVENT.CONVERSATIONS_UPDATED, this.renderConversations);
     },
     methods: {
+      formatDate,
       // 加载最新的会话列表
       loadConversations() {
         this.goEasy.im.latestConversations({

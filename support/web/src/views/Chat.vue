@@ -178,6 +178,7 @@
 </template>
 
 <script>
+  import {formatDate} from '../utils/utils.js'
   import restApi from '../api/restapi';
   import EmojiDecoder from '../utils/EmojiDecoder';
   import GoEasyAudioPlayer from "../components/GoEasyAudioPlayer";
@@ -367,10 +368,10 @@
       },
       renderMessageDate(message, index) {
         if (index === 0) {
-          return this.formatDate(message.timestamp);
+          return formatDate(message.timestamp);
         } else {
           if (message.timestamp - this.history.messages[index - 1].timestamp > 5 * 60 * 1000) {
-            return this.formatDate(message.timestamp);
+            return formatDate(message.timestamp);
           }
         }
         return '';

@@ -135,6 +135,7 @@
 <script>
   import GoEasyAudioPlayer from '../components/GoEasyAudioPlayer';
   import restApi from '../lib/restapi';
+  import { formatDate } from '../lib/utils';
   import EmojiDecoder from '../lib/EmojiDecoder';
 
   const recorderManager = uni.getRecorderManager();
@@ -251,10 +252,10 @@
       },
       renderMessageDate(message, index) {
         if (index === 0) {
-          return this.formatDate(message.timestamp)
+          return formatDate(message.timestamp)
         } else {
           if (message.timestamp - this.history.messages[index - 1].timestamp > 5 * 60 * 1000) {
-            return this.formatDate(message.timestamp)
+            return formatDate(message.timestamp)
           }
         }
         return '';
