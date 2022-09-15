@@ -551,7 +551,6 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    position: relative;
 
     .chat-title {
       height: 61px;
@@ -576,13 +575,10 @@
       display: flex;
       flex-direction: column;
       overflow-y: auto;
-      padding: 0 15px 200px 15px;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
+      flex: 1;
 
-      &
-      ::-webkit-scrollbar {
-        display: none;
+      .message-list {
+        padding: 0 15px;
       }
 
       .history-loaded {
@@ -741,8 +737,6 @@
       border-top: 1px solid #dcdfe6;
       width: 100%;
       height: 200px;
-      position: absolute;
-      bottom: 0;
       background: #FFFFFF;
 
       .action-box {
