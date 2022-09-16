@@ -34,9 +34,17 @@
           </div>
           <div v-if="onlineConfig.visible" class="action-wrap" @click.prevent="closeOnlinePopup()">
             <div v-if="onlineConfig.visible" class="action-box">
-              <div v-if="onlineConfig.online" class="action-item" @click="offline">下线</div>
-              <div v-else class="action-item" @click="online">上线</div>
-              <div class="action-item" @click="logout">退出登录</div>
+              <div class="action-item" @click="online">
+                <div :class="onlineConfig.online ? 'checked': 'action-title'">客服在线</div>
+                <div class="action-detail">接收客服消息通知</div>
+              </div>
+              <div class="action-item" @click="offline">
+                <div :class="!onlineConfig.online ? 'checked': 'action-title'">客服离线</div>
+                <div class="action-detail">不接收客服消息通知</div>
+              </div>
+              <div class="action-item" @click="logout">
+                <div class="action-title">退出登录</div>
+              </div>
             </div>
           </div>
         </div>
@@ -58,7 +66,7 @@
         csteam: null,
         currentAgent: null,
         shop: null,
-        selectedTab: "",
+        selectedTab: "conversations",
         unreadAmount: 0,
         pendingConversationAmount: 0,
 
@@ -127,6 +135,9 @@
         })
       },
       offline() {
+        if (this.onlineConfig.online === false) {
+          return
+        }
         this.csteam.offline({
           onSuccess: () => {
             this.onlineConfig.online = false;
@@ -138,6 +149,9 @@
         })
       },
       online() {
+        if (this.onlineConfig.online === true) {
+          return
+        }
         this.csteam.online({
           teamData: {name: this.shop.name, avatar: this.shop.avatar},
           agentData: {name: this.currentAgent.name, avatar: this.currentAgent.avatar},
@@ -337,32 +351,6 @@
             transition: all 0.4s 0.4s;
           }
 
-          .action-box {
-            position: absolute;
-            left: 78px;
-            bottom: 40px;
-            width: 100px;
-            height: 100px;
-            background: #fff;
-            border-radius: 10px;
-            font-size: 14px;
-            text-align: center;
-            z-index: 3;
-            box-shadow: 2px 8px 20px #999999;
-
-            .action-item {
-              height: 50px;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-
-              &
-              :hover {
-                cursor: pointer;
-              }
-
-            }
-          }
         }
 
         .action-wrap {
@@ -377,24 +365,38 @@
             position: absolute;
             left: 80px;
             bottom: 40px;
-            width: 100px;
-            height: 100px;
+            width: 150px;
+            padding: 10px;
             background: #fff;
             border-radius: 10px;
             font-size: 14px;
-            text-align: center;
             z-index: 3;
             box-shadow: 2px 8px 20px #999999;
 
             .action-item {
-              height: 50px;
               display: flex;
-              align-items: center;
-              justify-content: center;
+              flex-direction: column;
 
               &
               :hover {
                 cursor: pointer;
+              }
+
+              .action-title {
+                margin: 5px 0;
+              }
+
+              .action-detail {
+                color: #5c5a5a;
+                font-size: 12px;
+                padding: 5px 0;
+                border-bottom: 1px solid #efeeee;
+              }
+
+              .checked {
+                margin: 5px 0;
+                background: url("/static/images/tick.png") no-repeat center center;
+                background-size: 15px;
               }
 
             }
