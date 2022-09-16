@@ -1,9 +1,5 @@
 <view class="conversations-container">
-    <view class="agent-info">
-        <view>{{onlineConfig.online? '客服在线' : '客服下线'}}</view>
-        <view class="online-option" wx:if="{{onlineConfig.online}}" bindtap="offline">下线</view>
-        <view class="online-option" wx:else bindtap="online">上线</view>
-    </view>
+	<navigation shop="{{shop}}" title="GoEasy客服"></navigation>
 	<scroll-view class="conversations" scroll-y="true" enable-flex="true">
         <view class="scroll-item">
             <view class="item-head">
