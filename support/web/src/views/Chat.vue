@@ -82,7 +82,7 @@
       </div>
       <div v-else-if="customerStatus.status==='PENDING'" class="accept-session">
         <div class="accept-info">
-          会话已等待{{ (Math.ceil((Date.now() - customerStatus.start)) / 60000).toFixed(1) }}分钟
+          会话已等待{{ waitingTime }}分钟
         </div>
         <button class="accept-btn" @click="acceptSession">立即接入</button>
       </div>
@@ -236,6 +236,7 @@
           agents: [],
           to: {}
         },
+        waitingTime: '0.0'
       }
     },
     created() {
@@ -279,8 +280,13 @@
           onFailed: (error) => {
             console.log('failed to live session:', error);
           },
-          onStatusUpdated: (status) => {
-            this.customerStatus = status;
+          onStatusUpdated: (customerStatus) => {
+            this.customerStatus = customerStatus;
+            if (customerStatus.status==='PENDING') {
+              const now = (Date.now() / 60000).toFixed(1);
+              const start = (customerStatus.start / 60000).toFixed(1);
+              this.waitingTime = (now - start).toFixed(1);
+            }
           },
           onNewMessage: (message) => {
             this.onReceivedMessage(message);

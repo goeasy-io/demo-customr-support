@@ -8,6 +8,8 @@ Page({
 			index: 0,
 			selectedAgent: null
 		},
+
+		username:'',
 		password: {
 			visible: false,
 			value: '123'
@@ -29,7 +31,8 @@ Page({
         let agent = e.currentTarget.dataset.agent;
 		this.setData({
 			['agentSelector.visible']: false,
-			['agentSelector.selectedAgent']: agent
+			['agentSelector.selectedAgent']: agent,
+			['username']: agent.name
         })
 	},
 	switchPasswordVisible() {
@@ -38,10 +41,8 @@ Page({
         })
 	},
 	login: function(e) {
-		const selectedAgent = this.data.agentSelector.selectedAgent;
-		const password = this.data.password.value
-		if (selectedAgent !== null && password.trim() !== '') {
-			let agent = restApi.findAgent(selectedAgent.name, password);
+		if (this.data.username.trim() !== '' && this.data.password.value.trim() !== '') {
+			let agent = restApi.findAgent(this.data.username, this.data.password.value);
 			if (agent) {
 				wx.setStorageSync('currentAgent', JSON.stringify(agent));
 				// 页面跳转

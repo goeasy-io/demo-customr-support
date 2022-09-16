@@ -48,6 +48,7 @@ Page({
             agents: [],
             to: {}
         },
+        waitingTime: '',
     },
     onPullDownRefresh() {
         this.loadHistoryMessage(false);
@@ -92,9 +93,15 @@ Page({
             onFailed: (error) => {
                 console.log('failed to live session:', error);
             },
-            onStatusUpdated: (status) => {
+            onStatusUpdated: (customerStatus) => {
+                if (customerStatus.status==='PENDING') {
+                    const now = (Date.now() / 60000).toFixed(1);
+                    const start = (customerStatus.start / 60000).toFixed(1);
+                    this.data.waitingTime = (now - start).toFixed(1);
+                }
                 this.setData({
-                    customerStatus: status
+                    customerStatus: customerStatus,
+                    waitingTime: this.data.waitingTime,
                 })
             },
             onNewMessage: (message) => {
@@ -165,22 +172,37 @@ Page({
             }
         });
     },
-    acceptSession() {
-        this.data.csteam.accept({
-            id: this.data.customer.id,
-            onSuccess: () => {
-                console.log('accept successfully.');
-            },
-            onFailed: (error) => {
-                // if (error.content === 'CUSTOMER_BUSY') {
-                //   alert('接入失败，用户正在忙')
-                // }
-                // if (error.content === 'OFFLINE_AGENT') {
-                //   alert('接入失败，请将您的状态改为上线状态，再进行操作。')
-                // }
-                console.log('accept failed', error);
-            }
+    isOnline() {
+        return new Promise((resolve, reject) => {
+            this.data.csteam.isOnline({
+                onSuccess: (result) => {
+                    resolve(result);
+                },
+                onFailed: (error) => {
+                    console.log('获取在线状态失败，error:', error)
+                    reject(error);
+                }
+            })
         })
+    },
+    async acceptSession() {
+        if (await this.isOnline()) {
+            this.data.csteam.accept({
+                id: this.data.customer.id,
+                onSuccess: () => {
+                    console.log('accept successfully.');
+                },
+                onFailed: (error) => {
+                    console.log('accept failed', error);
+                }
+            });
+        } else {
+            wx.showToast({
+                title: '您还不是一名该团队的在线客服，请点击左下角头像进行上线操作',
+                duration: 3000,
+                icon: 'none'
+            });
+        }
     },
     endSession() {
         this.data.csteam.end({

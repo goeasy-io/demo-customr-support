@@ -68,7 +68,7 @@
 			</view>
 			<view wx:elif="{{customerStatus.status==='PENDING'}}" class="accept-session">
 				<view class="accept-info">
-					会话已等待分钟
+					会话已等待{{waitingTime}}分钟
 				</view>
 				<view class="accept-btn" bind:tap="acceptSession">立即接入</view>
 			</view>
@@ -77,7 +77,7 @@
 				<view class="accept-info">{{ customerStatus.agent.data.name }}已接入</view>
 			</view>
 			<view wx:elif="{{customerStatus.status==='FREE'}}" class="accept-session">
-				<view class="accept-btn" bind:tap="acceptSession">发起会话</view>
+				<view class="accept-btn" bind:tap="acceptSession">主动接入</view>
 			</view>
 			<view wx:else class="action-box">
 				<view class="action-top">
@@ -111,11 +111,11 @@
 						<text class="text">订单</text>
 					</view>
 					<view class="more-item" bindtap="showTransferForm">
-						<image class="image" src="/static/images/custom.png"></image>
+						<image class="image" src="/static/images/transfer.png"></image>
 						<text class="text">转接</text>
 					</view>
                     <view class="more-item" bindtap="endSession">
-						<image class="image" src="/static/images/custom.png"></image>
+						<image class="image" src="/static/images/end.png"></image>
 						<text class="text">结束会话</text>
 					</view>
 				</view>

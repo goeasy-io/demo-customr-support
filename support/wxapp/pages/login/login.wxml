@@ -34,7 +34,7 @@
 				class="password-input"
 				placeholder="请输入密码"
 				password="{{!password.visible}}"
-				type="number"
+				type="text"
 			></input>
 			<image
 				class="password-image"

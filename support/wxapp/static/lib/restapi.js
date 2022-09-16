@@ -148,8 +148,7 @@ class RestApi {
 
     findAgents() {
         this.agents.forEach((agent) => {
-            let shop = this.shops.find((shop) => shop.id === agent.shopId);
-            agent.shop = shop;
+            agent.shop = this.findShopById(agent.shopId);
         })
         return this.agents;
     }
