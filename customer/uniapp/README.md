@@ -45,4 +45,4 @@
 
 
 
-![image](./static/images/im.gif)
+![image](src/static/images/im.gif)

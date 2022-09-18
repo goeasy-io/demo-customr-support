@@ -1,10 +1,25 @@
 {
     "name" : "goeasy-chat-demo-uni",
-    "appid" : "__UNI__EB91F2A",
+    "appid" : "__UNI__1E7EE10",
     "description" : "",
     "versionName" : "1.0.0",
     "versionCode" : "100",
     "transformPx" : false,
+    "h5" : {
+        "publicPath" : "/demo-customer-service/customer/", // 部署到二级目录
+        "devServer" : {
+            "port" : 8080,
+            "disableHostCheck" : true,
+            "https" : false
+        },
+        // 图片地址指向二级目录
+        "router" : {
+            "mode" : "history",
+            "base" : "/demo-customer-service/customer/"
+        },
+        "title" : "customer",
+        "domain" : "xxx"
+    },
     /* 5+App特有相关 */
     "app-plus" : {
         "usingComponents" : true,
@@ -15,9 +30,9 @@
             "autoclose" : false,
             "delay" : 0
         },
-		"compatible": {
-			"ignoreVersion": true
-		},
+        "compatible" : {
+            "ignoreVersion" : true
+        },
         /* 模块配置 */
         "modules" : {
             "VideoPlayer" : {},
@@ -53,7 +68,9 @@
                 ]
             },
             /* ios打包配置 */
-            "ios" : {},
+            "ios" : {
+                "dSYMs" : false
+            },
             /* SDK配置 */
             "sdkConfigs" : {
                 "ad" : {},
