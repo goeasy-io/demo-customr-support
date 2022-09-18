@@ -680,7 +680,7 @@
   }
 
   .scroll-view .content .pending {
-    background: url("/static/images/pending.gif") no-repeat center;
+    background: url("~@/static/images/pending.gif") no-repeat center;
     background-size: 30rpx;
     width: 30rpx;
     height: 30rpx;
@@ -688,7 +688,7 @@
   }
 
   .scroll-view .content .send-fail {
-    background: url("/static/images/failed.png") no-repeat center;
+    background: url("~@/static/images/failed.png") no-repeat center;
     background-size: 30rpx;
     width: 30rpx;
     height: 30rpx;
@@ -722,13 +722,13 @@
     height: 80rpx;
     line-height: 80rpx;
     text-align: center;
-    background: url("/static/images/record-appearance-icon.png") no-repeat center #FFFFFF;
+    background: url("~@/static/images/record-appearance-icon.png") no-repeat center #FFFFFF;
     background-size: 50%;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   }
 
   .action-box .action-top .file-icon {
-    background: url("/static/images/video.png") no-repeat center;
+    background: url("~@/static/images/video.png") no-repeat center;
     background-size: 70%;
     color: #9D9D9D;
     position: relative;
@@ -739,23 +739,23 @@
   }
 
   .action-box .record-icon.record-open {
-    background: url("/static/images/jianpan.png") no-repeat center #ffffff;
+    background: url("~@/static/images/jianpan.png") no-repeat center #ffffff;
     background-size: 60%;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   }
 
   .action-box .action-top .img-video {
-    background: url("/static/images/file.png") no-repeat center;
+    background: url("~@/static/images/file.png") no-repeat center;
     background-size: 73%;
   }
 
   .action-box .action-top .emoji-icon {
-    background: url("/static/images/emoji.png") no-repeat center;
+    background: url("~@/static/images/emoji.png") no-repeat center;
     background-size: 50%;
   }
 
   .action-box .action-top .more-icon {
-    background: url("/static/images/more.png") no-repeat center;
+    background: url("~@/static/images/more.png") no-repeat center;
     background-size: 70%;
   }
 
@@ -808,7 +808,7 @@
   .action-box .action-top .send-message-btn {
     width: 80rpx;
     height: 80rpx;
-    background: url("/static/images/send.png") no-repeat center;
+    background: url("~@/static/images/send.png") no-repeat center;
     background-size: 55%;
   }
 
@@ -853,7 +853,7 @@
     height: 300rpx;
     margin: -150rpx -150rpx;
     background: #262628;
-    background: url("/static/images/recording-loading.gif") no-repeat center;
+    background: url("~@/static/images/recording-loading.gif") no-repeat center;
     background-size: 100%;
     border-radius: 40rpx;
   }
@@ -979,7 +979,7 @@
     width: 40rpx;
     height: 40rpx;
     border-radius: 20rpx;
-    background: url("/static/images/play.png") no-repeat center;
+    background: url("~@/static/images/play.png") no-repeat center;
     background-size: 100%;
     top: 50%;
     left: 50%;
