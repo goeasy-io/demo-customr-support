@@ -31,7 +31,9 @@ stages:
           - 'cd ${BUILD_DIR} '
           - ''
           - '# 执行编译命令'
-          - npm install && npm run build
+          - npm install
+          - npm run build
+          - ls
           - ''
         artifacts:
           - name: BUILD_ARTIFACT
