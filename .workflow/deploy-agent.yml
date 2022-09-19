@@ -42,9 +42,8 @@ stages:
           - git add agent
           - git commit -m 'agent'
           - ''
-          - '# 切换分支'
-          - git pull
-          - git checkout deploy
+          - '# 强制切换分支'
+          - git checkout -f deploy
           - '# 复制master文件夹到此'
           - git checkout master -- agent
           - git add agent
