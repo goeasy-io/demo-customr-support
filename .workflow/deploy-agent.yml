@@ -27,6 +27,7 @@ stages:
           - '# 设置git账号'
           - git config --global user.email "guilin@goeasy.io"
           - git config --global user.name "glnp"
+          - git config --global user.password "1qaz@1234.gglnp"
           - '# 设置NPM源，提升安装速度'
           - npm config set registry https://registry.npmmirror.com
           - '# 切换构建目录'
@@ -52,6 +53,7 @@ stages:
           - '# 设置git账号'
           - git config --global user.email "guilin@goeasy.io"
           - git config --global user.name "glnp"
+          - git config --global user.password "1qaz@1234.gglnp"
           - ''
           - '# 切换分支'
           - git checkout deploy
@@ -64,10 +66,6 @@ stages:
           - '# 提交修改'
           - git commit -m "Adding 'agent' directory from 'master' branch."
           - git push
-        # artifacts:
-        #   - name: BUILD_ARTIFACT
-        #     path:
-        #       - ./dist
         caches:
           - ~/.npm
           - ~/.yarn
