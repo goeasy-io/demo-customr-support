@@ -54,7 +54,7 @@ stages:
           - git checkout -f deploy
           - ''
           - '# 删除老的customer'
-          - '# rm -rf customer'
+          - rm -rf customer
           - ''
           - '# 复制master文件夹到此'
           - git restore -s master -- h5
