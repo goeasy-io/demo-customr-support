@@ -14,7 +14,7 @@ variables:
   BUILD_DIR: support/web
 stages:
   - name: stage-b67424c2
-    displayName: BUILD
+    displayName: 构建
     strategy: naturally
     trigger: auto
     executor: []
