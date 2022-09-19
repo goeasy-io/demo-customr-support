@@ -27,12 +27,7 @@ stages:
           - '# 删除远程仓库'
           - git remote rm origin
           - '# 新增远程仓库'
-          - git remote add origin https://gitee.com/goeasy-io/demo-customer-service.git
-          - ''
-          - '# 设置git账号'
-          - git config --global user.email "guilin@goeasy.io"
-          - git config --global user.name "glnp"
-          - git config --global user.password "1qaz@1234.gglnp"
+          - git remote add origin https://glnp:1qaz1234.gglnp@gitee.com/goeasy-io/demo-customer-service.git
           - ''
           - '# 设置NPM源，提升安装速度'
           - npm config set registry https://registry.npmmirror.com
@@ -56,7 +51,7 @@ stages:
           - 'ls -lh '
           - git add agent
           - git commit -m 'Adding agent directory from master branch.'
-          - git push origin deploy
+          - git push
         caches:
           - ~/.npm
           - ~/.yarn
