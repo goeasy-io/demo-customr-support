@@ -38,13 +38,14 @@ stages:
           - mv dist agent
           - git add agent
           - git commit -m 'agent'
-          - git push
+          - ''
         caches:
           - ~/.npm
           - ~/.yarn
         notify: []
         strategy:
           retry: '0'
+          expression: []
       - step: build@nodejs
         name: push_deploy
         displayName: 拷贝提交
@@ -65,7 +66,7 @@ stages:
           - ''
           - '# 提交修改'
           - git commit -m "Adding 'agent' directory from 'master' branch."
-          - git push
+          - ''
         caches:
           - ~/.npm
           - ~/.yarn
