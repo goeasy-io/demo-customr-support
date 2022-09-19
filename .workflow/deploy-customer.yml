@@ -42,29 +42,26 @@ stages:
           - npm run build
           - ''
           - '# 移动构建目录'
-          - mdkir ../../deploy
-          - mv dist ../../deploy/customer
+          - mv dist ../../build_customer
           - cd ../../
           - ''
           - '# 标记该目录'
-          - git add deploy
-          - git commit -m 'customer'
+          - git add build_customer
+          - git commit -m 'build customer'
           - ''
           - '# 强制切换分支'
           - git fetch
           - git checkout -f deploy
           - ''
           - '# 删除老的customer'
-          - rm -rf customer
+          - '# rm -rf customer'
           - ''
           - '# 复制master文件夹到此'
-          - git restore -s master -- deploy
+          - git restore -s master -- build_customer
           - ''
           - '# 将目标目录移动至指定位置'
-          - mv deploy/customer ./
+          - mv build_customer customer
           - ''
-          - '# 删除空目录'
-          - rm -rf deploy
           - ''
           - '# 执行推送'
           - git add customer
