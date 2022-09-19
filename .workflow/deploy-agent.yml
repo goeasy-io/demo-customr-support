@@ -33,22 +33,12 @@ stages:
           - '# 执行编译命令'
           - npm install && npm run build
           - ''
-          - '# 切换分支'
-          - git checkout deploy
-          - ''
-          - '# 复制master文件夹到此'
-          - git checkout master -- agent
-          - ''
-          - '#保存修改'
-          - git add agent
-          - ''
-          - '# 提交修改'
-          - git commit -m "Adding 'agent' directory from 'master' branch."
-          - ''
+          - '# 移动目录至根下'
+          - mv agent ../../
         artifacts:
           - name: BUILD_ARTIFACT
             path:
-              - ../../agent
+              - ./agent
         caches:
           - ~/.npm
           - ~/.yarn
