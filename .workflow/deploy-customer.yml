@@ -42,12 +42,12 @@ stages:
           - npm run build
           - ''
           - '# 移动构建目录'
-          - mv dist ../../build_customer
+          - mv dist/build/h5 ../../
           - cd ../../
           - ''
           - '# 标记该目录'
-          - git add build_customer
-          - git commit -m 'build customer'
+          - git add h5
+          - git commit -m 'customer'
           - ''
           - '# 强制切换分支'
           - git fetch
@@ -57,10 +57,10 @@ stages:
           - '# rm -rf customer'
           - ''
           - '# 复制master文件夹到此'
-          - git restore -s master -- build_customer
+          - git restore -s master -- h5
           - ''
           - '# 将目标目录移动至指定位置'
-          - mv build_customer customer
+          - mv h5 customer
           - ''
           - ''
           - '# 执行推送'
