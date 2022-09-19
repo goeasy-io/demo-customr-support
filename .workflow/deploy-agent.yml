@@ -47,6 +47,8 @@ stages:
           - '# 强制切换分支'
           - git fetch
           - git checkout -f deploy
+          - '# 删除老的agent'
+          - rm -rf agent
           - '# 复制master文件夹到此'
           - git restore -s master -- agent
           - '# 执行推送'
