@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>demo-cs</title>
+</head>
+<body>
+    <div class="demo-container">
+        <div class="demo-header">Support Chat</div>
+        <div class="demo-main">
+            <div class="customer-view">
+                <div class="demo-title">
+                    <h2><span class="number">1</span>customer view</h2>
+                    <p class="description">Start a new conversation with an agent.</p>
+                </div>
+                <iframe width="300px" height="650px" src="https://goeasy-io.gitee.io/demo-customer-service/customer"></iframe>
+            </div>
+            <div class="agent-view">
+                <div class="demo-title">
+                    <h2><span class="number">2</span>agent view</h2>
+                    <p class="description">Respond to customer conversations.</p>
+                </div>
+                <iframe width="850px" height="650px" src="https://goeasy-io.gitee.io/demo-customer-service/agent"></iframe>
+            </div>
+        </div>
+    </div>
+</body>
+<style>
+    body {
+        margin: 0;
+    }
+    .demo-container {
+        background: #f2f6ff;
+        padding: 10px 0;
+    }
+    .demo-header {
+        font-size: 16px;
+        color: #555555;
+    }
+    .demo-main {
+        display: flex;
+        width: 1170px;
+        padding: 35px 0;
+        margin: 0 auto;
+    }
+    .customer-view {
+        width: 300px;
+        margin-right: 20px;
+    }
+    .agent-view {
+        width: 850px;
+    }
+    .demo-title {
+        margin: 10px 0;
+    }
+    iframe {
+        border-radius: 10px;
+        border-width: 2px;
+        border-style: solid;
+        border-color: #555555;
+        border-image: none;
+        background: #ffffff;
+    }
+    .number {
+        display: inline-block;
+        width: 28px;
+        height: 28px;
+        font-size: 20px;
+        color: #ffffff;
+        border-radius: 5px;
+        background: #d02129;
+        text-align: center;
+        line-height: 28px;
+        margin-right: 10px;
+        vertical-align: middle;
+    }
+    .description {
+        font-size: 13px;
+        color: #555555;
+        margin: -13px 0 0 40px;
+    }
+    h2 {
+        font-size: 17px;
+        color: #555555;
+        line-height: 28px;
+        font-weight: 400;
+    }
+</style>
+</html>
