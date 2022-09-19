@@ -14,7 +14,7 @@ variables:
   BUILD_DIR: support/web
 stages:
   - name: stage-b67424c2
-    displayName: 构建
+    displayName: BUILD
     strategy: naturally
     trigger: auto
     executor: []
@@ -43,7 +43,8 @@ stages:
           - git commit -m 'agent'
           - ''
           - '# 切换分支'
-          - git checkout -f deploy
+          - git pull
+          - git checkout deploy
           - '# 复制master文件夹到此'
           - git checkout master -- agent
           - git add agent
