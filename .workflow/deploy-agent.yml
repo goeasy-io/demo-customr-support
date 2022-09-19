@@ -49,10 +49,11 @@ stages:
           - git commit -m 'agent'
           - ''
           - '# 强制切换分支'
-          - git fetch
+          - git pull
           - git checkout -f deploy
           - '# 复制master文件夹到此'
           - git checkout master -- agent
+          - 'ls -lh '
           - git add agent
           - git commit -m 'Adding agent directory from master branch.'
           - git push origin deploy
