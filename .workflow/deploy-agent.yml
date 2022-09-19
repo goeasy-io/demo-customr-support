@@ -35,9 +35,21 @@ stages:
           - '# 执行编译命令'
           - npm install
           - npm run build
-          - mv dist agent
+          - '# 移动构建目录'
+          - mv dist ../../agent
+          - cd ../../
+          - '# 标记该目录'
           - git add agent
           - git commit -m 'agent'
+          - ''
+          - '# 切换分支'
+          - git checkout -f deploy
+          - '# 复制master文件夹到此'
+          - git checkout master -- agent
+          - git add agent
+          - git commit -m "Adding 'agent' directory from 'master' branch."
+          - ''
+          - 'ls -lh '
           - ''
         caches:
           - ~/.npm
@@ -46,31 +58,3 @@ stages:
         strategy:
           retry: '0'
           expression: []
-      - step: build@nodejs
-        name: push_deploy
-        displayName: 拷贝提交
-        nodeVersion: 14.16.0
-        commands:
-          - '# 设置git账号'
-          - git config --global user.email "guilin@goeasy.io"
-          - git config --global user.name "glnp"
-          - git config --global user.password "1qaz@1234.gglnp"
-          - ''
-          - '# 切换分支'
-          - git checkout deploy
-          - ''
-          - '# 复制master文件夹到此'
-          - git checkout master -- support/web/agent
-          - '#保存修改'
-          - git add agent
-          - ''
-          - '# 提交修改'
-          - git commit -m "Adding 'agent' directory from 'master' branch."
-          - ''
-        caches:
-          - ~/.npm
-          - ~/.yarn
-        notify: []
-        strategy:
-          retry: '0'
-        dependsOn: build_nodejs
