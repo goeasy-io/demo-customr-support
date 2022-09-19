@@ -49,7 +49,7 @@ stages:
           - git commit -m 'agent'
           - ''
           - '# 强制切换分支'
-          - git pull
+          - git fetch
           - git checkout -f deploy
           - '# 复制master文件夹到此'
           - git checkout master -- agent
