@@ -192,7 +192,7 @@
 
     .home-container {
       width: 850px;
-      height: 600px;
+      height: 650px;
       background: #FFFFFF;
       display: flex;
       position: relative;

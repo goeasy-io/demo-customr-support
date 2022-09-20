@@ -28,8 +28,8 @@
               <div v-else-if="conversation.lastMessage.type === 'audio'" class="item-info-message">
                 [语音消息]
               </div>
-              <div v-else-if="conversation.lastMessage.type === 'goods'" class="item-info-message">
-                [自定义消息:商品]
+              <div v-else-if="conversation.lastMessage.type === 'order'" class="item-info-message">
+                [自定义消息:订单]
               </div>
             </div>
           </div>
@@ -321,9 +321,19 @@
           }
 
           .item-info-name {
-            font-size: 16px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-break: break-all;
+            font-size: 15px;
+            width: 150px;
             line-height: 25px;
             color: #333333;
+          }
+
+          .item-info-time {
+            min-width: 40px;
+            font-size: 12px;
           }
 
           .item-info-bottom {

@@ -79,7 +79,7 @@
         </view>
         <view v-else class="message-input">
           <!-- GoEasyIM最大支持3k的文本消息，如需发送长文本，需调整输入框maxlength值 -->
-          <input v-model="text" maxlength="700" placeholder="发送消息" type="text" @focus="messageInputFocusin">
+          <input v-model="text" maxlength="700" placeholder="发送消息" type="text">
           <view class="file-icon emoji-icon" @click="showEmoji"></view>
         </view>
         <view class="file-icon more-icon" @click="showOtherTypesMessagePanel"></view>
@@ -303,10 +303,6 @@
           this.scrollToBottom();
         }
       },
-      messageInputFocusin() {
-        this.moreTypesVisible = false;
-        this.emoji.visible = false;
-      },
       showEmoji() {
         this.emoji.visible = !this.emoji.visible;
         this.moreTypesVisible = false;
@@ -366,12 +362,12 @@
         });
       },
       scrollToBottom() {
-        this.$nextTick(function () {
-          uni.pageScrollTo({
-            scrollTop: 2000000,
-            duration: 0
-          })
-        });
+        setTimeout(() => {
+        	uni.pageScrollTo({
+        		scrollTop: 2000000,
+        		duration: 0
+        	})
+        },500);
       },
       loadHistoryMessage(scrollToBottom) {//历史消息
         let lastMessageTimeStamp = null;

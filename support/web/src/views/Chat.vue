@@ -82,7 +82,7 @@
       </div>
       <div v-else-if="customerStatus.status==='PENDING'" class="accept-session">
         <div class="accept-info">
-          会话已等待{{ waitingTime }}分钟
+          会话已等待{{ pendingTime.duration }}
         </div>
         <button class="accept-btn" @click="acceptSession">立即接入</button>
       </div>
@@ -178,7 +178,7 @@
 </template>
 
 <script>
-  import {formatDate} from '../utils/utils.js'
+  import {formatDate, formateTime} from '../utils/utils.js'
   import restApi from '../api/restapi';
   import EmojiDecoder from '../utils/EmojiDecoder';
   import GoEasyAudioPlayer from "../components/GoEasyAudioPlayer";
@@ -236,7 +236,10 @@
           agents: [],
           to: {}
         },
-        waitingTime: '0.0'
+        pendingTime: {
+          timer: null,
+          duration: ''
+        }
       }
     },
     created() {
@@ -283,15 +286,19 @@
           onStatusUpdated: (customerStatus) => {
             this.customerStatus = customerStatus;
             if (customerStatus.status==='PENDING') {
-              const now = (Date.now() / 60000).toFixed(1);
-              const start = (customerStatus.start / 60000).toFixed(1);
-              this.waitingTime = (now - start).toFixed(1);
+              this.updatePendingTime(customerStatus.start);
             }
           },
           onNewMessage: (message) => {
             this.onReceivedMessage(message);
           },
         })
+      },
+      updatePendingTime (time) {
+        clearInterval(this.pendingTime.timer);
+        this.pendingTime.timer = setInterval(() => {
+          this.pendingTime.duration = formateTime(time);
+        },1800);
       },
       onReceivedMessage(newMessage) {
         //如果该消息已存在，跳过
@@ -411,6 +418,7 @@
             id: this.customer.id,
             onSuccess: () => {
               console.log('accept successfully.');
+              clearInterval(this.pendingTime.timer);
             },
             onFailed: (error) => {
               console.log('accept failed', error);
@@ -586,7 +594,12 @@
       }
 
       .chat-name {
+        width: 400px;
         margin-left: 10px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-break: break-all;
       }
 
     }
