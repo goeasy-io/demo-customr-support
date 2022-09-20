@@ -33,7 +33,7 @@ stages:
           - git config user.password "${GIT_PASS}"
           - git config user.email "${GIT_EMAIL}"
           - git remote rm origin
-          - git remote add origin https://gitee.com/goeasy-io/demo-customer-service.git
+          - git remote add origin https://${GIT_USER}:${GIT_PASS}@gitee.com/goeasy-io/demo-customer-service.git
           - ''
           - '# 创建存储目录'
           - mkdir data
