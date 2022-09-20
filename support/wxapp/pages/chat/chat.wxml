@@ -38,7 +38,7 @@
 								<image src="/static/images/failed.png" class="send-fail" wx:if="{{message.status == 'fail'}}"></image>
 								<rich-text class="text-content" nodes="{{message.node}}" wx:if="{{message.type ==='text'}}"></rich-text>
 								<image class="image-content" wx:if="{{message.type === 'image'}}" src="{{message.payload.url}}" bindtap="previewImage"
-									   data-src="{{message.payload.url}}" mode="widthFix"/>
+									   data-src="{{message.payload.url}}" style="height:{{message.imageHeight}}" mode="widthFix"/>
 								<GoEasyAudioPlayer id="goEasyAudio" wx:if="{{message.type =='audio'}}" selfSent="{{message.senderId === currentAgent.id}}" src="{{message.payload.url}}" duration="{{message.payload.duration}}" />
 								<view class="video-snapshot" bindtap="playVideo" data-url="{{message.payload.video.url}}" data-duration="{{message.payload.video.duration}}"  wx:if="{{message.type == 'video'}}">
 									<image class="thumbnail-image" src="{{message.payload.thumbnail.url}}" mode="aspectFit"></image>
@@ -68,7 +68,7 @@
 			</view>
 			<view wx:elif="{{customerStatus.status==='PENDING'}}" class="accept-session">
 				<view class="accept-info">
-					会话已等待{{waitingTime}}分钟
+					会话已等待{{pendingTime.duration}}
 				</view>
 				<view class="accept-btn" bind:tap="acceptSession">立即接入</view>
 			</view>

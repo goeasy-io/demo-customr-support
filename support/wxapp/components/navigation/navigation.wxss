@@ -28,8 +28,7 @@
 }
 
 .nav-operation-title {
-    margin-right: 10rpx;
-    color: rgb(28, 180, 108);
+    margin-right: 20rpx;
 }
 
 .nav-pull {
@@ -72,8 +71,9 @@
 }
 
 .status-avatar {
-    width: 28rpx;
-    height: 28rpx;
+    width: 30rpx;
+    height: 30rpx;
+    margin-left: 10rpx;
 }
 
 .status-desc {

@@ -14,10 +14,6 @@ Page({
 			visible : false,
 			conversation : null
 		},
-		onlineConfig: {
-			visible: false,
-			online: false
-		}
 	},
 	onShow () {
 		if(!wx.getStorageSync('currentAgent')){
@@ -37,7 +33,7 @@ Page({
 		if (wx.goEasy.getConnectionStatus() === 'disconnected'|| wx.goEasy.getConnectionStatus() === 'connect_failed') {
 			this.connectGoEasy();  //连接goeasy
 		}
-		this.initialOnlineStatus();
+		// this.initialOnlineStatus();
 		this.listenConversationUpdate(); //监听会话列表变化
 		this.loadConversations(); //加载会话列表
     },
@@ -61,52 +57,6 @@ Page({
 				console.log("GoEasy is connecting", attempts);
 			}
 		});
-	},
-	initialOnlineStatus() {
-		this.data.csteam.isOnline({
-			onSuccess: (result) => {
-				this.setData({
-					onlineConfig :{
-						online: result
-					}
-				})
-			},
-			onFailed: (error) => {
-				console.log('获取在线状态失败，error:', error)
-			}
-		})
-	},
-	offline() {
-		this.data.csteam.offline({
-			onSuccess: () => {
-				this.setData({
-					onlineConfig :{
-						online: false
-					}
-				})
-				console.log('已下线');
-			},
-			onFailed: (error) => {
-				console.log('下线失败,error:', error);
-			}
-		})
-	},
-	online() {
-		this.data.csteam.online({
-			teamData: {name: this.data.shop.name, avatar: this.data.shop.avatar},
-			agentData: {name: this.data.currentAgent.name, avatar: this.data.currentAgent.avatar},
-			onSuccess: () => {
-				this.setData({
-					onlineConfig :{
-						online: true
-					}
-				})
-				console.log('已上线',this.currentAgent);
-			},
-			onFailed: (error) => {
-				console.log('上线失败,error:', error);
-			}
-		})
 	},
 	// 加载最新的会话列表
 	loadConversations() {

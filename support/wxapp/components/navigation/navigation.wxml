@@ -1,18 +1,18 @@
 <!-- 自定义顶部栏 -->
 <view class="nav" style="height:{{navBarHeight}}px;">
     <view class="content"
-          style="height:{{menuHeight}}px; min-height:{{menuHeight}}px; line-height:{{menuHeight}}px; left:{{menuRight}}px; top:{{menuTop}}px;">
+          style="height:{{menuConfig.height}}px; min-height:{{menuConfig.height}}px; line-height:{{menuConfig.height}}px; left:{{menuConfig.left}}px; top:{{menuConfig.top}}px;">
         <view class="nav-operation">
             <view catchtap="switchPopup" class="nav-operation-content">
-                <view class="nav-operation-title">客服在线</view>
-                <image class="nav-pull-avatar" src="../../static/images/green-dot.png"></image>
+                <view class="nav-operation-title">{{onlineConfig.online ? '客服在线':'客服离线'}}</view>
+                <image class="nav-pull-avatar" src="../../static/images/tick.png"></image>
             </view>
-            <view wx:if="{{config.visible}}" class="operation-box">
+            <view wx:if="{{onlineConfig.visible}}" class="operation-box">
                 <view bindtap="online" class="status-box">
                     <view>
                         <text class="status">客服在线</text>
-                        <image wx:if="{{config.online}}" class="status-avatar"
-                               src="../../static/images/green-dot.png"></image>
+                        <image wx:if="{{onlineConfig.online}}" class="status-avatar"
+                               src="../../static/images/tick.png"></image>
                     </view>
                     <text class="status-desc">接收客服消息通知</text>
                 </view>
@@ -20,8 +20,8 @@
                 <view bindtap="offline" class="status-box">
                     <view>
                         <text class="status">客服离线</text>
-                        <image wx:if="{{!config.online}}" class="status-avatar"
-                               src="../../static/images/green-dot.png"></image>
+                        <image wx:if="{{!onlineConfig.online}}" class="status-avatar"
+                               src="../../static/images/tick.png"></image>
                     </view>
                     <text class="status-desc">不接收客服消息通知</text>
                 </view>

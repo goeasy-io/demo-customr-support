@@ -1,6 +1,6 @@
 import EmojiDecoder from '../../static/lib/EmojiDecoder';
 import restApi from '../../static/lib/restapi';
-import {formatDate} from '../../static/lib/utils';
+import {formatDate, formateTime} from '../../static/lib/utils';
 
 let emojiUrl = 'https://imgcache.qq.com/open/qcloud/tim/assets/emoji/';
 let emojiMap = {
@@ -12,6 +12,9 @@ let emojiMap = {
     '[傲慢]': 'emoji_8@2x.png'
 };
 const app = getApp();
+const IMAGE_MAX_WIDTH = 200;
+const IMAGE_MAX_HEIGHT = 150;
+
 Page({
     data: {
         currentAgent: null,
@@ -48,7 +51,10 @@ Page({
             agents: [],
             to: {}
         },
-        waitingTime: '',
+        pendingTime: {
+            timer: null,
+            duration: ''
+        }
     },
     onPullDownRefresh() {
         this.loadHistoryMessage(false);
@@ -95,9 +101,7 @@ Page({
             },
             onStatusUpdated: (customerStatus) => {
                 if (customerStatus.status==='PENDING') {
-                    const now = (Date.now() / 60000).toFixed(1);
-                    const start = (customerStatus.start / 60000).toFixed(1);
-                    this.data.waitingTime = (now - start).toFixed(1);
+                    this.updatePendingTime(customerStatus.start);
                 }
                 this.setData({
                     customerStatus: customerStatus,
@@ -108,6 +112,18 @@ Page({
                 this.onReceivedMessage(message);
             },
         })
+    },
+    updatePendingTime (time) {
+        clearInterval(this.data.pendingTime.timer);
+        let timer = setInterval(() => {
+            let duration = formateTime(time)
+            this.setData({
+                ['pendingTime.duration']: duration
+            })
+        },1800);
+         this.setData({
+            ['pendingTime.timer']: timer
+         })
     },
     onReceivedMessage(newMessage) {
         //如果该消息已存在，跳过
@@ -130,6 +146,28 @@ Page({
                 console.log('标记已读失败', error);
             }
         });
+    },
+    /**
+     * 核心就是设置高度，产生明确占位
+     *
+     * 小  (宽度和高度都小于预设尺寸)
+     *    设高=原始高度
+     * 宽 (宽度>高度)
+     *    高度= 根据宽度等比缩放
+     * 窄  (宽度<高度)或方(宽度=高度)
+     *    设高=MAX height
+     *
+     * @param width,height
+     * @returns number
+     */
+    getImageHeight(width, height) {
+        if (width < IMAGE_MAX_WIDTH && height < IMAGE_MAX_HEIGHT) {
+            return height*2;
+        } else if (width > height) {
+            return (IMAGE_MAX_WIDTH / width * height)*2;
+        } else if (width === height || width < height) {
+            return IMAGE_MAX_HEIGHT*2;
+        }
     },
     loadHistoryMessage(scrollToBottom) {
         //历史消息
@@ -191,6 +229,7 @@ Page({
                 id: this.data.customer.id,
                 onSuccess: () => {
                     console.log('accept successfully.');
+                    clearInterval(this.data.pendingTime.timer);
                 },
                 onFailed: (error) => {
                     console.log('accept failed', error);
@@ -428,11 +467,9 @@ Page({
                 // 渲染表情与文本消息
                 let text = this.data.emoji.decoder.decode(message.payload.text);
                 message.node = text;
-                message.editable = message.type === 'text' && Date.now() - message.timestamp < 60 * 1000;
             }
-            if (message.type === 'file') {
-                // 渲染文件消息
-                message.size = (message.payload.size / 1024).toFixed(2);
+            if (message.type === 'image') {
+                message.imageHeight = this.getImageHeight(message.payload.width,message.payload.height)+'rpx';
             }
         });
         this.setData({

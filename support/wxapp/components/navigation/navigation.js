@@ -8,18 +8,27 @@ Component({
         shop: Object
     },
     data: {
-        //整体顶部导航栏的高度
-        navHeight: 0,
-        //状态栏高度
-        statusBarHeight: 0,
-        config: {
+        csteam: null,
+        onlineConfig: {
             online: false,
             visible: false
         },
         navBarHeight: 0,
-        menuTop: 0,
-        menuRight: 0,
-        menuHeight: 0,
+        menuConfig: {
+            top: 0,
+            left: 0,
+            height: 0,
+        },
+    },
+    attached() {
+        this.initPageSize();
+    },
+    ready() {
+        const csteam = wx.goEasy.im.csteam(this.data.shop.id);
+        this.setData({
+            csteam: csteam,
+        });
+        this.initialOnlineStatus();
     },
     methods: {
         initPageSize() {
@@ -28,32 +37,31 @@ Component({
             // 胶囊按钮位置信息
             const menuButtonInfo = wx.getMenuButtonBoundingClientRect();
             // 导航栏高度 = 状态栏高度 + 44
-            let navBarHeight = systemInfo.statusBarHeight + 44;
-            let menuRight = systemInfo.screenWidth - menuButtonInfo.right;
-            let menuTop = menuButtonInfo.top;
-            let menuHeight = menuButtonInfo.height;
+            const navBarHeight = systemInfo.statusBarHeight + 44;
+            const left = systemInfo.screenWidth - menuButtonInfo.right;
+            const top = menuButtonInfo.top;
+            const height = menuButtonInfo.height;
             this.setData({
                 navBarHeight: navBarHeight,
-                menuTop: menuTop,
-                menuRight: menuRight,
-                menuHeight: menuHeight
+                menuConfig: {
+                    top: top,
+                    left: left,
+                    height: height,
+                }
             })
         },
         switchPopup() {
             this.setData({
-                config: {
-                    visible: !this.data.config.visible
-                }
+                ['onlineConfig.visible']: !this.data.onlineConfig.visible
             })
         },
         initialOnlineStatus() {
-            wx.goEasy.im.csteam(this.data.shop.id).isOnline({
+            this.data.csteam.isOnline({
                 onSuccess: (result) => {
                     this.setData({
-                        config: {
-                            online: result
-                        }
+                        ['onlineConfig.online']: result
                     })
+                    console.log('获取在线状态成功',this.data.onlineConfig.online)
                 },
                 onFailed: (error) => {
                     console.log('获取在线状态失败，error:', error)
@@ -62,16 +70,15 @@ Component({
         },
         online() {
             let currentAgent = wx.getStorageSync('currentAgent')
-            wx.goEasy.im.csteam(this.data.shop.id).online({
+            this.data.csteam.online({
                 teamData: {name: this.data.shop.name, avatar: this.data.shop.avatar},
                 agentData: {name: currentAgent.name, avatar: currentAgent.avatar},
                 onSuccess: () => {
                     this.setData({
-                        config: {
-                            online: true
-                        }
+                        ['onlineConfig.online']: true,
+                        ['onlineConfig.visible']: false,
                     })
-                    console.log('已上线', this.currentAgent);
+                    console.log('已上线', currentAgent);
                 },
                 onFailed: (error) => {
                     console.log('上线失败,error:', error);
@@ -79,12 +86,11 @@ Component({
             })
         },
         offline() {
-            wx.goEasy.im.csteam(this.data.shop.id).offline({
+            this.data.csteam.offline({
                 onSuccess: () => {
                     this.setData({
-                        config: {
-                            online: false
-                        }
+                        ['onlineConfig.online']: false,
+                        ['onlineConfig.visible']: false
                     })
                     console.log('已下线');
                 },
@@ -94,10 +100,4 @@ Component({
             })
         }
     },
-    attached() {
-        this.initPageSize();
-    },
-    ready() {
-        this.initialOnlineStatus();
-    }
 })
