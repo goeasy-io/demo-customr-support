@@ -3,7 +3,7 @@ module.exports = {
   publicPath: './',
   //只有Https才能使用录音
   devServer : {
-    https : true,
-    port : 8080
+    https : false,
+    port : 9002
   }
 }
