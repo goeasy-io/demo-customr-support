@@ -116,12 +116,12 @@
 
     .login-container {
       width: 1000px;
-      height: 700px;
+      height: 600px;
       border-radius: 12px;
 
       .login-main {
         width: 600px;
-        margin: 170px auto;
+        margin: 130px auto;
         display: flex;
         flex-direction: column;
         justify-content: center;
