@@ -7,7 +7,7 @@
     <div ref="scrollView" class="chat-main">
       <div ref="messageList" class="message-list">
         <div v-if="history.loading" class="history-loading">
-          <img src="/static/images/pending.gif"/>
+          <img src="../assets/images/pending.gif"/>
         </div>
         <div v-else class="history-loaded" @click="loadHistoryMessage(false)">
           {{ history.allLoaded ? '已经没有更多的历史消息' : '获取历史消息' }}
@@ -675,14 +675,14 @@
             }
 
             .pending {
-              background: url("../../public/static/images/pending.gif") no-repeat center;
+              background: url("../assets/images/pending.gif") no-repeat center;
               background-size: 13px;
               width: 15px;
               height: 15px;
             }
 
             .send-fail {
-              background: url("../../public/static/images/failed.png") no-repeat center;
+              background: url("../assets/images/failed.png") no-repeat center;
               background-size: 13px;
               width: 15px;
               height: 15px;
@@ -755,7 +755,7 @@
         }
 
         .self /deep/ .play-icon {
-          background: url("../../public/static/images/play.gif") no-repeat center;
+          background: url("../assets/images/play.gif") no-repeat center;
           background-size: 20px;
           -moz-transform: rotate(180deg);
           -webkit-transform: rotate(180deg);

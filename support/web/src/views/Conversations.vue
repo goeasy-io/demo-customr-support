@@ -358,7 +358,7 @@
           }
 
           .item-info-failed {
-            background: url("../../public/static/images/failed.png") no-repeat center;
+            background: url("../assets/images/failed.png") no-repeat center;
             background-size: 12px;
             width: 12px;
             height: 12px;
@@ -366,7 +366,7 @@
           }
 
           .item-info-sending {
-            background: url("../../public/static/images/pending.gif") no-repeat center;
+            background: url("../assets/images/pending.gif") no-repeat center;
             background-size: 12px;
             width: 12px;
             height: 12px;

@@ -65,7 +65,7 @@
       position: absolute;
       width: 20px;
       height: 20px;
-      background: url('/static/images/play.png') no-repeat center;
+      background: url('../assets/images/play.png') no-repeat center;
       background-size: 100%;
       top: 0;
       left: 0;

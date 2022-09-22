@@ -50,13 +50,13 @@
   }
 
   .audio-facade-bg {
-    background: url("/static/images/voice.png") no-repeat center;
+    background: url("../assets/images/voice.png") no-repeat center;
     background-size: 15px;
     width: 20px;
   }
 
   .audio-facade-bg.play-icon {
-    background: url("/static/images/play.gif") no-repeat center;
+    background: url("../assets/images/play.gif") no-repeat center;
     background-size: 20px;
   }
 </style>

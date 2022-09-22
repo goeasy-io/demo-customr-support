@@ -17,7 +17,7 @@
               </div>
               <img
                 :class="agentSelector.visible ? 'selected-icon' : 'selected-icon rotate'"
-                src="/static/images/up.png"
+                src="../assets/images/up.png"
               />
             </div>
             <div v-if="agentSelector.visible" class="dialog-area">
@@ -38,8 +38,9 @@
           <div class="form-item">
             <input v-model="password.value" class="password-input" placeholder="请输入密码"
                    :type="password.visible ? 'text':'password'"/>
-            <img class="password-image" @click="switchPasswordVisible"
-                 :src="password.visible?'/static/images/invisible.png':'/static/images/visible.png'"/>
+            <img v-if="password.visible" class="password-image" @click="switchPasswordVisible"
+                 src="../assets/images/invisible.png"/>
+            <img v-else class="password-image" @click="switchPasswordVisible" src="../assets/images/visible.png"/>
           </div>
           <div class="form-item">
             <button class="form-item-btn" @click="login">登录</button>
@@ -65,7 +66,7 @@
           selectedAgent: null
         },
 
-        username:'',
+        username: '',
         password: {
           visible: false,
           value: '123'
@@ -84,7 +85,7 @@
       selectAgent(agent) {
         this.agentSelector.visible = false;
         this.agentSelector.selectedAgent = agent;
-        this.username= agent.name;
+        this.username = agent.name;
       },
       switchPasswordVisible() {
         this.password.visible = !this.password.visible;

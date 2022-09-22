@@ -395,7 +395,7 @@
 
               .checked {
                 margin: 5px 0;
-                background: url("/static/images/tick.png") no-repeat center center;
+                background: url("../assets/images/tick.png") no-repeat center center;
                 background-size: 15px;
               }
 
