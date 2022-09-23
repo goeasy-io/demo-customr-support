@@ -29,7 +29,7 @@
     onShow() {
       let currentCustomer = uni.getStorageSync('currentCustomer');
       if (!currentCustomer) {
-        uni.navigateTo({url: './login'});
+        uni.redirectTo({url: './login'});
         return;
       }
       if (this.goEasy.getConnectionStatus() === 'disconnected') {
@@ -57,8 +57,8 @@
         });
       },
       chat(shop) {
-        uni.navigateTo({
-          url: './chat?to=' + JSON.stringify(shop)
+        uni.redirectTo({
+          url: './chat?to=' + JSON.stringify(shop)+'&from=home'
         });
       }
     }

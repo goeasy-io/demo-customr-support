@@ -11,14 +11,14 @@
         <div class="menu-box">
           <div class="menu-list">
             <div class="menu-item">
-              <router-link to="/conversations">
+              <router-link to="/conversations" replace>
                 <i :class="{ selected: selectedTab === 'conversations'}" class="iconfont icon-zaixiankefu"></i>
               </router-link>
               <span v-if="unreadAmount + pendingConversationAmount"
                     class="menu-unread">{{ unreadAmount + pendingConversationAmount }}</span>
             </div>
             <div class="menu-item">
-              <router-link to="/customers">
+              <router-link to="/customers" replace>
                 <i
                   :class="{ selected: selectedTab === 'customers' }"
                   class="iconfont icon-haoyou"
@@ -79,7 +79,7 @@
     created() {
       this.currentAgent = JSON.parse(localStorage.getItem('currentAgent'));
       if (!this.currentAgent) {
-        this.$router.push({path: '/login'});
+        this.$router.replace({path: '/login'});
       }
       this.shop = RestApi.findShopById(this.currentAgent.shopId);
 
@@ -168,7 +168,7 @@
         this.goEasy.disconnect({
           onSuccess: () => {
             localStorage.removeItem('currentAgent');
-            this.$router.push({path: './login'});
+            this.$router.replace({path: './login'});
           },
           onFailed: (error) => {
             console.log("Failed to disconnect GoEasy, code:" + error.code + ",error:" + error.content);

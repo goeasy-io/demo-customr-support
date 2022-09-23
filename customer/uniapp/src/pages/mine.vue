@@ -31,7 +31,7 @@
           onSuccess: function () {
             uni.hideLoading();
             uni.removeStorageSync('currentCustomer');
-            uni.navigateTo({
+            uni.redirectTo({
               url: './login'
             });
           },

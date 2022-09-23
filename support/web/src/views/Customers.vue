@@ -62,7 +62,7 @@
         this.selectedCustomer = customer;
       },
       chat(customer) {
-        this.$router.push({
+        this.$router.replace({
           path: '/conversations/chat',
           query: {
             id: customer.id,

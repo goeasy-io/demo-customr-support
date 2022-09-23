@@ -169,7 +169,7 @@
         this.conversations = content.conversations;
       },
       chat(conversation) {
-        this.$router.push({
+        this.$router.replace({
           path: '/conversations/chat',
           query: {
             id: conversation.id,

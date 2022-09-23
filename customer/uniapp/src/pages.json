@@ -43,6 +43,16 @@
             "style": {
                 "navigationBarTitleText": "聊天",
                 "navigationBarBackgroundColor": "#FFFFFF",
+                "app-plus":{
+                    "titleNView":{
+                        "buttons":[{
+                            "float":"left",
+                            "fontSize":"20px",
+                            "text":" <",
+                            "width":"30px"
+                        }]
+                    }
+                },
                 "enablePullDownRefresh": true
             }
         }
