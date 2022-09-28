@@ -609,6 +609,11 @@
       flex-direction: column;
       overflow-y: auto;
       flex: 1;
+      scrollbar-width: thin;
+
+      &::-webkit-scrollbar {
+        width: 0;
+      }
 
       .message-list {
         padding: 0 15px;

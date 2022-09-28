@@ -47,13 +47,11 @@
                     "titleNView":{
                         "buttons":[{
                             "float":"left",
-                            "fontSize":"20px",
-                            "text":" <",
-                            "width":"30px"
+                            "fontSize":"30px",
+                            "text":" ‹ "
                         }]
                     }
-                },
-                "enablePullDownRefresh": true
+                }
             }
         }
     ],

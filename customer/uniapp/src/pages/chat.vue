@@ -1,8 +1,11 @@
 <template>
   <view class="chatInterface">
     <view class="scroll-view">
-      <view class="all-history-loaded">
-        {{ history.allLoaded ? '已经没有更多的历史消息' : '下拉获取历史消息' }}
+      <view v-if="history.loading" class="history-loading">
+        <image src="/static/images/pending.gif"></image>
+      </view>
+      <view v-else class="history-loaded" @click="loadHistoryMessage(false)">
+        {{ history.allLoaded ? '已经没有更多的历史消息' : '获取历史消息' }}
       </view>
       <view class="message-list">
         <view v-for="(message,index) in history.messages" :key="message.messageId">
@@ -375,6 +378,7 @@
         },500);
       },
       loadHistoryMessage(scrollToBottom) {//历史消息
+        this.history.loading = true;
         let lastMessageTimeStamp = null;
         let lastMessage = this.history.messages[0];
         if (lastMessage) {
@@ -386,7 +390,7 @@
           lastTimestamp: lastMessageTimeStamp,
           limit: 10,
           onSuccess: (result) => {
-            uni.stopPullDownRefresh();
+            this.history.loading = false;
             let messages = result.content;
             if (messages.length === 0) {
               this.history.allLoaded = true;
@@ -401,7 +405,7 @@
           onFailed: (error) => {
             //获取失败
             console.log('获取历史消息失败:', error);
-            uni.stopPullDownRefresh();
+            this.history.loading = true;
           }
         });
       },
@@ -552,7 +556,17 @@
     background-color: #FFFFFF;
   }
 
-  .scroll-view .all-history-loaded {
+  .history-loading {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .history-loading image {
+    width: 20rpx;
+    height: 20rpx;
+  }
+
+  .scroll-view .history-loaded {
     font-size: 24rpx;
     height: 90rpx;
     line-height: 90rpx;
@@ -631,14 +645,6 @@
   .scroll-view .content .text-content img {
     width: 50rpx;
     height: 50rpx;
-  }
-
-  .widthFixClass {
-    width: 400rpx;
-  }
-
-  .heightFixClass {
-    height: 300rpx;
   }
 
   .scroll-view .content .order-content {
