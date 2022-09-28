@@ -1,6 +1,6 @@
 <template>
   <view class="chatInterface">
-    <view class="scroll-view">
+    <scroll-view :scroll-y="true" :scroll-into-view="bottomView" class="scroll-view">
       <view v-if="history.loading" class="history-loading">
         <image src="/static/images/pending.gif"></image>
       </view>
@@ -8,7 +8,7 @@
         {{ history.allLoaded ? '已经没有更多的历史消息' : '获取历史消息' }}
       </view>
       <view class="message-list">
-        <view v-for="(message,index) in history.messages" :key="message.messageId">
+        <view :id="'item'+index" v-for="(message,index) in history.messages" :key="message.messageId">
           <view class="time-lag">
             {{ renderMessageDate(message, index) }}
           </view>
@@ -72,7 +72,7 @@
           </view>
         </view>
       </view>
-    </view>
+    </scroll-view>
     <view class="action-box">
       <view class="action-top">
         <view :class="[audio.visible ? 'record-icon record-open':'record-icon']"
@@ -197,6 +197,7 @@
           url: '',
           context: null
         },
+        bottomView: "",
       }
     },
     onLoad(options) {
@@ -371,11 +372,9 @@
       },
       scrollToBottom() {
         setTimeout(() => {
-        	uni.pageScrollTo({
-        		scrollTop: 2000000,
-        		duration: 0
-        	})
-        },500);
+          let index = this.history.messages.length - 1;
+          this.bottomView = `item${index}`;
+        },100);
       },
       loadHistoryMessage(scrollToBottom) {//历史消息
         this.history.loading = true;
@@ -545,6 +544,9 @@
   .chatInterface {
     height: 100%;
     background-color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
   }
 
   .scroll-view {
@@ -552,15 +554,17 @@
     padding-right: 20rpx;
     box-sizing: border-box;
     -webkit-overflow-scrolling: touch;
-    padding-bottom: 140rpx;
+    margin-bottom: 140rpx;
     background-color: #FFFFFF;
+    flex: 1;
+    overflow-y: auto;
   }
 
   .history-loading {
     width: 100%;
     text-align: center;
   }
-  
+
   .history-loading image {
     width: 20rpx;
     height: 20rpx;

@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "1305406",
+      "name": "上",
+      "font_class": "shang",
+      "unicode": "e63c",
+      "unicode_decimal": 58940
+    },
+    {
+      "icon_id": "7712240",
+      "name": "转班",
+      "font_class": "zhuanban",
+      "unicode": "e72e",
+      "unicode_decimal": 59182
+    },
+    {
       "icon_id": "731122",
       "name": "更多",
       "font_class": "gengduo",
