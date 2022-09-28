@@ -268,6 +268,9 @@
           console.log('failed to quit:', error);
         },
       });
+      if (this.pendingTime.timer) {
+        clearInterval(this.pendingTime.timer);
+      }
     },
     methods: {
       renderTextMessage(text) {
@@ -298,7 +301,7 @@
         clearInterval(this.pendingTime.timer);
         this.pendingTime.timer = setInterval(() => {
           this.pendingTime.duration = formateTime(time);
-        },1800);
+        },1000);
       },
       onReceivedMessage(newMessage) {
         //如果该消息已存在，跳过

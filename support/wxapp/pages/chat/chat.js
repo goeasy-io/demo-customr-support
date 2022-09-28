@@ -88,6 +88,9 @@ Page({
                 console.log('failed to quit:', error);
             },
         });
+        if (this.pendingTime.timer) {
+            clearInterval(this.pendingTime.timer);
+        }
     },
     liveSession() {
         this.data.csteam.liveSession({
@@ -120,7 +123,7 @@ Page({
             this.setData({
                 ['pendingTime.duration']: duration
             })
-        },1800);
+        },1000);
          this.setData({
             ['pendingTime.timer']: timer
          })
