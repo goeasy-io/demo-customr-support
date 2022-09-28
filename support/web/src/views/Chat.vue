@@ -151,7 +151,7 @@
     <!-- 图片预览弹窗 -->
     <div v-if="imagePopup.visible" class="image-preview">
       <img :src="imagePopup.url" alt="图片"/>
-      <span class="close" @click="hideImagePreviewPopup">x</span>
+      <span class="close" @click="hideImagePreviewPopup">×</span>
     </div>
     <!-- 转接弹窗 -->
     <div v-if="transferForm.visible" class="transfer-popup">
@@ -970,15 +970,14 @@
       }
 
       .close {
-        padding: 0 8px;
-        background: #f6f2f2;
-        border: 1px solid #eeeeee;
-        font-size: 15px;
+        font-size: 50px;
+        line-height: 24px;
         cursor: pointer;
-        color: #333333;
+        color: #FFFFFF;
         position: absolute;
-        top: 4px;
-        right: 10px;
+        top: 10px;
+        right: 5px;
+        z-index: 1002;
       }
 
     }
