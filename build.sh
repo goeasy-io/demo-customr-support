@@ -23,7 +23,7 @@ if [ "$ACTION" = "b" ]; then
     # branch 版本
     cd support/web
     newVersion=$(npm version prerelease --no-git-tag-version)
-    vwesionDir=${newVersion:1}
+    vwesionDir=${newVersion:1:-1}"x"
     cd ../../
 fi
 
@@ -36,7 +36,7 @@ if [ "$ACTION" = "r" ]; then
 fi
 
 # 创建版本目录
-mkdir $vwesionDir
+mkdir -p $vwesionDir
 
 # 构建agent服务
 cd support/web
@@ -50,17 +50,18 @@ npm install
 npm run build
 mv dist/build/h5 ../../$vwesionDir/customer
 
-# 复制demo-cs.html文件
+# 复制index.html文件
 cd ../../
+sed -i "s/[0-9].[0-9].[0-9]-./$vwesionDir/g" index.html
 cp index.html $vwesionDir/index.html
 
 # 克隆仓库
 git clone https://${GIT_USER}:${GIT_PASS}@gitee.com/goeasy-io/show-cs.git
+# 清除老数据
+rm -rf show-cs/$vwesionDir
 # 移动版本目录
 mv $vwesionDir show-cs/
-# 删除外部.git
-#rm -rf .git
-#mv .git  .git_old
+
 
 # 切换仓库
 cd show-cs
