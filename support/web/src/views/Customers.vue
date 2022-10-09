@@ -149,52 +149,6 @@
         box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.1);
       }
 
-      .group-items {
-        display: flex;
-        padding: 5px 10px;
-
-        .group-avatar {
-          width: 50px;
-          height: 50px;
-          margin-left: 10px;
-          overflow: hidden;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          align-content: center;
-          flex-wrap: wrap-reverse;
-        }
-
-        .avatarItem--1 > img {
-          width: 98%;
-          height: 98%;
-        }
-
-        .avatarItem--2 > img {
-          width: 47%;
-          height: 47%;
-          margin: 1%;
-        }
-
-        .avatarItem--3 > img {
-          width: 31%;
-          height: 30%;
-          margin: 1%;
-        }
-
-        .group {
-          width: 65%;
-          margin-left: 10px;
-
-          .group-name {
-            width: 180px;
-            text-align: left;
-            font-size: 15px;
-            line-height: 40px;
-          }
-
-        }
-      }
     }
 
     .customer-main {

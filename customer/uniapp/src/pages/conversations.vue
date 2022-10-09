@@ -313,7 +313,4 @@
     right: 15rpx;
   }
 
-  .unread-text {
-    color: #d02129;
-  }
 </style>

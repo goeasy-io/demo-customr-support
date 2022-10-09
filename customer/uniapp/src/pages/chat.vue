@@ -227,9 +227,6 @@
       this.moreTypesVisible = false;
       this.emoji.visible = false;
     },
-    onPullDownRefresh(e) {
-      this.loadHistoryMessage(false);
-    },
     beforeDestroy() {
       this.goEasy.im.off(this.GoEasy.IM_EVENT.CS_MESSAGE_RECEIVED, this.onMessageReceived);
     },
@@ -584,12 +581,6 @@
     margin: 20rpx 0;
   }
 
-  .scroll-view .message-item .message-item-checkbox {
-    height: 80rpx;
-    display: flex;
-    align-items: center;
-  }
-
   .scroll-view .message-item .message-item-content {
     flex: 1;
     overflow: hidden;
@@ -725,19 +716,6 @@
     width: 100%;
   }
 
-  .action-box .action-top .record-icon {
-    border-radius: 55%;
-    font-size: 32rpx;
-    margin: 0 10rpx;
-    width: 80rpx;
-    height: 80rpx;
-    line-height: 80rpx;
-    text-align: center;
-    background: url("~@/static/images/record-appearance-icon.png") no-repeat center #FFFFFF;
-    background-size: 50%;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  }
-
   .action-box .action-top .file-icon {
     background: url("~@/static/images/video.png") no-repeat center;
     background-size: 70%;
@@ -747,17 +725,6 @@
     height: 80rpx;
     line-height: 80rpx;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  }
-
-  .action-box .record-icon.record-open {
-    background: url("~@/static/images/jianpan.png") no-repeat center #ffffff;
-    background-size: 60%;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  }
-
-  .action-box .action-top .img-video {
-    background: url("~@/static/images/file.png") no-repeat center;
-    background-size: 73%;
   }
 
   .action-box .action-top .emoji-icon {
@@ -840,22 +807,6 @@
     height: 100rpx;
   }
 
-  .messageSelector-box {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    backdrop-filter: blur(0.27rpx);
-    width: 100%;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    border-radius: 12rpx;
-    background: #EFEFEF;
-    height: 80rpx;
-    padding: 20rpx 0;
-    font-size: 32rpx;
-  }
-
   .record-loading {
     position: fixed;
     top: 50%;
@@ -869,27 +820,8 @@
     border-radius: 40rpx;
   }
 
-  .img-layer {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: #000000;
-    z-index: 9999;
-    padding: 6rpx;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
   .img-layer uni-image {
     height: 100% !important;
-  }
-
-  .img-layer {
-    height: 100% !important;
-    width: 100% !important;
   }
 
   .order-list {
@@ -922,18 +854,6 @@
   .orders {
     display: flex;
     flex-direction: column;
-  }
-
-  .order-item {
-    height: 80rpx;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    padding: 10px 0;
-  }
-
-  .order-item-checked {
-    background-color: #e9dddd;
   }
 
   .order-img {
