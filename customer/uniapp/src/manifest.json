@@ -6,10 +6,15 @@
     "versionCode": "100",
     "transformPx": false,
     "h5": {
+        "publicPath": "/",
         "devServer": {
             "port": 9001,
             "disableHostCheck": true,
             "https": false
+        },
+        "router": {
+            "mode": "history",
+            "base": "/"
         }
     },
     /* 5+App特有相关 */
