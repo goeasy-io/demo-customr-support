@@ -208,6 +208,17 @@
     border-radius: 50%;
   }
 
+  .selected-icon {
+    width: 40rpx;
+    height: 40rpx;
+    margin-right: 10rpx;
+  }
+
+  .selected-icon.rotate {
+    transform-origin: center;
+    transform: rotate(180deg);
+  }
+
   .dialog-area {
     position: absolute;
     width: 100%;
