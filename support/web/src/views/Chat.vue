@@ -653,7 +653,6 @@
 
         .message-item-content {
           flex: 1;
-          max-height: 230px;
           margin: 5px 0;
           overflow: hidden;
           display: flex;
