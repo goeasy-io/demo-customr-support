@@ -1,7 +1,7 @@
 <template>
   <div class="chat-container">
     <div class="chat-title">
-      <img :src="publicPath+customer.avatar" class="chat-avatar"/>
+      <img :src="customer.avatar" class="chat-avatar"/>
       <div class="chat-name">{{ customer.name }}</div>
     </div>
     <div ref="scrollView" class="chat-main">
@@ -31,7 +31,7 @@
             </div>
             <div v-else :class="{ self: message.senderId !== customer.id }" class="message-item-content">
               <div class="sender-info">
-                <img :src="publicPath+message.senderData.avatar" class="sender-avatar"/>
+                <img :src="message.senderData.avatar" class="sender-avatar"/>
                 <div class="sender-name">
                   {{ message.senderData.name }}
                 </div>
@@ -160,7 +160,7 @@
           <div v-for="(agent, index) in transferForm.agents" class="agent-info">
             <label class="agent-label">
               <input v-model="transferForm.to" :name="agent.data.name" :value="agent" type="radio"/>
-              <img :src="publicPath+agent.data.avatar" class="agent-avatar"/>
+              <img :src="agent.data.avatar" class="agent-avatar"/>
               <span class="agent-name">{{ agent.data.name }}</span>
             </label>
           </div>
@@ -183,7 +183,6 @@
   import EmojiDecoder from '../utils/EmojiDecoder';
   import GoEasyAudioPlayer from "../components/GoEasyAudioPlayer";
   import GoEasyVideoPlayer from "../components/GoEasyVideoPlayer";
-  import {publicPath} from '../../vue.config';
 
   const IMAGE_MAX_WIDTH = 200;
   const IMAGE_MAX_HEIGHT = 150;
@@ -204,7 +203,6 @@
         '[傲慢]': 'emoji_8@2x.png',
       };
       return {
-        publicPath: publicPath,
         currentAgent: null,
         csteam: null,
         customer: null,
