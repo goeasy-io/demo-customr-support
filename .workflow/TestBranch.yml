@@ -12,6 +12,7 @@ variables:
     - GIT_EMAIL
     - GIT_PASS
     - GIT_USER
+    - ACTION
 stages:
   - name: stage-8b34cfe4
     displayName: build
@@ -24,59 +25,8 @@ stages:
         displayName: Nodejs 构建
         nodeVersion: 14.16.0
         commands:
-          - git remote rm origin
-          - git remote add origin https://${GIT_USER}:${GIT_PASS}@gitee.com/goeasy-io/demo-customer-service.git
           - ''
-          - '# 创建存储目录'
-          - mkdir data
-          - git branch
-          - ''
-          - '# 设置NPM源，提升安装速度'
-          - npm config set registry https://registry.npmmirror.com
-          - ''
-          - '# 构建agent服务'
-          - cd support/web
-          - newVersion=$(npm version prerelease --no-git-tag-version)
-          - Versiondir=${newVersion:1}
-          - npm install
-          - npm run build
-          - mv dist ../../data/agent
-          - ''
-          - '# 构建customer服务'
-          - cd ../../customer/uniapp
-          - npm install
-          - npm run build
-          - mv dist/build/h5 ../../data/customer
-          - ''
-          - '# 复制demo-cs.html文件'
-          - cd ../../
-          - cp demo-cs.html data/demo-cs.html
-          - ''
-          - '# 克隆仓库'
-          - git clone https://${GIT_USER}:${GIT_PASS}@gitee.com/goeasy-io/show-cs.git
-          - '# 创建版本目录'
-          - mkdir -p customer-support-live/$Versiondir
-          - '# 移动文件至版本目录'
-          - mv data/* customer-support-live/$Versiondir/
-          - '# 删除外部.git'
-          - rm -rf .git
-          - ''
-          - '# 切换仓库'
-          - cd customer-support-live
-          - '# 设置信息'
-          - git config user.name "${GIT_USER}"
-          - git config user.password "${GIT_PASS}"
-          - git config user.email "${GIT_EMAIL}"
-          - '# 标记推送'
-          - git add $Versiondir
-          - git commit -m "$Versiondir is built"
-          - '#git push'
-          - ''
-          - '# 检查'
-          - ls
-          - ''
-          - ls $Versiondir
-          - ''
+          - echo $ACTION
         caches:
           - ~/.npm
           - ~/.yarn
