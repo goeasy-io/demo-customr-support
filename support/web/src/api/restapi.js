@@ -1,3 +1,5 @@
+import {publicPath} from "../../vue.config";
+
 class RestApi {
     //用户数据示例
     customers = [
@@ -133,6 +135,24 @@ class RestApi {
             sales: 258
         }
     ];
+
+
+    constructor() {
+        function applyPublicPath(list, property) {
+            list.forEach((item)=>{
+                item[property] = publicPath + item[property];
+            })
+        }
+        applyPublicPath(this.customers, 'avatar');
+        applyPublicPath(this.agents, 'avatar');
+        applyPublicPath(this.orders, 'url');
+        applyPublicPath(this.shops, 'avatar');
+        this.shops.forEach((shop)=>{
+            shop.goods.forEach((good)=>{
+                good = publicPath + good;
+            })
+        })
+    }
 
     findShops() {
         return this.shops;
