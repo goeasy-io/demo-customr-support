@@ -1,6 +1,6 @@
 version: '1.0'
-name: TestBranch
-displayName: TestBranch
+name: BuildPipeline
+displayName: BuildPipeline
 triggers:
   trigger: auto
   push:
@@ -9,12 +9,12 @@ triggers:
         - 跑不通_master
 variables:
   global:
+    - GIT_USER
     - GIT_EMAIL
     - GIT_PASS
-    - GIT_USER
     - ACTION
 stages:
-  - name: stage-8b34cfe4
+  - name: stage-7c5194ef
     displayName: build
     strategy: naturally
     trigger: auto
@@ -25,7 +25,8 @@ stages:
         displayName: Nodejs 构建
         nodeVersion: 14.16.0
         commands:
-          - ''
+          - '# 执行构建脚本'
+          - '# bash build.sh'
           - echo $ACTION
         caches:
           - ~/.npm
