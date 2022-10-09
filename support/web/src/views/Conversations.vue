@@ -11,7 +11,7 @@
             @click="chat(conversation)"
           >
             <div class="item-head">
-              <img :src="conversation.data.avatar" class="item-avatar"/>
+              <img :src="publicPath+conversation.data.avatar" class="item-avatar"/>
             </div>
             <div class="item-info">
               <div class="item-info-name">{{ conversation.data.name }}</div>
@@ -46,7 +46,7 @@
             @contextmenu.prevent.stop="e => showRightClickMenu(e,conversation)"
           >
             <div class="item-head">
-              <img :src="conversation.data.avatar" class="item-avatar"/>
+              <img :src="publicPath+conversation.data.avatar" class="item-avatar"/>
               <span v-if="conversation.unread" class="item-unread-num">{{ conversation.unread }}</span>
             </div>
             <div class="item-info">
@@ -108,10 +108,13 @@
 
 <script>
   import {formatDate} from '../utils/utils.js'
+  import {publicPath} from '../../vue.config'
+
   export default {
     name: 'Conversation',
     data() {
       return {
+        publicPath: publicPath,
         pendingConversations: [],
         conversations: [],
         // Conversation右键菜单

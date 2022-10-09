@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
+import {publicPath} from '../../vue.config';
+
 const Home = () => import('@/views/Home');
 const Login = () => import('@/views/Login');
 const Customers = () => import('@/views/Customers');
@@ -50,6 +52,7 @@ const routes = [
 
 const router = new VueRouter({
     mode: 'history',
+    base: publicPath+'/',
     routes
 });
 
