@@ -6,7 +6,7 @@
     "versionCode": "100",
     "transformPx": false,
     "h5": {
-        "publicPath": "/",
+        "publicPath": "/show-cs/1.0.0/customer/",
         "devServer": {
             "port": 9001,
             "disableHostCheck": true,
@@ -14,7 +14,7 @@
         },
         "router": {
             "mode": "history",
-            "base": "/"
+            "base": "/show-cs/1.0.0/customer/"
         }
     },
     /* 5+App特有相关 */

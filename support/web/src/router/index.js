@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import {publicPath} from "../../vue.config";
 
 import {publicPath} from '../../vue.config';
 

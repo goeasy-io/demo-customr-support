@@ -10,7 +10,7 @@
           @click="showCustomer(customer)"
         >
           <div class="user-avatar">
-            <img :src="publicPath+customer.avatar"/>
+            <img :src="customer.avatar"/>
           </div>
           <div class="user-info">{{ customer.name }}</div>
         </div>
@@ -24,7 +24,7 @@
             <div>{{ selectedCustomer.name }}</div>
           </div>
           <div class="profile-avatar">
-            <img :src="publicPath+selectedCustomer.avatar"/>
+            <img :src="selectedCustomer.avatar"/>
           </div>
         </div>
         <div class="info-item">
@@ -45,13 +45,11 @@
 
 <script>
   import restApi from "../api/restapi";
-  import {publicPath} from '../../vue.config'
 
   export default {
     name: "Customers",
     data() {
       return {
-        publicPath: publicPath,
         customers: [],
         selectedCustomer: null,
       };

@@ -3,7 +3,7 @@
     <div class="home-container">
       <div class="home-menu">
         <div class="menu-header">
-          <img :src="publicPath+shop.avatar" class="shop-avatar"/>
+          <img :src="shop.avatar" class="shop-avatar"/>
           <div class="team-info">
             {{ shop.name }}
           </div>
@@ -27,7 +27,7 @@
             </div>
           </div>
           <div class="agent-info">
-            <img :src="publicPath+currentAgent.avatar" class="agent-avatar"
+            <img :src="currentAgent.avatar" class="agent-avatar"
                  @click="onlineConfig.visible = !onlineConfig.visible"/>
             <span :class="onlineConfig.online ?'spot online':'spot offline'"></span>
             <div class="agent-name">{{ currentAgent.name }}</div>
@@ -58,12 +58,10 @@
 
 <script>
   import RestApi from '../api/restapi'
-  import {publicPath} from '../../vue.config'
   export default {
     name: 'Home',
     data() {
       return {
-        publicPath: publicPath,
         csteam: null,
         currentAgent: null,
         shop: null,
