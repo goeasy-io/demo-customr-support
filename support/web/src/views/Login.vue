@@ -9,7 +9,7 @@
           <div class="form-item">
             <div class="selected-area" @click="switchSelectorVisible">
               <div class="selected-content">
-                <img v-if="agentSelector.selectedAgent" :src="agentSelector.selectedAgent.shop.avatar"/>
+                <img v-if="agentSelector.selectedAgent" :src="publicPath+agentSelector.selectedAgent.shop.avatar"/>
                 <div>{{
                     agentSelector.selectedAgent ? agentSelector.selectedAgent.shop.name + ' - ' + agentSelector.selectedAgent.name : '请选择用户'
                   }}
@@ -27,7 +27,7 @@
                   v-for="(agent, index) in agentSelector.agents"
                   :key="index"
                   @click="selectAgent(agent)">
-                  <img class="dialog-list-item-avatar" :src="agent.shop.avatar"/>
+                  <img class="dialog-list-item-avatar" :src="`${publicPath}${agent.shop.avatar}`"/>
                   <div :class="agentSelector.selectedAgent === agent ? 'selected' : ''">
                     {{ agent.shop.name + ' - ' + agent.name }}
                   </div>
@@ -54,11 +54,13 @@
 
 <script>
   import restApi from '../api/restapi';
+  import {publicPath} from '../../vue.config'
 
   export default {
     name: 'Login',
     data() {
       return {
+        publicPath: publicPath,
         agentSelector: {
           agents: [],
           visible: false,
