@@ -4,10 +4,10 @@ if [ "$1" ]; then
     ACTION=$1
 fi
 
-appkey=$config_appkey
-git_usernamne=${}
-git_password=${}
-git_email=${}
+config_appkey=${APPKEY}
+git_usernamne=${GIT_USER}
+git_password=${GIT_PASS}
+git_email=${GIT_EMAIL}
 
 # 获取当前版本并创建目录
 confirm_version() {
@@ -18,18 +18,16 @@ confirm_version() {
         # release 版本
         cd support/web
         currentVersion=$(npm version patch)
-        versionDir=currentVersion
-        //todo: 提交, 打tag，切换到tag
+        vesionDir=$currentVersion
+        git tag $currentVersion
+        git push origin $currentVersion
+        git checkout $currentVersion
 
     else
         # build 版本
         cd support/web
         currentVersion=$(npm run env | grep npm_package_version | cut -d '=' -f 2)
-        if [[ $currentVersion =~ "-" ]]; then
-            vesionDir=${currentVersion:-1}"x"
-        else
-            vesionDir=$currentVersion"-x"
-        fi
+        vesionDir=${currentVersion::-1}"x"
     fi
 
     echo "version confirmed:$currentVersion"
@@ -53,7 +51,7 @@ make_build_folder() {
 build_web() {
     cd support/web
     npm install
-    npm run build  --appkey=$appkey
+    npm run build --appkey=$config_appkey
     mv dist ../../build/$vesionDir/agent
     cd ../../
 }
@@ -62,7 +60,7 @@ build_web() {
 build_customer() {
     cd customer/uniapp
     npm install
-    npm run build -- --appkey=
+    npm run build -- --appkey=$config_appkey
     mv dist/build/h5 ../../build/$vesionDir/customer
     rm -rf dist
     cd ../../
@@ -70,22 +68,19 @@ build_customer() {
 
 # 升级web服务的版本
 upgrade_versions() {
-    cd support/web
-
-
+    cd ../
+    git branch
     if [ "$ACTION" = "r" ]; then
-      git checkout -f $originBranch
+        git checkout -f $originBranch
     fi
+    cd support/web
+    nextVersion=$(npm version prerelease --no-git-tag-version)
 
+    git add .
+    git commit -m "$currentVersion is built"
+    git push
 
-  nextVersion=$(npm version prerelease --no-git-tag-version)
-
-  git add .
-  git commit -m "$currentVersion is built"
-  git push
-
-  echo "$currentVersion is build, next version $nextVersion"
-
+    echo "$currentVersion is build, next version $nextVersion"
 
 }
 
@@ -101,7 +96,7 @@ deploy() {
     if [ -d "show-cs" ]; then
         rm -rf show-cs
     fi
-    git clone https://${GIT_USER}:${GIT_PASS}@gitee.com/goeasy-io/show-cs.git
+    git clone https://${git_usernamne}:${git_password}@gitee.com/goeasy-io/show-cs.git
     # 清除老数据
     ls show-cs/$vesionDir >/dev/null 2>&1
     if [ $? == 0 ]; then
@@ -113,9 +108,9 @@ deploy() {
     # 切换仓库
     cd show-cs
     # 设置信息
-    git config user.name "${GIT_USER}"
-    git config user.password "${GIT_PASS}"
-    git config user.email "${GIT_EMAIL}"
+    git config user.name "${git_usernamne}"
+    git config user.password "${git_password}"
+    git config user.email "${git_email}"
     # 标记推送
     git add $vesionDir
     git commit -m "$vesionDir is built"
@@ -130,13 +125,11 @@ clear_file() {
     rm -rf support/web/node_modules
 }
 
-
 confirm_version
 make_build_folder
 build_web
 build_customer
 copy_html
 deploy
-clear_file
 upgrade_versions
-
+clear_file
