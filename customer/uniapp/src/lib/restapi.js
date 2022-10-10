@@ -137,6 +137,29 @@ class RestApi {
         }
     ];
 
+
+    constructor() {
+        function applyPublicPath(list, property,redefineId) {
+            list.forEach((item) => {
+                item[property] = 'https://goeasy-io.gitee.io/show-cs' + item[property];
+                if (redefineId) {
+                    item['id']=item['id']+'b';
+                }
+            })
+        }
+
+        applyPublicPath(this.customers, 'avatar',true);
+        applyPublicPath(this.agents, 'avatar', true);
+        applyPublicPath(this.orders, 'url');
+        applyPublicPath(this.shops, 'avatar');
+
+        this.shops.forEach((shop) => {
+            for (let i = 0; i < shop.goods.length; i++) {
+                shop.goods[i] = 'https://goeasy-io.gitee.io/show-cs' + shop.goods[i];
+            }
+        })
+    }
+
     findShops() {
         return this.shops;
     }
