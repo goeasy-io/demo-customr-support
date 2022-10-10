@@ -75,7 +75,7 @@ upgrade_versions() {
     fi
     cd support/web
     nextVersion=$(npm version prerelease --no-git-tag-version)
-
+    git push --set-upstream origin $originBranch
     git add .
     git commit -m "$currentVersion is built"
     git push
