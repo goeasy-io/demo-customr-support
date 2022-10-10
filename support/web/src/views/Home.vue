@@ -77,10 +77,7 @@
       };
     },
     created() {
-      this.currentAgent = JSON.parse(localStorage.getItem('currentAgent'));
-      if (!this.currentAgent) {
-        this.$router.replace({path: '/login'});
-      }
+      this.currentAgent = this.globalData.currentAgent;
       this.shop = RestApi.findShopById(this.currentAgent.shopId);
 
       this.csteam = this.goEasy.im.csteam(this.currentAgent.shopId);
@@ -170,7 +167,7 @@
       logout() {
         this.goEasy.disconnect({
           onSuccess: () => {
-            localStorage.removeItem('currentAgent');
+            this.globalData.currentAgent = null;
             this.$router.replace({path: './login'});
           },
           onFailed: (error) => {

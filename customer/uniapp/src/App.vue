@@ -1,5 +1,8 @@
 <script>
   export default {
+    globalData: {
+      currentCustomer: null
+    },
     onLaunch: function () {
       console.log('App onLaunch');
     },

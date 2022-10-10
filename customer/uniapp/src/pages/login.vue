@@ -92,7 +92,7 @@
         if (this.username.trim() !== ''&& this.password.value.trim() !== '') {
           let customer = restApi.findCustomer(this.username, this.password.value);
           if (customer) {
-            uni.setStorageSync('currentCustomer', customer);
+            getApp().globalData.currentCustomer = customer;
             uni.switchTab({
               url: './home'
             });

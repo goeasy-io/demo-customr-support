@@ -54,8 +54,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    const currentAgent = JSON.parse(localStorage.getItem('currentAgent'));
-    if (to.path !== '/login' && !currentAgent) {
+    if (to.path !== '/login' && !Vue.prototype.globalData.currentAgent) {
         next({path: '/login'})
     } else next()
 });

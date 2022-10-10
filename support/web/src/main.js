@@ -7,6 +7,10 @@ import GoEasy from './utils/goeasy-2.5.3.min'
 
 Vue.config.productionTip = false
 
+Vue.prototype.globalData = {
+    currentAgent: null
+};
+
 new Vue({
   router,
   render: h => h(App)

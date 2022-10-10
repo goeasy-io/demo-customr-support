@@ -27,7 +27,7 @@
       }
     },
     onShow() {
-      let currentCustomer = uni.getStorageSync('currentCustomer');
+      let currentCustomer = getApp().globalData.currentCustomer;
       if (!currentCustomer) {
         uni.redirectTo({url: './login'});
         return;
@@ -38,7 +38,7 @@
     },
     methods: {
       connectGoEasy() {
-        let currentCustomer = uni.getStorageSync('currentCustomer');
+        let currentCustomer = getApp().globalData.currentCustomer;
         this.goEasy.connect({
           id: currentCustomer.id,
           data: {
