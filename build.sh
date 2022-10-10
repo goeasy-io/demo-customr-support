@@ -27,7 +27,7 @@ confirm_version() {
         # build 版本
         cd support/web
         currentVersion=$(npm run env | grep npm_package_version | cut -d '=' -f 2)
-        vesionDir=${currentVersion::-1}"x"
+        vesionDir=$currentVersion
     fi
 
     echo "version confirmed:$currentVersion"
@@ -132,4 +132,4 @@ build_customer
 copy_html
 deploy
 upgrade_versions
-clear_file
+#clear_file
