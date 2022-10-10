@@ -10,10 +10,10 @@ triggers:
 variables:
   global:
     - ACTION
+    - APPKEY
     - GIT_EMAIL
     - GIT_PASS
     - GIT_USER
-    - APPKEY
 stages:
   - name: stage-7c5194ef
     displayName: build
@@ -35,6 +35,10 @@ stages:
           - ''
           - '# 设置NPM源，提升安装速度'
           - npm config set registry https://registry.npmmirror.com
+          - ''
+          - git config --global user.name "${GIT_USER}"
+          - git config --global user.password "${GIT_PASS}"
+          - git config --global user.email "${GIT_EMAIL}"
           - ''
           - '# 执行构建脚本'
           - bash build.sh ${ACTION}
