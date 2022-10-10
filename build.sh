@@ -4,39 +4,56 @@ if [ "$1" ]; then
     ACTION=$1
 fi
 
+appkey=$config_appkey
+git_usernamne=${}
+git_password=${}
+git_email=${}
+
 # 获取当前版本并创建目录
-build_version() {
+confirm_version() {
+
+    originBranch=$(git rev-parse --abbrev-ref HEAD)
+
     if [ "$ACTION" = "r" ]; then
         # release 版本
         cd support/web
-        releaseVersion=$(npm version patch)
-        vesionDir=${releaseVersion:1}
-        cd ../../
+        currentVersion=$(npm version patch)
+        versionDir=currentVersion
+        //todo: 提交, 打tag，切换到tag
+
     else
         # build 版本
         cd support/web
         currentVersion=$(npm run env | grep npm_package_version | cut -d '=' -f 2)
         if [[ $currentVersion =~ "-" ]]; then
-            vesionDir=${currentVersion::-1}"x"
+            vesionDir=${currentVersion:-1}"x"
         else
             vesionDir=$currentVersion"-x"
         fi
-        cd ../../
     fi
 
+    echo "version confirmed:$currentVersion"
+
+}
+
+# 获取当前版本并创建目录
+make_build_folder() {
+
     # 创建版本目录
+    cd ../../
     ls build >/dev/null 2>&1
     if [ $? == 0 ]; then
         rm -rf build
     fi
     mkdir -p build/$vesionDir
-}
 
+    echo "made dir: build/$vesionDir"
+}
 # 构建web服务
 build_web() {
     cd support/web
     npm install
-    npm run build
+    npm run build  --appkey=$appkey
     mv dist ../../build/$vesionDir/agent
     cd ../../
 }
@@ -45,7 +62,7 @@ build_web() {
 build_customer() {
     cd customer/uniapp
     npm install
-    npm run build
+    npm run build -- --appkey=
     mv dist/build/h5 ../../build/$vesionDir/customer
     rm -rf dist
     cd ../../
@@ -54,15 +71,22 @@ build_customer() {
 # 升级web服务的版本
 upgrade_versions() {
     cd support/web
-    if [ "$ACTION" != "r" ]; then
-        # 升级版本
-        npm version prerelease --no-git-tag-version
+
+
+    if [ "$ACTION" = "r" ]; then
+      git checkout -f $originBranch
     fi
-    # 推送package.json
-    git add package.json
-    git commit -m "upgrade versions"
-    git push origin 跑不通_master
-    cd ../../
+
+
+  nextVersion=$(npm version prerelease --no-git-tag-version)
+
+  git add .
+  git commit -m "$currentVersion is built"
+  git push
+
+  echo "$currentVersion is build, next version $nextVersion"
+
+
 }
 
 # 拷贝inde.html
@@ -73,7 +97,7 @@ copy_html() {
 }
 
 # 推送至show-cs
-push_repository() {
+deploy() {
     if [ -d "show-cs" ]; then
         rm -rf show-cs
     fi
@@ -96,8 +120,6 @@ push_repository() {
     git add $vesionDir
     git commit -m "$vesionDir is built"
     git push
-
-    cd ../
 }
 
 # 清理本地目录
@@ -108,10 +130,13 @@ clear_file() {
     rm -rf support/web/node_modules
 }
 
-build_version
+
+confirm_version
+make_build_folder
 build_web
 build_customer
-upgrade_versions
 copy_html
-push_repository
+deploy
 clear_file
+upgrade_versions
+
