@@ -130,7 +130,7 @@
       document.addEventListener('click', () => {
         this.hideRightClickMenu();
       });
-      this.currentAgent = JSON.parse(localStorage.getItem("currentAgent"));
+      this.currentAgent = this.globalData.currentAgent;
       this.listenConversationUpdate(); //监听会话列表变化
       this.loadConversations(); //加载会话列表
     },

@@ -253,7 +253,7 @@
         id: this.customer.id,
         data: {name: this.customer.name, avatar: this.customer.avatar},
       };
-      this.currentAgent = JSON.parse(localStorage.getItem("currentAgent"));
+      this.currentAgent = this.globalData.currentAgent;
       this.csteam = this.goEasy.im.csteam(this.currentAgent.shopId);
 
       this.liveSession();

@@ -25,6 +25,16 @@ stages:
         displayName: Nodejs 构建
         nodeVersion: 14.16.0
         commands:
+          - '# 设置信息'
+          - git remote rm origin
+          - git remote add origin https://${GIT_USER}:${GIT_PASS}@gitee.com/goeasy-io/demo-customer-service.git
+          - ''
+          - '# 更新分支'
+          - git fetch
+          - ''
+          - '# 设置NPM源，提升安装速度'
+          - npm config set registry https://registry.npmmirror.com
+          - ''
           - '# 执行构建脚本'
           - bash build.sh ${ACTION}
         caches:

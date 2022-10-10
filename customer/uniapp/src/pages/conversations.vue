@@ -68,7 +68,7 @@
       }
     },
     onShow() {
-      this.currentCustomer = uni.getStorageSync('currentCustomer');
+      this.currentCustomer = getApp().globalData.currentCustomer;
       this.loadConversations(); //加载会话列表
       this.goEasy.im.on(this.GoEasy.IM_EVENT.CONVERSATIONS_UPDATED, this.renderConversations);
     },

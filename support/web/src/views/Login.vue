@@ -96,7 +96,7 @@
         if (this.username.trim() !== '' && this.password.value.trim() !== '') {
           let agent = restApi.findAgent(this.username, this.password.value);
           if (agent) {
-            localStorage.setItem('currentAgent', JSON.stringify(agent));
+            this.globalData.currentAgent = agent;
             this.$router.replace({path: './conversations'});
             return;
           }

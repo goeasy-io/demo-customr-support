@@ -211,7 +211,7 @@
           avatar: this.shop.avatar
         }
       };
-      this.currentCustomer = uni.getStorageSync('currentCustomer');
+      this.currentCustomer = getApp().globalData.currentCustomer;
       this.markMessageAsRead();
       this.loadHistoryMessage(true);
       this.initRecorderListeners();
