@@ -6,18 +6,17 @@
 </head>
 <body>
     <div class="demo-container">
+        <div class="demo-header">GoEasy客服示例-电商咨询</div>
         <div class="demo-main">
             <div class="customer-view">
                 <div class="demo-title">
-                    <h2><span class="number">1</span>customer view</h2>
-                    <p class="description">Start a new conversation with an agent.</p>
+                    <h2>用户端-电商APP</h2>
                 </div>
                 <iframe width="300px" height="650px" src="customer/"></iframe>
             </div>
             <div class="agent-view">
                 <div class="demo-title">
-                    <h2><span class="number">2</span>agent view</h2>
-                    <p class="description">Respond to customer conversations.</p>
+                    <h2>客服端-商城客服后台</h2>
                 </div>
                 <iframe width="850px" height="650px" src="agent/"></iframe>
             </div>
@@ -30,13 +29,20 @@
         height: 100%;
     }
     .demo-container {
-        background: #f2f6ff;
+        background: #ffffff;
         height: 100%;
+    }
+    .demo-header {
+        width: 1170px;
+        margin: 0 auto;
+        padding: 40px 0;
+        font-size: 36px;
+        color: #d02129;
+        font-weight: bold;
     }
     .demo-main {
         display: flex;
         width: 1170px;
-        padding: 35px 0;
         margin: 0 auto;
     }
     .customer-view {
@@ -47,7 +53,7 @@
         width: 850px;
     }
     .demo-title {
-        margin: 10px 0;
+        margin: 5px 0;
     }
     iframe {
         border-radius: 10px;
@@ -59,27 +65,23 @@
     }
     .number {
         display: inline-block;
-        width: 28px;
-        height: 28px;
-        font-size: 20px;
+        width: 20px;
+        height: 23px;
+        font-size: 17px;
         color: #ffffff;
         border-radius: 5px;
         background: #d02129;
         text-align: center;
-        line-height: 28px;
+        line-height: 23px;
         margin-right: 10px;
         vertical-align: middle;
     }
-    .description {
-        font-size: 13px;
-        color: #555555;
-        margin: -13px 0 0 40px;
-    }
     h2 {
-        font-size: 17px;
+        text-align: center;
+        font-size: 18px;
         color: #555555;
-        line-height: 28px;
-        font-weight: 400;
+        line-height: 23px;
+        font-weight: bold;
     }
 </style>
 </html>
