@@ -76,6 +76,11 @@ upgrade_versions() {
     cd support/web
     nextVersion=$(npm version prerelease --no-git-tag-version)
     git push --set-upstream origin $originBranch
+    # 设置信息
+    git config user.name "${git_usernamne}"
+    git config user.password "${git_password}"
+    git config user.email "${git_email}"
+    # 推送
     git add .
     git commit -m "$currentVersion is built"
     git push
