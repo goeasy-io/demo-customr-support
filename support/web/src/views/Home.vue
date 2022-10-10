@@ -144,6 +144,9 @@
           },
           onFailed: (error) => {
             console.log('下线失败,error:', error);
+            if (error.content === 'Please end your accepted conversations first') {
+              alert('下线失败，请先结束已接入的会话！');
+            }
           }
         })
       },

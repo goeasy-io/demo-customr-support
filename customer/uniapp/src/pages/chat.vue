@@ -716,6 +716,25 @@
     width: 100%;
   }
 
+  .action-box .action-top .record-icon {
+    border-radius: 55%;
+    font-size: 32rpx;
+    margin: 0 10rpx;
+    width: 80rpx;
+    height: 80rpx;
+    line-height: 80rpx;
+    text-align: center;
+    background: url("~@/static/images/record-appearance-icon.png") no-repeat center #FFFFFF;
+    background-size: 50%;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  }
+
+  .action-box .record-icon.record-open {
+    background: url("~@/static/images/jianpan.png") no-repeat center #ffffff;
+    background-size: 60%;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  }
+
   .action-box .action-top .file-icon {
     background: url("~@/static/images/video.png") no-repeat center;
     background-size: 70%;

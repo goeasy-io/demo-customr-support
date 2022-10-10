@@ -136,8 +136,8 @@
             </div>
           </div>
           <div class="session-action">
-            <i class="iconfont icon-zhuanban" title="转接" @click="showTransferForm"></i>
-            <i class="iconfont icon-end_chat" title="结束会话" @click="endSession"></i>
+            <span class="transfer" @click="showTransferForm()">转接</span>
+            <span class="transfer" @click="endSession()">结束会话</span>
           </div>
         </div>
         <div class="input-box">
@@ -884,6 +884,20 @@
             align-items: center;
             justify-content: center;
             position: relative;
+
+            .transfer {
+              cursor: pointer;
+              margin-right: 10px;
+              line-height: 30px;
+              text-align: center;
+              width: 70px;
+              height: 30px;
+              font-size: 15px;
+              border: 1px solid #d02129;
+              background-color: #ffffff;
+              color: #d02129;
+              border-radius: 5px;
+            }
           }
         }
 
@@ -911,7 +925,7 @@
           text-align: right;
 
           .send-button {
-            width: 60px;
+            width: 70px;
             height: 30px;
             font-size: 15px;
             border: 1px solid #d02129;
