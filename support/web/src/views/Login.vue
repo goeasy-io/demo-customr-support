@@ -3,7 +3,7 @@
     <div class="login-container">
       <div class="login-main">
         <div class="login-header">
-          <div>GoEasy-Support</div>
+          <div>客服后台示例</div>
         </div>
         <div class="login-form">
           <div class="form-item">
@@ -132,8 +132,8 @@
           margin: 20px auto;
           width: 300px;
           text-align: center;
-          font-size: 35px;
-          font-weight: 600;
+          font-size: 30px;
+          font-weight: 500;
           color: #d02129;
         }
 

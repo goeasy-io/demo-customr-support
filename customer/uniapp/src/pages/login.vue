@@ -1,6 +1,6 @@
 <template>
   <view class="login">
-    <view class="title">GoEasy Customer</view>
+    <view class="title">电商APP示例</view>
 
     <view class="customer-selector">
       <view class="selected-area" @click="switchSelectorVisible">
@@ -117,11 +117,11 @@
 
   .title {
     height: 100rpx;
-    font-size: 70rpx;
+    font-size: 60rpx;
     text-align: center;
     font-family: Source Han Sans CN;
     font-style: normal;
-    font-weight: bold;
+    font-weight: normal;
     color: #d02129;
     margin-bottom: 80rpx;
   }
