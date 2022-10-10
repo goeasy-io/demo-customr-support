@@ -1,4 +1,4 @@
-// 运行 npm run serve --appkey=BC-xxxxxxx
+// 运行 npm run serve -- --appkey=BC-xxxxxxx
 
 let argv = process.env.npm_config_argv;
 if (argv) {
@@ -9,14 +9,7 @@ if (argv) {
         process.env.VUE_APP_APPKEY = cooked[length-1]
     }
 }
-const config = require('./package.json');
+
 module.exports = {
-  lintOnSave : false,
-  publicPath: `/show-cs/${config.version}/agent`,
-  //只有Https才能使用录音
-  devServer : {
-    https : false,
-    port : 9002
-  },
   productionSourceMap: false
 }
