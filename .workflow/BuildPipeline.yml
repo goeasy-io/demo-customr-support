@@ -29,17 +29,14 @@ stages:
           - git remote rm origin
           - git remote add origin https://${GIT_USER}:${GIT_PASS}@gitee.com/goeasy-io/demo-customer-service.git
           - ''
-          - '# 强制切换分支'
-          - '# git fetch'
-          - '# git checkout -f 跑不通_master'
-          - git branch
+          - '# 更新分支'
+          - git fetch
           - ''
           - '# 设置NPM源，提升安装速度'
           - npm config set registry https://registry.npmmirror.com
           - ''
           - '# 执行构建脚本'
-          - '#bash build.sh ${ACTION}'
-          - '# echo ${ACTION}'
+          - bash build.sh ${ACTION}
         caches:
           - ~/.npm
           - ~/.yarn
