@@ -13,6 +13,7 @@ variables:
     - GIT_EMAIL
     - GIT_PASS
     - GIT_USER
+    - APPKEY
 stages:
   - name: stage-7c5194ef
     displayName: build
