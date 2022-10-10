@@ -58,6 +58,7 @@
 
 <script>
   import RestApi from '../api/restapi'
+
   export default {
     name: 'Home',
     data() {
