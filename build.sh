@@ -23,6 +23,7 @@ confirm_version() {
         git commit -m "$currentVersion"
         cd ../../customer/uniapp
         npm version patch --no-git-tag-version
+        node correctManifestVersion.js
         git add .
         git commit -m "$currentVersion"
         git push origin $originBranch
@@ -89,6 +90,7 @@ upgrade_versions() {
     git add .
     cd ../../customer/uniapp
     nextVersion=$(npm version prerelease --no-git-tag-version)
+    node correctManifestVersion.js
     git add .
     # 设置信息
     git push --set-upstream origin $originBranch
