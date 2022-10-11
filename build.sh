@@ -93,13 +93,12 @@ upgrade_versions() {
     node correctManifestVersion.js
     git add .
     # 设置信息
-    git push --set-upstream origin $originBranch
     git config user.name "${git_usernamne}"
     git config user.password "${git_password}"
     git config user.email "${git_email}"
     # 推送
     git commit -m "$currentVersion is built"
-    git push
+    git push -u origin $originBranch
 
     echo "$currentVersion is build, next version $nextVersion"
 
