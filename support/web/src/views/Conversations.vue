@@ -108,6 +108,7 @@
 
 <script>
   import {formatDate} from '../utils/utils.js'
+
   export default {
     name: 'Conversation',
     data() {

@@ -126,11 +126,14 @@
             <!-- 商品链接 -->
             <div class="action-item">
               <div v-if="orderList.visible" class="link-box">
-                <div v-for="(order, index) in orderList.orders" :key="index" class="order-item"
-                     @click="sendOrderMessage(order)">
-                  <img :src="order.url" class="order-img">
-                  <div>{{ order.name }}</div>
+                <div class="order-list">
+                  <div v-for="(order, index) in orderList.orders" :key="index" class="order-item"
+                       @click="sendOrderMessage(order)">
+                    <img :src="order.url" class="order-img">
+                    <div>{{ order.name }}</div>
+                  </div>
                 </div>
+                <div class="order-button" @click="closeOrderMessageList">取消</div>
               </div>
               <i class="iconfont icon-lianjie" title="商品链接" @click="showOrderMessageList"></i>
             </div>
@@ -529,6 +532,9 @@
           }
         });
       },
+      closeOrderMessageList () {
+        this.orderList.visible = false;
+      },
       showOrderMessageList() {
         this.orderList.orders = restApi.getOrderList();
         this.orderList.visible = true;
@@ -557,6 +563,7 @@
           },
           onFailed: function (error) {
             if (error.code === 507) {
+              alert('发送语音/图片/视频/文件失败，没有配置OSS存储');
               console.log('发送语音/图片/视频/文件失败，没有配置OSS存储，详情参考：https://www.goeasy.io/cn/docs/goeasy-2.x/im/message/media/send-media-message.html');
             } else {
               console.log('发送失败:', error);
@@ -850,7 +857,7 @@
               .link-box {
                 width: 160px;
                 position: absolute;
-                top: -146px;
+                top: -187px;
                 left: -11px;
                 z-index: 2007;
                 background: #fff;
@@ -862,18 +869,33 @@
                 word-break: break-all;
                 border-radius: 4px;
 
-                .order-item {
-                  display: flex;
-                  align-items: center;
-                  margin: 5px 0;
-                  cursor: pointer;
+                .order-list {
+                  width: 100%;
 
-                  .order-img {
-                    width: 40px;
-                    height: 40px;
-                    margin-right: 5px;
+                  .order-item {
+                    display: flex;
+                    align-items: center;
+                    margin: 5px 0;
+                    cursor: pointer;
+                    &:hover {
+                      background: #eeeeee;
+                    }
+
+                    .order-img {
+                      width: 40px;
+                      height: 40px;
+                      margin-right: 5px;
+                    }
                   }
+                }
 
+                .order-button {
+                  cursor: pointer;
+                  width: 50px;
+                  text-align: center;
+                  margin: 0 auto;
+                  background: #606266;
+                  color: #FFFFFF;
                 }
               }
             }
