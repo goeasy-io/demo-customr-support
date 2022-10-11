@@ -242,7 +242,7 @@
     width: 50rpx;
     height: 50rpx;
     font-size: 20rpx;
-    background: url("/static/images/action.png") no-repeat center;
+    background: url("~@/static/images/action.png") no-repeat center;
     background-size: 28rpx 30rpx;
   }
 

@@ -77,9 +77,16 @@
       <view class="action-top">
         <view :class="[audio.visible ? 'record-icon record-open':'record-icon']"
               @click="switchAudioKeyboard"></view>
+        <!--  #ifdef  H5 -->
+        <view v-if="audio.visible" class="record-input" @click="onRecordStart">
+          {{ audio.recording ? '松开发送' : '按住录音' }}
+        </view>
+        <!--  #endif -->
+        <!--  #ifndef  H5 -->
         <view v-if="audio.visible" class="record-input" @touchend="onRecordEnd" @touchstart="onRecordStart">
           {{ audio.recording ? '松开发送' : '按住录音' }}
         </view>
+        <!--  #endif -->
         <view v-else class="message-input">
           <!-- GoEasyIM最大支持3k的文本消息，如需发送长文本，需调整输入框maxlength值 -->
           <input v-model="text" maxlength="700" placeholder="发送消息" type="text">
@@ -360,6 +367,10 @@
           },
           onFailed: function (error) {
             if (error.code === 507) {
+              uni.showModal({
+                title: '发送语音/图片/视频/文件失败',
+                content: '没有配置OSS存储, 详情参考GoEasy官方文档'
+              });
               console.log('发送语音/图片/视频/文件失败，没有配置OSS存储，详情参考：https://www.goeasy.io/cn/docs/goeasy-2.x/im/message/media/send-media-message.html');
             } else {
               console.log('发送失败:', error);
@@ -435,6 +446,7 @@
                 console.log(progress)
               },
               onSuccess: (message) => {
+                this.moreTypesVisible = false;
                 this.sendMessage(message);
               },
               onFailed: (e) => {
@@ -456,6 +468,7 @@
                   console.log(progress)
                 },
                 onSuccess: (message) => {
+                  this.moreTypesVisible = false;
                   this.sendMessage(message);
                 },
                 onFailed: (e) => {
@@ -873,6 +886,18 @@
   .orders {
     display: flex;
     flex-direction: column;
+  }
+
+  .order-item {
+    height: 80rpx;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 10px 0;
+  }
+
+  .order-item-checked {
+    background-color: #e9dddd;
   }
 
   .order-img {
