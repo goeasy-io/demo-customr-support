@@ -92,8 +92,9 @@ upgrade_versions() {
     cd ../../customer/uniapp
     nextVersion=$(npm version prerelease --no-git-tag-version)
     git add package.json
-    cd src/
-    git add manifest.json
+    # 退回项目根路径
+    cd ../../
+    git add customer/uniapp/src/manifest.json
 
     # 设置信息
     git push --set-upstream origin $originBranch
