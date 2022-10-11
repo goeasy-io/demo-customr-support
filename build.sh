@@ -19,6 +19,14 @@ confirm_version() {
         cd support/web
         currentVersion=$(npm version patch)
         vesionDir=$currentVersion
+        git add .
+        git commit -m "$currentVersion"
+        cd ../../customer/uniapp
+        npm version patch
+        git add .
+        git commit -m "$currentVersion"
+        git push origin $originBranch
+        # 打tag，推送并切分支
         git tag $currentVersion
         git push origin $currentVersion
         git checkout $currentVersion
@@ -66,27 +74,28 @@ build_customer() {
     cd ../../
 }
 
+# 拷贝inde.html
+copy_html() {
+    cp index.html build/$vesionDir/index.html
+}
+
 # 升级web服务的版本
 upgrade_versions() {
-    cd ../
     git branch
     if [ "$ACTION" = "r" ]; then
         git checkout -f $originBranch
     fi
     cd support/web
     nextVersion=$(npm version prerelease --no-git-tag-version)
-
     git add package.json
 
     cd ../../customer/uniapp
     nextVersion=$(npm version prerelease --no-git-tag-version)
-
     git add package.json
-
-    git push --set-upstream origin $originBranch
-
+    git add ./src/manifest.json
 
     # 设置信息
+    git push --set-upstream origin $originBranch
     git config user.name "${git_usernamne}"
     git config user.password "${git_password}"
     git config user.email "${git_email}"
@@ -96,13 +105,6 @@ upgrade_versions() {
 
     echo "$currentVersion is build, next version $nextVersion"
 
-}
-
-# 拷贝inde.html
-copy_html() {
-    # 复制index.html文件
-    #    sed -i "s/[0-9].[0-9].[0-9]-./$vwesionDir/g" index.html
-    cp index.html build/$vesionDir/index.html
 }
 
 # 推送至show-cs
@@ -129,6 +131,8 @@ deploy() {
     git add $vesionDir
     git commit -m "$vesionDir is built"
     git push
+    # 退出当前目录
+    cd ../
 }
 
 # 清理本地目录
@@ -145,5 +149,6 @@ build_web
 build_customer
 copy_html
 deploy
+clear_file
 upgrade_versions
-#clear_file
+
