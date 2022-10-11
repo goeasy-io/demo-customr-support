@@ -81,21 +81,15 @@ copy_html() {
 
 # 升级web服务的版本
 upgrade_versions() {
-    git branch
     if [ "$ACTION" = "r" ]; then
         git checkout -f $originBranch
     fi
     cd support/web
     nextVersion=$(npm version prerelease --no-git-tag-version)
-    git add package.json
-
+    git add .
     cd ../../customer/uniapp
     nextVersion=$(npm version prerelease --no-git-tag-version)
-    git add package.json
-    # 退回项目根路径
-    cd ../../
-    git add customer/uniapp/src/manifest.json
-
+    git add .
     # 设置信息
     git push --set-upstream origin $originBranch
     git config user.name "${git_usernamne}"
@@ -153,4 +147,3 @@ copy_html
 deploy
 clear_file
 upgrade_versions
-
