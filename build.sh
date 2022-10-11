@@ -17,12 +17,12 @@ confirm_version() {
     if [ "$ACTION" = "r" ]; then
         # release 版本
         cd support/web
-        currentVersion=$(npm version patch)
-        vesionDir=$currentVersion
+        currentVersion=$(npm version patch --no-git-tag-version)
+        vesionDir=${currentVersion:1}
         git add .
         git commit -m "$currentVersion"
         cd ../../customer/uniapp
-        npm version patch
+        npm version patch --no-git-tag-version
         git add .
         git commit -m "$currentVersion"
         git push origin $originBranch
@@ -92,7 +92,8 @@ upgrade_versions() {
     cd ../../customer/uniapp
     nextVersion=$(npm version prerelease --no-git-tag-version)
     git add package.json
-    git add ./src/manifest.json
+    cd src/
+    git add manifest.json
 
     # 设置信息
     git push --set-upstream origin $originBranch
