@@ -20,12 +20,13 @@ confirm_version() {
         currentVersion=$(npm version patch --no-git-tag-version)
         vesionDir=${currentVersion:1}
         git add .
-        git commit -m "$currentVersion"
+
         cd ../../customer/uniapp
         npm version patch --no-git-tag-version
         node correctManifestVersion.js
         git add .
-        git commit -m "$currentVersion"
+
+        git commit -m "[CI-build.sh]版本号修改为：$currentVersion, 准备生成release的tag"
         git push origin $originBranch
         # 打tag，推送并切分支
         git tag $currentVersion
@@ -97,7 +98,7 @@ upgrade_versions() {
     git config user.password "${git_password}"
     git config user.email "${git_email}"
     # 推送
-    git commit -m "$currentVersion is built"
+    git commit -m "[CI-build.sh] 将版本号升级为：$currentVersion，为下个版本做准备"
     git push -u origin $originBranch
 
     echo "$currentVersion is build, next version $nextVersion"
@@ -126,7 +127,7 @@ deploy() {
     git config user.email "${git_email}"
     # 标记推送
     git add $vesionDir
-    git commit -m "$vesionDir is built"
+    git commit -m "[CD-build.sh]将$vesionDir部署到pages"
     git push
     # 退出当前目录
     cd ../
