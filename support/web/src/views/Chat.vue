@@ -43,7 +43,7 @@
                   <div v-if="message.type === 'text'" class="content-text"
                        v-html="renderTextMessage(message.payload.text)"></div>
                   <div v-if="message.type === 'image'" class="content-image"
-                       @click="showImagePreviewPopup(message.payload.url)">
+                       @click="showImagePredivPopup(message.payload.url)">
                     <img :src="message.payload.url"
                          :style="{height:getImageHeight(message.payload.width,message.payload.height)+'px'}"/>
                   </div>
@@ -58,13 +58,13 @@
                     :thumbnail="message.payload.thumbnail"
                   />
                   <div v-if="message.type === 'order'" class="content-order">
-                    <div class="order-description">发送订单：</div>
-                    <div class="order-content">
-                      <img :src="message.payload.url"/>
-                      <div class="order-info">
-                        <div class="order-name">{{ message.payload.name }}</div>
-                        <div>月销{{ message.payload.sales }}</div>
-                        <div>{{ message.payload.price }}</div>
+                    <div class="order-id">订单号：{{ message.payload.id }}</div>
+                    <div class="order-body">
+                      <img :src="message.payload.url" class="order-img" />
+                      <div class="order-name">{{ message.payload.name }}</div>
+                      <div>
+                        <div class="order-price">{{ message.payload.price }}</div>
+                        <div class="order-count">共{{ message.payload.count }}件</div>
                       </div>
                     </div>
                   </div>
@@ -125,17 +125,7 @@
             </div>
             <!-- 商品链接 -->
             <div class="action-item">
-              <div v-if="orderList.visible" class="link-box">
-                <div class="order-list">
-                  <div v-for="(order, index) in orderList.orders" :key="index" class="order-item"
-                       @click="sendOrderMessage(order)">
-                    <img :src="order.url" class="order-img">
-                    <div>{{ order.name }}</div>
-                  </div>
-                </div>
-                <div class="order-button" @click="closeOrderMessageList">取消</div>
-              </div>
-              <i class="iconfont icon-lianjie" title="商品链接" @click="showOrderMessageList"></i>
+              <i class="iconfont icon-liebiao" title="订单" @click="showOrderMessageList"></i>
             </div>
           </div>
           <div class="session-action">
@@ -174,6 +164,27 @@
         <div class="transfer-bottom">
           <span v-if="transferForm.agents.length" class="transfer-button" @click="transfer()">确认</span>
           <span class="transfer-button" @click="hideTransferForm()">取消</span>
+        </div>
+      </div>
+    </div>
+    <!-- 订单弹窗 -->
+    <div v-if="orderList.visible" class="order-box">
+      <div class="order-list">
+        <div class="title">
+          <div>请选择一个订单</div>
+          <span @click="closeOrderMessageList">×</span>
+        </div>
+        <div v-for="(order, index) in orderList.orders" :key="index" class="order-item"
+             @click="sendOrderMessage(order)">
+          <div class="order-id">订单号：{{ order.id }}</div>
+          <div class="order-body">
+            <img :src="order.url" class="order-img" />
+            <div class="order-name">{{ order.name }}</div>
+            <div>
+              <div class="order-price">{{ order.price }}</div>
+              <div class="order-count">共{{ order.count }}件</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -724,38 +735,40 @@
             }
 
             .content-order {
-              border-radius: 10px;
-              background: #eeeeee;
+              border-radius: 5px;
+              border: 1px solid #eeeeee;
               padding: 8px;
               display: flex;
               flex-direction: column;
 
-              img {
-                width: 100px;
-                height: 100px;
+              .order-id {
+                font-size: 12px;
+                color: #666666;
+                margin-bottom: 5px;
               }
 
-              .order-description {
-                font-weight: bold;
-                margin-bottom: 20px;
-              }
-
-              .order-content {
+              .order-body {
                 display: flex;
-                background-color: #fffcfc;
+                font-size: 13px;
+                padding: 5px;
               }
 
-              .order-info {
-                display: flex;
-                flex-direction: column;
-                justify-content: space-around;
-                font-size: 14px;
-                padding: 14px 5px;
+              .order-img {
+                width: 70px;
+                height: 70px;
+                border-radius: 5px;
+              }
 
-                .order-name {
-                  font-size: 15px;
-                }
+              .order-name {
+                margin-left: 10px;
+                width: 135px;
+                color: #606164;
+              }
 
+              .order-count {
+                font-size: 12px;
+                color: #666666;
+                flex: 1;
               }
             }
           }
@@ -853,51 +866,6 @@
                 }
 
               }
-
-              .link-box {
-                width: 160px;
-                position: absolute;
-                top: -187px;
-                left: -11px;
-                z-index: 2007;
-                background: #fff;
-                border: 1px solid #ebeef5;
-                padding: 12px;
-                text-align: justify;
-                font-size: 14px;
-                box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-                word-break: break-all;
-                border-radius: 4px;
-
-                .order-list {
-                  width: 100%;
-
-                  .order-item {
-                    display: flex;
-                    align-items: center;
-                    margin: 5px 0;
-                    cursor: pointer;
-                    &:hover {
-                      background: #eeeeee;
-                    }
-
-                    .order-img {
-                      width: 40px;
-                      height: 40px;
-                      margin-right: 5px;
-                    }
-                  }
-                }
-
-                .order-button {
-                  cursor: pointer;
-                  width: 50px;
-                  text-align: center;
-                  margin: 0 auto;
-                  background: #606266;
-                  color: #FFFFFF;
-                }
-              }
             }
           }
 
@@ -987,7 +955,7 @@
       }
     }
 
-    .image-preview {
+    .image-prediv {
       max-width: 750px;
       max-height: 500px;
       background: rgba(0, 0, 0, 0.8);
@@ -1097,6 +1065,79 @@
           }
 
         }
+      }
+    }
+
+    .order-box {
+      width: 850px;
+      height: 650px;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      z-index: 2007;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(33, 33, 33, 0.7);
+
+      .order-list {
+        width: 300px;
+        background: #F1F1F1;
+        border-radius: 5px;
+
+        .title {
+          font-weight: 600;
+          font-size: 15px;
+          color: #000000;
+          margin-left: 10px;
+          margin-right: 10px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          span {
+            font-size: 28px;
+            font-weight: 400;
+            cursor: pointer;
+          }
+        }
+        .order-item {
+          padding: 10px;
+          background: #FFFFFF;
+          margin: 10px;
+          border-radius: 5px;
+        }
+
+        .order-id {
+          font-size: 12px;
+          color: #666666;
+          margin-bottom: 5px;
+        }
+
+        .order-body {
+          display: flex;
+          font-size: 13px;
+          justify-content: space-between;
+        }
+
+        .order-img {
+          width: 50px;
+          height: 50px;
+          border-radius: 5px;
+        }
+
+        .order-name {
+          width: 160px;
+        }
+
+        .order-count {
+          font-size: 12px;
+          color: #666666;
+          flex: 1;
+        }
+
       }
     }
   }
