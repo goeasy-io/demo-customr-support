@@ -93,8 +93,13 @@
         <!--  #endif -->
         <!-- GoEasyIM最大支持3k的文本消息，如需发送长文本，需调整输入框maxlength值 -->
         <input v-else v-model="text" class="consult-input" maxlength="700" placeholder="发送消息" type="text" />
-        <image @click="showEmoji" class="more" src="/static/images/emoji.png"/>
-        <image @click="showOtherTypesMessagePanel()" class="more" src="/static/images/more.png"/>
+        <view @click="switchEmojiKeyboard">
+          <image class="more" v-if="emoji.visible" src="/static/images/jianpan.png"></image>
+          <image class="more" v-else src="/static/images/emoji.png"></image>
+        </view>
+        <view>
+          <image @click="showOtherTypesMessagePanel()" class="more" src="/static/images/more.png"/>
+        </view>
         <view v-if="text" class="send-btn-box">
           <text class="btn" @click="sendTextMessage()">发送</text>
         </view>
@@ -324,7 +329,7 @@
           this.scrollToBottom();
         }
       },
-      showEmoji() {
+      switchEmojiKeyboard() {
         this.emoji.visible = !this.emoji.visible;
         this.moreTypesVisible = false;
       },
@@ -909,7 +914,6 @@
   }
 
   .order-name {
-    font-weight: bold;
     margin-left: 20rpx;
     width: 270rpx;
   }

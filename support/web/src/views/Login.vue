@@ -47,6 +47,7 @@
           </div>
           <div v-show="errorVisible" class="form-error">账号或密码错误!</div>
         </div>
+        <div class="version">{{ version }}</div>
       </div>
     </div>
   </div>
@@ -54,11 +55,13 @@
 
 <script>
   import restApi from '../api/restapi';
+  import { version } from '../../package.json';
 
   export default {
     name: 'Login',
     data() {
       return {
+        version: version,
         agentSelector: {
           agents: [],
           visible: false,
@@ -249,6 +252,10 @@
             margin-bottom: 22px;
           }
 
+        }
+
+        .version {
+          color: #FFFFFF;
         }
       }
     }
