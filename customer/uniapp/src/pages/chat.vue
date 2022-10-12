@@ -56,13 +56,15 @@
                   <GoEasyAudioPlayer v-if="message.type ==='audio'" :duration="message.payload.duration"
                                      :src="message.payload.url"/>
                   <view v-if="message.type === 'order'" class="order-content">
-                    <view class="order-description">发送订单：</view>
+                    <view class="order-id">订单号：{{ message.payload.id }}</view>
                     <view class="order-body">
-                      <image :src="message.payload.url"></image>
-                      <view class="order-info">
+                      <image :src="message.payload.url" class="order-img"></image>
+                      <view>
                         <view class="order-name">{{ message.payload.name }}</view>
-                        <view>月销{{ message.payload.sales }}</view>
-                        <view>{{ message.payload.price }}</view>
+                        <view class="order-info">
+                          <view class="order-price">{{ message.payload.price }}</view>
+                          <view class="order-count">共{{ message.payload.count }}件</view>
+                        </view>
                       </view>
                     </view>
                   </view>
@@ -75,8 +77,10 @@
     </scroll-view>
     <view class="action-box">
       <view class="action-top">
-        <view :class="[audio.visible ? 'record-icon record-open':'record-icon']"
-              @click="switchAudioKeyboard"></view>
+        <view @click="switchAudioKeyboard">
+          <image class="more" v-if="audio.visible" src="/static/images/jianpan.png"></image>
+          <image class="more" v-else src="/static/images/audio.png"></image>
+        </view>
         <!--  #ifdef  H5 -->
         <view v-if="audio.visible" class="record-input" @click="onRecordStart">
           {{ audio.recording ? '松开发送' : '按住录音' }}
@@ -87,13 +91,13 @@
           {{ audio.recording ? '松开发送' : '按住录音' }}
         </view>
         <!--  #endif -->
-        <view v-else class="message-input">
-          <!-- GoEasyIM最大支持3k的文本消息，如需发送长文本，需调整输入框maxlength值 -->
-          <input v-model="text" maxlength="700" placeholder="发送消息" type="text">
-          <view class="file-icon emoji-icon" @click="showEmoji"></view>
+        <!-- GoEasyIM最大支持3k的文本消息，如需发送长文本，需调整输入框maxlength值 -->
+        <input v-else v-model="text" class="consult-input" maxlength="700" placeholder="发送消息" type="text" />
+        <image @click="showEmoji" class="more" src="/static/images/emoji.png"/>
+        <image @click="showOtherTypesMessagePanel()" class="more" src="/static/images/more.png"/>
+        <view v-if="text" class="send-btn-box">
+          <text class="btn" @click="sendTextMessage()">发送</text>
         </view>
-        <view class="file-icon more-icon" @click="showOtherTypesMessagePanel"></view>
-        <span class="send-message-btn" @click="sendTextMessage"></span>
       </view>
       <!--展示表情列表-->
       <view v-if="emoji.visible" class="action-bottom action-bottom-emoji">
@@ -102,17 +106,17 @@
       </view>
       <!--其他类型消息面板-->
       <view v-if="moreTypesVisible" class="action-bottom">
-        <view class="more-item" @click="sendImageMessage">
-          <image src="/static/images/tupian.png"></image>
-          <text>图片</text>
+        <view class="more-icon">
+          <image @click="sendImageMessage()" class="operation-icon" src="/static/images/picture.png"></image>
+          <view class="operation-title">图片</view>
         </view>
-        <view class="more-item" @click="sendVideoMessage">
-          <image src="/static/images/shipin.png"></image>
-          <text>视频</text>
+        <view class="more-icon">
+          <image @click="sendVideoMessage()" class="operation-icon" src="/static/images/video.png"></image>
+          <view class="operation-title">视频</view>
         </view>
-        <view class="more-item" @click="showOrderMessageList">
-          <image src="/static/images/zidingyi.png"></image>
-          <text>订单</text>
+        <view class="more-icon">
+          <image @click="showOrderMessageList()" class="operation-icon" src="/static/images/order.png"></image>
+          <view class="operation-title">订单</view>
         </view>
       </view>
     </view>
@@ -121,20 +125,25 @@
            @fullscreenchange="onVideoFullScreenChange"></video>
     <view v-if="orderList.visible" class="order-list">
       <view class="orders-content">
-        <view class="title">选择一个订单</view>
+        <view class="title">
+          <view>请选择一个订单</view>
+          <view class="close" @click="hideOrderMessageList">×</view>
+        </view>
         <view class="orders">
           <view
             v-for="(order, index) in orderList.orders"
-            :key="index" :class="orderList.selectedOrder === order ? 'order-item order-item-checked':'order-item'"
-            @click="selectOrder(order)"
+            :key="index" class="order-item"
+            @click="sendOrderMessage(order)"
           >
-            <image :src="order.url" class="order-img"></image>
-            <view class="order-name">{{ order.name }}</view>
-            <view class="order-price">{{ order.price }}</view>
-          </view>
-          <view class="action">
-            <view class="cancel-btn" @click="hideOrderMessageList">取消</view>
-            <view class="send-btn" @click="sendOrderMessage">发送</view>
+            <view class="order-id">订单号：{{ order.id }}</view>
+            <view class="order-body">
+              <image :src="order.url" class="order-img"></image>
+              <view class="order-name">{{ order.name }}</view>
+              <view class="order-right">
+                <view class="order-price">{{ order.price }}</view>
+                <view class="order-count">共{{ order.count }}件</view>
+              </view>
+            </view>
           </view>
         </view>
       </view>
@@ -184,8 +193,7 @@
         moreTypesVisible: false,
         orderList: {
           orders: [],
-          visible: false,
-          selectedOrder: null
+          visible: false
         },
         history: {
           messages: [],
@@ -479,32 +487,27 @@
           }
         });
       },
-      selectOrder(order) {
-        this.orderList.selectedOrder = order;
-      },
       showOrderMessageList() {
         this.orderList.orders = restApi.getOrderList();
         this.orderList.visible = true;
       },
       hideOrderMessageList() {
         this.orderList.visible = false;
-        this.orderList.selectedOrder = null;
       },
-
-      sendOrderMessage() {
+      sendOrderMessage(order) {
         //GoEasyIM自定义消息,实现订单发送
         this.goEasy.im.createCustomMessage({
           type: 'order',
-          payload: this.orderList.selectedOrder,
+          payload: order,
           to: this.to,
           onSuccess: (message) => {
+            this.moreTypesVisible = false;
             this.sendMessage(message);
           },
           onFailed: (e) => {
             console.log('error :', e);
           }
         });
-        this.orderList.selectedOrder = null;
         this.orderList.visible = false;
       },
       showImageFullScreen(e) {
@@ -553,7 +556,7 @@
 
   .chatInterface {
     height: 100%;
-    background-color: #FFFFFF;
+    background-color: #F1F1F1;
     display: flex;
     flex-direction: column;
     overflow-y: auto;
@@ -565,7 +568,7 @@
     box-sizing: border-box;
     -webkit-overflow-scrolling: touch;
     margin-bottom: 140rpx;
-    background-color: #FFFFFF;
+    background-color: #F1F1F1;
     flex: 1;
     overflow-y: auto;
   }
@@ -657,41 +660,33 @@
 
   .scroll-view .content .order-content {
     border-radius: 20rpx;
-    background: #EFEFEF;
+    background: #FFFFFF;
     padding: 16rpx;
     display: flex;
     flex-direction: column;
   }
-
-  .scroll-view .content .order-content .order-description {
-    font-weight: bold;
-    margin-bottom: 10rpx;
+  
+  .scroll-view .content .order-id {
+    color: #333333;
   }
-
-  .scroll-view .content .order-content .order-body {
+  
+  .scroll-view .content .order-body {
+    background: #F1F1F1;
+    padding: 10rpx;
+  }
+  
+  .scroll-view .content .order-name {
+    font-weight: normal;
+  }
+  
+  .scroll-view .content .order-info {
     display: flex;
-    background-color: #fffcfc;
+    justify-content: space-between;
+    padding: 10rpx;
   }
-
-  .scroll-view .content .order-content .order-info {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    font-size: 28rpx;
-    padding: 25rpx 10rpx;
-  }
-
-  .scroll-view .content .order-content .order-info .order-name {
-    font-size: 30rpx;
-  }
-
-  .scroll-view .content .order-content .order-info .foods-price {
-    color: #d02129;
-  }
-
-  .scroll-view .content .order-content image {
-    width: 200rpx;
-    height: 200rpx;
+  
+  .scroll-view .content .order-info .order-price {
+    font-weight: normal;
   }
 
   .scroll-view .content .pending {
@@ -718,108 +713,92 @@
     bottom: 0;
     left: 0;
     flex-direction: column;
-    background-color: #F6F6F6;
+    background-color: #F1F1F1;
   }
 
   .action-box .action-top {
     display: flex;
-    padding-top: 20rpx;
-    backdrop-filter: blur(0.27rem);
-    height: 100rpx;
-    width: 100%;
-  }
-
-  .action-box .action-top .record-icon {
-    border-radius: 55%;
-    font-size: 32rpx;
-    margin: 0 10rpx;
-    width: 80rpx;
-    height: 80rpx;
-    line-height: 80rpx;
-    text-align: center;
-    background: url("~@/static/images/record-appearance-icon.png") no-repeat center #FFFFFF;
-    background-size: 50%;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  }
-
-  .action-box .record-icon.record-open {
-    background: url("~@/static/images/jianpan.png") no-repeat center #ffffff;
-    background-size: 60%;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  }
-
-  .action-box .action-top .file-icon {
-    background: url("~@/static/images/video.png") no-repeat center;
-    background-size: 70%;
-    color: #9D9D9D;
-    position: relative;
-    width: 80rpx;
-    height: 80rpx;
-    line-height: 80rpx;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  }
-
-  .action-box .action-top .emoji-icon {
-    background: url("~@/static/images/emoji.png") no-repeat center;
-    background-size: 50%;
-  }
-
-  .action-box .action-top .more-icon {
-    background: url("~@/static/images/more.png") no-repeat center;
-    background-size: 70%;
-  }
-
-  .action-box .action-bottom .more-item {
-    display: flex;
-    flex-direction: column;
-    width: 150rpx;
-    height: 150rpx;
-    margin-right: 20rpx;
     align-items: center;
+    box-sizing: border-box;
+    background: #F6F6F6;
+    backdrop-filter: blur(27.1828px);
+    border-top: 1px solid #ECECEC;
+    padding: 0 20rpx;
   }
 
-  .action-box .action-bottom .more-item image {
-    height: 100rpx;
-    width: 100rpx;
+  .consult-input {
+    flex: 1;
+    height: 80rpx;
+    padding-left: 20rpx;
+    margin: 20rpx;
+    margin-left: 0;
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+    border-radius: 6px;
+    background: #FFFFFF;
+    font-size: 32rpx;
   }
 
-  .action-box .action-bottom .more-item text {
-    font-size: 20rpx;
-    text-align: center;
+  .more {
+    width: 62rpx;
+    height: 62rpx;
+    margin-right: 10rpx;
+  }
+
+  .send-btn-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 110rpx;
+    height: 60rpx;
+    border-radius: 10rpx;
+    background: #D02129;
+    
+  }
+  
+  .send-btn-box text {
+    color: #FFFFFF;
+  }
+  
+  .action-box .action-bottom .more-icon {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 0 30rpx;
+  }
+  
+  .action-box .action-bottom .operation-icon {
+    width: 60rpx;
+    height: 60rpx;
+    min-width: 60rpx;
+    min-height: 60rpx;
+    padding: 25rpx;
+    border-radius: 20rpx;
+    background: #FFFFFF;
+  }
+  .action-box .action-bottom .operation-title {
+    font-size: 24rpx;
     line-height: 50rpx;
+    color: #82868E;
   }
-
+      
   .action-box .action-top .record-input {
+    flex: 1;
     width: 480rpx;
     height: 80rpx;
     line-height: 80rpx;
-    border-radius: 40rpx;
-    font-size: 28rpx;
-    background: #cccccc;
-    color: #ffffff;
-    text-align: center;
-  }
-
-  .action-box .action-top .message-input {
-    border-radius: 40rpx;
-    background: #FFFFFF;
-    height: 80rpx;
-    display: flex;
-  }
-
-  .action-box .action-top .message-input input {
-    width: 380rpx;
-    height: 80rpx;
-    line-height: 80rpx;
     padding-left: 20rpx;
+    margin: 20rpx;
+    margin-left: 0;
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+    border-radius: 6px;
+    background: #cccccc;
+    color: #FFFFFF;
     font-size: 28rpx;
-  }
-
-  .action-box .action-top .send-message-btn {
-    width: 80rpx;
-    height: 80rpx;
-    background: url("~@/static/images/send.png") no-repeat center;
-    background-size: 55%;
+    text-align: center;
   }
 
   .action-bottom {
@@ -851,6 +830,22 @@
     background-size: 100%;
     border-radius: 40rpx;
   }
+  
+  .video-player {
+    display: block;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+    background: rgba(0,0,0,.8);
+  }
+  
+  .video-player uni-video {
+    width: 100%;
+    height: 100%;
+  }
 
   .img-layer uni-image {
     height: 100% !important;
@@ -869,75 +864,70 @@
   .orders-content {
     position: absolute;
     width: 100%;
-    height: 600rpx;
     bottom: 0;
-    background: #F4F5F9;
+    background: #F1F1F1;
     z-index: 200;
   }
 
   .title {
-    text-align: center;
     font-weight: 600;
-    font-size: 34rpx;
+    font-size: 30rpx;
     color: #000000;
-    line-height: 80rpx;
-  }
-
-  .orders {
+    margin-left: 20rpx;
+    margin-right: 20rpx;
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .close {
+    font-size: 50rpx;
   }
 
   .order-item {
-    height: 80rpx;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    padding: 10px 0;
+    padding: 20rpx;
+    background: #FFFFFF;
+    margin: 20rpx;
+    border-radius: 20rpx;
   }
-
-  .order-item-checked {
-    background-color: #e9dddd;
+  
+  .order-id {
+    font-size: 24rpx;
+    color: #666666;
+    margin-bottom: 10rpx;
+  }
+  
+  .order-body {
+    display: flex;
+    font-size: 28rpx;
   }
 
   .order-img {
-    width: 80rpx;
-    height: 80rpx;
+    width: 120rpx;
+    height: 120rpx;
+    border-radius: 10rpx;
   }
 
   .order-name {
-    width: 280rpx;
+    font-weight: bold;
+    margin-left: 20rpx;
+    width: 270rpx;
   }
-
-  .action {
+  
+  .order-right {
+    flex: 1;
     display: flex;
-    justify-content: space-around;
-    height: 80rpx;
-    margin-top: 40rpx;
+    flex-direction: column;
+    align-items: center;
   }
-
-  .send-btn {
-    width: 200rpx;
-    height: 80rpx;
-    background: #d02129;
-    line-height: 80rpx;
-    text-align: center;
-    border-radius: 10rpx;
-    color: #FFFFFF;
-    font-size: 32rpx;
+  
+  .order-price {
+    font-weight: bold;
   }
-
-  .cancel-btn {
-    width: 200rpx;
-    height: 80rpx;
-    background: #FFFFFF;
-    line-height: 80rpx;
-    text-align: center;
-    border-radius: 10rpx;
+  
+  .order-count {
+    font-size: 24rpx;
     color: #666666;
-    font-size: 32rpx;
-    border: 1px solid grey;
-    box-sizing: border-box;
   }
 
   .video-snapshot {

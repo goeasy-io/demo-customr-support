@@ -115,25 +115,25 @@ class RestApi {
     // 订单
     orders = [
         {
-            id: '23202334-305e-e992-12bc-c88d25459b49',
+            id: '252364104325',
             url: '/static/images/goods1-1.jpg',
             name: '青桔柠檬气泡美式',
             price: '￥23',
-            sales: 165
+            count: 1
         },
         {
-            id: '54b1f3db-36d2-34c2-5405-93ebd368fa2c',
+            id: '251662058022',
             url: '/static/images/goods1-2.jpg',
             name: '咸柠七',
             price: '￥8',
-            sales: 386
+            count: 2
         },
         {
-            id: '7bb8dda5-5258-e733-18af-0e908b2bcc18',
+            id: '250676186141',
             url: '/static/images/goods1-3.jpg',
             name: '黑糖波波鲜奶茶',
             price: '￥12',
-            sales: 258
+            count: 1
         }
     ];
 
