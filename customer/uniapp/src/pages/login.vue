@@ -47,16 +47,19 @@
       <span>请输入正确的用户名和密码</span>
     </view>
     <button class="login-btn" @click="login">登录</button>
+    <view class="version">{{ versionName }}</view>
   </view>
 </template>
 
 <script>
   import restApi from '../lib/restapi';
+  const { versionName } = require('../manifest.json');
 
   export default {
     name: 'Login',
     data() {
       return {
+        versionName: versionName,
         customerSelector: {
           customers: [],
           visible: false,
@@ -251,4 +254,14 @@
     margin-right: 30rpx;
     border-radius: 50%;
   }
+  
+  .version {
+    color: #ffffff;
+    font-size: 40rpx;
+    margin-top: 60rpx;
+  }
+  
+  view {  
+    user-select: text;  
+  } 
 </style>

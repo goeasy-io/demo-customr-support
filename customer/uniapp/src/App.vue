@@ -20,7 +20,7 @@
     padding: 16rpx;
     border-radius: 20rpx;
     color: #000000;
-    background: #EFEFEF;
+    background: #FFFFFF;
     word-break: break-all;
     text-align: left;
     vertical-align: center;

@@ -17,7 +17,6 @@
             "base": "/"
         }
     },
-    /* 5+App特有相关 */
     "app-plus": {
         "usingComponents": true,
         "nvueCompiler": "uni-app",
@@ -30,14 +29,11 @@
         "compatible": {
             "ignoreVersion": true
         },
-        /* 模块配置 */
         "modules": {
             "VideoPlayer": {},
             "Push": {}
         },
-        /* 应用发布信息 */
         "distribute": {
-            /* android打包配置 */
             "android": {
                 "permissions": [
                     "<uses-feature android:name=\"android.hardware.camera\"/>",
@@ -64,11 +60,9 @@
                     "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
                 ]
             },
-            /* ios打包配置 */
             "ios": {
                 "dSYMs": false
             },
-            /* SDK配置 */
             "sdkConfigs": {
                 "ad": {},
                 "push": {},
@@ -136,9 +130,7 @@
         "compilerVersion": 3,
         "nativePlugins": {}
     },
-    /* 快应用特有相关 */
     "quickapp": {},
-    /* 小程序特有相关 */
     "mp-weixin": {
         "appid": "",
         "setting": {
