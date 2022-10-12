@@ -33,13 +33,19 @@ confirm_version() {
         git push origin $currentVersion
         git checkout $currentVersion
 
-    else
+    elif [ "$ACTION" = "b" ]; then
         # build 版本
         cd support/web
         currentVersion=$(npm run env | grep npm_package_version | cut -d '=' -f 2)
         vesionDir=$currentVersion
+    else
+        # 本地开发 版本
+        cd support/web
+        currentVersion=$(npm run env | grep npm_package_version | cut -d '=' -f 2)
+        vesionDir="show-cs/"$currentVersion
     fi
-
+    # 退回根目录
+    cd ../../
     echo "version confirmed:$currentVersion"
 
 }
@@ -48,7 +54,6 @@ confirm_version() {
 make_build_folder() {
 
     # 创建版本目录
-    cd ../../
     ls build >/dev/null 2>&1
     if [ $? == 0 ]; then
         rm -rf build
@@ -99,6 +104,7 @@ upgrade_versions() {
     git config user.email "${git_email}"
     # 推送
     git commit -m "[CI-build.sh] 将版本号升级为：$currentVersion，为下个版本做准备"
+    git pull
     git push -u origin $originBranch
 
     echo "$currentVersion is build, next version $nextVersion"
@@ -146,6 +152,12 @@ make_build_folder
 build_web
 build_customer
 copy_html
-deploy
-clear_file
-upgrade_versions
+if [ "$ACTION" != "" ]; then
+    deploy
+    clear_file
+    upgrade_versions
+else
+    # 启动静态页面服务
+    cd build
+    http-server .
+fi
