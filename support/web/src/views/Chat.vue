@@ -125,7 +125,7 @@
             </div>
             <!-- 商品链接 -->
             <div class="action-item">
-              <i class="iconfont icon-lianjie" title="商品链接" @click="showOrderMessageList"></i>
+              <i class="iconfont icon-liebiao" title="订单" @click="showOrderMessageList"></i>
             </div>
           </div>
           <div class="session-action">

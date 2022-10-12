@@ -676,7 +676,6 @@
   }
   
   .scroll-view .content .order-body {
-    background: #F1F1F1;
     padding: 10rpx;
   }
   

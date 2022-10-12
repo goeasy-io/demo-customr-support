@@ -6,6 +6,76 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "1304951",
+      "name": "列表",
+      "font_class": "liebiao",
+      "unicode": "e62d",
+      "unicode_decimal": 58925
+    },
+    {
+      "icon_id": "565981",
+      "name": "订单",
+      "font_class": "dingdan1",
+      "unicode": "e63b",
+      "unicode_decimal": 58939
+    },
+    {
+      "icon_id": "1301356",
+      "name": "表情",
+      "font_class": "biaoqing",
+      "unicode": "e659",
+      "unicode_decimal": 58969
+    },
+    {
+      "icon_id": "1727477",
+      "name": "237拍照",
+      "font_class": "paizhao",
+      "unicode": "e8d1",
+      "unicode_decimal": 59601
+    },
+    {
+      "icon_id": "5835456",
+      "name": "表情",
+      "font_class": "biaoqing1",
+      "unicode": "e60b",
+      "unicode_decimal": 58891
+    },
+    {
+      "icon_id": "7193682",
+      "name": "图片",
+      "font_class": "tupian",
+      "unicode": "e730",
+      "unicode_decimal": 59184
+    },
+    {
+      "icon_id": "11372735",
+      "name": "增加",
+      "font_class": "zengjia",
+      "unicode": "e8c0",
+      "unicode_decimal": 59584
+    },
+    {
+      "icon_id": "12097452",
+      "name": "键盘",
+      "font_class": "jianpan1",
+      "unicode": "e65b",
+      "unicode_decimal": 58971
+    },
+    {
+      "icon_id": "26847671",
+      "name": "语音",
+      "font_class": "yuyin",
+      "unicode": "e66c",
+      "unicode_decimal": 58988
+    },
+    {
+      "icon_id": "1126",
+      "name": "文件夹",
+      "font_class": "wenjianjia",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
       "icon_id": "1305406",
       "name": "上",
       "font_class": "shang",
@@ -155,7 +225,7 @@
     {
       "icon_id": "2076282",
       "name": " 订单",
-      "font_class": "dingdan1",
+      "font_class": "dingdan2",
       "unicode": "e898",
       "unicode_decimal": 59544
     },
