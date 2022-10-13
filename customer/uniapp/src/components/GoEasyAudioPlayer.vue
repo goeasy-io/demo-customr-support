@@ -40,7 +40,7 @@
     min-width: 20rpx;
     padding: 6rpx 10rpx;
     line-height: 72rpx;
-    background: #EFEFEF;
+    background: #FFFFFF;
     font-size: 24rpx;
     border-radius: 14rpx;
     color: #000000;

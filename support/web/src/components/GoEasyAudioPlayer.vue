@@ -44,7 +44,7 @@
     display: flex;
     font-size: 14px;
     padding: 8px;
-    margin: 5px 10px;
+    margin: 5px 0;
     line-height: 25px;
     cursor: pointer;
   }
