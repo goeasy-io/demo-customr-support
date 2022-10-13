@@ -312,6 +312,7 @@
         })
       },
       updatePendingTime (time) {
+        this.pendingTime.duration = '';
         clearInterval(this.pendingTime.timer);
         this.pendingTime.timer = setInterval(() => {
           this.pendingTime.duration = formateTime(time);
