@@ -239,8 +239,8 @@
   }
 
   .item-info-bottom .item-info-bottom_action {
-    width: 50rpx;
-    height: 50rpx;
+    width: 70rpx;
+    height: 70rpx;
     font-size: 20rpx;
     background: url("~@/static/images/action.png") no-repeat center;
     background-size: 28rpx 30rpx;

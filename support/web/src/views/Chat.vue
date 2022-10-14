@@ -43,7 +43,7 @@
                   <div v-if="message.type === 'text'" class="content-text"
                        v-html="renderTextMessage(message.payload.text)"></div>
                   <div v-if="message.type === 'image'" class="content-image"
-                       @click="showImagePredivPopup(message.payload.url)">
+                       @click="showImagePreviewPopup(message.payload.url)">
                     <img :src="message.payload.url"
                          :style="{height:getImageHeight(message.payload.width,message.payload.height)+'px'}"/>
                   </div>
@@ -312,6 +312,7 @@
         })
       },
       updatePendingTime (time) {
+        this.pendingTime.duration = formateTime(time);
         clearInterval(this.pendingTime.timer);
         this.pendingTime.timer = setInterval(() => {
           this.pendingTime.duration = formateTime(time);
@@ -955,7 +956,7 @@
       }
     }
 
-    .image-prediv {
+    .image-preview {
       max-width: 750px;
       max-height: 500px;
       background: rgba(0, 0, 0, 0.8);

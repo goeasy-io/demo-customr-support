@@ -205,6 +205,10 @@
         });
       },
       deleteConversation() {
+        if (!this.rightClickMenu.conversation.ended) {
+          alert("删除失败：会话尚未结束");
+          return
+        }
         let confirmResult = confirm('确认要删除这条会话吗？');
         if (confirmResult===true) {
           this.goEasy.im.removeConversation({
