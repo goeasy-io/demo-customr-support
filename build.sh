@@ -1,4 +1,6 @@
 #!/bin/bash
+# 开启错误退出
+set -e
 
 if [ "$1" ]; then
     ACTION=$1
@@ -54,8 +56,7 @@ confirm_version() {
 make_build_folder() {
 
     # 创建版本目录
-    ls build >/dev/null 2>&1
-    if [ $? == 0 ]; then
+    if [ -d "build" ]; then
         rm -rf build
     fi
     mkdir -p build/$vesionDir
@@ -117,8 +118,7 @@ deploy() {
     fi
     git clone https://${git_usernamne}:${git_password}@gitee.com/goeasy-io/show-cs.git
     # 清除老数据
-    ls show-cs/$vesionDir >/dev/null 2>&1
-    if [ $? == 0 ]; then
+    if [ -d "show-cs/$vesionDir" ]; then
         rm -rf show-cs/$vesionDir
     fi
     # 移动版本目录
