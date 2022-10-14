@@ -748,6 +748,7 @@
     width: 62rpx;
     height: 62rpx;
     margin-right: 10rpx;
+    display: flex;
   }
 
   .send-btn-box {
@@ -761,8 +762,9 @@
     
   }
   
-  .send-btn-box text {
+  .send-btn-box .btn {
     color: #FFFFFF;
+    font-size: 28rpx;
   }
   
   .action-box .action-bottom .more-icon {
