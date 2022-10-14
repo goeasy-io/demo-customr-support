@@ -1,4 +1,4 @@
-# 客服demo
+# GoEasy客服demo
 
 #### 演示版体验
 
@@ -17,7 +17,9 @@ https://goeasy-io.gitee.io/docs-cs/
 
 #####  克隆源码
 
-地址： https://gitee.com/goeasy-io/demo-customer-service.git
+GitHub  https://github.com/goeasy-io/demo-customr-support
+
+Gitee：https://gitee.com/goeasy-io/demo-customer-service
 
 
 ##### 用户端Customer
