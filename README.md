@@ -4,6 +4,10 @@
 
 https://goeasy-io.gitee.io/show-cs/1.0.8-2/
 
+#### 官方文档
+
+https://goeasy-io.gitee.io/docs-cs/
+
 #### 运行指南
 
 ##### 获取appkey
