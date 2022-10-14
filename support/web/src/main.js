@@ -3,7 +3,7 @@ import App from './App.vue'
 import router from './router'
 // 引入阿里字体图标
 import './assets/iconfont/iconfont.css';
-import GoEasy from './utils/goeasy-2.5.5-1.min'
+import GoEasy from 'goeasy';
 
 Vue.config.productionTip = false
 
