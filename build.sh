@@ -103,7 +103,7 @@ upgrade_versions() {
     git config user.password "${git_password}"
     git config user.email "${git_email}"
     # 推送
-    git commit -m "[CI-build.sh] 将版本号升级为：$currentVersion，为下个版本做准备"
+    git commit -m "[CI-build.sh] 将版本号升级为：$nextVersion，为下个版本做准备"
     git push -u origin $originBranch
 
     echo "$currentVersion is build, next version $nextVersion"
