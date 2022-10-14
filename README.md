@@ -17,9 +17,9 @@ https://goeasy-io.gitee.io/docs-cs/
 
 #####  克隆源码
 
-GitHub  https://github.com/goeasy-io/demo-customr-support
+* [GitHub](https://github.com/goeasy-io/demo-customr-support)
 
-Gitee：https://gitee.com/goeasy-io/demo-customer-service
+* [Gitee](https://gitee.com/goeasy-io/demo-customer-service)
 
 
 ##### 用户端Customer
