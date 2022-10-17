@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "已接入",
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "navigation": "../../components/navigation/navigation"
+  }
+}

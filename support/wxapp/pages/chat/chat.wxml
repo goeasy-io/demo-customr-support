@@ -1,0 +1,147 @@
+<page-meta>
+	<navigation-bar title="{{customer.name}}" front-color="#FFFFFF" background-color="#7484ad" />
+</page-meta>
+<view class="chat">
+	<view class="chat-box">
+		<view class="scroll-view">
+			<view class="header">
+				<text>{{history.allLoaded ? '已经没有更多的历史消息' : '下拉获取历史消息'}}</text>
+			</view>
+			<!--已经收到的消息-->
+			<view wx:for="{{history.messages || []}}" wx:for-index="index" wx:key="index" wx:for-item="message">
+				<!--时间显示，类似于微信，隔5分钟不发言，才显示时间-->
+				<view class="time-lag">{{message.showTime}}</view>
+				<!--消息内容-->
+				<view class="message-item">
+					<view wx:if="{{message.type === 'CS_ACCEPT'}}" class="accept-message">
+						<text>{{ message.senderData.name }}已接入</text>
+					</view>
+					<view wx:elif="{{message.type === 'CS_END'}}" class="accept-message">
+						<text>{{ message.senderData.name }}已结束会话</text>
+					</view>
+					<view wx:elif="{{message.type === 'CS_TRANSFER'}}" class="accept-message">
+						<text>{{
+						message.senderId === currentAgent.id ? '已转接给' + message.payload.transferTo.data.name :
+						'已接入来自' + message.senderData.name + '的转接'
+						}}</text>
+					</view>
+					<view wx:else class="{{message.senderId !== customer.id ? 'message-item-content self' : 'message-item-content'}}">
+						<view class="avatar" wx:if="{{message.senderId === currentAgent.id}}">
+							<image src="{{currentAgent.avatar}}"></image>
+						</view>
+						<view class="avatar" wx:else>
+							<image src="{{customer.avatar}}"></image>
+						</view>
+						<view class="content" data-messageid="{{message.messageId}}">
+							<view class="message-payload">
+								<image src="/static/images/pending.gif" class="pending" wx:if="{{message.status === 'sending'}}"></image>
+								<image src="/static/images/failed.png" class="send-fail" wx:if="{{message.status == 'fail'}}"></image>
+								<rich-text class="text-content" nodes="{{message.node}}" wx:if="{{message.type ==='text'}}"></rich-text>
+								<image class="image-content" wx:if="{{message.type === 'image'}}" src="{{message.payload.url}}" bindtap="previewImage"
+									   data-src="{{message.payload.url}}" style="height:{{message.imageHeight}}" mode="widthFix"/>
+								<GoEasyAudioPlayer id="goEasyAudio" wx:if="{{message.type =='audio'}}" selfSent="{{message.senderId === currentAgent.id}}" src="{{message.payload.url}}" duration="{{message.payload.duration}}" />
+								<view class="video-snapshot" bindtap="playVideo" data-url="{{message.payload.video.url}}" data-duration="{{message.payload.video.duration}}"  wx:if="{{message.type == 'video'}}">
+									<image class="thumbnail-image" src="{{message.payload.thumbnail.url}}" mode="aspectFit"></image>
+									<image class="play-icon" src="/static/images/videoImage/play.png" mode="aspectFit"></image>
+								</view>
+								<view class="custom-message" wx:if="{{message.type === 'order'}}">
+									<view class="order-description">发送订单：</view>
+									<view class="order-body">
+										<image src="{{message.payload.url}}"></image>
+										<view class="order-info">
+											<view class="order-name">{{ message.payload.name }}</view>
+											<view>月销{{ message.payload.sales }}</view>
+											<view>{{ message.payload.price }}</view>
+										</view>
+									</view>
+								</view>
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+		<!--发送消息，视频，语音，自定义消息操作-->
+		<view class="chat-footer">
+			<view wx:if="{{customerStatus==null}}" class="accept-session">
+				<view>离线中</view>
+			</view>
+			<view wx:elif="{{customerStatus.status==='PENDING'}}" class="accept-session">
+				<view class="accept-info">
+					会话已等待{{pendingTime.duration}}
+				</view>
+				<view class="accept-btn" bind:tap="acceptSession">立即接入</view>
+			</view>
+			<view wx:elif="{{customerStatus.status==='ACCEPTED' && currentAgent.id !== customerStatus.agent.id}}"
+				 class="accept-session">
+				<view class="accept-info">{{ customerStatus.agent.data.name }}已接入</view>
+			</view>
+			<view wx:elif="{{customerStatus.status==='FREE'}}" class="accept-session">
+				<view class="accept-btn" bind:tap="acceptSession">主动接入</view>
+			</view>
+			<view wx:else class="action-box">
+				<view class="action-top">
+					<!-- GoEasyIM最大支持3k的文本消息，如需发送长文本，需调整输入框maxlength值 -->
+					<input type="text" maxlength="700" placeholder="发送消息" confirm-hold hold-keyboard="{{true}}" adjust-position="{{true}}" class="msg-input-box"
+						   data-text="text" bindinput="setContent" bindfocus="messageInputFocusin" value="{{text}}" />
+					<view class="action-icon">
+						<image src="/static/images/emoji.png" class="emoji-icon" bindtap="showEmoji"></image>
+					</view>
+					<view class="action-icon">
+						<image src="/static/images/more.png" class="more-icon" bindtap="showMore"></image>
+					</view>
+					<view class="send-btn-box" bindtap="sendTextMessage">发送</view>
+				</view>
+				<!--展示表情列表-->
+				<view class="action-bottom" wx:if="{{emoji.visible}}" style="justify-content: space-around">
+					<image class="image" wx:for="{{emoji.map}}" wx:for-item="emojiItem" wx:for-index="key"  wx:key="key" src="{{emoji.url + emojiItem}}" bindtap="selectEmoji" data-emojiKey="{{key}}"></image>
+				</view>
+				<!--展示其他消息类型面板-->
+				<view class="action-bottom" wx:if="{{otherTypesMessagePanelVisible}}">
+					<view class="more-item" bindtap="sendImageMessage">
+						<image class="image" src="/static/images/tupian.png"></image>
+						<text class="text">图片</text>
+					</view>
+					<view class="more-item" bindtap="sendVideoMessage">
+						<image class="image" src="/static/images/shipin.png"></image>
+						<text class="text">视频</text>
+					</view>
+					<view class="more-item" bindtap="showOrderMessageList">
+						<image class="image" src="/static/images/custom.png"></image>
+						<text class="text">订单</text>
+					</view>
+					<view class="more-item" bindtap="showTransferForm">
+						<image class="image" src="/static/images/transfer.png"></image>
+						<text class="text">转接</text>
+					</view>
+                    <view class="more-item" bindtap="endSession">
+						<image class="image" src="/static/images/end.png"></image>
+						<text class="text">结束会话</text>
+					</view>
+				</view>
+			</view>
+		</view>
+        <view wx:if="{{orderList.visible}}" class="order-list">
+            <view class="close-btn" bindtap="hideOrderMessageList">x</view>
+            <view wx:for="{{orderList.orders}}" wx:key="index" wx:for-item="order" class="order-item">
+                <view class="list-item">
+                    <image src="{{order.url}}" class="order-img"></image>
+                    <view>{{ order.name }}</view>
+                </view>
+                <view class="item-btn" data-order="{{order}}" bindtap="sendOrderMessage">发送</view>
+            </view>
+        </view>
+        <view wx:if="{{transferForm.visible}}" class="order-list">
+            <view class="close-btn" bindtap="hideTransferForm">x</view>
+            <view wx:for="{{transferForm.agents}}" wx:key="index" wx:for-item="agent" class="order-item">
+                <view class="list-item">
+                    <image src="{{agent.data.avatar}}" class="order-img"></image>
+                    <view>{{ agent.data.name }}</view>
+                </view>
+                <view class="item-btn" data-agent="{{agent}}" bindtap="transfer">转接</view>
+            </view>
+        </view>
+	</view>
+	<GoEasyVideoPlayer id="videoPlayer"></GoEasyVideoPlayer>
+
+</view>
