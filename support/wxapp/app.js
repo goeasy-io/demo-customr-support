@@ -1,5 +1,5 @@
 //app.js
-import GoEasy from './static/lib/goeasy-2.5.3.min';
+import GoEasy from './static/lib/goeasy-2.5.7.min';
 App({
     onLaunch: function () {
         wx.goEasy = GoEasy.getInstance({
