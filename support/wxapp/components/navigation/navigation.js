@@ -69,7 +69,7 @@ Component({
             })
         },
         online() {
-            let currentAgent = wx.getStorageSync('currentAgent')
+            let currentAgent = app.globalData.currentAgent;
             this.data.csteam.online({
                 teamData: {name: this.data.shop.name, avatar: this.data.shop.avatar},
                 agentData: {name: currentAgent.name, avatar: currentAgent.avatar},

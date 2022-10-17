@@ -1,5 +1,5 @@
 <page-meta>
-	<navigation-bar title="{{customer.name}}" front-color="#FFFFFF" background-color="#7484ad" />
+	<navigation-bar title="{{customer.name}}" front-color="#000000" background-color="#F1F1F1" />
 </page-meta>
 <view class="chat">
 	<view class="chat-box">
@@ -44,14 +44,16 @@
 									<image class="thumbnail-image" src="{{message.payload.thumbnail.url}}" mode="aspectFit"></image>
 									<image class="play-icon" src="/static/images/videoImage/play.png" mode="aspectFit"></image>
 								</view>
-								<view class="custom-message" wx:if="{{message.type === 'order'}}">
-									<view class="order-description">发送订单：</view>
+								<view wx:if="{{message.type === 'order'}}" class="order-content">
+									<view class="order-id">订单号：{{ message.payload.id }}</view>
 									<view class="order-body">
-										<image src="{{message.payload.url}}"></image>
-										<view class="order-info">
+										<image src="{{message.payload.url}}" class="order-img"></image>
+										<view>
 											<view class="order-name">{{ message.payload.name }}</view>
-											<view>月销{{ message.payload.sales }}</view>
-											<view>{{ message.payload.price }}</view>
+											<view class="order-info">
+												<view class="order-price">{{ message.payload.price }}</view>
+												<view class="order-count">共{{ message.payload.count }}件</view>
+											</view>
 										</view>
 									</view>
 								</view>
@@ -84,13 +86,16 @@
 					<!-- GoEasyIM最大支持3k的文本消息，如需发送长文本，需调整输入框maxlength值 -->
 					<input type="text" maxlength="700" placeholder="发送消息" confirm-hold hold-keyboard="{{true}}" adjust-position="{{true}}" class="msg-input-box"
 						   data-text="text" bindinput="setContent" bindfocus="messageInputFocusin" value="{{text}}" />
-					<view class="action-icon">
-						<image src="/static/images/emoji.png" class="emoji-icon" bindtap="showEmoji"></image>
+					<view class="action-icon" bind:tap="switchEmojiKeyboard">
+						<image class="more-icon" wx:if="{{emoji.visible}}" src="/static/images/jianpan.png"></image>
+						<image class="more-icon" wx:else src="/static/images/emoji.png"></image>
 					</view>
 					<view class="action-icon">
-						<image src="/static/images/more.png" class="more-icon" bindtap="showMore"></image>
+						<image src="/static/images/more.png" class="more-icon" bindtap="showOtherTypesMessagePanel"></image>
 					</view>
-					<view class="send-btn-box" bindtap="sendTextMessage">发送</view>
+					<view wx:if="{{text}}" class="send-btn-box">
+						<text class="btn" bindtap="sendTextMessage">发送</text>
+					</view>
 				</view>
 				<!--展示表情列表-->
 				<view class="action-bottom" wx:if="{{emoji.visible}}" style="justify-content: space-around">
@@ -99,46 +104,67 @@
 				<!--展示其他消息类型面板-->
 				<view class="action-bottom" wx:if="{{otherTypesMessagePanelVisible}}">
 					<view class="more-item" bindtap="sendImageMessage">
-						<image class="image" src="/static/images/tupian.png"></image>
-						<text class="text">图片</text>
+						<image class="operation-icon" src="/static/images/picture.png"></image>
+						<text class="operation-title">图片</text>
 					</view>
 					<view class="more-item" bindtap="sendVideoMessage">
-						<image class="image" src="/static/images/shipin.png"></image>
-						<text class="text">视频</text>
+						<image class="operation-icon" src="/static/images/video.png"></image>
+						<text class="operation-title">视频</text>
 					</view>
 					<view class="more-item" bindtap="showOrderMessageList">
-						<image class="image" src="/static/images/custom.png"></image>
-						<text class="text">订单</text>
+						<image class="operation-icon" src="/static/images/order.png"></image>
+						<text class="operation-title">订单</text>
 					</view>
 					<view class="more-item" bindtap="showTransferForm">
-						<image class="image" src="/static/images/transfer.png"></image>
-						<text class="text">转接</text>
+						<image class="operation-icon" src="/static/images/transfer.png"></image>
+						<text class="operation-title">转接</text>
 					</view>
                     <view class="more-item" bindtap="endSession">
-						<image class="image" src="/static/images/end.png"></image>
-						<text class="text">结束会话</text>
+						<image class="operation-icon" src="/static/images/end.png"></image>
+						<text class="operation-title">结束会话</text>
 					</view>
 				</view>
 			</view>
 		</view>
-        <view wx:if="{{orderList.visible}}" class="order-list">
-            <view class="close-btn" bindtap="hideOrderMessageList">x</view>
-            <view wx:for="{{orderList.orders}}" wx:key="index" wx:for-item="order" class="order-item">
-                <view class="list-item">
-                    <image src="{{order.url}}" class="order-img"></image>
-                    <view>{{ order.name }}</view>
-                </view>
-                <view class="item-btn" data-order="{{order}}" bindtap="sendOrderMessage">发送</view>
-            </view>
-        </view>
-        <view wx:if="{{transferForm.visible}}" class="order-list">
-            <view class="close-btn" bindtap="hideTransferForm">x</view>
-            <view wx:for="{{transferForm.agents}}" wx:key="index" wx:for-item="agent" class="order-item">
-                <view class="list-item">
+		<view wx:if="{{orderList.visible}}" class="order-list">
+			<view class="orders-content">
+				<view class="title">
+					<view>请选择一个订单</view>
+					<view class="close" bindtap="hideOrderMessageList">×</view>
+				</view>
+				<view class="orders">
+					<view
+						wx:for="{{orderList.orders}}"
+						wx:key="index"
+						wx:for-item="order"
+						class="order-item"
+						bind:tap="sendOrderMessage"
+						data-order="{{order}}"
+					>
+						<view class="order-id">订单号：{{ order.id }}</view>
+						<view class="order-body">
+							<image :src="order.url" class="order-img"></image>
+							<view class="order-name">{{ order.name }}</view>
+							<view class="order-right">
+								<view class="order-price">{{ order.price }}</view>
+								<view class="order-count">共{{ order.count }}件</view>
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+
+        <view wx:if="{{transferForm.visible}}" class="transfer-list">
+			<view class="title">
+				<view>请选择一个客服</view>
+				<view class="close" bindtap="hideTransferForm">×</view>
+			</view>
+            <view wx:for="{{transferForm.agents}}" wx:key="index" wx:for-item="agent" data-agent="{{agent}}" bindtap="transfer">
+                <view class="order-body">
                     <image src="{{agent.data.avatar}}" class="order-img"></image>
-                    <view>{{ agent.data.name }}</view>
+                    <view class="agent-name">{{ agent.data.name }}</view>
                 </view>
-                <view class="item-btn" data-agent="{{agent}}" bindtap="transfer">转接</view>
             </view>
         </view>
 	</view>

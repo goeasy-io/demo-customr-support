@@ -1,11 +1,11 @@
-/* login.js */
+/* mine.js */
 const app = getApp();
 Page({
 	data : {
 		currentAgent : null
 	},
 	onShow () {
-		let currentAgent = JSON.parse(wx.getStorageSync('currentAgent'));
+		let currentAgent = app.globalData.currentAgent;
 		this.setData({
 			currentAgent : currentAgent
 		});
@@ -20,7 +20,7 @@ Page({
 				onSuccess: function(){
 					wx.hideLoading();
 					console.log('注销成功');
-					wx.removeStorageSync('currentAgent');
+					app.globalData.currentAgent = null;
 					wx.redirectTo({
 						url: '../login/login'
 					});

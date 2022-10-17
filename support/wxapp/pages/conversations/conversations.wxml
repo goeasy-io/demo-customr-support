@@ -1,5 +1,5 @@
 <view class="conversations-container">
-    <navigation shop="{{shop}}" title="GoEasy客服"></navigation>
+    <navigation wx:if="{{shop}}" shop="{{shop}}" title="GoEasy客服"></navigation>
     <scroll-view class="conversations" scroll-y="true" enable-flex="true">
         <view class="scroll-item">
             <view class="item-head">

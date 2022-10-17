@@ -1,5 +1,6 @@
 /* login.js */
 import restApi from '../../static/lib/restapi';
+const app = getApp();
 Page({
 	data: {
 		agentSelector: {
@@ -44,7 +45,7 @@ Page({
 		if (this.data.username.trim() !== '' && this.data.password.value.trim() !== '') {
 			let agent = restApi.findAgent(this.data.username, this.data.password.value);
 			if (agent) {
-				wx.setStorageSync('currentAgent', JSON.stringify(agent));
+				app.globalData.currentAgent = agent;
 				// 页面跳转
 				wx.switchTab({url:'../conversations/conversations'});
 				return;

@@ -61,7 +61,7 @@ Page({
     },
     onLoad: function (options) {
         // 获取初始数据并加载
-        const currentAgent = JSON.parse(wx.getStorageSync('currentAgent'));
+        const currentAgent = getApp().globalData.currentAgent;
         const csteam = wx.goEasy.im.csteam(currentAgent.shopId);
         const customer = JSON.parse(options.to);
         this.setData({
@@ -76,31 +76,31 @@ Page({
         });
         wx.setNavigationBarTitle({title: customer.name});
 
-        this.liveSession();
+        this.listenCustomer();
         this.loadHistoryMessage(true);
     },
     onUnload() {
-        this.data.csteam.quitLiveSession({
+        this.data.csteam.cancelListenCustomer({
             onSuccess: () => {
-                console.log('quit successfully ');
+                console.log('cancelListenCustomer successfully ');
             },
             onFailed: (error) => {
-                console.log('failed to quit:', error);
+                console.log('failed to cancelListenCustomer:', error);
             },
         });
-        if (this.pendingTime.timer) {
-            clearInterval(this.pendingTime.timer);
+        if (this.data.pendingTime.timer) {
+            clearInterval(this.data.pendingTime.timer);
         }
     },
-    liveSession() {
-        this.data.csteam.liveSession({
-            customerId: this.data.customer.id,
+    listenCustomer() {
+        this.data.csteam.listenCustomer({
+            id: this.data.customer.id,
             onSuccess: () => {
-                console.log('live successfully');
+                console.log('listen customer successfully');
                 this.markMessageAsRead();
             },
             onFailed: (error) => {
-                console.log('failed to live session:', error);
+                console.log('failed to listen customer:', error);
             },
             onStatusUpdated: (customerStatus) => {
                 if (customerStatus.status==='PENDING') {
@@ -117,6 +117,9 @@ Page({
         })
     },
     updatePendingTime (time) {
+        this.setData({
+            ['pendingTime.duration']: formateTime(time)
+        })
         clearInterval(this.data.pendingTime.timer);
         let timer = setInterval(() => {
             let duration = formateTime(time)
@@ -174,7 +177,6 @@ Page({
     },
     loadHistoryMessage(scrollToBottom) {
         //历史消息
-        let self = this;
         let lastMessageTimeStamp;
         let lastMessage = this.data.history.messages[0];
         if (lastMessage) {
@@ -190,7 +192,7 @@ Page({
                 wx.stopPullDownRefresh();
                 let messages = result.content;
                 if (messages.length === 0) {
-                    self.setData({
+                    this.setData({
                         ['history.allLoaded']: true
                     });
                 } else {
@@ -316,6 +318,7 @@ Page({
                 to: this.data.to,
                 onSuccess: (message) => {
                     this.sendMessage(message);
+
                 },
                 onFailed: (err) => {
                     console.log("创建消息err:", err);
@@ -340,6 +343,9 @@ Page({
                             console.log(progress)
                         },
                         onSuccess: (message) => {
+                            this.setData({
+                                otherTypesMessagePanelVisible: false,
+                            });
                             this.sendMessage(message);
                         },
                         onFailed: (e) => {
@@ -367,6 +373,9 @@ Page({
                             console.log(progress)
                         },
                         onSuccess: (message) => {
+                            this.setData({
+                                otherTypesMessagePanelVisible: false,
+                            });
                             this.sendMessage(message);
                         },
                         onFailed: (e) => {
@@ -400,6 +409,9 @@ Page({
             payload: order,
             to: this.data.to,
             onSuccess: (message) => {
+                this.setData({
+                    otherTypesMessagePanelVisible: false,
+                });
                 this.sendMessage(message);
             },
             onFailed: (err) => {
@@ -408,24 +420,23 @@ Page({
         });
     },
     sendMessage(message) {
-        let self = this;
         let messages = this.data.history.messages;
         messages.push(message);
         this.renderMessages(messages);
         this.scrollToBottom();
         wx.goEasy.im.sendMessage({
             message: message,
-            onSuccess: function (message) {
+            onSuccess: (message) => {
                 console.log('发送成功.', message);
-                self.renderMessages(self.data.history.messages);
+                this.renderMessages(this.data.history.messages);
             },
-            onFailed: function (error) {
+            onFailed: (error) => {
                 if (error.code === 507) {
                     console.log('发送语音/图片/视频/文件失败，没有配置OSS存储，详情参考：https://www.goeasy.io/cn/docs/goeasy-2.x/im/message/media/send-media-message.html');
                 } else {
                     console.log('发送失败:', error);
                 }
-                self.renderMessages(self.data.history.messages);
+                this.renderMessages(this.data.history.messages);
             }
         });
     },
@@ -438,11 +449,10 @@ Page({
         }, 600)
     },
     showCustomMessageForm() {
-        let self = this;
         let customMessage = this.selectComponent('#customMessage');
         customMessage.setData({
             show: true,
-            to: self.data.friend,
+            to: this.data.friend,
             type: wx.GoEasy.IM_SCENE.PRIVATE
         });
     },
@@ -514,15 +524,22 @@ Page({
             ['emoji.visible']: false
         });
     },
-    showEmoji() {
-        this.setData({
-            ['emoji.visible']: true,
-            otherTypesMessagePanelVisible: false,
-        });
-        // 关闭手机键盘
-        wx.hideKeyboard().then(console.log).catch(console.log);
+    switchEmojiKeyboard () {
+        if (!this.data.emoji.visible) {
+            this.setData({
+                ['emoji.visible']: true,
+                otherTypesMessagePanelVisible: false,
+            });
+            // 关闭手机键盘
+            wx.hideKeyboard().then(console.log).catch(console.log);
+        } else {
+            this.setData({
+                ['emoji.visible']: false,
+                otherTypesMessagePanelVisible: false,
+            });
+        }
     },
-    showMore() {
+    showOtherTypesMessagePanel() {
         this.setData({
             otherTypesMessagePanelVisible: !this.data.otherTypesMessagePanelVisible,
             ['emoji.visible']: false

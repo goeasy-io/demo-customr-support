@@ -3,13 +3,13 @@ page {
 }
 .chat {
     height: 100%;
-    background-color: #e9e9e9;
+    background-color: #F1F1F1;
 }
 
 .scroll-view {
 	overflow-x: hidden;
 	-webkit-overflow-scrolling: touch;
-    background-color: #e9e9e9;
+    background-color: #F1F1F1;
     padding: 0 20rpx 130rpx 20rpx;
 }
 
@@ -56,11 +56,6 @@ page {
 	flex-direction: row-reverse;
 }
 
-.message-item-content.self .text-content {
-    color: #FFFFFF !important;
-    background: #618DFF !important;
-}
-
 .message-item-content .avatar {
     width: 80rpx;
 	height: 80rpx;
@@ -68,55 +63,6 @@ page {
 .message-item-content .avatar image{
 	width: 80rpx;
 	height: 80rpx;
-}
-
-.message-read {
-    height: 36rpx;
-	color: grey;
-	font-size: 12px;
-	text-align: end;
-	margin: 0 10rpx;
-}
-
-.message-unread {
-    height: 36rpx;
-	color: #618DFF;
-	font-size: 12px;
-	text-align: end;
-	margin: 0 10rpx;
-}
-
-.message-recalled {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 56rpx;
-    font-size: 26rpx;
-    text-align: center;
-    color: grey;
-}
-
-.message-recalled .message-recalled-self {
-    display: flex;
-}
-
-.message-recalled .message-recalled-self span {
-    margin-left: 10rpx;
-    color: #618DFF;
-}
-
-.message-item-checkbox {
-	height: 100rpx;
-	display: flex;
-	align-items: center;
-}
-
-.wx-checkbox-input {
-    border-radius: 50% !important;
-}
-
-.wx-checkbox-input.wx-checkbox-input-checked {
-    color: #007aff !important;
 }
 
 .self{
@@ -247,35 +193,35 @@ page {
     display: flex;
     flex-direction: column;
 }
-.custom-message .order-description {
-    font-weight: bold;
-    margin-bottom: 10rpx;
+
+.order-content {
+	border-radius: 20rpx;
+	background: #FFFFFF;
+	padding: 16rpx;
+	display: flex;
+	flex-direction: column;
 }
 
-.custom-message .order-body {
-    display: flex;
-    background-color: #fffcfc;
+.order-id {
+	color: #333333;
 }
 
-.custom-message .order-info {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    font-size: 28rpx;
-    padding: 25rpx 10rpx;
+.order-body {
+	padding: 10rpx;
 }
 
-.custom-message .order-info .order-name {
-    font-size: 30rpx;
+.order-name {
+	font-weight: normal;
 }
 
-.custom-message .order-info .foods-price {
-    color: #d02129;
+.order-info {
+	display: flex;
+	justify-content: space-between;
+	padding: 10rpx;
 }
 
-.custom-message image {
-    width: 200rpx;
-    height: 200rpx;
+.order-price {
+	font-weight: normal;
 }
 
 .accept-session {
@@ -318,7 +264,7 @@ page {
 	bottom: 0;
 	left: 0;
 	z-index: 1000;
-	background-color: #FAFAFA;
+	background-color: #F1F1F1;
 }
 
 .action-top {
@@ -326,9 +272,9 @@ page {
 	align-items: center;
 	width: 100%;
 	height: 130rpx;
-	padding: 20rpx 10rpx 20rpx 10rpx;
+	padding: 20rpx;
 	box-sizing: border-box;
-	background-color: #FAFAFA;
+	background-color: #F1F1F1;
 }
 
 .action-icon {
@@ -338,7 +284,7 @@ page {
 	height: 100%;
 }
 
-.order-list {
+.transfer-list {
     width: 100%;
     min-height: 240rpx;
 	position: fixed;
@@ -350,42 +296,94 @@ page {
     font-size: 30rpx;
 }
 
-.order-item .list-item {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+.hide-transfer {
+	display: flex;
+	justify-content: flex-end;
+	font-size: 28rpx;
 }
 
-.item-btn {
-    width: 100rpx;
-    padding: 10rpx 0;
-    text-align: center;
-    border: 1px solid #cccccc;
-    cursor: pointer;
-    border-radius: 10rpx;
+.agent-name {
+	font-size: 40rpx;
+	line-height: 100rpx;
+	margin-left: 20rpx;
 }
 
-.close-btn {
-    height: 40rpx;
-    margin-right: 30rpx;
-    font-size: 36rpx;
-    display: flex;
-    justify-content: flex-end;
+.order-list {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	z-index: 1000;
+	width: 100vw;
+	height: 100vh;
+	background: rgba(0, 0, 0, 0.5);
+}
+
+.orders-content {
+	position: absolute;
+	width: 100%;
+	bottom: 0;
+	background: #F1F1F1;
+	z-index: 200;
+}
+
+.title {
+	font-weight: 600;
+	font-size: 30rpx;
+	color: #000000;
+	margin-left: 20rpx;
+	margin-right: 20rpx;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.close {
+	font-size: 50rpx;
 }
 
 .order-item {
-    padding: 0 24rpx;
-    display: flex;
-    align-items: center;
-    margin: 10rpx 0;
-    height: 120rpx;
+	padding: 20rpx;
+	background: #FFFFFF;
+	margin: 20rpx;
+	border-radius: 20rpx;
+}
+
+.order-id {
+	font-size: 24rpx;
+	color: #666666;
+	margin-bottom: 10rpx;
+}
+
+.order-body {
+	display: flex;
+	font-size: 28rpx;
 }
 
 .order-img {
-    width: 100rpx;
-    height: 100rpx;
-    margin-right: 20rpx;
+	width: 120rpx;
+	height: 120rpx;
+	border-radius: 10rpx;
+}
+
+.order-name {
+	margin-left: 20rpx;
+	width: 270rpx;
+}
+
+.order-right {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.order-price {
+	font-weight: bold;
+}
+
+.order-count {
+	font-size: 24rpx;
+	color: #666666;
 }
 
 .microphone-icon {
@@ -408,13 +406,7 @@ page {
 	box-sizing: border-box;
 	line-height: 80rpx;
 	font-size: 28rpx;
-	background-color: #efefef;
-}
-
-.emoji-icon {
-	width: 50rpx;
-	height: 50rpx;
-	padding-left: 15rpx;
+	background-color: #FFFFFF;
 }
 
 .more-icon {
@@ -425,20 +417,28 @@ page {
 
 
 .send-btn-box {
-	width: 80rpx;
-	box-sizing: border-box;
-	text-align: center;
-	line-height: 80rpx;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 110rpx;
+	height: 60rpx;
+	border-radius: 10rpx;
+	background: #D02129;
+	margin-left: 15rpx;
+}
+
+.send-btn-box .btn {
+	color: #FFFFFF;
 	font-size: 28rpx;
-	color: #95949A;
 }
 
 .action-bottom {
 	display: flex;
-	padding: 20rpx 10rpx 20rpx 10rpx;
-	height: 320rpx;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	height: 350rpx;
 	box-sizing: border-box;
-	background: #fff;
+	padding: 0 20rpx;
 }
 
 .action-popup {
@@ -510,21 +510,21 @@ page {
 
 .more-item{
 	display: flex;
-	flex-direction: column;
-	width: 150rpx;
-	height: 150rpx;
-	margin-right: 20rpx;
 	align-items: center;
+	flex-direction: column;
+	padding: 0 30rpx;
 }
 
-.text {
-	font-size: 20rpx;
-	text-align: center;
+.operation-icon {
+	width: 70rpx;
+	height: 70rpx;
+	padding: 25rpx;
+	border-radius: 20rpx;
+	background: #FFFFFF;
+}
+.operation-title {
+	font-size: 24rpx;
 	line-height: 50rpx;
-	color: #666666;
+	color: #82868E;
 }
 
-.title image {
-	width: 40rpx;
-	height: 40rpx;
-}

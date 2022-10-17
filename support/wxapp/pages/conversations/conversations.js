@@ -16,13 +16,13 @@ Page({
 		},
 	},
 	onShow () {
-		if(!wx.getStorageSync('currentAgent')){
+		const currentAgent = app.globalData.currentAgent;
+		if(!currentAgent){
 			wx.redirectTo({
 				url : '../login/login'
 			});
 			return;
-        }
-        const currentAgent = JSON.parse(wx.getStorageSync('currentAgent'));
+		}
         const csteam = wx.goEasy.im.csteam(currentAgent.shopId);
         const shop = restApi.findShopById(currentAgent.shopId);
 		this.setData({
@@ -33,7 +33,6 @@ Page({
 		if (wx.goEasy.getConnectionStatus() === 'disconnected'|| wx.goEasy.getConnectionStatus() === 'connect_failed') {
 			this.connectGoEasy();  //连接goeasy
 		}
-		// this.initialOnlineStatus();
 		this.listenConversationUpdate(); //监听会话列表变化
 		this.loadConversations(); //加载会话列表
     },
@@ -135,6 +134,16 @@ Page({
 		this.closeMask();
 	},
 	removeConversation(){
+		this.closeMask();
+		if (!this.data.actionPopup.conversation.ended) {
+			wx.showToast({
+				title:"删除失败：会话尚未结束",
+				icon: 'none',//图标，支持"success"、"loading"
+				duration: 2000,//提示的延迟时间，单位毫秒，默认：1500
+				mask: false,//是否显示透明蒙层，防止触摸穿透，默认：false
+			});
+			return
+		}
         wx.showModal({
             content: '确定要删除这条会话吗？',
             success: (res) => {
@@ -159,7 +168,6 @@ Page({
               }
             }
         })
-        this.closeMask();
 	},
 	chat (e) {
         const conversation = e.currentTarget.dataset.conversation;

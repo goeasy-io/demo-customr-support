@@ -6,7 +6,7 @@ Page({
         pendingConversations: [],
     },
     onShow () {
-        const currentAgent = JSON.parse(wx.getStorageSync('currentAgent'));
+        const currentAgent = app.globalData.currentAgent;
         const csteam = wx.goEasy.im.csteam(currentAgent.shopId);
 		this.setData({
             csteam: csteam
@@ -56,7 +56,7 @@ Page({
             onSuccess: () => {
                 console.log('accept successfully.');
                 wx.navigateTo({
-                    url : '../chat/chat?to='+customerId
+                    url : '../chat/chat?to='+JSON.stringify(customerId)
                 })
             },
             onFailed: (error) => {
