@@ -270,16 +270,16 @@
       this.currentAgent = this.globalData.currentAgent;
       this.csteam = this.goEasy.im.csteam(this.currentAgent.shopId);
 
-      this.liveSession();
+      this.listenCustomer();
       this.loadHistoryMessage(true);
     },
     beforeDestroy() {
-      this.csteam.quitLiveSession({
+      this.csteam.cancelListenCustomer({
         onSuccess: () => {
-          console.log('quit successfully ');
+          console.log('cancelListenCustomer successfully ');
         },
         onFailed: (error) => {
-          console.log('failed to quit:', error);
+          console.log('failed to cancelListenCustomer:', error);
         },
       });
       if (this.pendingTime.timer) {
@@ -290,15 +290,15 @@
       renderTextMessage(text) {
         return this.emoji.decoder.decode(text);
       },
-      liveSession() {
-        this.csteam.liveSession({
-          customerId: this.customer.id,
+      listenCustomer() {
+        this.csteam.listenCustomer({
+          id: this.customer.id,
           onSuccess: () => {
-            console.log('live successfully');
+            console.log('listen customer successfully');
             this.markMessageAsRead();
           },
           onFailed: (error) => {
-            console.log('failed to live session:', error);
+            console.log('failed to listen customer:', error);
           },
           onStatusUpdated: (customerStatus) => {
             this.customerStatus = customerStatus;
