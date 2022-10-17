@@ -61,7 +61,7 @@ Page({
     },
     onLoad: function (options) {
         // 获取初始数据并加载
-        const currentAgent = getApp().globalData.currentAgent;
+        const currentAgent = app.globalData.currentAgent;
         const csteam = wx.goEasy.im.csteam(currentAgent.shopId);
         const customer = JSON.parse(options.to);
         this.setData({
@@ -447,23 +447,6 @@ Page({
                 duration: 10
             });
         }, 600)
-    },
-    showCustomMessageForm() {
-        let customMessage = this.selectComponent('#customMessage');
-        customMessage.setData({
-            show: true,
-            to: this.data.friend,
-            type: wx.GoEasy.IM_SCENE.PRIVATE
-        });
-    },
-    createCustomMessage(event) {
-        let customerMessage = event.detail;
-        this.sendMessage(customerMessage);
-        // 发送自定义消息关闭更多菜单栏
-        this.setData({
-            otherTypesMessagePanelVisible: false,
-            ['emoji.visible']: false,
-        });
     },
     renderMessages(messages) {
         messages.forEach((message, index) => {

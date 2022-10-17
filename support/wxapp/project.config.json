@@ -46,7 +46,7 @@
     "compileType": "miniprogram",
     "libVersion": "2.13.0",
     "appid": "wx42aee55bf6e00a5a",
-    "projectname": "GoEasyDemo-wxapp-IM-Chat",
+    "projectname": "demo-customer-service-wxapp",
     "simulatorType": "wechat",
     "simulatorPluginLibVersion": {},
     "editorSetting": {
