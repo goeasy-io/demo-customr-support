@@ -50,22 +50,21 @@ Page({
         });
     },
     acceptSession (e) {
-        let customerId = e.currentTarget.dataset.customerid;
+        const conversation = e.currentTarget.dataset.conversation;
+        const customer = {
+            id: conversation.id,
+            name: conversation.data.name,
+            avatar: conversation.data.avatar,
+        }
         this.data.csteam.accept({
-            id: customerId,
+            id: customer.id,
             onSuccess: () => {
                 console.log('accept successfully.');
                 wx.navigateTo({
-                    url : '../chat/chat?to='+JSON.stringify(customerId)
+                    url : '../chat/chat?to='+JSON.stringify(customer)
                 })
             },
             onFailed: (error) => {
-                // if (error.content === 'CUSTOMER_BUSY') {
-                //   alert('接入失败，用户正在忙')
-                // }
-                // if (error.content === 'OFFLINE_AGENT') {
-                //   alert('接入失败，请将您的状态改为上线状态，再进行操作。')
-                // }
                 console.log('accept failed', error);
             }
         })

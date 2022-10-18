@@ -10,7 +10,7 @@ page {
 	overflow-x: hidden;
 	-webkit-overflow-scrolling: touch;
     background-color: #F1F1F1;
-    padding: 0 20rpx 130rpx 20rpx;
+    padding: 0 20rpx 210rpx 20rpx;
 }
 
 .header {
@@ -35,6 +35,7 @@ page {
     justify-content: center;
     font-size: 28rpx;
     padding: 20rpx 0;
+    color: #A9A9A9;
 }
 
 .message-item {
@@ -229,30 +230,41 @@ page {
 	height: 200rpx;
 	position: fixed;
 	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
+	flex-direction: row;
+	justify-content: space-between;
 	bottom: 0;
 	left: 0;
 	z-index: 1000;
-	background-color: #FAFAFA;
+    background-color: #F1F1F1;
+    border-top: 2rpx solid #E1E1E1;
 }
 
 .accept-info {
 	font-size: 32rpx;
-	color: #d02129;
-	margin-bottom: 20rpx;
+    margin-top: 20rpx;
+    margin-left: 20rpx;
+    line-height: 50rpx;
+}
+
+.accepted-info {
+    width: 100%;
+    font-size: 32rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #d02129;
 }
 
 .accept-btn {
 	width: 130rpx;
-	height: 60rpx;
+    height: 60rpx;
+    margin-top: 20rpx;
+    margin-right: 20rpx;
     font-size: 30rpx;
     display: flex;
     justify-content: center;
     align-items: center;
-	border: 2rpx solid #d02129;
-	background-color: #ffffff;
+	background-color: #E8E8E8;
 	color: #d02129;
 	border-radius: 10rpx;
 	cursor: pointer;
@@ -267,6 +279,25 @@ page {
 	background-color: #F1F1F1;
 }
 
+.session-action {
+    display: flex;
+    font-size: 28rpx;
+    color: #57678E;
+    padding-top: 20rpx;
+    background-color: #F9F9F9;
+    border-top: 2rpx solid #E0E0E0;
+}
+
+.session-action-item {
+    width: 140rpx;
+    height: 60rpx;
+    line-height: 60rpx;
+    text-align: center;
+    border-radius: 30rpx;
+    background-color: #FFFFFF;
+    margin-left: 20rpx;
+}
+
 .action-top {
 	display: flex;
 	align-items: center;
@@ -274,7 +305,7 @@ page {
 	height: 130rpx;
 	padding: 20rpx;
 	box-sizing: border-box;
-	background-color: #F1F1F1;
+	background-color: #F9F9F9;
 }
 
 .action-icon {
@@ -284,9 +315,19 @@ page {
 	height: 100%;
 }
 
+.transfer-mask {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+	bottom: 0;
+	left: 0;
+	z-index: 999;
+}
+
 .transfer-list {
     width: 100%;
-    min-height: 240rpx;
+    min-height: 280rpx;
 	position: fixed;
 	bottom: 0;
 	left: 0;
@@ -294,18 +335,13 @@ page {
     background-color: #FAFAFA;
     text-align: justify;
     font-size: 30rpx;
+    border-radius: 20rpx;
 }
 
 .hide-transfer {
 	display: flex;
 	justify-content: flex-end;
 	font-size: 28rpx;
-}
-
-.agent-name {
-	font-size: 40rpx;
-	line-height: 100rpx;
-	margin-left: 20rpx;
 }
 
 .order-list {
@@ -332,13 +368,35 @@ page {
 	color: #000000;
 	margin-left: 20rpx;
 	margin-right: 20rpx;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: 30rpx 0;
 }
 
 .close {
-	font-size: 50rpx;
+    position: absolute;
+    left: 20rpx;
+    font-size: 50rpx;
+}
+
+.transfer-body {
+    display: flex;
+    padding: 20rpx 0;
+    border-bottom: 2rpx solid #F5F5F5;
+}
+
+.agent-img {
+    margin-left: 40rpx;
+    width: 80rpx;
+    height: 80rpx;
+}
+
+.agent-name {
+	font-size: 32rpx;
+	line-height: 80rpx;
+	margin-left: 20rpx;
 }
 
 .order-item {
@@ -435,10 +493,10 @@ page {
 .action-bottom {
 	display: flex;
 	flex-wrap: wrap;
-	justify-content: space-between;
 	height: 350rpx;
 	box-sizing: border-box;
-	padding: 0 20rpx;
+    padding: 0 20rpx;
+    background-color: #F9F9F9;
 }
 
 .action-popup {

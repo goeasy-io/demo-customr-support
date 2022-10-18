@@ -65,23 +65,24 @@
 		</view>
 		<!--发送消息，视频，语音，自定义消息操作-->
 		<view class="chat-footer">
-			<view wx:if="{{customerStatus==null}}" class="accept-session">
-				<view>离线中</view>
-			</view>
+			<view wx:if="{{customerStatus==null}}" class="accept-session"></view>
 			<view wx:elif="{{customerStatus.status==='PENDING'}}" class="accept-session">
-				<view class="accept-info">
-					会话已等待{{pendingTime.duration}}
-				</view>
-				<view class="accept-btn" bind:tap="acceptSession">立即接入</view>
+				<view class="accept-info">会话已等待{{pendingTime.duration}}</view>
+				<view class="accept-btn" bind:tap="acceptSession">接入</view>
 			</view>
 			<view wx:elif="{{customerStatus.status==='ACCEPTED' && currentAgent.id !== customerStatus.agent.id}}"
 				 class="accept-session">
-				<view class="accept-info">{{ customerStatus.agent.data.name }}已接入</view>
+				<view class="accepted-info">{{ customerStatus.agent.data.name }}已接入</view>
 			</view>
 			<view wx:elif="{{customerStatus.status==='FREE'}}" class="accept-session">
+                <view class="accept-info">暂未接入此用户</view>
 				<view class="accept-btn" bind:tap="acceptSession">主动接入</view>
 			</view>
 			<view wx:else class="action-box">
+                <view class="session-action">
+                    <view class="session-action-item" bindtap="showTransferForm">转接</view>
+                    <view class="session-action-item" bindtap="endSession">结束会话</view>
+                </view>
 				<view class="action-top">
 					<!-- GoEasyIM最大支持3k的文本消息，如需发送长文本，需调整输入框maxlength值 -->
 					<input type="text" maxlength="700" placeholder="发送消息" confirm-hold hold-keyboard="{{true}}" adjust-position="{{true}}" class="msg-input-box"
@@ -115,14 +116,6 @@
 						<image class="operation-icon" src="/static/images/order.png"></image>
 						<text class="operation-title">订单</text>
 					</view>
-					<view class="more-item" bindtap="showTransferForm">
-						<image class="operation-icon" src="/static/images/transfer.png"></image>
-						<text class="operation-title">转接</text>
-					</view>
-                    <view class="more-item" bindtap="endSession">
-						<image class="operation-icon" src="/static/images/end.png"></image>
-						<text class="operation-title">结束会话</text>
-					</view>
 				</view>
 			</view>
 		</view>
@@ -155,14 +148,15 @@
 			</view>
 		</view>
 
+        <view wx:if="{{transferForm.visible}}" class="transfer-mask" bindtap="hideTransferForm"></view>
         <view wx:if="{{transferForm.visible}}" class="transfer-list">
 			<view class="title">
-				<view>请选择一个客服</view>
 				<view class="close" bindtap="hideTransferForm">×</view>
+				<view>选择转接的对象</view>
 			</view>
             <view wx:for="{{transferForm.agents}}" wx:key="index" wx:for-item="agent" data-agent="{{agent}}" bindtap="transfer">
-                <view class="order-body">
-                    <image src="{{agent.data.avatar}}" class="order-img"></image>
+                <view class="transfer-body">
+                    <image src="{{agent.data.avatar}}" class="agent-img"></image>
                     <view class="agent-name">{{ agent.data.name }}</view>
                 </view>
             </view>

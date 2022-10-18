@@ -108,7 +108,6 @@ Page({
                 }
                 this.setData({
                     customerStatus: customerStatus,
-                    waitingTime: this.data.waitingTime,
                 })
             },
             onNewMessage: (message) => {
@@ -242,7 +241,7 @@ Page({
             });
         } else {
             wx.showToast({
-                title: '您还不是一名该团队的在线客服，请点击左下角头像进行上线操作',
+                title: '您还不是一名该团队的在线客服，请上线再操作',
                 duration: 3000,
                 icon: 'none'
             });

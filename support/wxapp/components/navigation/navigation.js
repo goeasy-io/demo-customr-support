@@ -81,7 +81,13 @@ Component({
                     console.log('已上线', currentAgent);
                 },
                 onFailed: (error) => {
-                    console.log('上线失败,error:', error);
+                    this.setData({
+                        ['onlineConfig.visible']: false
+                    })
+                    wx.showToast({
+                        title: error.content,
+                        icon: 'none'
+                    });
                 }
             })
         },
@@ -95,7 +101,15 @@ Component({
                     console.log('已下线');
                 },
                 onFailed: (error) => {
-                    console.log('下线失败,error:', error);
+                    this.setData({
+                        ['onlineConfig.visible']: false
+                    })
+                    if (error.content === 'Please end your accepted conversations first') {
+                        wx.showToast({
+                            title: '下线失败，请先结束已接入的会话！',
+                            icon: 'none'
+                        });
+                    }
                 }
             })
         }

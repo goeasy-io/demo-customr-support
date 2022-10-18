@@ -7,26 +7,29 @@
                 <view wx:if="{{pendingConversationAmount}}" class="item-head_unread">{{pendingConversationAmount}}
                 </view>
             </view>
-            <view class="scroll-item_info">
+            <view class="scroll-item_info" wx:if="{{pendingConversationAmount}}" bindtap="navigateToPendingConversation">
                 <view class="item-info-top">
                     <text class="item-info-top_name">待接入用户</text>
                 </view>
-
                 <view class="item-info-bottom">
                     <view class="item-info-bottom-item">
-                        <view class="item-info-top_content" wx:if="{{pendingConversationAmount}}"
-                              bindtap="navigateToPendingConversation">
-                            {{pendingConversationAmount}}个会话等待接入
-                        </view>
-                        <view class="item-info-top_content" wx:else bindtap="showNoPendingConversations">
-                            暂无待接入用户
-                        </view>
+                        <view class="item-info-top_content">{{pendingConversationAmount}}个会话等待接入</view>
+                    </view>
+                </view>
+            </view>
+            <view class="scroll-item_info" wx:else bindtap="showNoPendingConversations">
+                <view class="item-info-top">
+                    <text class="item-info-top_name">待接入用户</text>
+                </view>
+                <view class="item-info-bottom">
+                    <view class="item-info-bottom-item">
+                        <view class="item-info-top_content">暂无待接入用户</view>
                     </view>
                 </view>
             </view>
         </view>
         <view wx:if="{{conversations.length !=0}}">
-            <view class="scroll-item" wx:for="{{conversations}}" wx:for-item="conversation" wx:key="key">
+            <view class="scroll-item" wx:for="{{conversations}}" wx:for-item="conversation" wx:key="key" data-conversation="{{conversation}}" bindtap="chat">
                 <view class="item-head">
                     <image src="{{conversation.data.avatar}}" class="head-icon"></image>
                     <view wx:if="{{conversation.unread}}" class="item-head_unread">{{conversation.unread}}</view>
@@ -37,7 +40,7 @@
                         <view class="item-info-top_time">{{conversation.lastMessage.date}}</view>
                     </view>
                     <view class="item-info-bottom">
-                        <view class="item-info-bottom-item" bindtap="chat" data-conversation="{{conversation}}">
+                        <view class="item-info-bottom-item">
                             <view class="item-info-top_content">
                                 <view wx:if="{{conversation.lastMessage.type == 'text'}}">
                                     {{conversation.lastMessage.payload.text}}

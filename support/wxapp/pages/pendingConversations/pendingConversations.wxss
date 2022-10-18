@@ -32,7 +32,7 @@ page{ height: 100%; }
     border-bottom: 1px solid #EFEFEF;
 }
 .conversations .scroll-item_info .item-info-top{
-    padding-top: 20rpx;
+    padding-top: 10rpx;
     height: 60rpx;
     line-height: 60rpx;
     display: flex;
@@ -50,8 +50,8 @@ page{ height: 100%; }
     font-family: Source Han Sans CN;
 }
 .conversations .item-info-bottom{
-    height: 40rpx;
-    line-height: 40rpx;
+    height: 50rpx;
+    line-height: 50rpx;
     overflow: hidden;
 }
 .conversations .item-info-bottom-item{
@@ -94,15 +94,15 @@ page{ height: 100%; }
 }
 
 .item-info-bottom .item-info-bottom_action{
-    width:80rpx;
-    height: 40rpx;
-    font-size: 30rpx;
-    line-height: 40rpx;
+    width:100rpx;
+    height:50rpx;
+    font-size: 28rpx;
+    line-height: 50rpx;
     text-align: center;
     border-radius: 10rpx;
-    color: #ffffff;
+    color: #d02129;
     cursor: pointer;
-    background-color: #d02129;
+    background-color: #F1F1F1;
 }
 
 .item-head{

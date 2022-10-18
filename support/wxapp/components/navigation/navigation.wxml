@@ -4,8 +4,9 @@
           style="height:{{menuConfig.height}}px; min-height:{{menuConfig.height}}px; line-height:{{menuConfig.height}}px; left:{{menuConfig.left}}px; top:{{menuConfig.top}}px;">
         <view class="nav-operation">
             <view catchtap="switchPopup" class="nav-operation-content">
-                <view class="nav-operation-title">{{onlineConfig.online ? '客服在线':'客服离线'}}</view>
-                <image class="nav-pull-avatar" src="../../static/images/tick.png"></image>
+                <view class="title-online" wx:if="{{onlineConfig.online}}">客服在线</view>
+                <view class="title-offline" wx:else>客服离线</view>
+                <image class="nav-pull-avatar" src="../../static/images/up.png"></image>
             </view>
             <view wx:if="{{onlineConfig.visible}}" class="operation-box">
                 <view bindtap="online" class="status-box">

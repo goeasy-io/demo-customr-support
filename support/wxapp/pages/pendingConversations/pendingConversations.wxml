@@ -22,7 +22,7 @@
 								<view wx:elif="{{conversation.lastMessage.type == 'order'}}">[自定义消息:订单]</view>
 								<view wx:else>[[未识别内容]]</view>
                             </view>
-                            <view class="item-info-bottom_action" catchtap="acceptSession" data-customerid="{{conversation.id}}">接入</view>
+                            <view class="item-info-bottom_action" catchtap="acceptSession" data-conversation="{{conversation}}">接入</view>
                         </view>
                     </view>
                 </view>

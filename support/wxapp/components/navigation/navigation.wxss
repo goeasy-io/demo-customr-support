@@ -10,9 +10,9 @@
 .nav .content {
     position: absolute;
     width: 100%;
-    padding-left: 14px;
+    padding-left: 28rpx;
     box-sizing: border-box;
-    font-size: 14px;
+    font-size: 30rpx;
     color: #333;
 }
 
@@ -27,8 +27,16 @@
     align-items: center;
 }
 
-.nav-operation-title {
+.title-online {
     margin-right: 20rpx;
+    color: #D02129;
+    font-size: 28rpx;
+}
+
+.title-offline {
+    margin-right: 20rpx;
+    color: #7f7f7f;
+    font-size: 28rpx;
 }
 
 .nav-pull {
@@ -39,6 +47,7 @@
 .nav-pull-avatar {
     width: 28rpx;
     height: 28rpx;
+    transform: rotate(180deg);
 }
 
 .operation-box {
@@ -101,6 +110,6 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     color: #000000;
-    font-size: 28rpx;
+    font-size: 32rpx;
     font-weight: 500;
 }
