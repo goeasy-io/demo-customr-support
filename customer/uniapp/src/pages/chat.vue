@@ -110,7 +110,7 @@
                class="emoji-item" @click="chooseEmoji(emojiKey)"></image>
       </view>
       <!--其他类型消息面板-->
-      <view v-if="moreTypesVisible" class="action-bottom">
+      <view v-if="otherTypesMessagePanelVisible" class="action-bottom">
         <view class="more-icon">
           <image @click="sendImageMessage()" class="operation-icon" src="/static/images/picture.png"></image>
           <view class="operation-title">图片</view>
@@ -195,7 +195,7 @@
           decoder: new EmojiDecoder(emojiUrl, emojiMap),
         },
         //是否展示‘其他消息类型面板’
-        moreTypesVisible: false,
+        otherTypesMessagePanelVisible: false,
         orderList: {
           orders: [],
           visible: false
@@ -244,7 +244,7 @@
       });
     },
     onShow() {
-      this.moreTypesVisible = false;
+      this.otherTypesMessagePanelVisible = false;
       this.emoji.visible = false;
     },
     beforeDestroy() {
@@ -331,10 +331,10 @@
       },
       switchEmojiKeyboard() {
         this.emoji.visible = !this.emoji.visible;
-        this.moreTypesVisible = false;
+        this.otherTypesMessagePanelVisible = false;
       },
       showOtherTypesMessagePanel() {
-        this.moreTypesVisible = !this.moreTypesVisible;
+        this.otherTypesMessagePanelVisible = !this.otherTypesMessagePanelVisible;
         this.emoji.visible = false;
       },
       chooseEmoji(emojiKey) {
@@ -459,7 +459,7 @@
                 console.log(progress)
               },
               onSuccess: (message) => {
-                this.moreTypesVisible = false;
+                this.otherTypesMessagePanelVisible = false;
                 this.sendMessage(message);
               },
               onFailed: (e) => {
@@ -481,7 +481,7 @@
                   console.log(progress)
                 },
                 onSuccess: (message) => {
-                  this.moreTypesVisible = false;
+                  this.otherTypesMessagePanelVisible = false;
                   this.sendMessage(message);
                 },
                 onFailed: (e) => {
@@ -506,7 +506,7 @@
           payload: order,
           to: this.to,
           onSuccess: (message) => {
-            this.moreTypesVisible = false;
+            this.otherTypesMessagePanelVisible = false;
             this.sendMessage(message);
           },
           onFailed: (e) => {
