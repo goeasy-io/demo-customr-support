@@ -4,8 +4,8 @@
       <view v-if="history.loading" class="history-loading">
         <image src="/static/images/pending.gif"></image>
       </view>
-      <view v-else class="history-loaded" @click="loadHistoryMessage(false)">
-        {{ history.allLoaded ? '已经没有更多的历史消息' : '获取历史消息' }}
+      <view v-else :class="history.loaded ? 'history-loaded':'load'" @click="loadHistoryMessage(false)">
+        {{ history.loaded ? '已经没有更多的历史消息' : '获取历史消息' }}
       </view>
       <view class="message-list">
         <view :id="'item'+index" v-for="(message,index) in history.messages" :key="message.messageId">
@@ -202,7 +202,7 @@
         },
         history: {
           messages: [],
-          allLoaded: false,
+          loaded: false,
           loading: true
         },
         audio: {
@@ -413,12 +413,11 @@
             this.history.loading = false;
             let messages = result.content;
             if (messages.length === 0) {
-              this.history.allLoaded = true;
+              this.history.loaded = true;
             } else {
               this.history.messages = messages.concat(this.history.messages);
               if (scrollToBottom) {
                 this.scrollToBottom();
-
               }
             }
           },
@@ -594,7 +593,16 @@
     line-height: 90rpx;
     width: 100%;
     text-align: center;
-    color: grey;
+    color: #cccccc;
+  }
+
+  .scroll-view .load {
+    font-size: 24rpx;
+    height: 90rpx;
+    line-height: 90rpx;
+    width: 100%;
+    text-align: center;
+    color: #d02129;
   }
 
   .scroll-view .message-item {
