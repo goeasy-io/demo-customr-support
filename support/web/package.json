@@ -23,8 +23,6 @@
     "eslint-plugin-vue": "^6.2.2",
     "recorder-core": "^1.1.20062600",
     "lint-staged": "^9.5.0",
-    "node-sass": "^4.12.0",
-    "sass-loader": "^8.0.2",
     "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {

@@ -4,8 +4,8 @@
       <img :src="customer.avatar" class="chat-avatar"/>
       <div class="chat-name">{{ customer.name }}</div>
     </div>
-    <div ref="scrollView" class="chat-main">
-      <div ref="messageList" class="message-list">
+    <div class="chat-main">
+      <div class="message-list">
         <div v-if="history.loading" class="history-loading">
           <img src="../assets/images/pending.gif"/>
         </div>
@@ -13,9 +13,7 @@
           {{ history.loaded ? '已经没有更多的历史消息' : '获取历史消息' }}
         </div>
         <div v-for="(message, index) in history.messages" :key="index">
-          <div class="time-tips">
-            {{ renderMessageDate(message, index) }}
-          </div>
+          <div class="time-tips">{{ renderMessageDate(message, index) }}</div>
           <div class="message-item">
             <div v-if="message.type === 'CS_ACCEPT'" class="accept-message">
               {{ message.senderData.name }}已接入
@@ -595,559 +593,550 @@
   };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
   .chat-container {
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
-
-    .chat-title {
-      height: 61px;
-      padding: 15px;
-      display: flex;
-      align-items: center;
-      font-size: 18px;
-
-      .chat-avatar {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-      }
-
-      .chat-name {
-        width: 400px;
-        margin-left: 10px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        word-break: break-all;
-      }
-
-    }
-
-    .chat-main {
-      display: flex;
-      flex-direction: column;
-      overflow-y: auto;
-      flex: 1;
-      scrollbar-width: thin;
-
-      &::-webkit-scrollbar {
-        width: 0;
-      }
-
-      .message-list {
-        padding: 0 15px;
-      }
-
-      .history-loaded {
-        text-align: center;
-        font-size: 12px;
-        color: #cccccc;
-        cursor: pointer;
-        line-height: 20px;
-      }
-
-      .load {
-        text-align: center;
-        font-size: 12px;
-        color: #d02129;
-        line-height: 20px;
-        cursor: pointer;
-      }
-
-      .history-loading {
-        width: 100%;
-        text-align: center;
-      }
-
-      .time-tips {
-        color: #999;
-        text-align: center;
-        font-size: 12px;
-      }
-
-      .message-item {
-        display: flex;
-
-        .accept-message {
-          width: 100%;
-          text-align: center;
-          color: #606164;
-          line-height: 25px;
-        }
-
-        .message-item-content {
-          flex: 1;
-          margin: 5px 0;
-          overflow: hidden;
-          display: flex;
-
-          .sender-info {
-            margin: 5px;
-
-            .sender-avatar {
-              width: 40px;
-              height: 40px;
-              border-radius: 50%;
-            }
-
-            .sender-name {
-              color: #606164;
-              text-align: center;
-            }
-
-          }
-
-          .message-content {
-            max-width: calc(100% - 100px);
-
-            .message-payload {
-              display: flex;
-              align-items: center;
-            }
-
-            .pending {
-              background: url("../assets/images/pending.gif") no-repeat center;
-              background-size: 13px;
-              width: 15px;
-              height: 15px;
-            }
-
-            .send-fail {
-              background: url("../assets/images/failed.png") no-repeat center;
-              background-size: 13px;
-              width: 15px;
-              height: 15px;
-            }
-
-            .content-text {
-              display: flex;
-              align-items: center;
-              text-align: left;
-              background: #eeeeee;
-              font-size: 14px;
-              font-weight: 500;
-              padding: 6px 8px;
-              margin: 5px 0;
-              line-height: 25px;
-              white-space: pre-line;
-              overflow-wrap: anywhere;
-              border-radius: 8px;
-            }
-
-            .content-image {
-              display: block;
-              margin: 5px 10px;
-              cursor: pointer;
-            }
-
-            .content-order {
-              border-radius: 5px;
-              border: 1px solid #eeeeee;
-              padding: 8px;
-              display: flex;
-              flex-direction: column;
-
-              .order-id {
-                font-size: 12px;
-                color: #666666;
-                margin-bottom: 5px;
-              }
-
-              .order-body {
-                display: flex;
-                font-size: 13px;
-                padding: 5px;
-              }
-
-              .order-img {
-                width: 70px;
-                height: 70px;
-                border-radius: 5px;
-              }
-
-              .order-name {
-                margin-left: 10px;
-                width: 135px;
-                color: #606164;
-              }
-
-              .order-count {
-                font-size: 12px;
-                color: #666666;
-                flex: 1;
-              }
-            }
-          }
-        }
-
-        .self {
-          overflow: hidden;
-          display: flex;
-          justify-content: flex-start;
-          flex-direction: row-reverse;
-        }
-
-        .self /deep/ .play-icon {
-          background: url("../assets/images/play.gif") no-repeat center;
-          background-size: 20px;
-          -moz-transform: rotate(180deg);
-          -webkit-transform: rotate(180deg);
-          -o-transform: rotate(180deg);
-          transform: rotate(180deg);
-        }
-
-      }
-    }
-
-    .chat-footer {
-      border-top: 1px solid #dcdfe6;
-      width: 100%;
-      height: 200px;
-      background: #FFFFFF;
-
-      .action-box {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-
-        .action-bar {
-          display: flex;
-          flex-direction: row;
-          justify-content: space-between;
-
-          .iconfont {
-            font-size: 22px;
-            margin: 0 10px;
-            z-index: 3;
-            color: #606266;
-            cursor: pointer;
-
-            &
-            :focus {
-              outline: none;
-            }
-
-            &
-            :hover {
-              color: #d02129;
-            }
-
-          }
-
-          .chat-action {
-            display: flex;
-            flex-direction: row;
-            padding: 0 10px;
-
-            .action-item {
-              text-align: left;
-              padding: 10px 0;
-              position: relative;
-
-              .emoji-box {
-                width: 250px;
-                position: absolute;
-                top: -125px;
-                left: -11px;
-                z-index: 2007;
-                background: #fff;
-                border: 1px solid #ebeef5;
-                padding: 12px;
-                text-align: justify;
-                font-size: 14px;
-                box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-                word-break: break-all;
-                border-radius: 4px;
-
-                .emoji-list {
-                  display: flex;
-                  flex-wrap: wrap;
-                }
-
-                .emoji-item {
-                  width: 45px;
-                  height: 45px;
-                  margin: 0 2px
-                }
-
-              }
-            }
-          }
-
-          .session-action {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-
-            .transfer {
-              cursor: pointer;
-              margin-right: 10px;
-              line-height: 30px;
-              text-align: center;
-              width: 70px;
-              height: 30px;
-              font-size: 15px;
-              border: 1px solid #d02129;
-              background-color: #ffffff;
-              color: #d02129;
-              border-radius: 5px;
-            }
-          }
-        }
-
-        .input-box {
-          padding: 0 10px;
-          flex: 1;
-
-          .input-content {
-            height: 110px;
-            border: none;
-            resize: none;
-            display: block;
-            padding: 5px 15px;
-            box-sizing: border-box;
-            width: 100%;
-            color: #606266;
-            outline: none;
-            background: #FFFFFF;
-          }
-
-        }
-
-        .send-box {
-          padding: 5px 10px;
-          text-align: right;
-
-          .send-button {
-            width: 70px;
-            height: 30px;
-            font-size: 15px;
-            border: 1px solid #d02129;
-            background-color: #ffffff;
-            color: #d02129;
-            border-radius: 5px;
-          }
-
-        }
-      }
-
-      .accept-session {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-
-        .accept-info {
-          font-size: 18px;
-          color: #d02129;
-          margin-bottom: 10px;
-        }
-
-        .accept-btn {
-          width: 75px;
-          height: 30px;
-          font-size: 15px;
-          border: 1px solid #d02129;
-          background-color: #ffffff;
-          color: #d02129;
-          border-radius: 5px;
-          cursor: pointer;
-        }
-
-      }
-    }
-
-    .image-preview {
-      max-width: 750px;
-      max-height: 500px;
-      background: rgba(0, 0, 0, 0.8);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: fixed;
-      margin: auto;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      z-index: 9998;
-
-      img {
-        max-width: 750px;
-        max-height: 500px;
-      }
-
-      .close {
-        font-size: 50px;
-        line-height: 24px;
-        cursor: pointer;
-        color: #FFFFFF;
-        position: absolute;
-        top: 10px;
-        right: 5px;
-        z-index: 1002;
-      }
-
-    }
-
-    .transfer-popup {
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 0;
-      bottom: 0;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(33, 33, 33, 0.7);
-
-      .transfer-model {
-        width: 450px;
-        min-height: 200px;
-        display: flex;
-        flex-direction: column;
-        padding: 5px;
-        border: 1px solid gainsboro;
-        border-radius: 4px;
-        text-align: center;
-        background: #ffffff;
-
-        .transfer-content {
-          flex: 1;
-          display: flex;
-          align-items: center;
-          flex-wrap: wrap;
-
-          .agent-info {
-            width: 110px;
-            padding: 20px;
-
-            .agent-label {
-              display: flex;
-              align-items: center;
-            }
-
-            .agent-avatar {
-              width: 40px;
-              height: 40px;
-              min-width: 40px;
-              min-height: 40px;
-              margin: 0 5px;
-            }
-
-            .agent-name {
-              font-size: 14px;
-              word-break: break-all;
-            }
-
-          }
-
-          .no-agent {
-            flex: 1;
-          }
-
-        }
-
-        .transfer-bottom {
-          height: 50px;
-          display: flex;
-          margin: 0 50px;
-          align-items: center;
-          justify-content: space-around;
-
-          .transfer-button {
-            display: inline-block;
-            padding: 8px 15px;
-            font-size: 13px;
-            border: 1px solid #d02129;
-            color: #d02129;
-            border-radius: 4px;
-            cursor: pointer;
-          }
-
-        }
-      }
-    }
-
-    .order-box {
-      width: 850px;
-      height: 650px;
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      z-index: 2007;
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(33, 33, 33, 0.7);
-
-      .order-list {
-        width: 300px;
-        background: #F1F1F1;
-        border-radius: 5px;
-
-        .title {
-          font-weight: 600;
-          font-size: 15px;
-          color: #000000;
-          margin-left: 10px;
-          margin-right: 10px;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          span {
-            font-size: 28px;
-            font-weight: 400;
-            cursor: pointer;
-          }
-        }
-        .order-item {
-          padding: 10px;
-          background: #FFFFFF;
-          margin: 10px;
-          border-radius: 5px;
-        }
-
-        .order-id {
-          font-size: 12px;
-          color: #666666;
-          margin-bottom: 5px;
-        }
-
-        .order-body {
-          display: flex;
-          font-size: 13px;
-          justify-content: space-between;
-        }
-
-        .order-img {
-          width: 50px;
-          height: 50px;
-          border-radius: 5px;
-        }
-
-        .order-name {
-          width: 160px;
-        }
-
-        .order-count {
-          font-size: 12px;
-          color: #666666;
-          flex: 1;
-        }
-
-      }
-    }
   }
+
+  .chat-title {
+    height: 61px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+  }
+
+  .chat-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+
+   .chat-name {
+    width: 400px;
+    margin-left: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+  }
+
+  .chat-main {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    flex: 1;
+    scrollbar-width: thin;
+  }
+
+  .chat-main::-webkit-scrollbar {
+    width: 0;
+  }
+
+  .chat-main .message-list {
+    padding: 0 15px;
+  }
+
+  .chat-main .history-loaded {
+    text-align: center;
+    font-size: 12px;
+    color: #cccccc;
+    cursor: pointer;
+    line-height: 20px;
+  }
+
+  .chat-main .load {
+    text-align: center;
+    font-size: 12px;
+    color: #d02129;
+    line-height: 20px;
+    cursor: pointer;
+  }
+
+  .history-loading {
+    width: 100%;
+    text-align: center;
+  }
+
+  .time-tips {
+    color: #999;
+    text-align: center;
+    font-size: 12px;
+  }
+
+  .message-list {
+    padding: 0 10px;
+  }
+
+  .message-item {
+    display: flex;
+  }
+
+  .accept-message {
+    width: 100%;
+    text-align: center;
+    color: #606164;
+    line-height: 25px;
+  }
+
+  .message-item-content {
+    flex: 1;
+    margin: 5px 0;
+    overflow: hidden;
+    display: flex;
+  }
+
+  .sender-info {
+    margin: 0 5px;
+  }
+
+  .sender-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+
+  .sender-name {
+    color: #606164;
+    text-align: center;
+  }
+
+  .message-content {
+    max-width: calc(100% - 100px);
+  }
+
+  .message-payload {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .pending {
+    background: url("../assets/images/pending.gif") no-repeat center;
+    background-size: 13px;
+    width: 15px;
+    height: 15px;
+  }
+
+  .send-fail {
+    background: url("../assets/images/failed.png") no-repeat center;
+    background-size: 13px;
+    width: 15px;
+    height: 15px;
+  }
+
+  .content-text {
+    display: flex;
+    align-items: center;
+    text-align: left;
+    background: #eeeeee;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 6px 8px;
+    margin: 3px 0;
+    line-height: 25px;
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+    border-radius: 8px;
+    word-break: break-all;
+    flex-wrap: wrap;
+  }
+
+  .content-image {
+    display: block;
+    cursor: pointer;
+  }
+
+  .content-order {
+    border-radius: 5px;
+    border: 1px solid #eeeeee;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .content-order .order-id {
+    font-size: 12px;
+    color: #666666;
+    margin-bottom: 5px;
+  }
+
+  .content-order .order-body {
+    display: flex;
+    font-size: 13px;
+    padding: 5px;
+  }
+
+  .content-order .order-img {
+    width: 70px;
+    height: 70px;
+    border-radius: 5px;
+  }
+
+  .content-order .order-name {
+    margin-left: 10px;
+    width: 135px;
+    color: #606164;
+  }
+
+  .content-order .order-count {
+    font-size: 12px;
+    color: #666666;
+    flex: 1;
+  }
+
+  .message-item .self {
+    overflow: hidden;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row-reverse;
+  }
+
+  .message-item .self::v-deep(.play-icon) {
+    background: url("../assets/images/play.gif") no-repeat center;
+    background-size: 20px;
+    -moz-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg);
+  }
+
+  .chat-footer {
+    border-top: 1px solid #dcdfe6;
+    width: 100%;
+    height: 200px;
+    background: #FFFFFF;
+  }
+
+  .action-box {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .action-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .action-bar .iconfont {
+    font-size: 22px;
+    margin: 0 10px;
+    z-index: 3;
+    color: #606266;
+    cursor: pointer;
+  }
+
+  .action-bar .iconfont:focus {
+    outline: none;
+  }
+
+  .action-bar .iconfont:hover {
+    color: #d02129;
+  }
+
+  .chat-action {
+    display: flex;
+    flex-direction: row;
+    padding: 0 10px;
+  }
+
+  .action-bar .action-item {
+    text-align: left;
+    padding: 10px 0;
+    position: relative;
+  }
+
+  .emoji-box {
+    width: 250px;
+    position: absolute;
+    top: -125px;
+    left: -11px;
+    z-index: 2007;
+    background: #fff;
+    border: 1px solid #ebeef5;
+    padding: 12px;
+    text-align: justify;
+    font-size: 14px;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    word-break: break-all;
+    border-radius: 4px;
+  }
+
+  .emoji-item {
+    width: 45px;
+    height: 45px;
+    margin: 0 2px;
+  }
+
+  .session-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .session-action .transfer {
+    cursor: pointer;
+    margin-right: 10px;
+    line-height: 30px;
+    text-align: center;
+    width: 70px;
+    height: 30px;
+    font-size: 15px;
+    border: 1px solid #d02129;
+    background-color: #ffffff;
+    color: #d02129;
+    border-radius: 5px;
+  }
+
+  .input-box {
+    padding: 0 10px;
+    flex: 1;
+  }
+
+  .input-content {
+    height: 110px;
+    border: none;
+    resize: none;
+    display: block;
+    padding: 5px 15px;
+    box-sizing: border-box;
+    width: 100%;
+    color: #606266;
+    outline: none;
+    background: #FFFFFF;
+    word-break: break-all;
+  }
+
+  .send-box {
+    padding: 5px 10px;
+    text-align: right;
+  }
+
+  .send-button {
+    width: 70px;
+    height: 30px;
+    font-size: 15px;
+    border: 1px solid #d02129;
+    background-color: #ffffff;
+    color: #d02129;
+    border-radius: 5px;
+  }
+
+  .accept-session {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .accept-info {
+    font-size: 18px;
+    color: #d02129;
+    margin-bottom: 10px;
+  }
+
+  .accept-btn {
+    width: 75px;
+    height: 30px;
+    font-size: 15px;
+    border: 1px solid #d02129;
+    background-color: #ffffff;
+    color: #d02129;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .image-preview {
+    max-width: 750px;
+    max-height: 500px;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9998;
+  }
+
+  .image-preview img {
+    max-width: 750px;
+    max-height: 500px;
+  }
+
+  .image-preview .close {
+    font-size: 50px;
+    line-height: 24px;
+    cursor: pointer;
+    color: #FFFFFF;
+    position: absolute;
+    top: 10px;
+    right: 5px;
+    z-index: 1002;
+  }
+
+  .transfer-popup {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(33, 33, 33, 0.7);
+  }
+
+  .transfer-model {
+    width: 450px;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    border: 1px solid gainsboro;
+    border-radius: 4px;
+    text-align: center;
+    background: #ffffff;
+  }
+
+  .transfer-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .no-agent {
+    flex: 1;
+  }
+
+  .agent-info {
+    width: 110px;
+    padding: 20px;
+  }
+
+  .agent-label {
+    display: flex;
+    align-items: center;
+  }
+
+  .agent-avatar {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+    margin: 0 5px;
+  }
+
+  .agent-name {
+    font-size: 14px;
+    word-break: break-all;
+  }
+
+  .transfer-bottom {
+    height: 50px;
+    display: flex;
+    margin: 0 50px;
+    align-items: center;
+    justify-content: space-around;
+  }
+
+  .transfer-button {
+    display: inline-block;
+    padding: 8px 15px;
+    font-size: 13px;
+    border: 1px solid #d02129;
+    color: #d02129;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .order-box {
+    width: 850px;
+    height: 650px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 2007;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(33, 33, 33, 0.7);
+  }
+
+  .order-list {
+    width: 300px;
+    background: #F1F1F1;
+    border-radius: 5px;
+  }
+
+  .order-list .title {
+    font-weight: 600;
+    font-size: 15px;
+    color: #000000;
+    margin-left: 10px;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .order-list .title span {
+    font-size: 28px;
+    font-weight: 400;
+    cursor: pointer;
+  }
+
+  .order-list .order-item {
+    padding: 10px;
+    background: #FFFFFF;
+    margin: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .order-list .order-id {
+    font-size: 12px;
+    color: #666666;
+    margin-bottom: 5px;
+  }
+
+  .order-list .order-body {
+    display: flex;
+    font-size: 13px;
+    justify-content: space-between;
+  }
+
+  .order-list .order-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+  }
+
+  .order-list .order-name {
+    width: 160px;
+  }
+
+  .order-list .order-count {
+    font-size: 12px;
+    color: #666666;
+    flex: 1;
+  }
+
 </style>

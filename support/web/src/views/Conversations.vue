@@ -10,27 +10,19 @@
             class="conversation-item"
             @click="chat(conversation)"
           >
-            <div class="item-head">
-              <img :src="conversation.data.avatar" class="item-avatar"/>
+            <div class="conversation-item-head">
+              <img :src="conversation.data.avatar" class="conversation-item-avatar"/>
             </div>
             <div class="item-info">
               <div class="item-info-name">{{ conversation.data.name }}</div>
-              <div v-if="conversation.lastMessage.type === 'text'" class="item-info-message">{{
-                  conversation.lastMessage.payload.text
-                }}
+              <div v-if="conversation.lastMessage.type === 'text'" class="item-info-message">
+                {{ conversation.lastMessage.payload.text }}
               </div>
-              <div v-else-if="conversation.lastMessage.type === 'image'" class="item-info-message">
-                [图片消息]
-              </div>
-              <div v-else-if="conversation.lastMessage.type === 'video'" class="item-info-message">
-                [视频消息]
-              </div>
-              <div v-else-if="conversation.lastMessage.type === 'audio'" class="item-info-message">
-                [语音消息]
-              </div>
-              <div v-else-if="conversation.lastMessage.type === 'order'" class="item-info-message">
-                [自定义消息:订单]
-              </div>
+              <div v-else-if="conversation.lastMessage.type === 'image'" class="item-info-message">[图片消息]</div>
+              <div v-else-if="conversation.lastMessage.type === 'video'" class="item-info-message">[视频消息]</div>
+              <div v-else-if="conversation.lastMessage.type === 'audio'" class="item-info-message">[语音消息]</div>
+              <div v-else-if="conversation.lastMessage.type === 'order'" class="item-info-message">[自定义消息:订单]</div>
+              <div v-else class="item-info-message">[未识别内容]</div>
             </div>
           </div>
         </div>
@@ -45,43 +37,28 @@
             @click="chat(conversation)"
             @contextmenu.prevent.stop="e => showRightClickMenu(e,conversation)"
           >
-            <div class="item-head">
-              <img :src="conversation.data.avatar" class="item-avatar"/>
-              <span v-if="conversation.unread" class="item-unread-num">{{ conversation.unread }}</span>
+            <div class="conversation-item-head">
+              <img :src="conversation.data.avatar" class="conversation-item-avatar"/>
+              <span v-if="conversation.unread" class="conversation-item-unread">{{ conversation.unread }}</span>
             </div>
-            <div class="item-info">
+            <div class="conversation-item-info">
               <div class="item-info-top">
                 <div class="item-info-name">{{ conversation.data.name }}</div>
                 <div class="item-info-time">{{ formatDate(conversation.lastMessage.timestamp) }}</div>
               </div>
               <div class="item-info-bottom">
-                <div v-if="conversation.lastMessage.status === 'sending'"
-                     class="item-info-sending"></div>
+                <div v-if="conversation.lastMessage.status === 'sending'" class="item-info-sending"></div>
                 <div v-if="conversation.lastMessage.status === 'fail'" class="item-info-failed"></div>
-                <div v-if="conversation.lastMessage.type === 'text'" class="item-info-message">{{
-                    conversation.lastMessage.payload.text
-                  }}
+                <div v-if="conversation.lastMessage.type === 'text'" class="item-info-message">
+                  {{ conversation.lastMessage.payload.text}}
                 </div>
-                <div v-else-if="conversation.lastMessage.type === 'image'" class="item-info-message">
-                  [图片消息]
-                </div>
-                <div v-else-if="conversation.lastMessage.type === 'video'" class="item-info-message">
-                  [视频消息]
-                </div>
-                <div v-else-if="conversation.lastMessage.type === 'audio'" class="item-info-message">
-                  [语音消息]
-                </div>
-                <div v-else-if="conversation.lastMessage.type === 'order'" class="item-info-message">
-                  [自定义消息:订单]
-                </div>
-                <div v-else-if="conversation.lastMessage.type === 'CS_END'" class="item-info-message">
-                  会话已结束
-                </div>
-                <div v-else-if="conversation.lastMessage.type === 'CS_ACCEPT'"
-                     class="item-info-message">接入成功
-                </div>
-                <div v-else-if="conversation.lastMessage.type === 'CS_TRANSFER'"
-                     class="item-info-message">
+                <div v-else-if="conversation.lastMessage.type === 'image'" class="item-info-message">[图片消息]</div>
+                <div v-else-if="conversation.lastMessage.type === 'video'" class="item-info-message">[视频消息]</div>
+                <div v-else-if="conversation.lastMessage.type === 'audio'" class="item-info-message">[语音消息]</div>
+                <div v-else-if="conversation.lastMessage.type === 'order'" class="item-info-message">[自定义消息:订单]</div>
+                <div v-else-if="conversation.lastMessage.type === 'CS_END'" class="item-info-message">会话已结束</div>
+                <div v-else-if="conversation.lastMessage.type === 'CS_ACCEPT'" class="item-info-message">接入成功</div>
+                <div v-else-if="conversation.lastMessage.type === 'CS_TRANSFER'" class="item-info-message">
                   {{
                     conversation.lastMessage.senderId === currentAgent.id ? `已转接给` +
                       conversation.lastMessage.payload.transferTo.data.name : '已接入来自' +
@@ -127,9 +104,7 @@
     },
     created() {
       //隐藏Conversation右键菜单
-      document.addEventListener('click', () => {
-        this.hideRightClickMenu();
-      });
+      document.addEventListener('click', this.hideRightClickMenu);
       this.currentAgent = this.globalData.currentAgent;
       this.listenConversationUpdate(); //监听会话列表变化
       this.loadConversations(); //加载会话列表
@@ -226,172 +201,161 @@
   }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
   .conversation-container {
     width: 100%;
     height: 100%;
     display: flex;
     background: #FFFFFF;
-
-    .conversation-list {
-      width: 240px;
-      border-right: 1px solid #eee;
-      display: flex;
-      flex-direction: column;
-      padding: 10px;
-      position: relative;
-
-      .conversation-list-item {
-        .conversation-list-title {
-          font-size: 16px;
-          margin: 10px;
-          color: rgba(0, 0, 0, .9);
-        }
-
-        .conversation-list-body {
-          overflow-y: auto;
-          max-height: 350px;
-
-          &::-webkit-scrollbar { // Chrome Safari
-            display: none;
-          }
-
-          scrollbar-width: none; // firefox
-          -ms-overflow-style: none; // IE 10+
-        }
-      }
-
-      .action-box {
-        width: 100px;
-        height: 60px;
-        background: #ffffff;
-        border: 1px solid #cccccc;
-        position: fixed;
-        z-index: 100;
-        border-radius: 5px;
-      }
-
-      .action-item {
-        padding-left: 15px;
-        line-height: 30px;
-        font-size: 13px;
-        color: #262628;
-        cursor: pointer;
-
-        &:hover {
-          background: #dddddd;
-        }
-      }
-
-      .conversation-item {
-        display: flex;
-        padding: 12px;
-        cursor: pointer;
-
-        .item-head {
-          position: relative;
-          margin-right: 14px;
-        }
-
-        .item-avatar {
-          width: 45px;
-          height: 45px;
-          border-radius: 4px;
-        }
-
-        .item-unread-num {
-          position: absolute;
-          top: -9px;
-          right: -9px;
-          width: 18px;
-          height: 18px;
-          line-height: 18px;
-          border-radius: 50%;
-          text-align: center;
-          color: #fff;
-          font-size: 12px;
-          background-color: #fa5151;
-        }
-
-        .item-info {
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-
-          .item-info-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-          }
-
-          .item-info-name {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            word-break: break-all;
-            font-size: 15px;
-            width: 150px;
-            line-height: 25px;
-            color: #333333;
-          }
-
-          .item-info-time {
-            min-width: 40px;
-            font-size: 12px;
-          }
-
-          .item-info-bottom {
-            display: flex;
-            align-items: center;
-
-            .more-action {
-              font-size: 18px;
-              cursor: pointer;
-            }
-
-          }
-
-          .item-info-message {
-            font-size: 12px;
-            line-height: 20px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            width: 150px;
-            color: #606266;
-          }
-
-          .item-info-failed {
-            background: url("../assets/images/failed.png") no-repeat center;
-            background-size: 12px;
-            width: 12px;
-            height: 12px;
-            margin-right: 2px;
-          }
-
-          .item-info-sending {
-            background: url("../assets/images/pending.gif") no-repeat center;
-            background-size: 12px;
-            width: 12px;
-            height: 12px;
-            margin-right: 2px;
-          }
-
-        }
-      }
-
-      .checked {
-        background: #eeeeee;
-        border-radius: 5px;
-      }
-
-    }
-
-    .conversation-main {
-      flex: 1;
-      background: #FFFFFF;
-    }
-
   }
+
+  .conversation-list {
+    width: 240px;
+    border-right: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    position: relative;
+  }
+
+  .conversation-list-title {
+    font-size: 16px;
+    margin: 10px;
+    color: rgba(0, 0, 0, 0.9);
+  }
+
+  .conversation-list-body {
+    overflow-y: auto;
+    max-height: 350px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .conversation-list-body::-webkit-scrollbar {
+    display: none;
+  }
+
+  .action-box {
+    width: 100px;
+    height: 60px;
+    background: #ffffff;
+    border: 1px solid #cccccc;
+    position: fixed;
+    z-index: 100;
+    border-radius: 5px;
+  }
+
+  .action-item {
+    padding-left: 15px;
+    line-height: 30px;
+    font-size: 13px;
+    color: #262628;
+    cursor: pointer;
+  }
+
+  .action-item:hover {
+    background: #dddddd;
+  }
+
+  .conversation-item {
+    display: flex;
+    padding: 10px;
+    cursor: pointer;
+  }
+
+  .conversation-item-head {
+    position: relative;
+    margin-right: 5px;
+  }
+
+  .conversation-item-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 4px;
+  }
+
+  .conversation-item-unread {
+    position: absolute;
+    top: -9px;
+    right: -9px;
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+    border-radius: 50%;
+    text-align: center;
+    color: #fff;
+    font-size: 12px;
+    background-color: #fa5151;
+  }
+
+  .conversation-item-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .item-info-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .item-info-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    font-size: 15px;
+    width: 100px;
+    line-height: 25px;
+    color: #333333;
+  }
+
+  .item-info-time {
+    color: #666666;
+    font-size: 12px;
+  }
+
+  .item-info-bottom {
+    display: flex;
+    align-items: center;
+  }
+
+  .item-info-message {
+    font-size: 12px;
+    line-height: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 150px;
+    color: #606266;
+  }
+
+  .item-info-failed {
+    background: url("../assets/images/failed.png") no-repeat center;
+    background-size: 12px;
+    width: 12px;
+    height: 12px;
+    margin-right: 2px;
+  }
+
+  .item-info-sending {
+    background: url("../assets/images/pending.gif") no-repeat center;
+    background-size: 12px;
+    width: 12px;
+    height: 12px;
+    margin-right: 2px;
+  }
+
+  .checked {
+    background: #eeeeee;
+    border-radius: 5px;
+  }
+
+  .conversation-main {
+    flex: 1;
+    background: #FFFFFF;
+  }
+
 </style>
