@@ -6,7 +6,7 @@
 
 #### 官方文档
 
-[https://goeasy-io.gitee.io/docs-cs/](https://docs.goeasy.io/2.x/cs/intro)
+[https://docs.goeasy.io/2.x/cs/intro](https://docs.goeasy.io/2.x/cs/intro)
 
 #### 运行指南
 
