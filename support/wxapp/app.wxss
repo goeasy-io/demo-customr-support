@@ -1,6 +1,5 @@
 /**app.wxss**/
 @import "components/GoEasyRecorder/goEasyRecorder.wxss";
-@import "components/GoEasyAudioPlayer/goEasyAudioPlayer.wxss";
 
 .container {
   height: 100%;

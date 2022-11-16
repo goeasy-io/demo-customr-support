@@ -39,9 +39,13 @@ Page({
             decoder: new EmojiDecoder(emojiUrl, emojiMap),
         },
 
+        // 语音播放器
+        audioPlayer: {
+            innerAudioContext: null,
+            playingMessage: null,
+        },
         //是否展示‘其他消息类型面板’
         otherTypesMessagePanelVisible: false,
-
         orderList: {
             orders: [],
             visible: false,
@@ -77,6 +81,7 @@ Page({
         wx.setNavigationBarTitle({title: customer.name});
 
         this.listenCustomer();
+        this.initialAudioPlayer();
         this.loadHistoryMessage(true);
     },
     onUnload() {
@@ -114,6 +119,21 @@ Page({
                 this.onReceivedMessage(message);
             },
         })
+    },
+    initialAudioPlayer () {
+        this.setData({
+            ['audioPlayer.innerAudioContext']: wx.createInnerAudioContext(),
+        });
+        this.data.audioPlayer.innerAudioContext.onEnded(() => {
+            this.setData({
+                ['audioPlayer.playingMessage']: null,
+            });
+        });
+        this.data.audioPlayer.innerAudioContext.onStop(() => {
+            this.setData({
+                ['audioPlayer.playingMessage']: null,
+            });
+        });
     },
     updatePendingTime (time) {
         this.setData({
@@ -466,6 +486,10 @@ Page({
             if (message.type === 'image') {
                 message.imageHeight = this.getImageHeight(message.payload.width,message.payload.height)+'rpx';
             }
+            if (message.type === 'audio') {
+                message.width = Math.ceil(message.payload.duration)*7+80+'rpx';
+                message.finalDuration = Math.ceil(message.payload.duration)
+            }
         });
         this.setData({
             ['history.messages']: messages
@@ -484,6 +508,23 @@ Page({
             url: e.currentTarget.dataset.url,
             duration: e.currentTarget.dataset.duration
         });
+    },
+    playAudio(e) {
+        let audioMessage = e.currentTarget.dataset.message;
+        let playingMessage = this.data.audioPlayer.playingMessage;
+
+        if (playingMessage) {
+            this.data.audioPlayer.innerAudioContext.stop();
+            // 如果点击的消息正在播放，就认为是停止播放操作
+            if (playingMessage.messageId === audioMessage.messageId) {
+                return;
+            }
+        }
+        this.setData({
+            ['audioPlayer.playingMessage']: audioMessage
+        });
+        this.data.audioPlayer.innerAudioContext.src = audioMessage.payload.url;
+        this.data.audioPlayer.innerAudioContext.play();
     },
     previewImage(event) {
         // 预览图片

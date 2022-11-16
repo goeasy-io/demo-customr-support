@@ -53,8 +53,15 @@
                     ></image>
                     <view class="video-play-icon"></view>
                   </view>
-                  <GoEasyAudioPlayer v-if="message.type ==='audio'" :duration="message.payload.duration"
-                                     :src="message.payload.url"/>
+                  <view v-if="message.type ==='audio'" class="audio-content" @click="playAudio(message)">
+                    <view class="audio-facade" :style="{width:Math.ceil(message.payload.duration)*7 + 50 + 'px'}">
+                      <view
+                        class="audio-facade-bg"
+                        :class="{'play-icon':audioPlayer.playingMessage && audioPlayer.playingMessage.messageId === message.messageId}"
+                      ></view>
+                      <view>{{Math.ceil(message.payload.duration) || 1}}<span>"</span></view>
+                    </view>
+                  </view>
                   <view v-if="message.type === 'order'" class="order-content">
                     <view class="order-id">订单号：{{ message.payload.id }}</view>
                     <view class="order-body">
@@ -157,7 +164,6 @@
 </template>
 
 <script>
-  import GoEasyAudioPlayer from '../components/GoEasyAudioPlayer';
   import restApi from '../lib/restapi';
   import { formatDate } from '../lib/utils';
   import EmojiDecoder from '../lib/EmojiDecoder';
@@ -166,9 +172,6 @@
   const IMAGE_MAX_WIDTH = 200;
   const IMAGE_MAX_HEIGHT = 150;
   export default {
-    components: {
-      GoEasyAudioPlayer
-    },
     data() {
       const emojiUrl = 'https://imgcache.qq.com/open/qcloud/tim/assets/emoji/';
       const emojiMap = {
@@ -212,6 +215,10 @@
           //录音按钮展示
           visible: false
         },
+        audioPlayer: {
+          innerAudioContext: null,
+          playingMessage: null,
+        },
         videoPlayer: {
           visible: false,
           url: '',
@@ -234,6 +241,9 @@
       this.currentCustomer = getApp().globalData.currentCustomer;
       this.markMessageAsRead();
       this.loadHistoryMessage(true);
+      // 语音播放器
+      this.initialAudioPlayer();
+      // 录音监听器
       this.initRecorderListeners();
       this.goEasy.im.on(this.GoEasy.IM_EVENT.CS_MESSAGE_RECEIVED, this.onMessageReceived);
     },
@@ -285,6 +295,15 @@
           }
         }
         return '';
+      },
+      initialAudioPlayer () {
+        this.audioPlayer.innerAudioContext = uni.createInnerAudioContext();
+        this.audioPlayer.innerAudioContext.onEnded(() => {
+          this.audioPlayer.playingMessage = null;
+        });
+        this.audioPlayer.innerAudioContext.onStop(() => {
+          this.audioPlayer.playingMessage = null;
+        });
       },
       initRecorderListeners() {
         // 监听录音开始
@@ -530,6 +549,20 @@
           this.videoPlayer.context.play();
         });
       },
+      playAudio (audioMessage) {
+        let playingMessage = this.audioPlayer.playingMessage;
+
+        if (playingMessage) {
+          this.audioPlayer.innerAudioContext.stop();
+          // 如果点击的消息正在播放，就认为是停止播放操作
+          if (playingMessage === audioMessage) {
+            return;
+          }
+        }
+        this.audioPlayer.playingMessage = audioMessage;
+        this.audioPlayer.innerAudioContext.src = audioMessage.payload.url;
+        this.audioPlayer.innerAudioContext.play();
+      },
       onVideoFullScreenChange(e) {
         //当退出全屏播放时，隐藏播放器
         if (this.videoPlayer.visible && !e.detail.fullScreen) {
@@ -678,25 +711,54 @@
     display: flex;
     flex-direction: column;
   }
-  
+
+  .audio-content {
+    height: 86rpx;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  }
+
+  .audio-content .audio-facade {
+    min-width: 20rpx;
+    padding: 6rpx 10rpx;
+    line-height: 72rpx;
+    background: #FFFFFF;
+    font-size: 24rpx;
+    border-radius: 14rpx;
+    color: #000000;
+    display: flex;
+    flex-direction: row-reverse;
+  }
+
+  .audio-content .audio-facade-bg {
+    background: url("/static/images/voice.png") no-repeat center;
+    background-size: 30rpx;
+    width: 40rpx;
+    transform: rotate(180deg);
+  }
+
+  .audio-content .audio-facade-bg.play-icon {
+    background: url("/static/images/play.gif") no-repeat center;
+    background-size: 30rpx;
+  }
+
   .scroll-view .content .order-id {
     color: #333333;
   }
-  
+
   .scroll-view .content .order-body {
     padding: 10rpx;
   }
-  
+
   .scroll-view .content .order-name {
     font-weight: normal;
   }
-  
+
   .scroll-view .content .order-info {
     display: flex;
     justify-content: space-between;
     padding: 10rpx;
   }
-  
+
   .scroll-view .content .order-info .order-price {
     font-weight: normal;
   }
@@ -767,21 +829,21 @@
     height: 60rpx;
     border-radius: 10rpx;
     background: #D02129;
-    
+
   }
-  
+
   .send-btn-box .btn {
     color: #FFFFFF;
     font-size: 28rpx;
   }
-  
+
   .action-box .action-bottom .more-icon {
     display: flex;
     align-items: center;
     flex-direction: column;
     padding: 0 30rpx;
   }
-  
+
   .action-box .action-bottom .operation-icon {
     width: 60rpx;
     height: 60rpx;
@@ -796,7 +858,7 @@
     line-height: 50rpx;
     color: #82868E;
   }
-      
+
   .action-box .action-top .record-input {
     flex: 1;
     width: 480rpx;
@@ -844,7 +906,7 @@
     background-size: 100%;
     border-radius: 40rpx;
   }
-  
+
   .video-player {
     display: block;
     position: fixed;
@@ -855,7 +917,7 @@
     z-index: 999;
     background: rgba(0,0,0,.8);
   }
-  
+
   .video-player uni-video {
     width: 100%;
     height: 100%;
@@ -893,7 +955,7 @@
     justify-content: space-between;
     align-items: center;
   }
-  
+
   .close {
     font-size: 50rpx;
   }
@@ -904,13 +966,13 @@
     margin: 20rpx;
     border-radius: 20rpx;
   }
-  
+
   .order-id {
     font-size: 24rpx;
     color: #666666;
     margin-bottom: 10rpx;
   }
-  
+
   .order-body {
     display: flex;
     font-size: 28rpx;
@@ -926,18 +988,18 @@
     margin-left: 20rpx;
     width: 270rpx;
   }
-  
+
   .order-right {
     flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
-  
+
   .order-price {
     font-weight: bold;
   }
-  
+
   .order-count {
     font-size: 24rpx;
     color: #666666;

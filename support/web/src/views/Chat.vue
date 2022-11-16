@@ -45,11 +45,12 @@
                     <img :src="message.payload.url"
                          :style="{height:getImageHeight(message.payload.width,message.payload.height)+'px'}"/>
                   </div>
-                  <goeasy-audio-player
-                    v-if="message.type ==='audio'"
-                    :duration="message.payload.duration"
-                    :src="message.payload.url"
-                  />
+                  <div v-if="message.type ==='audio'" class="content-audio" @click="playAudio(message)">
+                    <div class="audio-facade" :style="{width:Math.ceil(message.payload.duration)*7 + 50 + 'px'}">
+                      <div class="audio-facade-bg" :class="{'play-icon':audioPlayer.playingMessage === message}"></div>
+                      <div>{{ Math.ceil(message.payload.duration) || 1 }}<span>"</span></div>
+                    </div>
+                  </div>
                   <goeasy-video-player
                     v-if="message.type === 'video'"
                     :src="message.payload.video.url"
@@ -58,7 +59,7 @@
                   <div v-if="message.type === 'order'" class="content-order">
                     <div class="order-id">订单号：{{ message.payload.id }}</div>
                     <div class="order-body">
-                      <img :src="message.payload.url" class="order-img" />
+                      <img :src="message.payload.url" class="order-img"/>
                       <div class="order-name">{{ message.payload.name }}</div>
                       <div>
                         <div class="order-price">{{ message.payload.price }}</div>
@@ -139,6 +140,8 @@
         </div>
       </div>
     </div>
+    <!-- 语音播放器 -->
+    <audio ref="audioPlayer" @ended="onAudioPlayEnd" @pause="onAudioPlayEnd"></audio>
     <!-- 图片预览弹窗 -->
     <div v-if="imagePopup.visible" class="image-preview">
       <img :src="imagePopup.url" alt="图片"/>
@@ -176,7 +179,7 @@
              @click="sendOrderMessage(order)">
           <div class="order-id">订单号：{{ order.id }}</div>
           <div class="order-body">
-            <img :src="order.url" class="order-img" />
+            <img :src="order.url" class="order-img"/>
             <div class="order-name">{{ order.name }}</div>
             <div>
               <div class="order-price">{{ order.price }}</div>
@@ -193,17 +196,11 @@
   import {formatDate, formateTime} from '../utils/utils.js'
   import restApi from '../api/restapi';
   import EmojiDecoder from '../utils/EmojiDecoder';
-  import GoEasyAudioPlayer from "../components/GoEasyAudioPlayer";
-  import GoEasyVideoPlayer from "../components/GoEasyVideoPlayer";
 
   const IMAGE_MAX_WIDTH = 200;
   const IMAGE_MAX_HEIGHT = 150;
   export default {
     name: "Chat",
-    components: {
-      "goeasy-audio-player": GoEasyAudioPlayer,
-      "goeasy-video-player": GoEasyVideoPlayer
-    },
     data() {
       const emojiUrl = 'https://imgcache.qq.com/open/qcloud/tim/assets/emoji/';
       const emojiMap = {
@@ -238,6 +235,9 @@
         imagePopup: {
           visible: false,
           url: ''
+        },
+        audioPlayer: {
+          playingMessage: null,
         },
         orderList: {
           orders: [],
@@ -300,7 +300,7 @@
           },
           onStatusUpdated: (customerStatus) => {
             this.customerStatus = customerStatus;
-            if (customerStatus.status==='PENDING') {
+            if (customerStatus.status === 'PENDING') {
               this.updatePendingTime(customerStatus.start);
             }
           },
@@ -309,12 +309,12 @@
           },
         })
       },
-      updatePendingTime (time) {
+      updatePendingTime(time) {
         this.pendingTime.duration = formateTime(time);
         clearInterval(this.pendingTime.timer);
         this.pendingTime.timer = setInterval(() => {
           this.pendingTime.duration = formateTime(time);
-        },1000);
+        }, 1000);
       },
       onReceivedMessage(newMessage) {
         //如果该消息已存在，跳过
@@ -394,6 +394,26 @@
         } else if (width === height || width < height) {
           return IMAGE_MAX_HEIGHT;
         }
+      },
+      playAudio(audioMessage) {
+        let playingMessage = this.audioPlayer.playingMessage;
+
+        if (playingMessage) {
+          this.$refs.audioPlayer.pause();
+          // 如果点击的消息正在播放，就认为是停止播放操作
+          if (playingMessage === audioMessage) {
+            return;
+          }
+        }
+
+        this.audioPlayer.playingMessage = audioMessage;
+        this.$refs.audioPlayer.src = audioMessage.payload.url;
+        this.$refs.audioPlayer.load();
+        this.$refs.audioPlayer.currentTime = 0;
+        this.$refs.audioPlayer.play();
+      },
+      onAudioPlayEnd() {
+        this.audioPlayer.playingMessage = null;
       },
       renderMessageDate(message, index) {
         if (index === 0) {
@@ -542,7 +562,7 @@
           }
         });
       },
-      closeOrderMessageList () {
+      closeOrderMessageList() {
         this.orderList.visible = false;
       },
       showOrderMessageList() {
@@ -615,7 +635,7 @@
     border-radius: 50%;
   }
 
-   .chat-name {
+  .chat-name {
     width: 400px;
     margin-left: 10px;
     white-space: nowrap;
@@ -749,6 +769,37 @@
   .content-image {
     display: block;
     cursor: pointer;
+  }
+
+  .content-image img {
+    height: 100%;
+  }
+
+  .content-audio {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  }
+
+  .content-audio .audio-facade {
+    min-width: 12px;
+    background: #eeeeee;
+    border-radius: 7px;
+    display: flex;
+    font-size: 14px;
+    padding: 8px;
+    margin: 5px 0;
+    line-height: 25px;
+    cursor: pointer;
+  }
+
+  .content-audio .audio-facade-bg {
+    background: url("../assets/images/voice.png") no-repeat center;
+    background-size: 15px;
+    width: 20px;
+  }
+
+  .content-audio .audio-facade-bg.play-icon {
+    background: url("../assets/images/play.gif") no-repeat center;
+    background-size: 20px;
   }
 
   .content-order {
