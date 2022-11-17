@@ -9,6 +9,10 @@ triggers:
         - 跑不通_master
 variables:
   latest_version: 1.0.9
+  global:
+    - GIT_USER
+    - GIT_EMAIL
+    - GIT_PASS
 stages:
   - name: stage-99af3cc8
     displayName: deploy
