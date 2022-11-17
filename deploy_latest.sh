@@ -9,9 +9,9 @@ git_email=${GIT_EMAIL}
 if ([ "$1" ])
 then
     versionDir=$1
-    echo $versionDir/*
+    echo "$versionDir"
 else
-  echo required version dir
+  echo "required version dir"
   exit 1
 fi
 
@@ -19,15 +19,15 @@ fi
 if [ -d "show-cs" ]; then
     rm -rf show-cs
 fi
-echo https://${git_usernamne}:${git_password}@gitee.com/goeasy-io/show-cs.git
+echo "https://${git_usernamne}:${git_password}@gitee.com/goeasy-io/show-cs.git"
 git clone https://${git_usernamne}:${git_password}@gitee.com/goeasy-io/show-cs.git
 cd show-cs
 # 传入的versionDir不存在退出执行
 if [ -d $versionDir ]
 then
-  echo exist
+  echo "exist"
 else
-  echo version dir not exists
+  echo "version dir not exists"
   exit 1
 fi
 # 清除老数据
@@ -35,8 +35,7 @@ if [ -d "latest" ]; then
     rm -rf latest
 fi
 # 拷贝版本目录下的所有文件到latest文件下
-mkdir "latest"
-cp -r $versionDir/* latest/
+cp -r $versionDir latest
 # 设置信息
 git config user.name "${git_usernamne}"
 git config user.password "${git_password}"
