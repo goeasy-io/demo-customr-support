@@ -37,7 +37,7 @@ stages:
           - git config --global user.email "${GIT_EMAIL}"
           - ''
           - '# 执行部署脚本'
-          - bash latest_deploy.sh ${latest_version}
+          - bash deploy_latest.sh ${latest_version}
         caches:
           - ~/.npm
           - ~/.yarn
