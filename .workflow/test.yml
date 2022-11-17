@@ -29,6 +29,9 @@ stages:
           - ''
           - echo '${latest_version[2]}=1.0.6' >> GITEE_PARAMS
           - ''
+          - echo '${a_version}=1.0.6' >> GITEE_PARAMS
+          - echo '${a_version}'
+          - ''
           - echo "end latest_version:${latest_version}"
         caches:
           - ~/.npm
