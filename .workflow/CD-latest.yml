@@ -8,11 +8,11 @@ triggers:
       prefix:
         - 跑不通_master
 variables:
-  latest_version: 1.0.9
+  latest_version: ''
   global:
-    - GIT_USER
     - GIT_EMAIL
     - GIT_PASS
+    - GIT_USER
 stages:
   - name: stage-99af3cc8
     displayName: deploy
