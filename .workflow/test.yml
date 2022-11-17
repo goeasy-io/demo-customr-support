@@ -23,11 +23,11 @@ stages:
         commands:
           - echo 'start latest_version:${latest_version}'
           - ''
-          - echo '${test_version[0]}=1.0.8' >> GITEE_PARAMS
+          - echo '${latest_version[0]}=1.0.8' >> GITEE_PARAMS
           - ''
-          - echo '${test_version[1]}=1.0.7' >> GITEE_PARAMS
+          - echo '${latest_version[1]}=1.0.7' >> GITEE_PARAMS
           - ''
-          - echo '${test_version[2]}=1.0.6' >> GITEE_PARAMS
+          - echo '${latest_version[2]}=1.0.6' >> GITEE_PARAMS
           - ''
           - echo "end latest_version:${latest_version}"
         caches:
