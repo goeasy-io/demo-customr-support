@@ -8,12 +8,12 @@ triggers:
       prefix:
         - 跑不通_master
 variables:
+  ACTION: b
   global:
     - APPKEY
     - GIT_EMAIL
     - GIT_PASS
     - GIT_USER
-  ACTION: b
 stages:
   - name: stage-e5664bd5
     displayName: Build
@@ -35,6 +35,7 @@ stages:
           - ''
           - '# 设置NPM源，提升安装速度'
           - npm config set registry https://registry.npmmirror.com
+          - npm config set sass-binary-site http://npm.taobao.org/mirrors/node-sass
           - ''
           - git config --global user.name "${GIT_USER}"
           - git config --global user.password "${GIT_PASS}"
