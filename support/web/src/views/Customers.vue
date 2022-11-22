@@ -7,7 +7,7 @@
           v-for="(customer, key) in customers || []"
           :key="key"
           :class="selectedCustomer && selectedCustomer.id === customer.id ?'customer-item checked' : 'customer-item'"
-          @click="showCustomer(customer)"
+          @click="showCustomerProfile(customer)"
         >
           <div class="user-avatar">
             <img :src="customer.avatar"/>
@@ -58,7 +58,7 @@
       this.customers = restApi.findCustomers();
     },
     methods: {
-      showCustomer(customer) {
+      showCustomerProfile(customer) {
         this.selectedCustomer = customer;
       },
       chat(customer) {

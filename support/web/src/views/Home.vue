@@ -10,21 +10,13 @@
         </div>
         <div class="menu-box">
           <div class="menu-list">
-            <div class="menu-item">
-              <router-link to="/conversations" replace>
-                <i :class="{ selected: selectedTab === 'conversations'}" class="iconfont icon-zaixiankefu"></i>
-              </router-link>
-              <span v-if="unreadAmount + pendingConversationAmount"
-                    class="menu-unread">{{ unreadAmount + pendingConversationAmount }}</span>
-            </div>
-            <div class="menu-item">
-              <router-link to="/customers" replace>
-                <i
-                  :class="{ selected: selectedTab === 'customers' }"
-                  class="iconfont icon-haoyou"
-                ></i>
-              </router-link>
-            </div>
+            <router-link tag="div" class="menu-item" to="/conversations" replace>
+              <i class="iconfont icon-zaixiankefu"></i>
+              <span v-if="unreadAmount + pendingConversationAmount" class="menu-unread">{{ unreadAmount + pendingConversationAmount}}</span>
+            </router-link>
+            <router-link tag="div" class="menu-item" to="/customers" replace>
+              <i class="iconfont icon-haoyou"></i>
+            </router-link>
           </div>
           <div class="agent-info">
             <img :src="currentAgent.avatar" class="agent-avatar"
@@ -66,7 +58,6 @@
         csteam: null,
         currentAgent: null,
         shop: null,
-        selectedTab: "conversations",
         unreadAmount: 0,
         pendingConversationAmount: 0,
 
@@ -88,15 +79,6 @@
       this.initialOnlineStatus();
       this.goEasy.im.on(this.GoEasy.IM_EVENT.CONVERSATIONS_UPDATED, this.setUnreadAmount);
       this.goEasy.im.on(this.GoEasy.IM_EVENT.PENDING_CONVERSATIONS_UPDATED, this.setPendingConversationAmount);
-    },
-    watch: {
-      $route: {
-        handler() {
-          let path = this.$route.path;
-          let urls = path.split("/");
-          this.selectedTab = urls[1];
-        },
-      }
     },
     methods: {
       connectGoEasy() {
@@ -165,15 +147,17 @@
         })
       },
       logout() {
-        this.goEasy.disconnect({
-          onSuccess: () => {
-            this.globalData.currentAgent = null;
-            this.$router.replace({path: './login'});
-          },
-          onFailed: (error) => {
-            console.log("Failed to disconnect GoEasy, code:" + error.code + ",error:" + error.content);
-          }
-        });
+        if (confirm('确认要退出登录吗？')) {
+          this.goEasy.disconnect({
+            onSuccess: () => {
+              this.globalData.currentAgent = null;
+              this.$router.replace({path: './login'});
+            },
+            onFailed: (error) => {
+              console.log("Failed to disconnect GoEasy, code:" + error.code + ",error:" + error.content);
+            }
+          });
+        }
       },
       closeOnlinePopup() {
         this.onlineConfig.visible = false;
@@ -287,7 +271,7 @@
     color: #ffffff;
   }
 
-  .menu-list .selected {
+  .router-link-active i {
     color: #d02129 !important;
   }
 

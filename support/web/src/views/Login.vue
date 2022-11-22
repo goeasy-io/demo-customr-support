@@ -8,39 +8,28 @@
         <div class="login-form">
           <div class="form-item">
             <div class="selected-area" @click="switchSelectorVisible">
-              <div class="selected-content">
-                <img v-if="agentSelector.selectedAgent" :src="agentSelector.selectedAgent.shop.avatar"/>
-                <div>{{
-                    agentSelector.selectedAgent ? agentSelector.selectedAgent.shop.name + ' - ' + agentSelector.selectedAgent.name : '请选择用户'
-                  }}
-                </div>
+              <div class="selected-content" v-if="agentSelector.selectedAgent">
+                <img :src="agentSelector.selectedAgent.shop.avatar"/>
+                <div>{{agentSelector.selectedAgent.shop.name + ' - ' + agentSelector.selectedAgent.name}}</div>
               </div>
-              <img
-                :class="agentSelector.visible ? 'selected-icon' : 'selected-icon rotate'"
-                src="../assets/images/up.png"
-              />
+              <div class="selected-content" v-else>
+                <div>请选择用户</div>
+              </div>
+              <img class="selected-icon rotate" src="../assets/images/up.png"/>
             </div>
             <div v-if="agentSelector.visible" class="dialog-area">
               <div class="dialog-list">
-                <div
-                  class="dialog-list-item"
-                  v-for="(agent, index) in agentSelector.agents"
-                  :key="index"
-                  @click="selectAgent(agent)">
+                <div class="dialog-list-item" v-for="(agent, index) in agentSelector.agents" :key="index"
+                     @click="selectAgent(agent)">
                   <img class="dialog-list-item-avatar" :src="agent.shop.avatar"/>
-                  <div :class="agentSelector.selectedAgent === agent ? 'selected' : ''">
-                    {{ agent.shop.name + ' - ' + agent.name }}
-                  </div>
+                  <div>{{ agent.shop.name + ' - ' + agent.name }}</div>
                 </div>
               </div>
             </div>
           </div>
           <div class="form-item">
-            <input v-model="password.value" class="password-input" placeholder="请输入密码"
-                   :type="password.visible ? 'text':'password'"/>
-            <img v-if="password.visible" class="password-image" @click="switchPasswordVisible"
-                 src="../assets/images/invisible.png"/>
-            <img v-else class="password-image" @click="switchPasswordVisible" src="../assets/images/visible.png"/>
+            <input v-model="password.value" class="password-input" placeholder="请输入密码" :type="password.visible ? 'text':'password'"/>
+            <img class="password-image" @click="switchPasswordVisible" src="../assets/images/visible.png"/>
           </div>
           <div class="form-item">
             <button class="form-item-btn" @click="login">登录</button>
@@ -65,7 +54,6 @@
         agentSelector: {
           agents: [],
           visible: false,
-          index: 0,
           selectedAgent: null
         },
 
@@ -163,6 +151,7 @@
     padding: 5px 10px;
     border: 1px solid #DCDFE6;
     border-radius: 4px;
+    cursor: pointer;
   }
 
   .selected-content {
@@ -206,10 +195,7 @@
     padding-left: 10px;
     display: flex;
     align-items: center;
-  }
-
-  .dialog-area .selected {
-    font-weight: bold;
+    cursor: pointer;
   }
 
   .dialog-list-item-avatar {
@@ -235,6 +221,7 @@
     position: absolute;
     top: 15px;
     right: 15px;
+    cursor: pointer;
   }
 
   .form-item-btn {
