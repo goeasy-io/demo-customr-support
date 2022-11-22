@@ -85,6 +85,12 @@ build_customer() {
 # 拷贝inde.html
 copy_html() {
     cp index.html build/$vesionDir/index.html
+    # 替换index.html中的路径
+    basePath="\/show-cs\/$vesionDir"
+    customerPath=src\=$basePath\\/customer\\/
+    agentPath=src\=$basePath\\/agent\\/
+    sed -i "s/src\=\"customer\/\"/$customerPath/g" build/$vesionDir/index.html
+    sed -i "s/src\=\"agent\/\"/$agentPath/g" build/$vesionDir/index.html
 }
 
 # 升级web服务的版本
