@@ -23,9 +23,7 @@
                         conversation.lastMessage.senderData.name
                     }}:
                   </text>
-                  <text v-if="conversation.lastMessage.type === 'text'">
-                    {{ conversation.lastMessage.payload.text }}
-                  </text>
+                  <text v-if="conversation.lastMessage.type === 'text'">{{conversation.lastMessage.payload.text}}</text>
                   <text v-else-if="conversation.lastMessage.type === 'video'">[视频消息]</text>
                   <text v-else-if="conversation.lastMessage.type === 'audio'">[语音消息]</text>
                   <text v-else-if="conversation.lastMessage.type === 'image'">[图片消息]</text>

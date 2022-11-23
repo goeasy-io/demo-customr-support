@@ -1,14 +1,13 @@
 <template>
   <view class="chatInterface">
-    <scroll-view :scroll-y="true" :scroll-into-view="bottomView" class="scroll-view">
-      <view v-if="history.loading" class="history-loading">
-        <image src="/static/images/pending.gif"></image>
-      </view>
+    <view class="scroll-view">
+      <image v-if="history.loading" class="history-loaded" src="/static/images/loading.svg"/>
       <view v-else :class="history.loaded ? 'history-loaded':'load'" @click="loadHistoryMessage(false)">
-        {{ history.loaded ? '已经没有更多的历史消息' : '获取历史消息' }}
+        <view>{{ history.loaded ? '已经没有更多的历史消息' : '点击获取历史消息' }}</view>
       </view>
+
       <view class="message-list">
-        <view :id="'item'+index" v-for="(message,index) in history.messages" :key="message.messageId">
+        <view v-for="(message,index) in history.messages" :key="message.messageId">
           <view class="time-lag">
             {{ renderMessageDate(message, index) }}
           </view>
@@ -22,11 +21,9 @@
             <div v-else-if="message.type === 'CS_TRANSFER'" class="accept-message">
               {{ message.payload.transferTo.data.name }}已接入
             </div>
-            <view v-else :class="{'self' : message.senderId ===  currentCustomer.id}"
-                  class="message-item-content">
+            <view v-else :class="{'self' : message.senderId ===  currentCustomer.id}" class="message-item-content">
               <view class="avatar">
-                <image
-                  :src="message.senderId === currentCustomer.id? currentCustomer.avatar : shop.avatar"></image>
+                <image :src="message.senderId === currentCustomer.id? currentCustomer.avatar : shop.avatar"></image>
               </view>
               <view class="content">
                 <view v-if="message.senderId !== currentCustomer.id" class="staff-name">
@@ -37,12 +34,12 @@
                   <b v-if="message.status === 'fail'" class="send-fail"></b>
                   <view v-if="message.type === 'text'" v-html="renderTextMessage(message)"></view>
                   <image v-if="message.type === 'image'"
-                         :data-url="message.payload.url"
-                         :src="message.payload.url"
-                         :style="{height: getImageHeight(message.payload.width,message.payload.height)+'rpx' }"
-                         class="image-content"
-                         mode="heightFix"
-                         @click="showImageFullScreen"
+                     :data-url="message.payload.url"
+                     :src="message.payload.url"
+                     :style="{height: getImageHeight(message.payload.width,message.payload.height)+'rpx' }"
+                     class="image-content"
+                     mode="heightFix"
+                     @click="showImageFullScreen"
                   ></image>
                   <view v-if="message.type === 'video'" :data-url="message.payload.video.url"
                         class="video-snapshot" @click="playVideo">
@@ -81,23 +78,16 @@
           </view>
         </view>
       </view>
-    </scroll-view>
+    </view>
     <view class="action-box">
       <view class="action-top">
         <view @click="switchAudioKeyboard">
           <image class="more" v-if="audio.visible" src="/static/images/jianpan.png"></image>
           <image class="more" v-else src="/static/images/audio.png"></image>
         </view>
-        <!--  #ifdef  H5 -->
-        <view v-if="audio.visible" class="record-input" @click="onRecordStart">
+        <view v-if="audio.visible" class="record-input" @click="onRecordStart" @touchend="onRecordEnd" @touchstart="onRecordStart">
           {{ audio.recording ? '松开发送' : '按住录音' }}
         </view>
-        <!--  #endif -->
-        <!--  #ifndef  H5 -->
-        <view v-if="audio.visible" class="record-input" @touchend="onRecordEnd" @touchstart="onRecordStart">
-          {{ audio.recording ? '松开发送' : '按住录音' }}
-        </view>
-        <!--  #endif -->
         <!-- GoEasyIM最大支持3k的文本消息，如需发送长文本，需调整输入框maxlength值 -->
         <input v-else v-model="text" class="consult-input" maxlength="700" placeholder="发送消息" type="text" />
         <view @click="switchEmojiKeyboard">
@@ -224,7 +214,6 @@
           url: '',
           context: null
         },
-        bottomView: "",
       }
     },
     onLoad(options) {
@@ -363,6 +352,10 @@
         this.goEasy.im.createAudioMessage({
           to: this.to,
           file: file,
+          notification: {
+            title: this.currentCustomer.name + '发来一段语音',
+            body: '[语音消息]'		// 字段最长 50 字符
+          },
           onProgress: function (progress) {
             console.log(progress)
           },
@@ -376,9 +369,17 @@
       },
       sendTextMessage() {
         if (this.text.trim() !== '') {
+          let body = this.text;
+          if (this.text.length >= 50) {
+            body = this.text.substring(0, 30) + '...';
+          }
           this.goEasy.im.createTextMessage({
             text: this.text,
             to: this.to,
+            notification: {
+              title: this.currentCustomer.name + '发来一段文字',
+              body: body
+            },
             onSuccess: (message) => {
               this.sendMessage(message);
             },
@@ -411,10 +412,12 @@
         });
       },
       scrollToBottom() {
-        setTimeout(() => {
-          let index = this.history.messages.length - 1;
-          this.bottomView = `item${index}`;
-        },100);
+        this.$nextTick(() => {
+          uni.pageScrollTo({
+            scrollTop: 2000000,
+            duration: 0
+          });
+        });
       },
       loadHistoryMessage(scrollToBottom) {//历史消息
         this.history.loading = true;
@@ -443,7 +446,7 @@
           onFailed: (error) => {
             //获取失败
             console.log('获取历史消息失败:', error);
-            this.history.loading = true;
+            this.history.loading = false;
           }
         });
       },
@@ -473,6 +476,10 @@
             this.goEasy.im.createVideoMessage({
               to: this.to,
               file: res,
+              notification: {
+                title: this.currentCustomer.name + '发来一个视频',
+                body: '[视频消息]'
+              },
               onProgress: function (progress) {
                 console.log(progress)
               },
@@ -495,6 +502,10 @@
               this.goEasy.im.createImageMessage({
                 to: this.to,
                 file: file,
+                notification: {
+                  title: this.currentCustomer.name + '发来一张图片',
+                  body: '[图片消息]'
+                },
                 onProgress: function (progress) {
                   console.log(progress)
                 },
@@ -523,6 +534,10 @@
           type: 'order',
           payload: order,
           to: this.to,
+          notification: {
+            title: this.currentCustomer.name + '发来一个订单',
+            body: '[订单消息]'
+          },
           onSuccess: (message) => {
             this.otherTypesMessagePanelVisible = false;
             this.sendMessage(message);
@@ -596,7 +611,6 @@
     background-color: #F1F1F1;
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
   }
 
   .scroll-view {
@@ -604,10 +618,9 @@
     padding-right: 20rpx;
     box-sizing: border-box;
     -webkit-overflow-scrolling: touch;
-    margin-bottom: 140rpx;
+    padding-bottom: 120rpx;
     background-color: #F1F1F1;
     flex: 1;
-    overflow-y: auto;
   }
 
   .history-loading {
@@ -622,8 +635,9 @@
 
   .scroll-view .history-loaded {
     font-size: 24rpx;
-    height: 90rpx;
-    line-height: 90rpx;
+    height: 60rpx;
+    line-height: 60rpx;
+    margin: 15rpx 0;
     width: 100%;
     text-align: center;
     color: #cccccc;
@@ -631,8 +645,9 @@
 
   .scroll-view .load {
     font-size: 24rpx;
-    height: 90rpx;
-    line-height: 90rpx;
+    height: 60rpx;
+    line-height: 60rpx;
+    margin: 15rpx 0;
     width: 100%;
     text-align: center;
     color: #d02129;
