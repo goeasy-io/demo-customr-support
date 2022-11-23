@@ -26,7 +26,7 @@ Page({
 
         history: {
             messages: [],
-            allLoaded: false,
+            loaded: false,
             loading: true
         },
 
@@ -195,7 +195,9 @@ Page({
         }
     },
     loadHistoryMessage(scrollToBottom) {
-        //历史消息
+        this.setData({
+            ['history.loading']: true
+        });
         let lastMessageTimeStamp;
         let lastMessage = this.data.history.messages[0];
         if (lastMessage) {
@@ -209,10 +211,13 @@ Page({
             limit: limit,
             onSuccess: (result) => {
                 wx.stopPullDownRefresh();
+                this.setData({
+                    ['history.loading']: false
+                });
                 let messages = result.content;
                 if (messages.length === 0) {
                     this.setData({
-                        ['history.allLoaded']: true
+                        ['history.loaded']: true
                     });
                 } else {
                     let messageList
@@ -227,10 +232,13 @@ Page({
                     this.renderMessages(messageList);
                 }
             },
-            onFailed: function (error) {
+            onFailed: (error) => {
                 //获取失败
                 console.log('获取历史消息失败, code:' + error.code + ',错误信息:' + error.content);
                 wx.stopPullDownRefresh();
+                this.setData({
+                    ['history.loading']: false
+                });
             }
         });
     },

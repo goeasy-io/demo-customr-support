@@ -22,6 +22,15 @@
               <div v-else-if="conversation.lastMessage.type === 'video'" class="item-info-message">[视频消息]</div>
               <div v-else-if="conversation.lastMessage.type === 'audio'" class="item-info-message">[语音消息]</div>
               <div v-else-if="conversation.lastMessage.type === 'order'" class="item-info-message">[自定义消息:订单]</div>
+              <div v-else-if="conversation.lastMessage.type === 'CS_END'" class="item-info-message">会话已结束</div>
+              <div v-else-if="conversation.lastMessage.type === 'CS_ACCEPT'" class="item-info-message">接入成功</div>
+              <div v-else-if="conversation.lastMessage.type === 'CS_TRANSFER'" class="item-info-message">
+                {{
+                  conversation.lastMessage.senderId === currentAgent.id ? `已转接给` +
+                    conversation.lastMessage.payload.transferTo.data.name : '已接入来自' +
+                    conversation.lastMessage.senderData.name + '的转接'
+                }}
+              </div>
               <div v-else class="item-info-message">[未识别内容]</div>
             </div>
           </div>

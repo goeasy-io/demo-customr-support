@@ -4,8 +4,12 @@
 <view class="chat">
 	<view class="chat-box">
 		<view class="scroll-view">
-			<view class="header">
-				<text>{{history.allLoaded ? '已经没有更多的历史消息' : '下拉获取历史消息'}}</text>
+			<view wx:if="{{history.loading}}" class="history-loaded">
+				<image src="/static/images/loading.svg"/>
+			</view>
+			<view wx:else>
+				<view class="history-loaded" wx:if="{{history.loaded}}">已经没有更多的历史消息</view>
+				<view class="load" wx:else>下拉获取历史消息</view>
 			</view>
 			<!--已经收到的消息-->
 			<view wx:for="{{history.messages || []}}" wx:for-index="index" wx:key="index" wx:for-item="message">
