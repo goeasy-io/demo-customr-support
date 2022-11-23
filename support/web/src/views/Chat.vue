@@ -4,8 +4,8 @@
       <img :src="customer.avatar" class="chat-avatar"/>
       <div class="chat-name">{{ customer.name }}</div>
     </div>
-    <div class="chat-main">
-      <div class="message-list">
+    <div class="chat-main" ref="scrollView">
+      <div class="message-list" ref="messageList">
         <div v-if="history.loading" class="history-loading">
           <img src="../assets/images/pending.gif"/>
         </div>
@@ -73,7 +73,6 @@
           </div>
         </div>
       </div>
-      <span ref="bottomView"></span>
     </div>
     <div class="chat-footer">
       <div v-if="customerStatus==null" class="accept-session">
@@ -607,9 +606,7 @@
       },
       scrollToBottom() {
         this.$nextTick(() => {
-          if (this.$refs.bottomView) {
-            this.$refs.bottomView.scrollIntoView();
-          }
+          this.$refs.scrollView.scrollTop = this.$refs.messageList.scrollHeight;
         })
       }
     }
