@@ -1,14 +1,13 @@
 <template>
   <view class="chatInterface">
-    <scroll-view :scroll-y="true" :scroll-into-view="bottomView" class="scroll-view">
-      <view v-if="history.loading" class="history-loading">
-        <image src="/static/images/pending.gif"></image>
+    <view class="scroll-view">
+      <image v-if="history.loading" class="history-loaded" src="/static/images/loading.svg"/>
+      <view v-else :class="history.loaded ? 'history-loaded':'load'" @click="loadHistoryMessage(false)">
+        <view>{{ history.loaded ? '已经没有更多的历史消息' : '点击获取历史消息' }}</view>
       </view>
-      <view v-else class="history-loaded" @click="loadHistoryMessage(false)">
-        {{ history.allLoaded ? '已经没有更多的历史消息' : '获取历史消息' }}
-      </view>
+
       <view class="message-list">
-        <view :id="'item'+index" v-for="(message,index) in history.messages" :key="message.messageId">
+        <view v-for="(message,index) in history.messages" :key="message.messageId">
           <view class="time-lag">
             {{ renderMessageDate(message, index) }}
           </view>
@@ -22,11 +21,9 @@
             <div v-else-if="message.type === 'CS_TRANSFER'" class="accept-message">
               {{ message.payload.transferTo.data.name }}已接入
             </div>
-            <view v-else :class="{'self' : message.senderId ===  currentCustomer.id}"
-                  class="message-item-content">
+            <view v-else :class="{'self' : message.senderId ===  currentCustomer.id}" class="message-item-content">
               <view class="avatar">
-                <image
-                  :src="message.senderId === currentCustomer.id? currentCustomer.avatar : shop.avatar"></image>
+                <image :src="message.senderId === currentCustomer.id? currentCustomer.avatar : shop.avatar"></image>
               </view>
               <view class="content">
                 <view v-if="message.senderId !== currentCustomer.id" class="staff-name">
@@ -37,12 +34,12 @@
                   <b v-if="message.status === 'fail'" class="send-fail"></b>
                   <view v-if="message.type === 'text'" v-html="renderTextMessage(message)"></view>
                   <image v-if="message.type === 'image'"
-                         :data-url="message.payload.url"
-                         :src="message.payload.url"
-                         :style="{height: getImageHeight(message.payload.width,message.payload.height)+'rpx' }"
-                         class="image-content"
-                         mode="heightFix"
-                         @click="showImageFullScreen"
+                     :data-url="message.payload.url"
+                     :src="message.payload.url"
+                     :style="{height: getImageHeight(message.payload.width,message.payload.height)+'rpx' }"
+                     class="image-content"
+                     mode="heightFix"
+                     @click="showImageFullScreen"
                   ></image>
                   <view v-if="message.type === 'video'" :data-url="message.payload.video.url"
                         class="video-snapshot" @click="playVideo">
@@ -53,8 +50,15 @@
                     ></image>
                     <view class="video-play-icon"></view>
                   </view>
-                  <GoEasyAudioPlayer v-if="message.type ==='audio'" :duration="message.payload.duration"
-                                     :src="message.payload.url"/>
+                  <view v-if="message.type ==='audio'" class="audio-content" @click="playAudio(message)">
+                    <view class="audio-facade" :style="{width:Math.ceil(message.payload.duration)*7 + 50 + 'px'}">
+                      <view
+                        class="audio-facade-bg"
+                        :class="{'play-icon':audioPlayer.playingMessage && audioPlayer.playingMessage.messageId === message.messageId}"
+                      ></view>
+                      <view>{{Math.ceil(message.payload.duration) || 1}}<span>"</span></view>
+                    </view>
+                  </view>
                   <view v-if="message.type === 'order'" class="order-content">
                     <view class="order-id">订单号：{{ message.payload.id }}</view>
                     <view class="order-body">
@@ -74,23 +78,16 @@
           </view>
         </view>
       </view>
-    </scroll-view>
+    </view>
     <view class="action-box">
       <view class="action-top">
         <view @click="switchAudioKeyboard">
           <image class="more" v-if="audio.visible" src="/static/images/jianpan.png"></image>
           <image class="more" v-else src="/static/images/audio.png"></image>
         </view>
-        <!--  #ifdef  H5 -->
-        <view v-if="audio.visible" class="record-input" @click="onRecordStart">
+        <view v-if="audio.visible" class="record-input" @click="onRecordStart" @touchend="onRecordEnd" @touchstart="onRecordStart">
           {{ audio.recording ? '松开发送' : '按住录音' }}
         </view>
-        <!--  #endif -->
-        <!--  #ifndef  H5 -->
-        <view v-if="audio.visible" class="record-input" @touchend="onRecordEnd" @touchstart="onRecordStart">
-          {{ audio.recording ? '松开发送' : '按住录音' }}
-        </view>
-        <!--  #endif -->
         <!-- GoEasyIM最大支持3k的文本消息，如需发送长文本，需调整输入框maxlength值 -->
         <input v-else v-model="text" class="consult-input" maxlength="700" placeholder="发送消息" type="text" />
         <view @click="switchEmojiKeyboard">
@@ -110,7 +107,7 @@
                class="emoji-item" @click="chooseEmoji(emojiKey)"></image>
       </view>
       <!--其他类型消息面板-->
-      <view v-if="moreTypesVisible" class="action-bottom">
+      <view v-if="otherTypesMessagePanelVisible" class="action-bottom">
         <view class="more-icon">
           <image @click="sendImageMessage()" class="operation-icon" src="/static/images/picture.png"></image>
           <view class="operation-title">图片</view>
@@ -157,7 +154,6 @@
 </template>
 
 <script>
-  import GoEasyAudioPlayer from '../components/GoEasyAudioPlayer';
   import restApi from '../lib/restapi';
   import { formatDate } from '../lib/utils';
   import EmojiDecoder from '../lib/EmojiDecoder';
@@ -166,9 +162,6 @@
   const IMAGE_MAX_WIDTH = 200;
   const IMAGE_MAX_HEIGHT = 150;
   export default {
-    components: {
-      GoEasyAudioPlayer
-    },
     data() {
       const emojiUrl = 'https://imgcache.qq.com/open/qcloud/tim/assets/emoji/';
       const emojiMap = {
@@ -195,14 +188,14 @@
           decoder: new EmojiDecoder(emojiUrl, emojiMap),
         },
         //是否展示‘其他消息类型面板’
-        moreTypesVisible: false,
+        otherTypesMessagePanelVisible: false,
         orderList: {
           orders: [],
           visible: false
         },
         history: {
           messages: [],
-          allLoaded: false,
+          loaded: false,
           loading: true
         },
         audio: {
@@ -212,12 +205,15 @@
           //录音按钮展示
           visible: false
         },
+        audioPlayer: {
+          innerAudioContext: null,
+          playingMessage: null,
+        },
         videoPlayer: {
           visible: false,
           url: '',
           context: null
         },
-        bottomView: "",
       }
     },
     onLoad(options) {
@@ -234,6 +230,9 @@
       this.currentCustomer = getApp().globalData.currentCustomer;
       this.markMessageAsRead();
       this.loadHistoryMessage(true);
+      // 语音播放器
+      this.initialAudioPlayer();
+      // 录音监听器
       this.initRecorderListeners();
       this.goEasy.im.on(this.GoEasy.IM_EVENT.CS_MESSAGE_RECEIVED, this.onMessageReceived);
     },
@@ -244,7 +243,7 @@
       });
     },
     onShow() {
-      this.moreTypesVisible = false;
+      this.otherTypesMessagePanelVisible = false;
       this.emoji.visible = false;
     },
     beforeDestroy() {
@@ -285,6 +284,15 @@
           }
         }
         return '';
+      },
+      initialAudioPlayer () {
+        this.audioPlayer.innerAudioContext = uni.createInnerAudioContext();
+        this.audioPlayer.innerAudioContext.onEnded(() => {
+          this.audioPlayer.playingMessage = null;
+        });
+        this.audioPlayer.innerAudioContext.onStop(() => {
+          this.audioPlayer.playingMessage = null;
+        });
       },
       initRecorderListeners() {
         // 监听录音开始
@@ -331,10 +339,10 @@
       },
       switchEmojiKeyboard() {
         this.emoji.visible = !this.emoji.visible;
-        this.moreTypesVisible = false;
+        this.otherTypesMessagePanelVisible = false;
       },
       showOtherTypesMessagePanel() {
-        this.moreTypesVisible = !this.moreTypesVisible;
+        this.otherTypesMessagePanelVisible = !this.otherTypesMessagePanelVisible;
         this.emoji.visible = false;
       },
       chooseEmoji(emojiKey) {
@@ -344,6 +352,10 @@
         this.goEasy.im.createAudioMessage({
           to: this.to,
           file: file,
+          notification: {
+            title: this.currentCustomer.name + '发来一段语音',
+            body: '[语音消息]'		// 字段最长 50 字符
+          },
           onProgress: function (progress) {
             console.log(progress)
           },
@@ -357,9 +369,17 @@
       },
       sendTextMessage() {
         if (this.text.trim() !== '') {
+          let body = this.text;
+          if (this.text.length >= 50) {
+            body = this.text.substring(0, 30) + '...';
+          }
           this.goEasy.im.createTextMessage({
             text: this.text,
             to: this.to,
+            notification: {
+              title: this.currentCustomer.name + '发来一段文字',
+              body: body
+            },
             onSuccess: (message) => {
               this.sendMessage(message);
             },
@@ -392,10 +412,12 @@
         });
       },
       scrollToBottom() {
-        setTimeout(() => {
-          let index = this.history.messages.length - 1;
-          this.bottomView = `item${index}`;
-        },100);
+        this.$nextTick(() => {
+          uni.pageScrollTo({
+            scrollTop: 2000000,
+            duration: 0
+          });
+        });
       },
       loadHistoryMessage(scrollToBottom) {//历史消息
         this.history.loading = true;
@@ -413,19 +435,18 @@
             this.history.loading = false;
             let messages = result.content;
             if (messages.length === 0) {
-              this.history.allLoaded = true;
+              this.history.loaded = true;
             } else {
               this.history.messages = messages.concat(this.history.messages);
               if (scrollToBottom) {
                 this.scrollToBottom();
-
               }
             }
           },
           onFailed: (error) => {
             //获取失败
             console.log('获取历史消息失败:', error);
-            this.history.loading = true;
+            this.history.loading = false;
           }
         });
       },
@@ -455,11 +476,15 @@
             this.goEasy.im.createVideoMessage({
               to: this.to,
               file: res,
+              notification: {
+                title: this.currentCustomer.name + '发来一个视频',
+                body: '[视频消息]'
+              },
               onProgress: function (progress) {
                 console.log(progress)
               },
               onSuccess: (message) => {
-                this.moreTypesVisible = false;
+                this.otherTypesMessagePanelVisible = false;
                 this.sendMessage(message);
               },
               onFailed: (e) => {
@@ -477,11 +502,15 @@
               this.goEasy.im.createImageMessage({
                 to: this.to,
                 file: file,
+                notification: {
+                  title: this.currentCustomer.name + '发来一张图片',
+                  body: '[图片消息]'
+                },
                 onProgress: function (progress) {
                   console.log(progress)
                 },
                 onSuccess: (message) => {
-                  this.moreTypesVisible = false;
+                  this.otherTypesMessagePanelVisible = false;
                   this.sendMessage(message);
                 },
                 onFailed: (e) => {
@@ -505,8 +534,12 @@
           type: 'order',
           payload: order,
           to: this.to,
+          notification: {
+            title: this.currentCustomer.name + '发来一个订单',
+            body: '[订单消息]'
+          },
           onSuccess: (message) => {
-            this.moreTypesVisible = false;
+            this.otherTypesMessagePanelVisible = false;
             this.sendMessage(message);
           },
           onFailed: (e) => {
@@ -530,6 +563,20 @@
           });
           this.videoPlayer.context.play();
         });
+      },
+      playAudio (audioMessage) {
+        let playingMessage = this.audioPlayer.playingMessage;
+
+        if (playingMessage) {
+          this.audioPlayer.innerAudioContext.stop();
+          // 如果点击的消息正在播放，就认为是停止播放操作
+          if (playingMessage === audioMessage) {
+            return;
+          }
+        }
+        this.audioPlayer.playingMessage = audioMessage;
+        this.audioPlayer.innerAudioContext.src = audioMessage.payload.url;
+        this.audioPlayer.innerAudioContext.play();
       },
       onVideoFullScreenChange(e) {
         //当退出全屏播放时，隐藏播放器
@@ -564,7 +611,6 @@
     background-color: #F1F1F1;
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
   }
 
   .scroll-view {
@@ -572,10 +618,9 @@
     padding-right: 20rpx;
     box-sizing: border-box;
     -webkit-overflow-scrolling: touch;
-    margin-bottom: 140rpx;
+    padding-bottom: 120rpx;
     background-color: #F1F1F1;
     flex: 1;
-    overflow-y: auto;
   }
 
   .history-loading {
@@ -590,11 +635,22 @@
 
   .scroll-view .history-loaded {
     font-size: 24rpx;
-    height: 90rpx;
-    line-height: 90rpx;
+    height: 60rpx;
+    line-height: 60rpx;
+    margin: 15rpx 0;
     width: 100%;
     text-align: center;
-    color: grey;
+    color: #cccccc;
+  }
+
+  .scroll-view .load {
+    font-size: 24rpx;
+    height: 60rpx;
+    line-height: 60rpx;
+    margin: 15rpx 0;
+    width: 100%;
+    text-align: center;
+    color: #d02129;
   }
 
   .scroll-view .message-item {
@@ -670,25 +726,54 @@
     display: flex;
     flex-direction: column;
   }
-  
+
+  .audio-content {
+    height: 86rpx;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  }
+
+  .audio-content .audio-facade {
+    min-width: 20rpx;
+    padding: 6rpx 10rpx;
+    line-height: 72rpx;
+    background: #FFFFFF;
+    font-size: 24rpx;
+    border-radius: 14rpx;
+    color: #000000;
+    display: flex;
+    flex-direction: row-reverse;
+  }
+
+  .audio-content .audio-facade-bg {
+    background: url("/static/images/voice.png") no-repeat center;
+    background-size: 30rpx;
+    width: 40rpx;
+    transform: rotate(180deg);
+  }
+
+  .audio-content .audio-facade-bg.play-icon {
+    background: url("/static/images/play.gif") no-repeat center;
+    background-size: 30rpx;
+  }
+
   .scroll-view .content .order-id {
     color: #333333;
   }
-  
+
   .scroll-view .content .order-body {
     padding: 10rpx;
   }
-  
+
   .scroll-view .content .order-name {
     font-weight: normal;
   }
-  
+
   .scroll-view .content .order-info {
     display: flex;
     justify-content: space-between;
     padding: 10rpx;
   }
-  
+
   .scroll-view .content .order-info .order-price {
     font-weight: normal;
   }
@@ -759,21 +844,21 @@
     height: 60rpx;
     border-radius: 10rpx;
     background: #D02129;
-    
+
   }
-  
+
   .send-btn-box .btn {
     color: #FFFFFF;
     font-size: 28rpx;
   }
-  
+
   .action-box .action-bottom .more-icon {
     display: flex;
     align-items: center;
     flex-direction: column;
     padding: 0 30rpx;
   }
-  
+
   .action-box .action-bottom .operation-icon {
     width: 60rpx;
     height: 60rpx;
@@ -788,7 +873,7 @@
     line-height: 50rpx;
     color: #82868E;
   }
-      
+
   .action-box .action-top .record-input {
     flex: 1;
     width: 480rpx;
@@ -836,7 +921,7 @@
     background-size: 100%;
     border-radius: 40rpx;
   }
-  
+
   .video-player {
     display: block;
     position: fixed;
@@ -847,7 +932,7 @@
     z-index: 999;
     background: rgba(0,0,0,.8);
   }
-  
+
   .video-player uni-video {
     width: 100%;
     height: 100%;
@@ -885,7 +970,7 @@
     justify-content: space-between;
     align-items: center;
   }
-  
+
   .close {
     font-size: 50rpx;
   }
@@ -896,13 +981,13 @@
     margin: 20rpx;
     border-radius: 20rpx;
   }
-  
+
   .order-id {
     font-size: 24rpx;
     color: #666666;
     margin-bottom: 10rpx;
   }
-  
+
   .order-body {
     display: flex;
     font-size: 28rpx;
@@ -918,18 +1003,18 @@
     margin-left: 20rpx;
     width: 270rpx;
   }
-  
+
   .order-right {
     flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
-  
+
   .order-price {
     font-weight: bold;
   }
-  
+
   .order-count {
     font-size: 24rpx;
     color: #666666;

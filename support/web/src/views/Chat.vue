@@ -4,18 +4,16 @@
       <img :src="customer.avatar" class="chat-avatar"/>
       <div class="chat-name">{{ customer.name }}</div>
     </div>
-    <div ref="scrollView" class="chat-main">
-      <div ref="messageList" class="message-list">
+    <div class="chat-main" ref="scrollView">
+      <div class="message-list" ref="messageList">
         <div v-if="history.loading" class="history-loading">
           <img src="../assets/images/pending.gif"/>
         </div>
-        <div v-else class="history-loaded" @click="loadHistoryMessage(false)">
-          {{ history.allLoaded ? '已经没有更多的历史消息' : '获取历史消息' }}
+        <div v-else :class="history.loaded ? 'history-loaded':'load'" @click="loadHistoryMessage(false)">
+          {{ history.loaded ? '已经没有更多的历史消息' : '获取历史消息' }}
         </div>
         <div v-for="(message, index) in history.messages" :key="index">
-          <div class="time-tips">
-            {{ renderMessageDate(message, index) }}
-          </div>
+          <div class="time-tips">{{ renderMessageDate(message, index) }}</div>
           <div class="message-item">
             <div v-if="message.type === 'CS_ACCEPT'" class="accept-message">
               {{ message.senderData.name }}已接入
@@ -47,11 +45,12 @@
                     <img :src="message.payload.url"
                          :style="{height:getImageHeight(message.payload.width,message.payload.height)+'px'}"/>
                   </div>
-                  <goeasy-audio-player
-                    v-if="message.type ==='audio'"
-                    :duration="message.payload.duration"
-                    :src="message.payload.url"
-                  />
+                  <div v-if="message.type ==='audio'" class="content-audio" @click="playAudio(message)">
+                    <div class="audio-facade" :style="{width:Math.ceil(message.payload.duration)*7 + 50 + 'px'}">
+                      <div class="audio-facade-bg" :class="{'play-icon':audioPlayer.playingMessage === message}"></div>
+                      <div>{{ Math.ceil(message.payload.duration) || 1 }}<span>"</span></div>
+                    </div>
+                  </div>
                   <goeasy-video-player
                     v-if="message.type === 'video'"
                     :src="message.payload.video.url"
@@ -60,7 +59,7 @@
                   <div v-if="message.type === 'order'" class="content-order">
                     <div class="order-id">订单号：{{ message.payload.id }}</div>
                     <div class="order-body">
-                      <img :src="message.payload.url" class="order-img" />
+                      <img :src="message.payload.url" class="order-img"/>
                       <div class="order-name">{{ message.payload.name }}</div>
                       <div>
                         <div class="order-price">{{ message.payload.price }}</div>
@@ -74,7 +73,6 @@
           </div>
         </div>
       </div>
-      <span ref="bottomView"></span>
     </div>
     <div class="chat-footer">
       <div v-if="customerStatus==null" class="accept-session">
@@ -141,6 +139,8 @@
         </div>
       </div>
     </div>
+    <!-- 语音播放器 -->
+    <audio ref="audioPlayer" @ended="onAudioPlayEnd" @pause="onAudioPlayEnd"></audio>
     <!-- 图片预览弹窗 -->
     <div v-if="imagePopup.visible" class="image-preview">
       <img :src="imagePopup.url" alt="图片"/>
@@ -178,7 +178,7 @@
              @click="sendOrderMessage(order)">
           <div class="order-id">订单号：{{ order.id }}</div>
           <div class="order-body">
-            <img :src="order.url" class="order-img" />
+            <img :src="order.url" class="order-img"/>
             <div class="order-name">{{ order.name }}</div>
             <div>
               <div class="order-price">{{ order.price }}</div>
@@ -195,16 +195,14 @@
   import {formatDate, formateTime} from '../utils/utils.js'
   import restApi from '../api/restapi';
   import EmojiDecoder from '../utils/EmojiDecoder';
-  import GoEasyAudioPlayer from "../components/GoEasyAudioPlayer";
-  import GoEasyVideoPlayer from "../components/GoEasyVideoPlayer";
+  import GoeasyVideoPlayer from "../components/GoEasyVideoPlayer";
 
   const IMAGE_MAX_WIDTH = 200;
   const IMAGE_MAX_HEIGHT = 150;
   export default {
     name: "Chat",
     components: {
-      "goeasy-audio-player": GoEasyAudioPlayer,
-      "goeasy-video-player": GoEasyVideoPlayer
+      GoeasyVideoPlayer,
     },
     data() {
       const emojiUrl = 'https://imgcache.qq.com/open/qcloud/tim/assets/emoji/';
@@ -226,7 +224,7 @@
 
         history: {
           messages: [],
-          allLoaded: false,
+          loaded: false,
           loading: true
         },
 
@@ -240,6 +238,9 @@
         imagePopup: {
           visible: false,
           url: ''
+        },
+        audioPlayer: {
+          playingMessage: null,
         },
         orderList: {
           orders: [],
@@ -302,7 +303,7 @@
           },
           onStatusUpdated: (customerStatus) => {
             this.customerStatus = customerStatus;
-            if (customerStatus.status==='PENDING') {
+            if (customerStatus.status === 'PENDING') {
               this.updatePendingTime(customerStatus.start);
             }
           },
@@ -311,12 +312,12 @@
           },
         })
       },
-      updatePendingTime (time) {
+      updatePendingTime(time) {
         this.pendingTime.duration = formateTime(time);
         clearInterval(this.pendingTime.timer);
         this.pendingTime.timer = setInterval(() => {
           this.pendingTime.duration = formateTime(time);
-        },1000);
+        }, 1000);
       },
       onReceivedMessage(newMessage) {
         //如果该消息已存在，跳过
@@ -356,7 +357,7 @@
             this.history.loading = false;
             let messages = result.content;
             if (messages.length === 0) {
-              this.history.allLoaded = true;
+              this.history.loaded = true;
             } else {
               if (lastMessageTimeStamp) {
                 this.history.messages = messages.concat(this.history.messages);
@@ -396,6 +397,26 @@
         } else if (width === height || width < height) {
           return IMAGE_MAX_HEIGHT;
         }
+      },
+      playAudio(audioMessage) {
+        let playingMessage = this.audioPlayer.playingMessage;
+
+        if (playingMessage) {
+          this.$refs.audioPlayer.pause();
+          // 如果点击的消息正在播放，就认为是停止播放操作
+          if (playingMessage === audioMessage) {
+            return;
+          }
+        }
+
+        this.audioPlayer.playingMessage = audioMessage;
+        this.$refs.audioPlayer.src = audioMessage.payload.url;
+        this.$refs.audioPlayer.load();
+        this.$refs.audioPlayer.currentTime = 0;
+        this.$refs.audioPlayer.play();
+      },
+      onAudioPlayEnd() {
+        this.audioPlayer.playingMessage = null;
       },
       renderMessageDate(message, index) {
         if (index === 0) {
@@ -544,7 +565,7 @@
           }
         });
       },
-      closeOrderMessageList () {
+      closeOrderMessageList() {
         this.orderList.visible = false;
       },
       showOrderMessageList() {
@@ -585,9 +606,7 @@
       },
       scrollToBottom() {
         this.$nextTick(() => {
-          if (this.$refs.bottomView) {
-            this.$refs.bottomView.scrollIntoView();
-          }
+          this.$refs.scrollView.scrollTop = this.$refs.messageList.scrollHeight;
         })
       }
     }
@@ -595,551 +614,581 @@
   };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
   .chat-container {
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
-
-    .chat-title {
-      height: 61px;
-      padding: 15px;
-      display: flex;
-      align-items: center;
-      font-size: 18px;
-
-      .chat-avatar {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-      }
-
-      .chat-name {
-        width: 400px;
-        margin-left: 10px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        word-break: break-all;
-      }
-
-    }
-
-    .chat-main {
-      display: flex;
-      flex-direction: column;
-      overflow-y: auto;
-      flex: 1;
-      scrollbar-width: thin;
-
-      &::-webkit-scrollbar {
-        width: 0;
-      }
-
-      .message-list {
-        padding: 0 15px;
-      }
-
-      .history-loaded {
-        text-align: center;
-        font-size: 12px;
-        color: #d02129;
-        cursor: pointer;
-        line-height: 20px;
-      }
-
-      .history-loading {
-        width: 100%;
-        text-align: center;
-      }
-
-      .time-tips {
-        color: #999;
-        text-align: center;
-        font-size: 12px;
-      }
-
-      .message-item {
-        display: flex;
-
-        .accept-message {
-          width: 100%;
-          text-align: center;
-          color: #606164;
-          line-height: 25px;
-        }
-
-        .message-item-content {
-          flex: 1;
-          margin: 5px 0;
-          overflow: hidden;
-          display: flex;
-
-          .sender-info {
-            margin: 5px;
-
-            .sender-avatar {
-              width: 40px;
-              height: 40px;
-              border-radius: 50%;
-            }
-
-            .sender-name {
-              color: #606164;
-              text-align: center;
-            }
-
-          }
-
-          .message-content {
-            max-width: calc(100% - 100px);
-
-            .message-payload {
-              display: flex;
-              align-items: center;
-            }
-
-            .pending {
-              background: url("../assets/images/pending.gif") no-repeat center;
-              background-size: 13px;
-              width: 15px;
-              height: 15px;
-            }
-
-            .send-fail {
-              background: url("../assets/images/failed.png") no-repeat center;
-              background-size: 13px;
-              width: 15px;
-              height: 15px;
-            }
-
-            .content-text {
-              display: flex;
-              align-items: center;
-              text-align: left;
-              background: #eeeeee;
-              font-size: 14px;
-              font-weight: 500;
-              padding: 6px 8px;
-              margin: 5px 0;
-              line-height: 25px;
-              white-space: pre-line;
-              overflow-wrap: anywhere;
-              border-radius: 8px;
-            }
-
-            .content-image {
-              display: block;
-              margin: 5px 10px;
-              cursor: pointer;
-            }
-
-            .content-order {
-              border-radius: 5px;
-              border: 1px solid #eeeeee;
-              padding: 8px;
-              display: flex;
-              flex-direction: column;
-
-              .order-id {
-                font-size: 12px;
-                color: #666666;
-                margin-bottom: 5px;
-              }
-
-              .order-body {
-                display: flex;
-                font-size: 13px;
-                padding: 5px;
-              }
-
-              .order-img {
-                width: 70px;
-                height: 70px;
-                border-radius: 5px;
-              }
-
-              .order-name {
-                margin-left: 10px;
-                width: 135px;
-                color: #606164;
-              }
-
-              .order-count {
-                font-size: 12px;
-                color: #666666;
-                flex: 1;
-              }
-            }
-          }
-        }
-
-        .self {
-          overflow: hidden;
-          display: flex;
-          justify-content: flex-start;
-          flex-direction: row-reverse;
-        }
-
-        .self /deep/ .play-icon {
-          background: url("../assets/images/play.gif") no-repeat center;
-          background-size: 20px;
-          -moz-transform: rotate(180deg);
-          -webkit-transform: rotate(180deg);
-          -o-transform: rotate(180deg);
-          transform: rotate(180deg);
-        }
-
-      }
-    }
-
-    .chat-footer {
-      border-top: 1px solid #dcdfe6;
-      width: 100%;
-      height: 200px;
-      background: #FFFFFF;
-
-      .action-box {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-
-        .action-bar {
-          display: flex;
-          flex-direction: row;
-          justify-content: space-between;
-
-          .iconfont {
-            font-size: 22px;
-            margin: 0 10px;
-            z-index: 3;
-            color: #606266;
-            cursor: pointer;
-
-            &
-            :focus {
-              outline: none;
-            }
-
-            &
-            :hover {
-              color: #d02129;
-            }
-
-          }
-
-          .chat-action {
-            display: flex;
-            flex-direction: row;
-            padding: 0 10px;
-
-            .action-item {
-              text-align: left;
-              padding: 10px 0;
-              position: relative;
-
-              .emoji-box {
-                width: 250px;
-                position: absolute;
-                top: -125px;
-                left: -11px;
-                z-index: 2007;
-                background: #fff;
-                border: 1px solid #ebeef5;
-                padding: 12px;
-                text-align: justify;
-                font-size: 14px;
-                box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-                word-break: break-all;
-                border-radius: 4px;
-
-                .emoji-list {
-                  display: flex;
-                  flex-wrap: wrap;
-                }
-
-                .emoji-item {
-                  width: 45px;
-                  height: 45px;
-                  margin: 0 2px
-                }
-
-              }
-            }
-          }
-
-          .session-action {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-
-            .transfer {
-              cursor: pointer;
-              margin-right: 10px;
-              line-height: 30px;
-              text-align: center;
-              width: 70px;
-              height: 30px;
-              font-size: 15px;
-              border: 1px solid #d02129;
-              background-color: #ffffff;
-              color: #d02129;
-              border-radius: 5px;
-            }
-          }
-        }
-
-        .input-box {
-          padding: 0 10px;
-          flex: 1;
-
-          .input-content {
-            height: 110px;
-            border: none;
-            resize: none;
-            display: block;
-            padding: 5px 15px;
-            box-sizing: border-box;
-            width: 100%;
-            color: #606266;
-            outline: none;
-            background: #FFFFFF;
-          }
-
-        }
-
-        .send-box {
-          padding: 5px 10px;
-          text-align: right;
-
-          .send-button {
-            width: 70px;
-            height: 30px;
-            font-size: 15px;
-            border: 1px solid #d02129;
-            background-color: #ffffff;
-            color: #d02129;
-            border-radius: 5px;
-          }
-
-        }
-      }
-
-      .accept-session {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-
-        .accept-info {
-          font-size: 18px;
-          color: #d02129;
-          margin-bottom: 10px;
-        }
-
-        .accept-btn {
-          width: 75px;
-          height: 30px;
-          font-size: 15px;
-          border: 1px solid #d02129;
-          background-color: #ffffff;
-          color: #d02129;
-          border-radius: 5px;
-          cursor: pointer;
-        }
-
-      }
-    }
-
-    .image-preview {
-      max-width: 750px;
-      max-height: 500px;
-      background: rgba(0, 0, 0, 0.8);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: fixed;
-      margin: auto;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      z-index: 9998;
-
-      img {
-        max-width: 750px;
-        max-height: 500px;
-      }
-
-      .close {
-        font-size: 50px;
-        line-height: 24px;
-        cursor: pointer;
-        color: #FFFFFF;
-        position: absolute;
-        top: 10px;
-        right: 5px;
-        z-index: 1002;
-      }
-
-    }
-
-    .transfer-popup {
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 0;
-      bottom: 0;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(33, 33, 33, 0.7);
-
-      .transfer-model {
-        width: 450px;
-        min-height: 200px;
-        display: flex;
-        flex-direction: column;
-        padding: 5px;
-        border: 1px solid gainsboro;
-        border-radius: 4px;
-        text-align: center;
-        background: #ffffff;
-
-        .transfer-content {
-          flex: 1;
-          display: flex;
-          align-items: center;
-          flex-wrap: wrap;
-
-          .agent-info {
-            width: 110px;
-            padding: 20px;
-
-            .agent-label {
-              display: flex;
-              align-items: center;
-            }
-
-            .agent-avatar {
-              width: 40px;
-              height: 40px;
-              min-width: 40px;
-              min-height: 40px;
-              margin: 0 5px;
-            }
-
-            .agent-name {
-              font-size: 14px;
-              word-break: break-all;
-            }
-
-          }
-
-          .no-agent {
-            flex: 1;
-          }
-
-        }
-
-        .transfer-bottom {
-          height: 50px;
-          display: flex;
-          margin: 0 50px;
-          align-items: center;
-          justify-content: space-around;
-
-          .transfer-button {
-            display: inline-block;
-            padding: 8px 15px;
-            font-size: 13px;
-            border: 1px solid #d02129;
-            color: #d02129;
-            border-radius: 4px;
-            cursor: pointer;
-          }
-
-        }
-      }
-    }
-
-    .order-box {
-      width: 850px;
-      height: 650px;
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      z-index: 2007;
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(33, 33, 33, 0.7);
-
-      .order-list {
-        width: 300px;
-        background: #F1F1F1;
-        border-radius: 5px;
-
-        .title {
-          font-weight: 600;
-          font-size: 15px;
-          color: #000000;
-          margin-left: 10px;
-          margin-right: 10px;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          span {
-            font-size: 28px;
-            font-weight: 400;
-            cursor: pointer;
-          }
-        }
-        .order-item {
-          padding: 10px;
-          background: #FFFFFF;
-          margin: 10px;
-          border-radius: 5px;
-        }
-
-        .order-id {
-          font-size: 12px;
-          color: #666666;
-          margin-bottom: 5px;
-        }
-
-        .order-body {
-          display: flex;
-          font-size: 13px;
-          justify-content: space-between;
-        }
-
-        .order-img {
-          width: 50px;
-          height: 50px;
-          border-radius: 5px;
-        }
-
-        .order-name {
-          width: 160px;
-        }
-
-        .order-count {
-          font-size: 12px;
-          color: #666666;
-          flex: 1;
-        }
-
-      }
-    }
   }
+
+  .chat-title {
+    height: 61px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+  }
+
+  .chat-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+
+  .chat-name {
+    width: 400px;
+    margin-left: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+  }
+
+  .chat-main {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    flex: 1;
+    scrollbar-width: thin;
+  }
+
+  .chat-main::-webkit-scrollbar {
+    width: 0;
+  }
+
+  .chat-main .message-list {
+    padding: 0 15px;
+  }
+
+  .chat-main .history-loaded {
+    text-align: center;
+    font-size: 12px;
+    color: #cccccc;
+    cursor: pointer;
+    line-height: 20px;
+  }
+
+  .chat-main .load {
+    text-align: center;
+    font-size: 12px;
+    color: #d02129;
+    line-height: 20px;
+    cursor: pointer;
+  }
+
+  .history-loading {
+    width: 100%;
+    text-align: center;
+  }
+
+  .time-tips {
+    color: #999;
+    text-align: center;
+    font-size: 12px;
+  }
+
+  .message-list {
+    padding: 0 10px;
+  }
+
+  .message-item {
+    display: flex;
+  }
+
+  .accept-message {
+    width: 100%;
+    text-align: center;
+    color: #606164;
+    line-height: 25px;
+  }
+
+  .message-item-content {
+    flex: 1;
+    margin: 5px 0;
+    overflow: hidden;
+    display: flex;
+  }
+
+  .sender-info {
+    margin: 0 5px;
+  }
+
+  .sender-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+
+  .sender-name {
+    color: #606164;
+    text-align: center;
+  }
+
+  .message-content {
+    max-width: calc(100% - 100px);
+  }
+
+  .message-payload {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .pending {
+    background: url("../assets/images/pending.gif") no-repeat center;
+    background-size: 13px;
+    width: 15px;
+    height: 15px;
+  }
+
+  .send-fail {
+    background: url("../assets/images/failed.png") no-repeat center;
+    background-size: 13px;
+    width: 15px;
+    height: 15px;
+  }
+
+  .content-text {
+    display: flex;
+    align-items: center;
+    text-align: left;
+    background: #eeeeee;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 6px 8px;
+    margin: 3px 0;
+    line-height: 25px;
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+    border-radius: 8px;
+    word-break: break-all;
+    flex-wrap: wrap;
+  }
+
+  .content-image {
+    display: block;
+    cursor: pointer;
+  }
+
+  .content-image img {
+    height: 100%;
+  }
+
+  .content-audio {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  }
+
+  .content-audio .audio-facade {
+    min-width: 12px;
+    background: #eeeeee;
+    border-radius: 7px;
+    display: flex;
+    font-size: 14px;
+    padding: 8px;
+    margin: 5px 0;
+    line-height: 25px;
+    cursor: pointer;
+  }
+
+  .content-audio .audio-facade-bg {
+    background: url("../assets/images/voice.png") no-repeat center;
+    background-size: 15px;
+    width: 20px;
+  }
+
+  .content-audio .audio-facade-bg.play-icon {
+    background: url("../assets/images/play.gif") no-repeat center;
+    background-size: 20px;
+  }
+
+  .content-order {
+    border-radius: 5px;
+    border: 1px solid #eeeeee;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .content-order .order-id {
+    font-size: 12px;
+    color: #666666;
+    margin-bottom: 5px;
+  }
+
+  .content-order .order-body {
+    display: flex;
+    font-size: 13px;
+    padding: 5px;
+  }
+
+  .content-order .order-img {
+    width: 70px;
+    height: 70px;
+    border-radius: 5px;
+  }
+
+  .content-order .order-name {
+    margin-left: 10px;
+    width: 135px;
+    color: #606164;
+  }
+
+  .content-order .order-count {
+    font-size: 12px;
+    color: #666666;
+    flex: 1;
+  }
+
+  .message-item .self {
+    overflow: hidden;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row-reverse;
+  }
+
+  .message-item .self::v-deep(.play-icon) {
+    background: url("../assets/images/play.gif") no-repeat center;
+    background-size: 20px;
+    -moz-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg);
+  }
+
+  .chat-footer {
+    border-top: 1px solid #dcdfe6;
+    width: 100%;
+    height: 200px;
+    background: #FFFFFF;
+  }
+
+  .action-box {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .action-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .action-bar .iconfont {
+    font-size: 22px;
+    margin: 0 10px;
+    z-index: 3;
+    color: #606266;
+    cursor: pointer;
+  }
+
+  .action-bar .iconfont:focus {
+    outline: none;
+  }
+
+  .action-bar .iconfont:hover {
+    color: #d02129;
+  }
+
+  .chat-action {
+    display: flex;
+    flex-direction: row;
+    padding: 0 10px;
+  }
+
+  .action-bar .action-item {
+    text-align: left;
+    padding: 10px 0;
+    position: relative;
+  }
+
+  .emoji-box {
+    width: 250px;
+    position: absolute;
+    top: -125px;
+    left: -11px;
+    z-index: 2007;
+    background: #fff;
+    border: 1px solid #ebeef5;
+    padding: 12px;
+    text-align: justify;
+    font-size: 14px;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    word-break: break-all;
+    border-radius: 4px;
+  }
+
+  .emoji-item {
+    width: 45px;
+    height: 45px;
+    margin: 0 2px;
+  }
+
+  .session-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .session-action .transfer {
+    cursor: pointer;
+    margin-right: 10px;
+    line-height: 30px;
+    text-align: center;
+    width: 70px;
+    height: 30px;
+    font-size: 15px;
+    border: 1px solid #d02129;
+    background-color: #ffffff;
+    color: #d02129;
+    border-radius: 5px;
+  }
+
+  .input-box {
+    padding: 0 10px;
+    flex: 1;
+  }
+
+  .input-content {
+    height: 110px;
+    border: none;
+    resize: none;
+    display: block;
+    padding: 5px 15px;
+    box-sizing: border-box;
+    width: 100%;
+    color: #606266;
+    outline: none;
+    background: #FFFFFF;
+    word-break: break-all;
+  }
+
+  .send-box {
+    padding: 5px 10px;
+    text-align: right;
+  }
+
+  .send-button {
+    width: 70px;
+    height: 30px;
+    font-size: 15px;
+    border: 1px solid #d02129;
+    background-color: #ffffff;
+    color: #d02129;
+    border-radius: 5px;
+  }
+
+  .accept-session {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .accept-info {
+    font-size: 18px;
+    color: #d02129;
+    margin-bottom: 10px;
+  }
+
+  .accept-btn {
+    width: 75px;
+    height: 30px;
+    font-size: 15px;
+    border: 1px solid #d02129;
+    background-color: #ffffff;
+    color: #d02129;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .image-preview {
+    max-width: 750px;
+    max-height: 500px;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9998;
+  }
+
+  .image-preview img {
+    max-width: 750px;
+    max-height: 500px;
+  }
+
+  .image-preview .close {
+    font-size: 50px;
+    line-height: 24px;
+    cursor: pointer;
+    color: #FFFFFF;
+    position: absolute;
+    top: 10px;
+    right: 5px;
+    z-index: 1002;
+  }
+
+  .transfer-popup {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(33, 33, 33, 0.7);
+  }
+
+  .transfer-model {
+    width: 450px;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    border: 1px solid gainsboro;
+    border-radius: 4px;
+    text-align: center;
+    background: #ffffff;
+  }
+
+  .transfer-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .no-agent {
+    flex: 1;
+  }
+
+  .agent-info {
+    width: 110px;
+    padding: 20px;
+  }
+
+  .agent-label {
+    display: flex;
+    align-items: center;
+  }
+
+  .agent-avatar {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+    margin: 0 5px;
+  }
+
+  .agent-name {
+    font-size: 14px;
+    word-break: break-all;
+  }
+
+  .transfer-bottom {
+    height: 50px;
+    display: flex;
+    margin: 0 50px;
+    align-items: center;
+    justify-content: space-around;
+  }
+
+  .transfer-button {
+    display: inline-block;
+    padding: 8px 15px;
+    font-size: 13px;
+    border: 1px solid #d02129;
+    color: #d02129;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .order-box {
+    width: 850px;
+    height: 650px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 2007;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(33, 33, 33, 0.7);
+  }
+
+  .order-list {
+    width: 300px;
+    background: #F1F1F1;
+    border-radius: 5px;
+  }
+
+  .order-list .title {
+    font-weight: 600;
+    font-size: 15px;
+    color: #000000;
+    margin-left: 10px;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .order-list .title span {
+    font-size: 28px;
+    font-weight: 400;
+    cursor: pointer;
+  }
+
+  .order-list .order-item {
+    padding: 10px;
+    background: #FFFFFF;
+    margin: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .order-list .order-id {
+    font-size: 12px;
+    color: #666666;
+    margin-bottom: 5px;
+  }
+
+  .order-list .order-body {
+    display: flex;
+    font-size: 13px;
+    justify-content: space-between;
+  }
+
+  .order-list .order-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+  }
+
+  .order-list .order-name {
+    width: 160px;
+  }
+
+  .order-list .order-count {
+    font-size: 12px;
+    color: #666666;
+    flex: 1;
+  }
+
 </style>

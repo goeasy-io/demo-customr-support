@@ -1,0 +1,34 @@
+<!--login.wxml-->
+<view class="container">
+	<view class="login-container">
+		<view class="title">GoEasy-Support</view>
+		<view class="agent-selector">
+			<view class="selected-area" bindtap="switchSelectorVisible">
+				<view class="selected-content" wx:if="{{agentSelector.selectedAgent}}">
+					<image src="{{agentSelector.selectedAgent.shop.avatar}}"></image>
+					<text>{{ agentSelector.selectedAgent.shop.name+' - '+agentSelector.selectedAgent.name }}</text>
+				</view>
+				<view class="selected-content" wx:else>
+					<text>请选择用户</text>
+				</view>
+				<image class="selected-icon rotate" src="/static/images/up.png"></image>
+			</view>
+			<view wx:if="{{agentSelector.visible}}" class="dialog-area">
+				<view class="dialog-list">
+					<view class="dialog-list-item" wx:for="{{agentSelector.agents}}" wx:for-item="agent" wx:key="key"
+						  data-agent="{{agent}}" bind:tap="selectAgent">
+						<image class="dialog-list-item-avatar" src="{{agent.shop.avatar}}"></image>
+						<text>{{  agent.shop.name+' - '+agent.name }}</text>
+					</view>
+				</view>
+			</view>
+		</view>
+
+		<view class="password-box">
+			<input value="{{password.value}}" class="password-input" placeholder="请输入密码" password="{{!password.visible}}" type="text"></input>
+			<image class="password-image" bindtap="switchPasswordVisible" src="/static/images/visible.png"></image>
+		</view>
+		<view wx:if="{{errorVisible}}" class="error">请输入正确的用户名和密码</view>
+		<button class="login-btn" bindtap="login">登录</button>
+	</view>
+</view>

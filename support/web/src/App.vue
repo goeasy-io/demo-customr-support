@@ -4,7 +4,10 @@
   </div>
 </template>
 
-<style lang="scss">
+<style>
+  /*引入阿里字体图标*/
+  @import './assets/iconfont/iconfont.css';
+
   #app {
     height: 100%;
   }

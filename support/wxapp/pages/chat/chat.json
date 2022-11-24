@@ -1,0 +1,9 @@
+{
+	"navigationBarTitleText": "聊天",
+	"enablePullDownRefresh" : true,
+	"backgroundTextStyle" : "dark",
+	"usingComponents": {
+		"GoEasyRecorder": "/components/GoEasyRecorder/goEasyRecorder",
+		"GoEasyVideoPlayer": "/components/GoEasyVideoPlayer/goEasyVideoPlayer"
+	}
+}

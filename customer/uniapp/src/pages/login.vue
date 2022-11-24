@@ -4,42 +4,30 @@
 
     <view class="customer-selector">
       <view class="selected-area" @click="switchSelectorVisible">
-        <view class="selected-content">
-          <image v-if="customerSelector.selectedCustomer" :src="customerSelector.selectedCustomer.avatar"></image>
-          <text>{{ customerSelector.selectedCustomer ? customerSelector.selectedCustomer.name : '请选择用户' }}</text>
+        <view class="selected-content" v-if="customerSelector.selectedCustomer">
+          <image :src="customerSelector.selectedCustomer.avatar"></image>
+          <text>{{ customerSelector.selectedCustomer.name }}</text>
         </view>
-        <image
-          :class="customerSelector.visible ? 'selected-icon' : 'selected-icon rotate'"
-          src="/static/images/up.png"
-        ></image>
+        <view class="selected-content" v-else>
+          <text>请选择用户</text>
+        </view>
+        <image class="selected-icon rotate" src="/static/images/up.png"></image>
       </view>
       <view v-if="customerSelector.visible" class="dialog-area">
         <view class="dialog-list">
-          <view
-            class="dialog-list-item"
-            v-for="(customer, index) in customerSelector.customers"
-            :key="index"
-            @click="selectCustomer(customer)">
-              <image class="dialog-list-item-avatar" :src="customer.avatar"></image>
-              <text :class="customerSelector.selectedCustomer === customer ? 'selected' : ''">{{ customer.name }}</text>
+          <view class="dialog-list-item" v-for="(customer, index) in customerSelector.customers"
+                :key="index" @click="selectCustomer(customer)">
+            <image class="dialog-list-item-avatar" :src="customer.avatar"></image>
+            <text>{{ customer.name }}</text>
           </view>
         </view>
       </view>
     </view>
 
     <view class="password-box">
-      <input
-        v-model="password.value"
-        class="password-input"
-        placeholder="请输入密码"
-        :password="!password.visible"
-        type="text"
-      >
-      <image
-        class="password-image"
-        @click="switchPasswordVisible"
-        :src="password.visible?'/static/images/invisible.png':'/static/images/visible.png'"
-      ></image>
+      <input v-model="password.value" class="password-input" placeholder="请输入密码"
+             :password="!password.visible" type="text">
+      <image class="password-image" @click="switchPasswordVisible" src="/static/images/visible.png"></image>
     </view>
 
     <view v-show="errorVisible" class="alert-box">
@@ -53,7 +41,7 @@
 
 <script>
   import restApi from '../lib/restapi';
-  const { versionName } = require('../manifest.json');
+  const {versionName} = require('../manifest.json');
 
   export default {
     name: 'Login',
@@ -63,11 +51,10 @@
         customerSelector: {
           customers: [],
           visible: false,
-          index: 0,
           selectedCustomer: null
         },
 
-        username:'',
+        username: '',
         password: {
           visible: false,
           value: '123'
@@ -86,19 +73,17 @@
       selectCustomer(customer) {
         this.customerSelector.visible = false;
         this.customerSelector.selectedCustomer = customer;
-        this.username= customer.name;
+        this.username = customer.name;
       },
       switchPasswordVisible() {
         this.password.visible = !this.password.visible;
       },
       login() {
-        if (this.username.trim() !== ''&& this.password.value.trim() !== '') {
+        if (this.username.trim() !== '' && this.password.value.trim() !== '') {
           let customer = restApi.findCustomer(this.username, this.password.value);
           if (customer) {
             getApp().globalData.currentCustomer = customer;
-            uni.switchTab({
-              url: './home'
-            });
+            uni.switchTab({ url: './home'});
             return
           }
         }
@@ -254,14 +239,14 @@
     margin-right: 30rpx;
     border-radius: 50%;
   }
-  
+
   .version {
     color: #ffffff;
     font-size: 40rpx;
     margin-top: 60rpx;
   }
-  
-  view {  
-    user-select: text;  
-  } 
+
+  view {
+    user-select: text;
+  }
 </style>
