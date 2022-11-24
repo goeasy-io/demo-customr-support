@@ -7,7 +7,7 @@
           v-for="(customer, key) in customers || []"
           :key="key"
           :class="selectedCustomer && selectedCustomer.id === customer.id ?'customer-item checked' : 'customer-item'"
-          @click="showCustomer(customer)"
+          @click="showCustomerProfile(customer)"
         >
           <div class="user-avatar">
             <img :src="customer.avatar"/>
@@ -58,7 +58,7 @@
       this.customers = restApi.findCustomers();
     },
     methods: {
-      showCustomer(customer) {
+      showCustomerProfile(customer) {
         this.selectedCustomer = customer;
       },
       chat(customer) {
@@ -75,160 +75,139 @@
   };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
   .customer {
     width: 100%;
     height: 100%;
     display: flex;
     background: #F7F7F7;
+  }
 
-    .customer-left {
-      height: 100%;
-      border-right: #dbd6d6 1px solid;
-      width: 260px;
-      border-right: 1px solid #eee;
-      display: flex;
-      flex-direction: column;
+  .customer-left {
+    height: 100%;
+    border-right: #dbd6d6 1px solid;
+    width: 260px;
+    border-right: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+  }
 
-      .customer-title {
-        padding: 20px;
-        margin-bottom: 15px;
+  .customer-tab {
+    padding: 20px;
+    margin-bottom: 20px;
+    font-size: 18px;
+    border-bottom: 1px solid #eeeeee;
+  }
 
-        .input {
-          background-color: #fff;
-          border-radius: 4px;
-          border: 1px solid #dcdfe6;
-          padding: 0 15px;
-          height: 32px;
-        }
+  .customer-list {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
 
-      }
+  .customer-item {
+    display: flex;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
 
-      .customer-tab {
-        padding: 20px;
-        margin-bottom: 20px;
-        font-size: 18px;
-        border-bottom: 1px solid #eeeeee;
-      }
+  .user-avatar {
+    width: 45px;
+  }
 
-      .customer-list {
-        display: flex;
-        flex-direction: column;
-        overflow-y: auto;
-      }
+  .user-avatar img {
+    width: 45px;
+    height: 45px;
+    border-radius: 10%;
+  }
 
-      .customer-item {
-        display: flex;
-        padding: 5px 10px;
-        cursor: pointer;
+  .user-info {
+    display: flex;
+    align-items: center;
+    text-align: left;
+    padding-left: 10px;
+    font-size: 15px;
+  }
 
-        .user-avatar {
-          width: 45px;
+  .customer-left .checked {
+    background: #FFFFFF;
+    border-radius: 10px;
+    box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.1);
+  }
 
-          img {
-            width: 45px;
-            height: 45px;
-            border-radius: 10%;
-          }
-
-        }
-
-        .user-info {
-          display: flex;
-          align-items: center;
-          text-align: left;
-          padding-left: 10px;
-          font-size: 15px;
-        }
-
-      }
-
-      .checked {
-        background: #FFFFFF;
-        border-radius: 10px;
-        box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.1);
-      }
-
-    }
-
-    .customer-main {
-      flex: 1;
-      background: #FFFFFF;
-    }
-
+  .customer .customer-main {
+    flex: 1;
+    background: #FFFFFF;
   }
 
   .profile-card {
     padding: 20px 0;
+  }
 
-    .card-title {
-      padding: 60px;
-      border-bottom: 1px solid #eeeeee;
-      display: flex;
-      justify-content: space-around;
+  .card-title {
+    padding: 60px;
+    border-bottom: 1px solid #eeeeee;
+    display: flex;
+    justify-content: space-around;
+  }
 
-      .profile-name {
-        width: 300px;
-        font-size: 18px;
-        display: flex;
-        align-items: center;
+  .profile-name {
+    width: 300px;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+  }
 
-        .icon-zhanghu {
-          font-size: 26px;
-          color: #eeeeee;
-          margin-right: 10px;
-        }
+  .profile-name .icon-zhanghu {
+    font-size: 26px;
+    color: #eeeeee;
+    margin-right: 10px;
+  }
 
-      }
+  .profile-avatar {
+    width: 80px;
+  }
 
-      .profile-avatar {
-        width: 80px;
+  .profile-avatar img {
+    width: 80px;
+    height: 80px;
+    border-radius: 10%;
+  }
 
-        img {
-          width: 80px;
-          height: 80px;
-          border-radius: 10%;
-        }
+  .profile-card .info-item {
+    padding: 10px 30px;
+    display: flex;
+    justify-content: space-around;
+    text-align: left;
+    font-size: 14px;
+    line-height: 45px;
+  }
 
-      }
-    }
+  .profile-card .info-item .info-name {
+    width: 100px;
+  }
 
-    .info-item {
-      padding: 10px 30px;
-      display: flex;
-      justify-content: space-around;
-      text-align: left;
-      font-size: 14px;
-      line-height: 45px;
-
-      .info-name {
-        width: 100px;
-      }
-
-      .info-text {
-        width: 200px;
-      }
-
-    }
+  .profile-card .info-item .info-text {
+    width: 200px;
   }
 
   .button-box {
     padding: 40px 0;
-
-    .card-button {
-      background: #eeeeee;
-      color: #000000;
-      font-size: 14px;
-      border: none;
-      display: flex;
-      width: 120px;
-      height: 35px;
-      cursor: pointer;
-      border-radius: 5px;
-      margin: 0 auto;
-      align-items: center;
-      justify-content: center;
-    }
-
   }
+
+  .card-button {
+    background: #eeeeee;
+    color: #000000;
+    font-size: 14px;
+    border: none;
+    display: flex;
+    width: 120px;
+    height: 35px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 0 auto;
+    align-items: center;
+    justify-content: center;
+  }
+
 </style>
