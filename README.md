@@ -2,7 +2,7 @@
 
 #### 演示版体验
 
-[https://goeasy-io.gitee.io/show-cs/1.0.12/](https://www.goeasy.io/cn/cs-demo.html)
+[https://www.goeasy.io/cn/cs-demo.html](https://www.goeasy.io/cn/cs-demo.html)
 
 #### 官方文档
 
