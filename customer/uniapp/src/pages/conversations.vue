@@ -151,8 +151,8 @@
           name:conversation.data.name,
           avatar:conversation.data.avatar
         }
-        uni.navigateTo({
-          url: './chat?to=' + JSON.stringify(shop)
+        uni.redirectTo({
+          url: './chat?to=' + JSON.stringify(shop)+'&from=conversations'
         });
       }
     }
