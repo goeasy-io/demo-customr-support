@@ -178,7 +178,6 @@
         currentCustomer: {},
         shop: {},
         to: {},// 作为createMessage的参数
-        from: '',// 记录上一个页面的路径
         text: '',
         //定义表情列表
         emoji: {
@@ -217,7 +216,6 @@
       }
     },
     onLoad(options) {
-      this.from = options.from;
       this.shop = JSON.parse(options.to);
       this.to = {
         id: this.shop.id,
@@ -250,9 +248,6 @@
       this.goEasy.im.off(this.GoEasy.IM_EVENT.CS_MESSAGE_RECEIVED, this.onMessageReceived);
     },
     methods: {
-      onNavigationBarButtonTap(e) {
-        uni.switchTab({ url: `./${this.from}` });
-      },
       /**
        * 核心就是设置高度，产生明确占位
        *

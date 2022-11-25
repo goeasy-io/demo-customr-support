@@ -57,8 +57,8 @@
         });
       },
       chat(shop) {
-        uni.redirectTo({
-          url: './chat?to=' + JSON.stringify(shop)+'&from=home'
+        uni.navigateTo({
+          url: './chat?to=' + JSON.stringify(shop)
         });
       }
     }
