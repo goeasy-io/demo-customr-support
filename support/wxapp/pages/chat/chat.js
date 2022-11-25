@@ -258,7 +258,13 @@ Page({
     async acceptSession() {
         if (await this.isOnline()) {
             this.data.csteam.accept({
-                id: this.data.customer.id,
+                customer: {
+                    id: this.data.customer.id,
+                    data: {
+                        name: this.data.customer.name,
+                        avatar: this.data.customer.avatar
+                    }
+                },
                 onSuccess: () => {
                     console.log('accept successfully.');
                     clearInterval(this.data.pendingTime.timer);
