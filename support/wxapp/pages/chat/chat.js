@@ -26,7 +26,7 @@ Page({
 
         history: {
             messages: [],
-            loaded: false,
+            allLoaded: false,
             loading: true
         },
 
@@ -217,7 +217,7 @@ Page({
                 let messages = result.content;
                 if (messages.length === 0) {
                     this.setData({
-                        ['history.loaded']: true
+                        ['history.allLoaded']: true
                     });
                 } else {
                     let messageList

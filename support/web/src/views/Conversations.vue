@@ -4,67 +4,24 @@
       <div class="conversation-list-item">
         <div class="conversation-list-title">待接入 {{ pendingConversations.length }}</div>
         <div class="conversation-list-body">
-          <div
-            v-for="(conversation, key) in pendingConversations"
-            :key="key" :class="{checked:conversation.id === $route.query.id}"
-            class="conversation-item"
-            @click="chat(conversation)"
+          <router-link
+            tag="div" :to="chat(conversation)" replace
+            v-for="(conversation, key) in pendingConversations" :key="key"
           >
-            <div class="conversation-item-head">
-              <img :src="conversation.data.avatar" class="conversation-item-avatar"/>
-            </div>
-            <div class="item-info">
-              <div class="item-info-name">{{ conversation.data.name }}</div>
-              <div v-if="conversation.lastMessage.type === 'text'" class="item-info-message">
-                {{ conversation.lastMessage.payload.text }}
+            <div class="conversation-item">
+              <div class="conversation-item-head">
+                <img :src="conversation.data.avatar" class="conversation-item-avatar"/>
               </div>
-              <div v-else-if="conversation.lastMessage.type === 'image'" class="item-info-message">[图片消息]</div>
-              <div v-else-if="conversation.lastMessage.type === 'video'" class="item-info-message">[视频消息]</div>
-              <div v-else-if="conversation.lastMessage.type === 'audio'" class="item-info-message">[语音消息]</div>
-              <div v-else-if="conversation.lastMessage.type === 'order'" class="item-info-message">[自定义消息:订单]</div>
-              <div v-else-if="conversation.lastMessage.type === 'CS_END'" class="item-info-message">会话已结束</div>
-              <div v-else-if="conversation.lastMessage.type === 'CS_ACCEPT'" class="item-info-message">接入成功</div>
-              <div v-else-if="conversation.lastMessage.type === 'CS_TRANSFER'" class="item-info-message">
-                {{
-                  conversation.lastMessage.senderId === currentAgent.id ? `已转接给` +
-                    conversation.lastMessage.payload.transferTo.data.name : '已接入来自' +
-                    conversation.lastMessage.senderData.name + '的转接'
-                }}
-              </div>
-              <div v-else class="item-info-message">[未识别内容]</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="conversation-list-item">
-        <div class="conversation-list-title">已接入 {{ conversations.length }}</div>
-        <div v-if="conversations.length" class="conversation-list-body">
-          <div
-            v-for="(conversation, key) in conversations"
-            :key="key" :class="{checked:conversation.id === $route.query.id}"
-            class="conversation-item"
-            @click="chat(conversation)"
-            @contextmenu.prevent.stop="e => showRightClickMenu(e,conversation)"
-          >
-            <div class="conversation-item-head">
-              <img :src="conversation.data.avatar" class="conversation-item-avatar"/>
-              <span v-if="conversation.unread" class="conversation-item-unread">{{ conversation.unread }}</span>
-            </div>
-            <div class="conversation-item-info">
-              <div class="item-info-top">
+              <div class="item-info">
                 <div class="item-info-name">{{ conversation.data.name }}</div>
-                <div class="item-info-time">{{ formatDate(conversation.lastMessage.timestamp) }}</div>
-              </div>
-              <div class="item-info-bottom">
-                <div v-if="conversation.lastMessage.status === 'sending'" class="item-info-sending"></div>
-                <div v-if="conversation.lastMessage.status === 'fail'" class="item-info-failed"></div>
                 <div v-if="conversation.lastMessage.type === 'text'" class="item-info-message">
-                  {{ conversation.lastMessage.payload.text}}
+                  {{ conversation.lastMessage.payload.text }}
                 </div>
                 <div v-else-if="conversation.lastMessage.type === 'image'" class="item-info-message">[图片消息]</div>
                 <div v-else-if="conversation.lastMessage.type === 'video'" class="item-info-message">[视频消息]</div>
                 <div v-else-if="conversation.lastMessage.type === 'audio'" class="item-info-message">[语音消息]</div>
-                <div v-else-if="conversation.lastMessage.type === 'order'" class="item-info-message">[自定义消息:订单]</div>
+                <div v-else-if="conversation.lastMessage.type === 'order'" class="item-info-message">[自定义消息:订单]
+                </div>
                 <div v-else-if="conversation.lastMessage.type === 'CS_END'" class="item-info-message">会话已结束</div>
                 <div v-else-if="conversation.lastMessage.type === 'CS_ACCEPT'" class="item-info-message">接入成功</div>
                 <div v-else-if="conversation.lastMessage.type === 'CS_TRANSFER'" class="item-info-message">
@@ -77,7 +34,52 @@
                 <div v-else class="item-info-message">[未识别内容]</div>
               </div>
             </div>
-          </div>
+          </router-link>
+        </div>
+      </div>
+      <div class="conversation-list-item">
+        <div class="conversation-list-title">已接入 {{ conversations.length }}</div>
+        <div v-if="conversations.length" class="conversation-list-body">
+          <router-link
+            tag="div" :to="chat(conversation)" replace
+            v-for="(conversation, key) in conversations" :key="key"
+          >
+            <div class="conversation-item" @contextmenu.prevent.stop="e => showRightClickMenu(e,conversation)">
+              <div class="conversation-item-head">
+                <img :src="conversation.data.avatar" class="conversation-item-avatar"/>
+                <span v-if="conversation.unread" class="conversation-item-unread">{{ conversation.unread }}</span>
+              </div>
+              <div class="conversation-item-info">
+                <div class="item-info-top">
+                  <div class="item-info-name">{{ conversation.data.name }}</div>
+                  <div class="item-info-time">{{ formatDate(conversation.lastMessage.timestamp) }}</div>
+                </div>
+                <div class="item-info-bottom">
+                  <div v-if="conversation.lastMessage.status === 'sending'" class="item-info-sending"></div>
+                  <div v-if="conversation.lastMessage.status === 'fail'" class="item-info-failed"></div>
+                  <div v-if="conversation.lastMessage.type === 'text'" class="item-info-message">
+                    {{ conversation.lastMessage.senderId === currentAgent.id ? '你' : conversation.lastMessage.senderData.name }}:
+                    {{ conversation.lastMessage.payload.text }}
+                  </div>
+                  <div v-else-if="conversation.lastMessage.type === 'image'" class="item-info-message">[图片消息]</div>
+                  <div v-else-if="conversation.lastMessage.type === 'video'" class="item-info-message">[视频消息]</div>
+                  <div v-else-if="conversation.lastMessage.type === 'audio'" class="item-info-message">[语音消息]</div>
+                  <div v-else-if="conversation.lastMessage.type === 'order'" class="item-info-message">[自定义消息:订单]
+                  </div>
+                  <div v-else-if="conversation.lastMessage.type === 'CS_END'" class="item-info-message">会话已结束</div>
+                  <div v-else-if="conversation.lastMessage.type === 'CS_ACCEPT'" class="item-info-message">接入成功</div>
+                  <div v-else-if="conversation.lastMessage.type === 'CS_TRANSFER'" class="item-info-message">
+                    {{
+                      conversation.lastMessage.senderId === currentAgent.id ? `已转接给` +
+                        conversation.lastMessage.payload.transferTo.data.name : '已接入来自' +
+                        conversation.lastMessage.senderData.name + '的转接'
+                    }}
+                  </div>
+                  <div v-else class="item-info-message">[未识别内容]</div>
+                </div>
+              </div>
+            </div>
+          </router-link>
         </div>
       </div>
       <div v-if="rightClickMenu.visible" :style="{'left': rightClickMenu.x + 'px', 'top': rightClickMenu.y + 'px'}"
@@ -87,7 +89,7 @@
       </div>
     </div>
     <div class="conversation-main">
-      <router-view :key="$route.query.id"></router-view>
+      <router-view :key="$route.params.id"></router-view>
     </div>
   </div>
 </template>
@@ -154,14 +156,13 @@
         this.conversations = content.conversations;
       },
       chat(conversation) {
-        this.$router.replace({
-          path: '/conversations/chat',
+        return {
+          path: '/conversations/chat/'+conversation.id,
           query: {
-            id: conversation.id,
             name: conversation.data.name,
             avatar: conversation.data.avatar
           }
-        });
+        }
       },
       showRightClickMenu(e, conversation) {
         this.rightClickMenu.conversation = conversation;
@@ -193,8 +194,7 @@
           alert("删除失败：会话尚未结束");
           return
         }
-        let confirmResult = confirm('确认要删除这条会话吗？');
-        if (confirmResult===true) {
+        if (confirm('确认要删除这条会话吗？')) {
           this.goEasy.im.removeConversation({
             conversation: this.rightClickMenu.conversation,
             onSuccess: function () {
@@ -357,7 +357,7 @@
     margin-right: 2px;
   }
 
-  .checked {
+  .router-link-active {
     background: #eeeeee;
     border-radius: 5px;
   }
