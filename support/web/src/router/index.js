@@ -20,7 +20,7 @@ const routes = [
                     default: Conversations
                 },
                 children: [{
-                    path: 'chat',
+                    path: 'chat/:id',
                     components: {
                         default: Chat
                     }

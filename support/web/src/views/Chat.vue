@@ -259,7 +259,7 @@
     },
     created() {
       this.customer = {
-        id: this.$route.query.id,
+        id: this.$route.params.id,
         name: this.$route.query.name,
         avatar: this.$route.query.avatar,
       };
@@ -364,6 +364,9 @@
               } else {
                 this.history.messages = messages;
               }
+              if (messages.length < 10) {
+                this.history.allLoaded = true;
+              }
               if (scrollToBottom) {
                 this.scrollToBottom();
               }
@@ -454,7 +457,13 @@
       async acceptSession() {
         if (await this.isOnline()) {
           this.csteam.accept({
-            id: this.customer.id,
+            customer: {
+              id: this.customer.id,
+              data: {
+                name: this.customer.name,
+                avatar: this.customer.avatar
+              }
+            },
             onSuccess: () => {
               console.log('accept successfully.');
               clearInterval(this.pendingTime.timer);
@@ -1083,6 +1092,7 @@
   .agent-label {
     display: flex;
     align-items: center;
+    cursor: pointer;
   }
 
   .agent-avatar {

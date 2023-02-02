@@ -26,7 +26,7 @@ Page({
 
         history: {
             messages: [],
-            loaded: false,
+            allLoaded: false,
             loading: true
         },
 
@@ -217,7 +217,7 @@ Page({
                 let messages = result.content;
                 if (messages.length === 0) {
                     this.setData({
-                        ['history.loaded']: true
+                        ['history.allLoaded']: true
                     });
                 } else {
                     let messageList
@@ -258,7 +258,13 @@ Page({
     async acceptSession() {
         if (await this.isOnline()) {
             this.data.csteam.accept({
-                id: this.data.customer.id,
+                customer: {
+                    id: this.data.customer.id,
+                    data: {
+                        name: this.data.customer.name,
+                        avatar: this.data.customer.avatar
+                    }
+                },
                 onSuccess: () => {
                     console.log('accept successfully.');
                     clearInterval(this.data.pendingTime.timer);

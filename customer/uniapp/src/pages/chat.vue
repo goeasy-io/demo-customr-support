@@ -2,8 +2,8 @@
   <view class="chatInterface">
     <view class="scroll-view">
       <image v-if="history.loading" class="history-loaded" src="/static/images/loading.svg"/>
-      <view v-else :class="history.loaded ? 'history-loaded':'load'" @click="loadHistoryMessage(false)">
-        <view>{{ history.loaded ? '已经没有更多的历史消息' : '点击获取历史消息' }}</view>
+      <view v-else :class="history.allLoaded ? 'history-loaded':'load'" @click="loadHistoryMessage(false)">
+        <view>{{ history.allLoaded ? '已经没有更多的历史消息' : '点击获取历史消息' }}</view>
       </view>
 
       <view class="message-list">
@@ -178,7 +178,6 @@
         currentCustomer: {},
         shop: {},
         to: {},// 作为createMessage的参数
-        from: '',// 记录上一个页面的路径
         text: '',
         //定义表情列表
         emoji: {
@@ -195,7 +194,7 @@
         },
         history: {
           messages: [],
-          loaded: false,
+          allLoaded: false,
           loading: true
         },
         audio: {
@@ -217,7 +216,6 @@
       }
     },
     onLoad(options) {
-      this.from = options.from;
       this.shop = JSON.parse(options.to);
       this.to = {
         id: this.shop.id,
@@ -250,9 +248,6 @@
       this.goEasy.im.off(this.GoEasy.IM_EVENT.CS_MESSAGE_RECEIVED, this.onMessageReceived);
     },
     methods: {
-      onNavigationBarButtonTap(e) {
-        uni.switchTab({ url: `./${this.from}` });
-      },
       /**
        * 核心就是设置高度，产生明确占位
        *
@@ -435,9 +430,16 @@
             this.history.loading = false;
             let messages = result.content;
             if (messages.length === 0) {
-              this.history.loaded = true;
+              this.history.allLoaded = true;
             } else {
-              this.history.messages = messages.concat(this.history.messages);
+              if (lastMessageTimeStamp) {
+                this.history.messages = messages.concat(this.history.messages);
+              } else {
+                this.history.messages = messages;
+              }
+              if (messages.length < 10) {
+                this.history.allLoaded = true;
+              }
               if (scrollToBottom) {
                 this.scrollToBottom();
               }
@@ -637,7 +639,6 @@
     font-size: 24rpx;
     height: 60rpx;
     line-height: 60rpx;
-    margin: 15rpx 0;
     width: 100%;
     text-align: center;
     color: #cccccc;
