@@ -259,7 +259,7 @@
     },
     created() {
       this.customer = {
-        id: this.$route.query.id,
+        id: this.$route.params.id,
         name: this.$route.query.name,
         avatar: this.$route.query.avatar,
       };
@@ -363,6 +363,9 @@
                 this.history.messages = messages.concat(this.history.messages);
               } else {
                 this.history.messages = messages;
+              }
+              if (messages.length < 10) {
+                this.history.allLoaded = true;
               }
               if (scrollToBottom) {
                 this.scrollToBottom();
@@ -1089,6 +1092,7 @@
   .agent-label {
     display: flex;
     align-items: center;
+    cursor: pointer;
   }
 
   .agent-avatar {

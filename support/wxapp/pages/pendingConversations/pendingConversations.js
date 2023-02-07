@@ -57,7 +57,13 @@ Page({
             avatar: conversation.data.avatar,
         }
         this.data.csteam.accept({
-            id: customer.id,
+            customer: {
+                id: customer.id,
+                data: {
+                    name: customer.name,
+                    avatar: customer.avatar
+                }
+            },
             onSuccess: () => {
                 console.log('accept successfully.');
                 wx.navigateTo({

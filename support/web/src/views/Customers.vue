@@ -63,9 +63,8 @@
       },
       chat(customer) {
         this.$router.replace({
-          path: '/conversations/chat',
+          path: '/conversations/chat/'+customer.id,
           query: {
-            id: customer.id,
             name: customer.name,
             avatar: customer.avatar
           }
