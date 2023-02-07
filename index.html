@@ -2,34 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>demo-cs</title>
 </head>
 <body>
     <div class="demo-container">
-        <div class="demo-download">
-            <div class="text" style="font-weight: 600;color: #555555">源码下载</div>
-            <div class="text">(含Uniapp，PC端和小程序版):</div>
-            <a class="button" href="https://gitee.com/goeasy-io/demo-customer-service" target="_blank">
-                <div class="gitee-icon"></div>
-                Gitee
-            </a>
-            <a class="button" href="https://github.com/goeasy-io/demo-customr-support" target="_blank">
-                <div class="github-icon"></div>
-                GitHub
-            </a>
-        </div>
         <div class="demo-main">
             <div class="customer-view">
-                <iframe width="300px" height="650px" src="customer/"></iframe>
-                <div class="demo-title">
-                    <h2>用户端-电商APP</h2>
-                </div>
+                <iframe width="240px" height="450px" src="customer/"></iframe>
             </div>
             <div class="agent-view">
-                <iframe width="850px" height="650px" src="agent/"></iframe>
-                <div class="demo-title">
-                    <h2>客服端-商城客服后台</h2>
-                </div>
+                <iframe width="850px" height="450px" src="agent/"></iframe>
             </div>
         </div>
     </div>
@@ -39,12 +20,14 @@
         margin: 0;
         height: 100%;
     }
+
     .demo-container {
         background: #ffffff;
         height: 100%;
     }
+
     .demo-download {
-        width: 1170px;
+        width: 1110px;
         margin: 0 auto;
         padding: 30px 15px 15px 15px;
         font-size: 18px;
@@ -81,19 +64,23 @@
 
     .demo-main {
         display: flex;
-        width: 1170px;
+        width: 1110px;
         margin: 0 auto;
     }
+
     .customer-view {
-        width: 300px;
+        width: 240px;
         margin-right: 20px;
     }
+
     .agent-view {
         width: 850px;
     }
+
     .demo-title {
         margin: 5px 0;
     }
+
     iframe {
         border-radius: 10px;
         border-width: 1px;
