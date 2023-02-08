@@ -6,8 +6,8 @@ publish_live_version () {
     dir=dist
     mkdir $dir
     cp -f index.html $dir
-    sed -i "s/src=\"uniapp\/\"/src=\"\/show-cs\/${version}\/uniapp\/\"/" $dir/index.html
-    sed -i "s/src=\"web\/\"/src=\"\/show-cs\/${version}\/web\/\"/" $dir/index.html
+    sed -i "s/src=\"uniapp\/\"/src=\"\/show-cs\/${version}\/customer\/\"/" $dir/index.html
+    sed -i "s/src=\"web\/\"/src=\"\/show-cs\/${version}\/agent\/\"/" $dir/index.html
 
     npm ci
     node ftp-upload.js $ftp_host $ftp_username $ftp_password
