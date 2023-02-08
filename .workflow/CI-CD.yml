@@ -8,9 +8,13 @@ triggers:
       prefix:
         - 跑不通_master
 variables:
-  ACTION: b
   global:
+    - ACTION
     - APPKEY
+    - FTP_HOST
+    - FTP_PASS
+    - FTP_UPLOAD_COMPRESSED
+    - FTP_USER
     - GIT_EMAIL
     - GIT_PASS
     - GIT_USER
@@ -35,14 +39,13 @@ stages:
           - ''
           - '# 设置NPM源，提升安装速度'
           - npm config set registry https://registry.npmmirror.com
-          - npm config set sass-binary-site http://npm.taobao.org/mirrors/node-sass
           - ''
           - git config --global user.name "${GIT_USER}"
           - git config --global user.password "${GIT_PASS}"
           - git config --global user.email "${GIT_EMAIL}"
           - ''
           - '# 执行构建脚本'
-          - bash build.sh ${ACTION}
+          - bash build.sh
         caches:
           - ~/.npm
           - ~/.yarn
