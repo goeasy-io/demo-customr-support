@@ -187,6 +187,7 @@
     display: flex;
     align-items: center;
     flex-grow: 1;
+    font-size: 36rpx;
   }
 
   .selected-content image {
@@ -231,6 +232,7 @@
     padding-left: 40rpx;
     display: flex;
     align-items: center;
+    font-size: 36rpx;
   }
 
   .dialog-list-item-avatar {

@@ -177,7 +177,7 @@
     height: 152rpx;
     display: flex;
     align-items: center;
-    padding-left: 32rpx;
+    padding-left: 20rpx;
   }
 
   .conversations .scroll-item .head-icon {
@@ -189,8 +189,7 @@
   .conversations .scroll-item_info {
     height: 151rpx;
     width: 590rpx;
-    padding-right: 32rpx;
-    box-sizing: border-box;
+    padding-right: 22rpx;
     border-bottom: 1px solid #EFEFEF;
   }
 

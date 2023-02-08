@@ -132,7 +132,7 @@
           </div>
         </div>
         <div class="input-box">
-          <textarea ref="input" v-model="text" autocomplete="off" class="input-content"></textarea>
+          <textarea ref="input" @focus="onInputFocus" @keyup.enter="sendTextMessage" v-model="text" autocomplete="off" class="input-content"></textarea>
         </div>
         <div class="send-box">
           <button class="send-button" @click="sendTextMessage">发送</button>
@@ -516,6 +516,9 @@
       hideTransferForm() {
         this.transferForm.visible = false;
       },
+      onInputFocus () {
+        this.emoji.visible = false;
+      },
       showEmojiBox() {
         this.emoji.visible = !this.emoji.visible;
       },
@@ -632,22 +635,23 @@
   }
 
   .chat-title {
-    height: 61px;
-    padding: 15px;
+    height: 40px;
+    padding: 0 15px;
     display: flex;
     align-items: center;
     font-size: 18px;
   }
 
   .chat-avatar {
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
     border-radius: 50%;
   }
 
   .chat-name {
     width: 400px;
     margin-left: 10px;
+    font-size: 15px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -724,8 +728,8 @@
   }
 
   .sender-avatar {
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
     border-radius: 50%;
   }
 
@@ -869,7 +873,7 @@
   .chat-footer {
     border-top: 1px solid #dcdfe6;
     width: 100%;
-    height: 200px;
+    height: 140px;
     background: #FFFFFF;
   }
 
@@ -915,9 +919,9 @@
   }
 
   .emoji-box {
-    width: 250px;
+    width: 210px;
     position: absolute;
-    top: -125px;
+    top: -111px;
     left: -11px;
     z-index: 2007;
     background: #fff;
@@ -931,8 +935,8 @@
   }
 
   .emoji-item {
-    width: 45px;
-    height: 45px;
+    width: 38px;
+    height: 38px;
     margin: 0 2px;
   }
 
@@ -958,18 +962,15 @@
   }
 
   .input-box {
-    padding: 0 10px;
     flex: 1;
+    padding: 5px 15px;
   }
 
   .input-content {
-    height: 110px;
     border: none;
     resize: none;
     display: block;
-    padding: 5px 15px;
-    box-sizing: border-box;
-    width: 100%;
+    width: 90%;
     color: #606266;
     outline: none;
     background: #FFFFFF;
@@ -989,6 +990,7 @@
     background-color: #ffffff;
     color: #d02129;
     border-radius: 5px;
+    cursor: pointer;
   }
 
   .accept-session {
@@ -1096,10 +1098,8 @@
   }
 
   .agent-avatar {
-    width: 40px;
-    height: 40px;
-    min-width: 40px;
-    min-height: 40px;
+    width: 35px;
+    height: 35px;
     margin: 0 5px;
   }
 
@@ -1128,9 +1128,7 @@
 
   .order-box {
     width: 850px;
-    height: 650px;
     position: absolute;
-    left: 0;
     right: 0;
     top: 0;
     bottom: 0;
