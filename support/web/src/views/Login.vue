@@ -108,14 +108,10 @@
   }
 
   .login-container {
-    width: 1000px;
-    height: 600px;
     border-radius: 12px;
   }
 
   .login-main {
-    width: 600px;
-    margin: 130px auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -123,10 +119,9 @@
   }
 
   .login-header {
-    margin: 20px auto;
     width: 300px;
     text-align: center;
-    font-size: 30px;
+    font-size: 25px;
     font-weight: 500;
     color: #d02129;
   }
@@ -137,7 +132,7 @@
 
   .form-item {
     position: relative;
-    margin: 30px 0;
+    margin: 20px 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -181,7 +176,7 @@
 
   .dialog-area {
     position: absolute;
-    top: 55px;
+    top: 50px;
     left: 0;
     width: 300px;
     background: #FFFFFF;
@@ -191,8 +186,7 @@
 
   .dialog-list-item {
     width: 100%;
-    margin: 15px 0;
-    padding-left: 10px;
+    margin: 5px 0;
     display: flex;
     align-items: center;
     cursor: pointer;
@@ -201,7 +195,7 @@
   .dialog-list-item-avatar {
     width: 35px;
     height: 35px;
-    margin-right: 15px;
+    margin: 0 15px;
     border-radius: 50%;
   }
 

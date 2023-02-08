@@ -167,6 +167,19 @@
 </script>
 
 <style scoped>
+  @media screen and (max-width:1000px) {
+    .home-container {
+      width: 850px;
+      height: 450px;
+    }
+  }
+  @media screen and (min-width:1000px) {
+    .home-container {
+      width: 850px;
+      height: 650px;
+    }
+  }
+
   .home {
     width: 100%;
     height: 100%;
@@ -176,8 +189,6 @@
   }
 
   .home-container {
-    width: 850px;
-    height: 650px;
     background: #FFFFFF;
     display: flex;
     position: relative;
@@ -185,7 +196,7 @@
   }
 
   .home-menu {
-    width: 80px;
+    width: 60px;
     background-color: #F7F7F7;
     border-right: 1px solid #eeeeee;
     display: flex;
@@ -221,7 +232,6 @@
     padding: 0 8px;
     border: 0.5px solid rgba(108, 90, 90, 0.15);
     border-radius: 4px;
-    box-sizing: border-box;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -253,7 +263,6 @@
   .menu-item {
     color: #303133;
     cursor: pointer;
-    box-sizing: border-box;
     height: 56px;
     position: relative;
   }
@@ -313,7 +322,7 @@
     visibility: hidden;
     position: absolute;
     top: 32px;
-    bottom: 0px;
+    bottom: 0;
     left: 32px;
     right: 0;
     border: 0.5px solid rgba(108, 90, 90, 0.15);
@@ -326,7 +335,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    box-sizing: border-box;
     word-wrap: break-word;
     background: #fff;
     color: rgba(0, 0, 0, 0.5);
@@ -346,7 +354,7 @@
 
   .action-box {
     position: absolute;
-    left: 80px;
+    left: 60px;
     bottom: 40px;
     width: 150px;
     padding: 10px;

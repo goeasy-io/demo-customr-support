@@ -219,7 +219,7 @@
   }
 
   .conversation-list {
-    width: 240px;
+    width: 220px;
     border-right: 1px solid #eee;
     display: flex;
     flex-direction: column;
@@ -228,8 +228,8 @@
   }
 
   .conversation-list-title {
-    font-size: 16px;
-    margin: 10px;
+    font-size: 15px;
+    margin: 5px 10px;
     color: rgba(0, 0, 0, 0.9);
   }
 
@@ -278,8 +278,8 @@
   }
 
   .conversation-item-avatar {
-    width: 45px;
-    height: 45px;
+    width: 40px;
+    height: 40px;
     border-radius: 4px;
   }
 
@@ -316,7 +316,7 @@
     text-overflow: ellipsis;
     word-break: break-all;
     font-size: 15px;
-    width: 100px;
+    width: 80px;
     line-height: 25px;
     color: #333333;
   }

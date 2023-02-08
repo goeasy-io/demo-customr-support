@@ -85,7 +85,7 @@
   .customer-left {
     height: 100%;
     border-right: #dbd6d6 1px solid;
-    width: 260px;
+    width: 240px;
     border-right: 1px solid #eee;
     display: flex;
     flex-direction: column;
@@ -93,7 +93,6 @@
 
   .customer-tab {
     padding: 20px;
-    margin-bottom: 20px;
     font-size: 18px;
     border-bottom: 1px solid #eeeeee;
   }
@@ -139,10 +138,6 @@
     background: #FFFFFF;
   }
 
-  .profile-card {
-    padding: 20px 0;
-  }
-
   .card-title {
     padding: 60px;
     border-bottom: 1px solid #eeeeee;
@@ -164,12 +159,12 @@
   }
 
   .profile-avatar {
-    width: 80px;
+    width: 60px;
   }
 
   .profile-avatar img {
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     border-radius: 10%;
   }
 
