@@ -2,11 +2,11 @@
   "name": "goeasy-demo-customer",
   "appid": "",
   "description": "",
-  "versionName": "1.0.20-4",
+  "versionName": "1.0.20",
   "versionCode": "100",
   "transformPx": false,
   "h5": {
-    "publicPath": "/show-cs/1.0.20-4/customer/",
+    "publicPath": "/show-cs/1.0.20/customer/",
     "devServer": {
       "port": 9001,
       "disableHostCheck": true,
@@ -14,7 +14,7 @@
     },
     "router": {
       "mode": "history",
-      "base": "/show-cs/1.0.20-4/customer/"
+      "base": "/show-cs/1.0.20/customer/"
     }
   },
   "app-plus": {
