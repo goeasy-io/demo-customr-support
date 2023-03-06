@@ -6,6 +6,8 @@ publish_live_version () {
     dir=dist
     mkdir $dir
     cp -f index.html $dir
+    cp -f phone.png $dir
+    cp -f topbar.png $dir
     sed -i "s/src=\"customer\/\"/src=\"\/show-cs\/${version}\/customer\/\"/" $dir/index.html
     sed -i "s/src=\"agent\/\"/src=\"\/show-cs\/${version}\/agent\/\"/" $dir/index.html
 
