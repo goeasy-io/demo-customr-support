@@ -42,7 +42,7 @@
             "path": "pages/chat",
             "style": {
                 "navigationBarTitleText": "聊天",
-                "navigationBarBackgroundColor": "#F1F1F1",
+                "navigationBarBackgroundColor": "#FFFFFF",
                 "app-plus":{
                     "titleNView":{
                         "buttons":[{
