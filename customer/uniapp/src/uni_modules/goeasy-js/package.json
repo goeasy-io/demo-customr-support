@@ -1,15 +1,12 @@
 {
-    "id": "goeasy-js",
-    "displayName": "GoEasy Websocket实时通讯和消息推送",
+    "id": "GoEasy-CS",
+    "displayName": "GoEasy IM在线客服",
     "version": "2.6.1",
-    "description": "websocket实时通讯, 通知栏推送，支持APP、各种小程序和H5，快应用",
+    "description": "GoEasy IM在线客服, 帮助开发者在现有的app、小程序和网站中，快速集成一个强大，方便易用在线客服功能",
     "keywords": [
-        "websocket",
-        "推送",
-        "",
-        "厂商通道"
+        "在线客服"
     ],
-  "repository": "https://gitee.com/goeasy-io/helloworld",
+  "repository": "https://gitee.com/goeasy-io/demo-customer-service",
   "engines": {
     "HBuilderX": "^3.1.0"
   },
