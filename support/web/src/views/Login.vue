@@ -141,8 +141,6 @@
 
   .selected-area {
     width: 280px;
-    height: 220px;
-    overflow: auto;
     display: flex;
     align-items: center;
     padding: 5px 10px;
@@ -181,6 +179,8 @@
     top: 50px;
     left: 0;
     width: 300px;
+    height: 220px;
+    overflow: auto;
     background: #FFFFFF;
     border: 1px solid #DCDFE6;
     z-index: 99;
