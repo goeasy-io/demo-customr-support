@@ -2,9 +2,12 @@
     "id": "GoEasy-CS",
     "displayName": "GoEasy IM在线客服",
     "version": "2.6.1",
-    "description": "GoEasy IM在线客服, 帮助开发者在现有的app、小程序和网站中，快速集成一个强大，方便易用在线客服功能",
+    "description": "帮助开发者在现有的app、小程序和网站中，快速集成一个强大，方便易用在线客服功能",
     "keywords": [
-        "在线客服"
+        "在线客服",
+        "客服",
+        "",
+        "客服系统"
     ],
   "repository": "https://gitee.com/goeasy-io/demo-customer-service",
   "engines": {

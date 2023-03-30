@@ -1,11 +1,11 @@
 import Vue from 'vue';
 import App from './App';
-import GoEasy from '@/uni_modules/goeasy-js/js_sdk/goeasy-2.6.1.esm.min.js'
+import GoEasy from '@/uni_modules/GoEasy-CS/js_sdk/goeasy-2.6.1.esm.min.js'
 
 Vue.config.productionTip = false;
 
 const goEasy = GoEasy.getInstance({
-	host: 'hangzhou.goeasy.io',	//应用所在的区域地址: [hangzhou.goeasy.io, 新加坡暂不支持IM，敬请期待]
+	host: 'hangzhou.goeasy.io',	//若是新加坡区域：singapore.goeasy.io
 	appkey: 'BC-xxxxxx', // common key,
 	modules: ['im'],
 	// true表示支持通知栏提醒，false则表示不需要通知栏提醒
