@@ -1,6 +1,6 @@
 {
   "name": "demo-costomer-service",
-  "version": "1.0.21-4",
+  "version": "1.0.21-5",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
