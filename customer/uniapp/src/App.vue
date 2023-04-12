@@ -16,6 +16,11 @@
 </script>
 
 <style>
+  * {
+    font-family: "HanHei SC",PingHei,"PingFang SC","Helvetica Neue",Helvetica,Arial,"Microsoft Yahei","Hiragino Sans GB","Heiti SC","WenQuanYi Micro Hei",sans-serif;;
+    font-style: normal;
+    font-weight: normal;
+  }
   .text-content {
     padding: 16rpx;
     border-radius: 20rpx;
