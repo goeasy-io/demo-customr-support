@@ -95,7 +95,7 @@
     display: flex;
     align-items: center;
     flex: 1;
-    font-size: 14px;
+    font-size: 34rpx;
   }
 
   .consult-buton {
@@ -105,7 +105,7 @@
     color: #d02129;
     border: 2rpx solid #d02129;
     text-align: center;
-    font-size: 28rpx;
+    font-size: 34rpx;
     line-height: 50rpx;
   }
 

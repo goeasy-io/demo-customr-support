@@ -641,7 +641,7 @@
   }
 
   .scroll-view .history-loaded {
-    font-size: 24rpx;
+    font-size: 34rpx;
     height: 60rpx;
     line-height: 60rpx;
     width: 100%;
@@ -650,7 +650,7 @@
   }
 
   .scroll-view .load {
-    font-size: 24rpx;
+    font-size: 34rpx;
     height: 60rpx;
     line-height: 60rpx;
     margin: 15rpx 0;
@@ -694,7 +694,7 @@
     width: 100%;
     text-align: center;
     color: #333333;
-    font-size: 28rpx;
+    font-size: 34rpx;
   }
 
   .scroll-view .content {
@@ -707,7 +707,7 @@
   }
 
   .scroll-view .content .staff-name {
-    font-size: 28rpx;
+    font-size: 34rpx;
     color: #888888;
   }
 
@@ -743,7 +743,7 @@
     padding: 6rpx 10rpx;
     line-height: 72rpx;
     background: #FFFFFF;
-    font-size: 24rpx;
+    font-size: 34rpx;
     border-radius: 14rpx;
     color: #000000;
     display: flex;
@@ -832,7 +832,7 @@
     box-sizing: border-box;
     border-radius: 6px;
     background: #FFFFFF;
-    font-size: 32rpx;
+    font-size: 34rpx;
   }
 
   .more {
@@ -855,7 +855,7 @@
 
   .send-btn-box .btn {
     color: #FFFFFF;
-    font-size: 28rpx;
+    font-size: 34rpx;
   }
 
   .action-box .action-bottom .more-icon {
@@ -875,7 +875,7 @@
     background: #FFFFFF;
   }
   .action-box .action-bottom .operation-title {
-    font-size: 24rpx;
+    font-size: 34rpx;
     line-height: 50rpx;
     color: #82868E;
   }
@@ -894,7 +894,7 @@
     border-radius: 6px;
     background: #cccccc;
     color: #FFFFFF;
-    font-size: 28rpx;
+    font-size: 34rpx;
     text-align: center;
   }
 
@@ -968,7 +968,7 @@
 
   .title {
     font-weight: 600;
-    font-size: 30rpx;
+    font-size: 34rpx;
     color: #000000;
     margin-left: 20rpx;
     margin-right: 20rpx;
@@ -989,14 +989,14 @@
   }
 
   .order-id {
-    font-size: 24rpx;
+    font-size: 34rpx;
     color: #666666;
     margin-bottom: 10rpx;
   }
 
   .order-body {
     display: flex;
-    font-size: 28rpx;
+    font-size: 34rpx;
   }
 
   .order-img {
@@ -1022,7 +1022,7 @@
   }
 
   .order-count {
-    font-size: 24rpx;
+    font-size: 34rpx;
     color: #666666;
   }
 
@@ -1048,7 +1048,7 @@
   }
 
   .time-lag {
-    font-size: 20rpx;
+    font-size: 34rpx;
     text-align: center;
   }
 </style>
