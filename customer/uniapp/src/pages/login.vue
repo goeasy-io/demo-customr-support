@@ -119,7 +119,7 @@
     height: 60rpx;
     margin-bottom: 60rpx;
     padding: 0rpx 20rpx;
-    font-size: 32rpx;
+    font-size: 34rpx;
     line-height: 48rpx;
     display: flex;
     align-content: center;
@@ -155,7 +155,7 @@
     padding: 28rpx;
     border: 1px solid #cccccc;
     margin-bottom: 40rpx;
-    font-size: 32rpx;
+    font-size: 34rpx;
   }
 
   .password-image {
