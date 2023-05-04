@@ -44,5 +44,5 @@ GoEasy IM在线客服，帮助开发者在现有的app、小程序和网站中�
 
 1. 命令行进入项目路径/support/web, npm ci
 2. /support/web/src/main.js里将appkey替换为自己应用的Common key (注意，BC-开头的)
-3. 执行npm run server 运行
+3. 执行npm run serve 运行
 
