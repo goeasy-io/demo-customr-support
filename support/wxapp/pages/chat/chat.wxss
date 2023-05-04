@@ -14,6 +14,10 @@ page {
 }
 
 .history-loaded {
+	font-size: 24rpx;
+	height: 60rpx;
+	line-height: 60rpx;
+	color: #666666;
 	width: 100%;
 	display: flex;
 	align-items: center;
